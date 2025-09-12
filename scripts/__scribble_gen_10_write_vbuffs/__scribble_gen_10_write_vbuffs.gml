@@ -147,7 +147,7 @@ function __scribble_gen_10_write_vbuffs()
         
         while(_region_end >= _region_bbox_start)
         {
-            _region_bbox_end = min(_region_end, _word_grid[# _line_array[_line].__wordEnd, __SCRIBBLE_GEN_WORD_GLYPH_END]);
+            _region_bbox_end = min(_region_end, _word_grid[# _line_array[_line].wordEnd, __SCRIBBLE_GEN_WORD_GLYPH_END]);
             
             if (_region_bbox_start <= _region_bbox_end)
             {
@@ -205,10 +205,10 @@ function __scribble_gen_10_write_vbuffs()
         repeat(_page_data.__line_count)
         {
             var _lineStruct = _line_array[_lineIndex];
-            var _lineY = _lineStruct.__y;
+            var _lineY = _lineStruct.y;
             
-            var _glyphStart = _word_grid[# _lineStruct.__wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START];
-            var _glyphEnd   = _word_grid[# _lineStruct.__wordEnd,   __SCRIBBLE_GEN_WORD_GLYPH_END  ];
+            var _glyphStart = _word_grid[# _lineStruct.wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START];
+            var _glyphEnd   = _word_grid[# _lineStruct.wordEnd,   __SCRIBBLE_GEN_WORD_GLYPH_END  ];
             
             var _glyphIndex = _glyphStart;
             repeat(1 + _glyphEnd - _glyphStart)

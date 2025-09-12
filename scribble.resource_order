@@ -258,7 +258,6 @@
     {"name":"__scribble_buffer_write_unicode","order":8,"path":"scripts/__scribble_buffer_write_unicode/__scribble_buffer_write_unicode.yy",},
     {"name":"__scribble_class_cached_element","order":1,"path":"scripts/__scribble_class_cached_element/__scribble_class_cached_element.yy",},
     {"name":"__scribble_class_event","order":5,"path":"scripts/__scribble_class_event/__scribble_class_event.yy",},
-    {"name":"__scribble_class_external_line","order":4,"path":"scripts/__scribble_class_external_line/__scribble_class_external_line.yy",},
     {"name":"__scribble_class_generator_state","order":2,"path":"scripts/__scribble_class_generator_state/__scribble_class_generator_state.yy",},
     {"name":"__scribble_class_line","order":3,"path":"scripts/__scribble_class_line/__scribble_class_line.yy",},
     {"name":"__scribble_class_material","order":7,"path":"scripts/__scribble_class_material/__scribble_class_material.yy",},

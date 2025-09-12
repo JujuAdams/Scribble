@@ -30,10 +30,10 @@ function __scribble_gen_7_build_pages()
         
         if (not _skippingLines)
         {
-            _width = max(_width, _lineStruct.__width);
+            _width = max(_width, _lineStruct.width);
         }
         
-        var _starts_manual_page = _lineStruct.__startsManualPage;
+        var _starts_manual_page = _lineStruct.startsManualPage;
         var _overflow = _line_y + _line_height >= _simulated_model_height;
         
         if (_starts_manual_page || (_overflow && (not _firstLine) && (not _skippingLines)))
@@ -44,7 +44,7 @@ function __scribble_gen_7_build_pages()
             }
             
             _firstLine = true;
-            _lineStruct.__y = 0;
+            _lineStruct.y = 0;
             _line_y = _line_spacing_add + _line_height*_line_spacing_multiply;
             
             if (_starts_manual_page)
@@ -64,7 +64,7 @@ function __scribble_gen_7_build_pages()
         else
         {
             _firstLine = false;
-            _lineStruct.__y = _line_y;
+            _lineStruct.y = _line_y;
             _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
         }
         

@@ -60,15 +60,16 @@ function __scribble_gen_8_position_glyphs()
         var _j = _page_start_line;
         repeat(1 + _page_end_line - _page_start_line)
         {
-            var _lineStruct = _line_array[_j];
-            
-            var _line_x               = _lineStruct.__x;
-            var _line_y               = _lineStruct.__y;
-            var _line_word_start      = _lineStruct.__wordStart;
-            var _line_word_end        = _lineStruct.__wordEnd;
-            var _line_width           = _lineStruct.__width;
-            var _line_halign          = _lineStruct.__hAlign;
-            var _line_disable_justify = _lineStruct.__disableJustify;
+            with(_line_array[_j])
+            {
+                var _line_x               = x;
+                var _line_y               = y;
+                var _line_word_start      = wordStart;
+                var _line_word_end        = wordEnd;
+                var _line_width           = width;
+                var _line_halign          = hAlign;
+                var _line_disable_justify = disableJustify;
+            }
             
             var _line_glyph_start = _word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD_GLYPH_START];
             var _line_glyph_end   = _word_grid[# _line_word_end,   __SCRIBBLE_GEN_WORD_GLYPH_END  ];

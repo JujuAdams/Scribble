@@ -36,10 +36,6 @@
 //too). This will apply to all text elements and carries a performance penalty.
 #macro SCRIBBLE_FORCE_GLYPH_DATA_GETTER  false
 
-//Set to <true> to enable the `.get_line_data()` method on text elements (and a few other features
-//too). This will apply to all text elements and carries a performance penalty.
-#macro SCRIBBLE_FORCE_LINE_DATA_GETTER  false
-
 //Whether to automatically shrink sprites to fit the height of the currently set font.
 #macro SCRIBBLE_SHRINK_INLINE_SPRITES  false
 

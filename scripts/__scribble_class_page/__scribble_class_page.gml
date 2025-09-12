@@ -55,20 +55,20 @@ function __scribble_class_page(_model) constructor
         
         __line_end    = _page_end_line;
         __line_count  = 1 + __line_end - __line_start;
-        __glyph_end   = _word_grid[# _line_array[__line_end].__wordEnd, __SCRIBBLE_GEN_WORD_GLYPH_END];
+        __glyph_end   = _word_grid[# _line_array[__line_end].wordEnd, __SCRIBBLE_GEN_WORD_GLYPH_END];
         __glyph_count = 1 + __glyph_end - __glyph_start;
         
         var _pageWidth = 0;
         var _i = __line_start;
         repeat(__line_count)
         {
-            _pageWidth = max(_pageWidth, _line_array[_i].__width);
+            _pageWidth = max(_pageWidth, _line_array[_i].width);
             ++_i;
         }
         
         __width = _pageWidth;
         
-        var _line_max_y = _line_array[_page_end_line].__y + _line_height;
+        var _line_max_y = _line_array[_page_end_line].y + _line_height;
         __height = _line_max_y;
             
         //Correct page position for vertical alignment
@@ -122,7 +122,7 @@ function __scribble_class_page(_model) constructor
             var _i = __line_start;
             repeat(__line_count)
             {
-                _line_array[_i].__y += __min_y;
+                _line_array[_i].y += __min_y;
                 ++_i;
             }
         }
@@ -135,26 +135,23 @@ function __scribble_class_page(_model) constructor
         //Set up reveal indexes relative to the page
         ds_grid_add_region(_glyph_grid, __glyph_start, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, __glyph_end, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, -_page_reveal_start);
             
-        if (__model.__allow_line_data_getter)
+        __line_data_array = [];
+        
+        var _line = __line_start;
+        repeat(__line_count)
         {
-            var __line_data_array = array_create(__line_count, undefined);
-            var _line = __line_start;
-            repeat(__line_count)
-            {
-                var _lineStruct = _line_array[_line];
-                
-                var _glyph_start = _word_grid[# _lineStruct.__wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START] - __glyph_start;
-                var _glyph_end   = _word_grid[# _lineStruct.__wordEnd,   __SCRIBBLE_GEN_WORD_GLYPH_END  ] - __glyph_start;
-                
-                //FIXME - Maybe we can expose the created lines?
-                //        N.B. Not all lines will necessarily make it onto a page if there's trimming
-                __line_data_array[@ _line] = new __scribble_class_external_line(_lineStruct.__y,
-                                                                                _line_height,
-                                                                                _lineStruct.__hAlign,
-                                                                                _lineStruct.__forceBreak,
-                                                                                _glyph_start, _glyph_end);
-                ++_line;
-            }
+            var _lineStruct = _line_array[_line];
+            
+            var _glyph_start = _word_grid[# _lineStruct.wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START] - __glyph_start;
+            var _glyph_end   = _word_grid[# _lineStruct.wordEnd,   __SCRIBBLE_GEN_WORD_GLYPH_END  ] - __glyph_start;
+            
+            _lineStruct.glyphStart = _glyph_start;
+            _lineStruct.glyphEnd   = _glyph_end;
+            _lineStruct.glyphCount = 1 + _glyph_end - _glyph_start;
+            
+            array_push(__line_data_array, _lineStruct);
+            
+            ++_line;
         }
             
         if (__model.__randomize_animation)

@@ -502,7 +502,6 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         __typistDynamicPositioning       = true;
         __typistDynamicPositioningSmooth = _smooth;
         
-        allow_line_data_getter();
         allow_glyph_data_getter();
         
         return self;
@@ -1212,7 +1211,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
                     repeat(array_length(_lineDataArray))
                     {
                         var _lineData = _lineDataArray[_i];
-                        if (_lineData.glyph_end >= _headPosFloor)
+                        if (_lineData.glyphEnd >= _headPosFloor)
                         {
                             break;
                         }
@@ -1220,7 +1219,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
                         ++_i;
                     }
                     
-                    var _halign = _lineData.halign;
+                    var _halign = _lineData.hAlign;
                     
                     if ((_halign == fa_left) || (_halign == __SCRIBBLE_FA_JUSTIFY) || (_halign == __SCRIBBLE_PIN_LEFT))
                     {
@@ -1230,7 +1229,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
                     {
                         if ((_halign == fa_center) || (_halign == __SCRIBBLE_PIN_CENTRE))
                         {
-                            var _glyphDataStart = get_glyph_data(_lineData.glyph_start);
+                            var _glyphDataStart = get_glyph_data(_lineData.glyphStart);
                             var _glyphDataA     = get_glyph_data(_headPosFloor-1);
                             var _glyphDataB     = get_glyph_data(min(_lineData.glyph_end, _headPosFloor+1)-1);
                             var _offsetA = -0.5*(_glyphDataStart.left + _glyphDataA.right);
@@ -1258,7 +1257,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
                             var _offset = 0;
                         }
                         
-                        shader_set_uniform_f(_u_vTypewriterOffsetRange, _offset, _lineData.glyph_start, _headPosFloor);
+                        shader_set_uniform_f(_u_vTypewriterOffsetRange, _offset, _lineData.glyphStart, _headPosFloor);
                     }
                 }
             }

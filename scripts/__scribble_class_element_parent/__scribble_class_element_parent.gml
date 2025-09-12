@@ -42,7 +42,6 @@ function __scribble_class_element_parent(_text) constructor
     
     __allow_text_getter       = SCRIBBLE_FORCE_TEXT_GETTER;
     __allow_glyph_data_getter = SCRIBBLE_FORCE_GLYPH_DATA_GETTER;
-    __allow_line_data_getter  = SCRIBBLE_FORCE_LINE_DATA_GETTER;
     
     __origin_x    = 0.0;
     __origin_y    = 0.0;
@@ -1389,17 +1388,6 @@ function __scribble_class_element_parent(_text) constructor
         {
             __modelDirty = true;
             __allow_glyph_data_getter = true;
-        }
-        
-        return self;
-    }
-    
-    static allow_line_data_getter = function()
-    {
-        if (not __allow_line_data_getter)
-        {
-            __modelDirty = true;
-            __allow_line_data_getter = true;
         }
         
         return self;
