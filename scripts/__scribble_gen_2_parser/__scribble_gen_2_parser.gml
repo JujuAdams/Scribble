@@ -30,18 +30,18 @@
 
 
 
-#macro __SCRIBBLE_PARSER_WRITE_GLYPH  ;\//Pull info out of the font's data structures
+#macro __SCRIBBLE_PARSER_WRITE_GLYPH  \//Pull info out of the font's data structures
                                       var _data_index = _font_glyphs_map[? _glyph_write];\
-                                      ;\//If our glyph is missing, choose the missing character glyph instead!
+                                      \//If our glyph is missing, choose the missing character glyph instead!
                                       if (_data_index == undefined)\
                                       {\
                                           __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");\
                                           _data_index = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];\
                                       }\
-                                      ;\//Add this glyph to our grid by copying from the font's own glyph data grid
+                                      \//Add this glyph to our grid by copying from the font's own glyph data grid
                                       ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, __SCRIBBLE_GLYPH_PROPR_UNICODE, _data_index, __SCRIBBLE_GLYPH_PROPR_V1, _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE);\
                                       _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;\
-                                      ;\
+                                      \
                                       if (SCRIBBLE_USE_KERNING)\
                                       {\
                                           var _kerning = _font_kerning_map[? ((_glyph_write & 0xFFFF) << 16) | (_glyph_prev & 0xFFFF)];\
@@ -50,36 +50,36 @@
                                               _glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH_SEPARATION] += _kerning*_glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH_SCALE];\
                                           }\
                                       }\
-                                      ;\
+                                      \
                                       __SCRIBBLE_PARSER_NEXT_GLYPH
 
 #macro __SCRIBBLE_PARSER_SET_FONT   __SCRIBBLE_PARSER_POP_ALIGNMENT_OFFSET\
-                                    ;\
+                                    \
                                     var _font_data = __scribble_get_font_data(_font_name);\
                                     _font_data.__ensure_texel_data();\
                                     if (_font_data.__superfont) _font_data.__EnsureAdditionalCharacters();\
                                     if (_font_data.__is_krutidev) __has_devanagari = true;\
-                                    ;\
+                                    \
                                     var _font_glyph_data_grid     = _font_data.__glyph_data_grid;\
                                     var _font_glyphs_map          = _font_data.__glyphs_map;\
                                     var _font_kerning_map         = _font_data.__kerning_map;\
                                     var _font_halign_offset_array = _font_data.__halign_offset_array;\
                                     var _font_valign_offset_array = _font_data.__valign_offset_array;\
                                     var _fontLigatureMap          = _font_data.__ligatureMap;\
-                                    ;\
+                                    \
                                     var _stateHAlignOffset = _font_halign_offset_array[_state_halign];\
                                     var _stateVAlignOffset = _font_valign_offset_array[__valign ?? _starting_valign];\
-                                    ;\
+                                    \
                                     var _space_data_index = _font_glyphs_map[? SCRIBBLE_UNICODE_SPACE];\
                                     if (_space_data_index == undefined)\
                                     {\
                                         __scribble_error("The space character is missing from font definition for \"", _font_name, "\"");\
                                         return false;\
                                     }\
-                                    ;\
+                                    \
                                     var _font_space_width = _font_glyph_data_grid[# _space_data_index, __SCRIBBLE_GLYPH_PROPR_SEPARATION];\
                                     var _font_line_height = _font_data.__height;\
-                                    ;\
+                                    \
                                     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_FONT;\
                                     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _font_name;\
                                     ++_control_count;

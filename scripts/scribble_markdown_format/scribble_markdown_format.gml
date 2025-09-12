@@ -43,24 +43,24 @@
 #macro __SCRIBBLE_MARKDOWN_SET_STYLE  if (_write_style)\
                                       {\
                                           _write_style = false;\
-                                          ;\
+                                          \
                                           var _old_style_struct = (_old_style == undefined)? _empty_struct : (_markdown_styles_struct[$ _old_style] ?? _fallback_styles_struct[$ _old_style]);\
                                           var _new_style_struct = _markdown_styles_struct[$ _new_style] ?? _fallback_styles_struct[$ _new_style];\
-                                          ;\
+                                          \
                                           var _insert_string = _old_style_struct[$ "suffix"] ?? "";\
-                                          ;\
+                                          \
                                           var _old_value = _old_style_struct[$ "font"];\
                                           var _new_value = _new_style_struct[$ "font"];\
                                           if (_old_value != _new_value) _insert_string += (_new_value == undefined)? "[/font]" : ("[" + _new_value + "]");\
-                                          ;\
+                                          \
                                           _old_value = _old_style_struct[$ "scale"] ?? 1;\
                                           _new_value = _new_style_struct[$ "scale"] ?? 1;\
                                           if (_old_value != _new_value) _insert_string += (_new_value == 1)? "[/scale]" : ("[scale," + string(_new_value) + "]");\
-                                          ;\
+                                          \
                                           _old_value = _old_style_struct[$ "color"];\
                                           _new_value = _new_style_struct[$ "color"];\
                                           if (_old_value != _new_value) _insert_string += (_new_value == undefined)? "[/color]" : ("[d#" + string(_new_value) + "]");\
-                                          ;\
+                                          \
                                           _old_value = (_old_style_struct[$ "italic"] ?? 0) | (2*(_old_style_struct[$ "bold"] ?? 0));\
                                           _new_value = (_new_style_struct[$ "italic"] ?? 0) | (2*(_new_style_struct[$ "bold"] ?? 0));\
                                           if (_old_value != _new_value)\
@@ -93,11 +93,11 @@
                                                   _insert_string += "[bi]";\
                                               }\
                                           }\
-                                          ;\
+                                          \
                                           _insert_string += _new_style_struct[$ "prefix"] ?? "";\
-                                          ;\
+                                          \
                                           _buffer_size += _func_insert_buffer(_buffer, _buffer_size, _insert_string);\
-                                          ;\
+                                          \
                                           _old_style = _new_style;\
                                       }
 

@@ -5,7 +5,7 @@
 
 
 #macro __SCRIBBLE_GEN_WORD_END  _word_glyph_end = _i-1;\
-                                ;\
+                                \
                                 if (_word_bidi == __SCRIBBLE_BIDI_R2L_ARABIC)\ //Arabic visually groups glyphs together into words
                                 {\
                                     ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_X, abs(_word_width));\
@@ -22,17 +22,17 @@
                                     {\
                                         ds_grid_set_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _word_glyph_start);\
                                     }\
-                                    ;\
+                                    \
                                     if (_word_bidi == __SCRIBBLE_BIDI_R2L)\ //Any R2L languages, apart from Arabic
                                     {\
                                         ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_X, abs(_word_width));\
                                     }\
                                 }\
-                                ;\
+                                \
                                 _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_GLYPH_END   ] = _word_glyph_end;\
                                 _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_WIDTH       ] = abs(_word_width);\
                                 _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_HEIGHT      ] = ds_grid_get_max(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT);\
-                                ;\
+                                \
                                 _word_count++;
 
 

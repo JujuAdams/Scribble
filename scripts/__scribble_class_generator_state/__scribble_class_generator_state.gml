@@ -21,8 +21,8 @@ function __scribble_class_generator_state() constructor
         __sectionCount     = 0; // [/section] tags. Optional feature
         __word_count       = 0;
         __line_count       = 0;
-        __model_max_width  = 0;
-        __model_max_height = 0;
+        __modelMaxWidth  = 0;
+        __modelMaxHeight = 0;
         __overall_bidi     = undefined;
         
         __uses_halign_left   = false;
@@ -31,8 +31,8 @@ function __scribble_class_generator_state() constructor
         
         __bezier_lengths_array = undefined;
         
-        __model_max_width       = 0;
-        __model_max_height      = 0;
+        __modelMaxWidth       = 0;
+        __modelMaxHeight      = 0;
         __line_height           = 0;
         __line_spacing_add      = 0;
         __line_spacing_multiply = 0;

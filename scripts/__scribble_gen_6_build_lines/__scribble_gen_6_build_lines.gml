@@ -6,14 +6,14 @@
                                   _line_grid[# _line_count, __SCRIBBLE_GEN_LINE_STARTS_MANUAL_PAGE] = false;\
                                   _line_grid[# _line_count, __SCRIBBLE_GEN_LINE_FORCED_BREAK      ] = _forced_break;\
                                   _forced_break = false;\ //Reset this value since we presume line wrapping
-                                  ;\ //Adjust the first word's width to account for visual tweaks
-                                  ;\ //TODO - Implement for R2L text
+                                  \ //Adjust the first word's width to account for visual tweaks
+                                  \ //TODO - Implement for R2L text
                                   if ((SCRIBBLE_NEWLINES_PAD_LEFT_SPACE || SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE) && (_word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD_BIDI] < __SCRIBBLE_BIDI_R2L))\
                                   {\
                                       var _word_glyph_start = _word_grid[#  _line_word_start,  __SCRIBBLE_GEN_WORD_GLYPH_START ];\
                                       var _word_glyph_end   = _word_grid[#  _line_word_start,  __SCRIBBLE_GEN_WORD_GLYPH_END   ];\
                                       var _left_correction  = _glyph_grid[# _word_glyph_start, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET];\
-                                      ;\
+                                      \
                                       if (((_left_correction > 0) && SCRIBBLE_NEWLINES_PAD_LEFT_SPACE) || ((_left_correction < 0) && SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE))\
                                       {\
                                           _word_grid[#  _line_word_start,  __SCRIBBLE_GEN_WORD_WIDTH] += _left_correction;\
@@ -25,15 +25,14 @@
 
 #macro __SCRIBBLE_GEN_LINE_END  _line_grid[# _line_count, __SCRIBBLE_GEN_LINE_WORD_END] = _line_word_end;\
                                 _line_grid[# _line_count, __SCRIBBLE_GEN_LINE_WIDTH   ] = _word_x;\
-                                ;\
+                                \
                                 if (_line_reveal)\
                                 {\
                                     var _line_glyph_start = _word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD_GLYPH_START];\
                                     var _line_glyph_end   = _word_grid[# _line_word_end,   __SCRIBBLE_GEN_WORD_GLYPH_END  ];\
                                     ds_grid_set_region(_glyph_grid, _line_glyph_start, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _line_glyph_end, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _line_count);\
-                                    ;\
                                 }\
-                                ;\
+                                \
                                 _line_count++;\
                                 if (_line_y + _line_height > _line_max_y) _line_max_y = _line_y + _line_height;\
                                 _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
@@ -44,7 +43,7 @@ function __scribble_gen_6_build_lines()
     
     var _wrap_no_pages  = __wrap_no_pages;
     var _wrap_max_scale = __layoutMaxScale;
-    var _wrap_apply     = __wrap_apply;
+    var _wrap_apply     = (__layoutType != SCRIBBLE_LAYOUT_NONE);
     var _fit_scale      = __fit_scale;
     
     with(_generator_state)
@@ -61,8 +60,8 @@ function __scribble_gen_6_build_lines()
         var _line_height           = __line_height;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
-        var _model_max_width       = (_wrap_apply? __model_max_width  : infinity);
-        var _model_max_height      = (_wrap_apply? __model_max_height : infinity);
+        var _modelMaxWidth       = (_wrap_apply? __modelMaxWidth  : infinity);
+        var _modelMaxHeight      = (_wrap_apply? __modelMaxHeight : infinity);
     }
     
     var _line_reveal = (__revealType == SCRIBBLE_REVEAL_PER_LINE) && (_sectionCount <= 0);
@@ -75,8 +74,8 @@ function __scribble_gen_6_build_lines()
     repeat(max(1, SCRIBBLE_FIT_TO_BOX_ITERATIONS))
     {
         var _line_max_y                 = 0;
-        var _simulated_model_max_width  = _model_max_width  / _fit_scale;
-        var _simulated_model_max_height = _model_max_height / _fit_scale;
+        var _simulated_model_max_width  = _modelMaxWidth  / _fit_scale;
+        var _simulated_model_max_height = _modelMaxHeight / _fit_scale;
         
         var _line_count = 0;
         var _word_broken = false;

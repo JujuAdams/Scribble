@@ -3,13 +3,13 @@
                                     var _quad_t = _vbuff_pos_grid[# _glyphIndex, __SCRIBBLE_GEN_VBUFF_POS_QUAD_T];\
                                     var _quad_r = _vbuff_pos_grid[# _glyphIndex, __SCRIBBLE_GEN_VBUFF_POS_QUAD_R];\
                                     var _quad_b = _vbuff_pos_grid[# _glyphIndex, __SCRIBBLE_GEN_VBUFF_POS_QUAD_B];\
-                                    ;\
+                                    \
                                     var _material = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_MATERIAL];\
                                     var _quad_u0  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_U0];\
                                     var _quad_v0  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_V0];\
                                     var _quad_u1  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_U1];\
                                     var _quad_v1  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_V1];\
-                                    ;\
+                                    \
                                     var _half_w = 0.5*_glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_WIDTH ];\
                                     var _half_h = 0.5*_glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_HEIGHT];
 
@@ -52,7 +52,7 @@
                                          _quad_t = _quad_cy;\
                                          _quad_b = _quad_cy;\
                                      }\
-                                     ;\
+                                     \
                                      vertex_position_3d(_vbuff, _quad_l, _quad_t, _animation_index); vertex_normal(_vbuff, _reveal_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v0); vertex_float2(_vbuff,  _half_w,  _half_h);\
                                      vertex_position_3d(_vbuff, _quad_r, _quad_b, _animation_index); vertex_normal(_vbuff, _reveal_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u1, _quad_v1); vertex_float2(_vbuff, -_half_w, -_half_h);\
                                      vertex_position_3d(_vbuff, _quad_l, _quad_b, _animation_index); vertex_normal(_vbuff, _reveal_index, _glyph_sprite_data, _glyph_effect_flags); vertex_argb(_vbuff, _write_colour); vertex_texcoord(_vbuff, _quad_u0, _quad_v1); vertex_float2(_vbuff,  _half_w, -_half_h);\

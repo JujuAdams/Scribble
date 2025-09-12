@@ -11,7 +11,7 @@ function __scribble_gen_8_position_glyphs()
         var _line_grid       = __line_grid;
         var _temp_grid       = __temp_grid;
         var _overall_bidi    = __overall_bidi;
-        var _model_max_width = __model_max_width;
+        var _modelMaxWidth = __modelMaxWidth;
         var _line_height     = __line_height;
     }
     
@@ -36,8 +36,8 @@ function __scribble_gen_8_position_glyphs()
         else
         {
             // If we were given no maximum alignment width, align to the actual width of the model
-            var _alignment_width     = (_model_max_width == infinity)? __width : _model_max_width;
-            var _pin_alignment_width = (_model_max_width == infinity)? __width : _model_max_width;
+            var _alignment_width     = (_modelMaxWidth == infinity)? __width : _modelMaxWidth;
+            var _pin_alignment_width = (_modelMaxWidth == infinity)? __width : _modelMaxWidth;
         }
             
         _alignment_width     /= __fit_scale;
