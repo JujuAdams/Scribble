@@ -44,14 +44,14 @@ function __scribble_class_element_parent(_text) constructor
     __allow_glyph_data_getter = SCRIBBLE_FORCE_GLYPH_DATA_GETTER;
     __allow_line_data_getter  = SCRIBBLE_FORCE_LINE_DATA_GETTER;
     
-    __origin_x       = 0.0;
-    __origin_y       = 0.0;
+    __origin_x    = 0.0;
+    __origin_y    = 0.0;
     
-    __pre_scale      = 1.0;
+    __pre_scale   = 1.0;
     
-    __post_xscale    = 1.0;
-    __post_yscale    = 1.0;
-    __post_angle     = 0.0;
+    __post_xscale = 1.0;
+    __post_yscale = 1.0;
+    __post_angle  = 0.0;
     
     __matrix_dirty   = true;
     __matrix         = matrix_build_identity();
@@ -65,6 +65,12 @@ function __scribble_class_element_parent(_text) constructor
     __layoutForcePerChar = false;
     __wrap_no_pages      = false;
     __layoutMaxScale     = 1;
+    
+    __scrollX = 0;
+    __scrollY = 0;
+    __scrollMaxX = 0;
+    __scrollMaxY = 0;
+    __scrollWasClamped = true;
     
     __scale_to_box_dirty    = true;
     __scale_to_box_width    = 0;
@@ -251,11 +257,6 @@ function __scribble_class_element_parent(_text) constructor
         return self;
     }
     
-    static fog = function()
-    {
-        __scribble_error(".fog() has been replaced by .flash()");
-    }
-    
     /// @param colour
     /// @param alpha
     static flash = function(_colour, _alpha)
@@ -350,6 +351,63 @@ function __scribble_class_element_parent(_text) constructor
     static get_layout_trim_string = function()
     {
         return __layoutTrimString;
+    }
+    
+    static clip = function(_state = true)
+    {
+        __clip = _state;
+    }
+    
+    static get_clip = function()
+    {
+        return __clip;
+    }
+    
+    static scroll = function(_y, _clamp = true)
+    {
+        __scrollY = _clamp? clamp(_y, 0, __scrollMaxY) : _y;
+        __scrollWasClamped = _clamp;
+    }
+    
+    static scroll_ext = function(_x, _y, _clamp = true)
+    {
+        __scrollX = _clamp? clamp(_x, 0, __scrollMaxX) : _x;
+        __scrollY = _clamp? clamp(_y, 0, __scrollMaxY) : _y;
+        __scrollWasClamped = _clamp;
+    }
+    
+    static get_scroll_x = function()
+    {
+        return __scrollX;
+    }
+    
+    static get_scroll_y = function()
+    {
+        return __scrollY;
+    }
+    
+    static get_scroll_max_x = function()
+    {
+        return __scrollMaxX;
+    }
+    
+    static get_scroll_max_y = function()
+    {
+        return __scrollMaxY;
+    }
+    
+    static __CalculateScrollLimits = function()
+    {
+        //FIXME - This should probably be handled in the model?
+        
+        __scrollMaxX = max(0, get_width() - __layoutMaxWidth);
+        __scrollMaxY = max(0, get_height() - __layoutMaxHeight);
+        
+        if (__scrollWasClamped)
+        {
+            __scrollX = clamp(__scrollX, 0, __scrollMaxX);
+            __scrollY = clamp(__scrollY, 0, __scrollMaxY);
+        }
     }
     
     #endregion
