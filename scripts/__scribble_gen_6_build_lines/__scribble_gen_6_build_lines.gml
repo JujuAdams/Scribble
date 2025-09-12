@@ -41,10 +41,10 @@ function __scribble_gen_6_build_lines()
 {
     static _generator_state = __scribble_system().__generator_state;
     
-    var _wrap_no_pages  = __wrap_no_pages;
-    var _wrap_max_scale = __layoutMaxScale;
-    var _wrap_apply     = (__layoutType != SCRIBBLE_LAYOUT_NONE);
-    var _fit_scale      = __fit_scale;
+    var _wrapText       = ((__layoutType != SCRIBBLE_LAYOUT_NONE) && (__layoutType != SCRIBBLE_LAYOUT_SCALE));
+    var _fitToBox       = (__layoutType == SCRIBBLE_LAYOUT_FIT);
+    var _fitScale       = 1;
+    var _layoutMaxScale = __layoutMaxScale;
     
     with(_generator_state)
     {
@@ -60,8 +60,8 @@ function __scribble_gen_6_build_lines()
         var _line_height           = __line_height;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
-        var _modelMaxWidth       = (_wrap_apply? __modelMaxWidth  : infinity);
-        var _modelMaxHeight      = (_wrap_apply? __modelMaxHeight : infinity);
+        var _modelMaxWidth         = (_wrapText? __modelMaxWidth  : infinity);
+        var _modelMaxHeight        = (_wrapText? __modelMaxHeight : infinity);
     }
     
     var _line_reveal = (__revealType == SCRIBBLE_REVEAL_PER_LINE) && (_sectionCount <= 0);
@@ -74,8 +74,8 @@ function __scribble_gen_6_build_lines()
     repeat(max(1, SCRIBBLE_FIT_TO_BOX_ITERATIONS))
     {
         var _line_max_y                 = 0;
-        var _simulated_model_max_width  = _modelMaxWidth  / _fit_scale;
-        var _simulated_model_max_height = _modelMaxHeight / _fit_scale;
+        var _simulated_model_max_width  = _modelMaxWidth  / _fitScale;
+        var _simulated_model_max_height = _modelMaxHeight / _fitScale;
         
         var _line_count = 0;
         var _word_broken = false;
@@ -149,7 +149,7 @@ function __scribble_gen_6_build_lines()
                     if (_word_width >= _simulated_model_max_width)
                     {
                         _word_broken = true;
-                        if (_wrap_no_pages)
+                        if (_fitToBox)
                         {
                             var _line_word_end = _i;
                             __SCRIBBLE_GEN_LINE_END;
@@ -324,7 +324,7 @@ function __scribble_gen_6_build_lines()
         }
         
         //If we're not running .fit_to_box() behaviour then escape now!
-        if (!_wrap_no_pages || (SCRIBBLE_FIT_TO_BOX_ITERATIONS <= 1)) break;
+        if ((not _fitToBox) || (SCRIBBLE_FIT_TO_BOX_ITERATIONS <= 1)) break;
         
         
         
@@ -333,34 +333,34 @@ function __scribble_gen_6_build_lines()
         if ((_line_max_y < _simulated_model_max_height) && !_word_broken)
         {
             //The text is already small enough to fit (and none of the words have been split in the middle)
-            if (_fit_scale >= _wrap_max_scale) break;
-            var _lower_limit = _fit_scale;
+            if (_fitScale >= _layoutMaxScale) break;
+            var _lower_limit = _fitScale;
         }
         else
         {
-            var _upper_limit = _fit_scale;
+            var _upper_limit = _fitScale;
         }
         
         if (_fit_to_box_iterations >= SCRIBBLE_FIT_TO_BOX_ITERATIONS-1)
         {
-            if (_fit_scale == _lower_limit) break;
-            _fit_scale = (_lower_limit == undefined)? _upper_limit : _lower_limit;
+            if (_fitScale == _lower_limit) break;
+            _fitScale = (_lower_limit == undefined)? _upper_limit : _lower_limit;
         }
         else if (_lower_limit == undefined)
         {
-            _fit_scale *= 0.5;
+            _fitScale *= 0.5;
         }
         else if (_upper_limit == undefined)
         {
-            _fit_scale = min(_wrap_max_scale, 2*_fit_scale);
+            _fitScale = min(_layoutMaxScale, 2*_fitScale);
         }
         else
         {
-            _fit_scale = _lower_limit + 0.5*(_upper_limit - _lower_limit);
+            _fitScale = _lower_limit + 0.5*(_upper_limit - _lower_limit);
         }
     }
     
-    __fit_scale = _fit_scale;
+    __fitScale = _fitScale;
     
     //Mark the final line as not needing justification
     _line_grid[# _line_count-1, __SCRIBBLE_GEN_LINE_DISABLE_JUSTIFY] = true;
@@ -392,7 +392,7 @@ function __scribble_gen_6_build_lines()
     
     //Trim the whitespace at the end of lines to fit into the desired width
     //This helps the glyph position getter return more visually pleasing results by ensuring the RHS of the glyph doesn't exceed the wrapping width
-    if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && _wrap_apply)
+    if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && _wrapText)
     {
         var _line = 0;
         repeat(_line_count)

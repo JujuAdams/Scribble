@@ -805,8 +805,8 @@ function __scribble_class_element_parent(_text) constructor
                 return;
             }
             
-            var _xscale = __scale_to_box_scale*_model.__fit_scale*__post_xscale;
-            var _yscale = __scale_to_box_scale*_model.__fit_scale*__post_yscale;
+            var _xscale = __scale_to_box_scale*_model.__fitScale*__post_xscale;
+            var _yscale = __scale_to_box_scale*_model.__fitScale*__post_yscale;
             
             //Left/top padding is baked into the model
             var _bbox = _model.__get_bbox(SCRIBBLE_BOUNDING_BOX_USES_PAGE? __page : undefined, __padding_l, __padding_t, __padding_r, __padding_b);
@@ -973,8 +973,8 @@ function __scribble_class_element_parent(_text) constructor
         }
         
         __update_bbox_matrix();
-        var _xscale = __scale_to_box_scale*_model.__fit_scale*__post_xscale;
-        var _yscale = __scale_to_box_scale*_model.__fit_scale*__post_yscale;
+        var _xscale = __scale_to_box_scale*_model.__fitScale*__post_xscale;
+        var _yscale = __scale_to_box_scale*_model.__fitScale*__post_yscale;
         
         if ((_xscale == 1) && (_yscale == 1) && (__post_angle == 0))
         {
@@ -1658,8 +1658,8 @@ function __scribble_class_element_parent(_text) constructor
             
             var _x_offset = -__origin_x;
             var _y_offset = -__origin_y;
-            var _xscale   = __scale_to_box_scale*_model.__fit_scale*__post_xscale;
-            var _yscale   = __scale_to_box_scale*_model.__fit_scale*__post_yscale;
+            var _xscale   = __scale_to_box_scale*_model.__fitScale*__post_xscale;
+            var _yscale   = __scale_to_box_scale*_model.__fitScale*__post_yscale;
             var _angle    = __post_angle;
             
             if (!_model.__pad_bbox_l) _x_offset += __padding_l;

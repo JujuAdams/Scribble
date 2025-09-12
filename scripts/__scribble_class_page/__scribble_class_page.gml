@@ -1,8 +1,12 @@
 // Feather disable all
 
-function __scribble_class_page() constructor
+/// @param model
+
+function __scribble_class_page(_model) constructor
 {
     static _system = __scribble_system();
+    
+    __model = _model;
     
     __text = "";
     __glyph_grid = undefined;
@@ -34,6 +38,121 @@ function __scribble_class_page() constructor
     
     __events_dict  = {};
     __region_array = [];
+    
+    static __Finalize = function(_page_end_line)
+    {
+        static _animation_randomize_array = [];
+        static _generator_state = __scribble_system().__generator_state;
+        
+        with(_generator_state)
+        {
+            var _glyph_grid     = __glyph_grid;
+            var _word_grid      = __word_grid;
+            var _line_grid      = __line_grid;
+            var _modelMaxHeight = __modelMaxHeight;
+            var _line_height    = __line_height;
+        }
+        
+        var _line_max_y = _line_grid[# _page_end_line, __SCRIBBLE_GEN_LINE_Y] + _line_height;
+            
+        __line_end    = _page_end_line;
+        __line_count  = 1 + __line_end - __line_start;
+        __glyph_end   = _word_grid[# _line_grid[# __line_end, __SCRIBBLE_GEN_LINE_WORD_END], __SCRIBBLE_GEN_WORD_GLYPH_END];
+        __glyph_count = 1 + __glyph_end - __glyph_start;
+        __width       = ds_grid_get_max(_line_grid, __line_start, __SCRIBBLE_GEN_LINE_WIDTH, __line_end, __SCRIBBLE_GEN_LINE_WIDTH);
+        __height      = _line_max_y;
+            
+            //Correct page position for vertical alignment
+        if (__valign == fa_middle)
+        {
+            __min_y = -(_line_max_y div 2);
+            __max_y =  (_line_max_y div 2);
+        }
+        else if (__valign == fa_bottom)
+        {
+            __min_y = -_line_max_y;
+            __max_y = 0;
+        }
+        else if (__valign == __SCRIBBLE_PIN_MIDDLE)
+        {
+            if (SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE || (_modelMaxHeight == infinity))
+            {
+                __min_y = -(_line_max_y div 2);
+                __max_y =  (_line_max_y div 2);
+            }
+            else
+            {
+                var _delta = _modelMaxHeight - _line_max_y;
+                __min_y = 0.5*_delta;
+                __max_y = _modelMaxHeight - 0.5*_delta;
+            }
+        }
+        else if (__valign == __SCRIBBLE_PIN_BOTTOM)
+        {
+            if (SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE || (_modelMaxHeight == infinity))
+            {
+                __min_y = -_line_max_y;
+                __max_y = 0;
+            }
+            else
+            {
+                __min_y = _modelMaxHeight - _line_max_y;
+                __max_y = _modelMaxHeight;
+            }
+        }
+        else //fa_top or pin_top
+        {
+            __min_y = 0;
+            __max_y = _line_max_y;
+        }
+            
+            //Correct line positions for vertical alignment
+        if (__min_y != 0) ds_grid_add_region(_line_grid, __line_start, __SCRIBBLE_GEN_LINE_Y, __line_end, __SCRIBBLE_GEN_LINE_Y, __min_y);
+            
+        // Set up the character indexes for the page, relative to the character index of the first glyph on the page
+        var _page_reveal_start = _glyph_grid[# __glyph_start, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX];
+        var _page_reveal_end   = _glyph_grid[# __glyph_end,   __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX];
+        __reveal_count = 1 + _page_reveal_end - _page_reveal_start;
+            
+        //Set up reveal indexes relative to the page
+        ds_grid_add_region(_glyph_grid, __glyph_start, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, __glyph_end, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, -_page_reveal_start);
+            
+        if (__model.__allow_line_data_getter)
+        {
+            var __line_data_array = array_create(__line_count, undefined);
+            var _line = __line_start;
+            repeat(__line_count)
+            {
+                var _glyph_start = _word_grid[# _line_grid[# _line, __SCRIBBLE_GEN_LINE_WORD_START], __SCRIBBLE_GEN_WORD_GLYPH_START] - __glyph_start;
+                var _glyph_end   = _word_grid[# _line_grid[# _line, __SCRIBBLE_GEN_LINE_WORD_END  ], __SCRIBBLE_GEN_WORD_GLYPH_END  ] - __glyph_start;
+                __line_data_array[@ _line] = new __scribble_class_line(_line_grid[# _line, __SCRIBBLE_GEN_LINE_Y],
+                                                                    _line_height,
+                                                                    _line_grid[# _line, __SCRIBBLE_GEN_LINE_HALIGN],
+                                                                    _line_grid[# _line, __SCRIBBLE_GEN_LINE_FORCED_BREAK],
+                                                                    _glyph_start, _glyph_end);
+                ++_line;
+            }
+        }
+            
+        if (__model.__randomize_animation)
+        {
+            array_resize(_animation_randomize_array, __reveal_count);
+            var _line = 0;
+            repeat(__reveal_count)
+            {
+                _animation_randomize_array[@ _line] = _line;
+                ++_line;
+            }
+            array_sort(_animation_randomize_array, function() { return choose(-1, 1); });
+            var _glyph_start = __glyph_start;
+            var _line = 0;
+            repeat(__reveal_count)
+            {
+                _glyph_grid[# _glyph_start + _line, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX] = _animation_randomize_array[_line];
+                ++_line;
+            }
+        }
+    }
     
     static __submit = function(_double_draw)
     {

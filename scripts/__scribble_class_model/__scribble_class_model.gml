@@ -61,16 +61,16 @@ function __scribble_class_model(_element) constructor
         //Record the start time so we can get a duration later
         if (SCRIBBLE_VERBOSE) var _timer_total = get_timer();
         
-        __pages      = 0;
-        __width      = 0;
-        __height     = 0;
-        __min_x      = 0;
-        __min_y      = 0;
-        __max_x      = 0;
-        __max_y      = 0;
-        __valign     = undefined; // If this is still <undefined> after the main string parsing then we set the valign to fa_top
-        __fit_scale  = 1.0;
-        __wrapped    = false;
+        __pages    = 0;
+        __width    = 0;
+        __height   = 0;
+        __min_x    = 0;
+        __min_y    = 0;
+        __max_x    = 0;
+        __max_y    = 0;
+        __valign   = undefined; // If this is still <undefined> after the main string parsing then we set the valign to fa_top
+        __fitScale = 1.0;
+        __wrapped  = false;
         
         __pad_bbox_l = false;
         __pad_bbox_t = false;
@@ -162,15 +162,15 @@ function __scribble_class_model(_element) constructor
             ++_i;
         }
         
-        __pages      = 0;
-        __width      = 0;
-        __height     = 0;
-        __min_x      = 0;
-        __min_y      = 0;
-        __max_x      = 0;
-        __max_y      = 0;
-        __valign     = undefined; //If this is still <undefined> after the main string parsing then we set the valign to fa_top
-        __fit_scale  = 1.0;
+        __pages    = 0;
+        __width    = 0;
+        __height   = 0;
+        __min_x    = 0;
+        __min_y    = 0;
+        __max_x    = 0;
+        __max_y    = 0;
+        __valign   = undefined; //If this is still <undefined> after the main string parsing then we set the valign to fa_top
+        __fitScale = 1.0;
         
         __pages_array = []; //Stores each page of text
     }
@@ -256,13 +256,13 @@ function __scribble_class_model(_element) constructor
     /// @page
     static __get_width = function(_page)
     {
-        return __fit_scale*__width;
+        return __fitScale*__width;
     }
     
     /// @page
     static __get_height = function(_page)
     {
-        return __fit_scale*__height;
+        return __fitScale*__height;
     }
     
     static __get_page_array = function()
@@ -352,9 +352,14 @@ function __scribble_class_model(_element) constructor
         return __pages_array[_page].__glyph_grid;
     }
     
-    static __new_page = function()
+    static __NewPage = function(_line_start)
     {
-        var _page_data = new __scribble_class_page();
+        static _generator_state = __scribble_system().__generator_state;
+        
+        var _page_data = new __scribble_class_page(self);
+        _page_data.__line_start  = _line_start
+        _page_data.__glyph_start = _generator_state.__word_grid[# _generator_state.__line_grid[# _line_start, __SCRIBBLE_GEN_LINE_WORD_START], __SCRIBBLE_GEN_WORD_GLYPH_START];
+        
         array_push(__pages_array, _page_data);
         __pages++;
         

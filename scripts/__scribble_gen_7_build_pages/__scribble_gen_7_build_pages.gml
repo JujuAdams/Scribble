@@ -1,171 +1,71 @@
 // Feather disable all
 
-#macro __SCRIBBLE_GEN_PAGE_POP  _model_height = max(_model_height, _line_max_y);\
-                                var _page_end_line = _i - 1;\
-                                _page_data.__line_end    = _page_end_line;\
-                                _page_data.__line_count  = 1 + _page_data.__line_end - _page_data.__line_start;\
-                                _page_data.__glyph_end   = _word_grid[# _line_grid[# _page_end_line, __SCRIBBLE_GEN_LINE_WORD_END], __SCRIBBLE_GEN_WORD_GLYPH_END];\
-                                _page_data.__glyph_count = 1 + _page_data.__glyph_end - _page_data.__glyph_start;\
-                                _page_data.__width       = ds_grid_get_max(_line_grid, _page_start_line, __SCRIBBLE_GEN_LINE_WIDTH, _page_end_line, __SCRIBBLE_GEN_LINE_WIDTH);\
-                                _page_data.__height      = _line_max_y;\
-                                \
-                                \ //Correct page position for vertical alignment
-                                if (__valign == fa_middle)\
-                                {\
-                                    _page_data.__min_y = -(_line_max_y div 2);\
-                                    _page_data.__max_y =  (_line_max_y div 2);\
-                                }\
-                                else if (__valign == fa_bottom)\
-                                {\
-                                    _page_data.__min_y = -_line_max_y;\
-                                    _page_data.__max_y = 0;\
-                                }\
-                                else if (__valign == __SCRIBBLE_PIN_MIDDLE)\
-                                {\
-                                    if (SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE || (_modelMaxHeight == infinity))\
-                                    {\
-                                        _page_data.__min_y = -(_line_max_y div 2);\
-                                        _page_data.__max_y =  (_line_max_y div 2);\
-                                    }\
-                                    else\
-                                    {\
-                                        var _delta = _modelMaxHeight - _line_max_y;\
-                                        _page_data.__min_y = 0.5*_delta;\
-                                        _page_data.__max_y = _modelMaxHeight - 0.5*_delta;\
-                                    }\
-                                }\
-                                else if (__valign == __SCRIBBLE_PIN_BOTTOM)\
-                                {\
-                                    if (SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE || (_modelMaxHeight == infinity))\
-                                    {\
-                                        _page_data.__min_y = -_line_max_y;\
-                                        _page_data.__max_y = 0;\
-                                    }\
-                                    else\
-                                    {\
-                                        _page_data.__min_y = _modelMaxHeight - _line_max_y;\
-                                        _page_data.__max_y = _modelMaxHeight;\
-                                    }\
-                                }\
-                                else\ //fa_top or pin_top
-                                {\
-                                    _page_data.__min_y = 0;\
-                                    _page_data.__max_y = _line_max_y;\
-                                }\
-                                \
-                                \ //Correct line positions for vertical alignment
-                                if (_page_data.__min_y != 0) ds_grid_add_region(_line_grid, _page_data.__glyph_start, __SCRIBBLE_GEN_LINE_Y, _page_end_line, __SCRIBBLE_GEN_LINE_Y, _page_data.__min_y);\
-                                \
-                                \// Set up the character indexes for the page, relative to the character index of the first glyph on the page
-                                var _page_reveal_start = _glyph_grid[# _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX];\
-                                var _page_reveal_end   = _glyph_grid[# _page_data.__glyph_end,   __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX];\
-                                _page_data.__reveal_count = 1 + _page_reveal_end - _page_reveal_start;\
-                                \
-                                if (_line_data_getter)\
-                                {\
-                                    var _i = _page_data.__line_start;\
-                                    repeat(_page_data.__line_count)\
-                                    {\
-                                        var _glyph_start = _word_grid[# _line_grid[# _i, __SCRIBBLE_GEN_LINE_WORD_START], __SCRIBBLE_GEN_WORD_GLYPH_START] - _page_data.__glyph_start;\
-                                        var _glyph_end   = _word_grid[# _line_grid[# _i, __SCRIBBLE_GEN_LINE_WORD_END  ], __SCRIBBLE_GEN_WORD_GLYPH_END  ] - _page_data.__glyph_start;\
-                                        array_push(_line_data_array, new __scribble_class_line(_line_grid[# _i, __SCRIBBLE_GEN_LINE_Y],\
-                                                                                               _line_height,\
-                                                                                               _line_grid[# _i, __SCRIBBLE_GEN_LINE_HALIGN],\
-                                                                                               _line_grid[# _i, __SCRIBBLE_GEN_LINE_FORCED_BREAK],\
-                                                                                               _glyph_start, _glyph_end));\
-                                        ++_i;\
-                                    }\
-                                    \
-                                    _page_data.__line_data_array = _line_data_array;\
-                                    _line_data_array = [];\
-                                }\
-                                \
-                                ds_grid_add_region(_glyph_grid, _page_data.__glyph_start, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _page_data.__glyph_end, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, -_page_reveal_start);\
-                                \
-                                if (_randomize_animation)\
-                                {\
-                                    array_resize(_animation_randomize_array, _page_data.__reveal_count);\
-                                    var _i = 0;\
-                                    repeat(_page_data.__reveal_count)\
-                                    {\
-                                        _animation_randomize_array[@ _i] = _i;\
-                                        ++_i;\
-                                    }\
-                                    array_sort(_animation_randomize_array, function() { return choose(-1, 1); });\
-                                    var _glyph_start = _page_data.__glyph_start;\
-                                    var _i = 0;\
-                                    repeat(_page_data.__reveal_count)\
-                                    {\
-                                        _glyph_grid[# _glyph_start + _i, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX] = _animation_randomize_array[_i];\
-                                        ++_i;\
-                                    }\
-                                }
-
-
-
 function __scribble_gen_7_build_pages()
 {
     static _generator_state = __scribble_system().__generator_state;
+    
     with(_generator_state)
     {
-        var _glyph_grid            = __glyph_grid;
-        var _word_grid             = __word_grid;
         var _line_grid             = __line_grid;
-        var _modelMaxHeight      = __modelMaxHeight;
+        var _modelMaxHeight        = __modelMaxHeight;
         var _line_count            = __line_count;
         var _line_height           = __line_height;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
     }
     
-    static _animation_randomize_array = [];
+    var _trimText = (__layoutType == SCRIBBLE_LAYOUT_TRIM);
+    var _skippingLines = false;
     
-    var _randomize_animation = __randomize_animation;
-    var _line_data_getter    = __allow_line_data_getter;
-    var _wrap_no_pages       = __wrap_no_pages;
-    var _line_data_array     = __allow_line_data_getter? [] : undefined;
+    var _simulated_model_height = (__layoutType == SCRIBBLE_LAYOUT_FIT)? infinity : (_modelMaxHeight / __fitScale);
     
-    var _simulated_model_height = _wrap_no_pages? infinity : (_modelMaxHeight / __fit_scale);
-    
-    var _model_height = 0;
-    
-    // Set up a new page and set its starting glyph
-    // We'll set the ending glyph in the loop below
-    var _page_data = __new_page();
-    _page_data.__line_start  = 0;
-    _page_data.__glyph_start = _word_grid[# _line_grid[# 0, __SCRIBBLE_GEN_LINE_WORD_START], __SCRIBBLE_GEN_WORD_GLYPH_START];
-    
-    var _page_start_line = 0;
+    var _page_data = __NewPage(0);
+    var _firstLine = true;
     var _line_y = 0;
-    var _line_max_y = 0;
-    var _i = 0;
+    
+    var _line = 0;
     repeat(_line_count)
     {
-        var _starts_manual_page = _line_grid[# _i, __SCRIBBLE_GEN_LINE_STARTS_MANUAL_PAGE];
+        var _starts_manual_page = _line_grid[# _line, __SCRIBBLE_GEN_LINE_STARTS_MANUAL_PAGE];
+        var _overflow = _line_y + _line_height >= _simulated_model_height;
         
-        if (!_starts_manual_page && ((_line_y + _line_height < _simulated_model_height) || (_page_start_line >= _i)))
+        if (_starts_manual_page || (_overflow && (not _firstLine) && (not _skippingLines)))
         {
-            _line_grid[# _i, __SCRIBBLE_GEN_LINE_Y] = _line_y;
-            _line_max_y = _line_y + _line_height;
-            _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
+            if (not _skippingLines)
+            {
+                _page_data.__Finalize(_line-1);
+            }
+            
+            _firstLine = true;
+            _line_grid[# _line, __SCRIBBLE_GEN_LINE_Y] = 0;
+            _line_y = _line_spacing_add + _line_height*_line_spacing_multiply;
+            
+            if (_starts_manual_page)
+            {
+                _skippingLines = false;
+            }
+            else if (_overflow && _trimText)
+            {
+                _skippingLines = true;
+            }
+            
+            if (not _skippingLines)
+            {
+                _page_data = __NewPage(_line);
+            }
         }
         else
         {
-            __SCRIBBLE_GEN_PAGE_POP;
-            
-            // Create a new page
-            _page_data = __new_page();
-            _page_data.__line_start  = _i;
-            _page_data.__glyph_start = _word_grid[# _line_grid[# _i, __SCRIBBLE_GEN_LINE_WORD_START], __SCRIBBLE_GEN_WORD_GLYPH_START];
-            
-            _page_start_line = _i;
-            _line_grid[# _i, __SCRIBBLE_GEN_LINE_Y] = 0;
-            _line_max_y = _line_height;
-            _line_y = _line_spacing_add + _line_height*_line_spacing_multiply;
+            _firstLine = false;
+            _line_grid[# _line, __SCRIBBLE_GEN_LINE_Y] = _line_y;
+            _line_y += _line_spacing_add + _line_height*_line_spacing_multiply;
         }
         
-        ++_i;
+        ++_line;
     }
     
-    __SCRIBBLE_GEN_PAGE_POP;
+    if (not _skippingLines)
+    {
+        _page_data.__Finalize(_line-1);
+    }
 }

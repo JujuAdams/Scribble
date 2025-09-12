@@ -40,8 +40,8 @@ function __scribble_gen_8_position_glyphs()
             var _pin_alignment_width = (_modelMaxWidth == infinity)? __width : _modelMaxWidth;
         }
             
-        _alignment_width     /= __fit_scale;
-        _pin_alignment_width /= __fit_scale;
+        _alignment_width     /= __fitScale;
+        _pin_alignment_width /= __fitScale;
         
         var _page_min_x =  infinity;
         var _page_max_x = -infinity; 
