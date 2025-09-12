@@ -3,12 +3,20 @@
 function __scribble_gen_8_position_glyphs()
 {
     static _generator_state = __scribble_system().__generator_state;
+    static _stretch_array = array_create_ext(1000, function()
+    {
+        return {
+            __wordStart: undefined,
+            __wordEnd:   undefined,
+            __bidi:      undefined,
+        };
+    });
+    
     with(_generator_state)
     {
         var _glyph_grid    = __glyph_grid;
         var _word_grid     = __word_grid;
         var _line_array    = __line_array;
-        var _stretch_grid  = __stretch_grid;
         var _temp_grid     = __temp_grid;
         var _overall_bidi  = __overall_bidi;
         var _modelMaxWidth = __modelMaxWidth;
@@ -84,9 +92,8 @@ function __scribble_gen_8_position_glyphs()
             ///////
             
             // TODO - Do this whilst building lines
-            
             var _line_stretch_count = 0;
-            var _stretch_bidi       = _word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD_BIDI];
+            var _stretch_bidi = _word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD_BIDI];
             
             var _stretch_word_start = _line_word_start;
             var _w = _line_word_start;
@@ -95,9 +102,11 @@ function __scribble_gen_8_position_glyphs()
                 var _word_bidi = _word_grid[# _w, __SCRIBBLE_GEN_WORD_BIDI];
                 if (_word_bidi != _stretch_bidi)
                 {
-                    _stretch_grid[# _line_stretch_count, __SCRIBBLE_GEN_STRETCH_WORD_START] = _stretch_word_start;
-                    _stretch_grid[# _line_stretch_count, __SCRIBBLE_GEN_STRETCH_WORD_END  ] = _w - 1;
-                    _stretch_grid[# _line_stretch_count, __SCRIBBLE_GEN_STRETCH_BIDI      ] = _stretch_bidi;
+                    var _stretchStruct = _stretch_array[_line_stretch_count];
+                    _stretchStruct.__wordStart = _stretch_word_start;
+                    _stretchStruct.__wordEnd   = _w - 1;
+                    _stretchStruct.__bidi      = _stretch_bidi;
+                    
                     _line_stretch_count++;
                     
                     _stretch_word_start = _w;
@@ -109,9 +118,11 @@ function __scribble_gen_8_position_glyphs()
             
             if (_w > 0)
             {
-                _stretch_grid[# _line_stretch_count, __SCRIBBLE_GEN_STRETCH_WORD_START] = _stretch_word_start;
-                _stretch_grid[# _line_stretch_count, __SCRIBBLE_GEN_STRETCH_WORD_END  ] = _w - 1;
-                _stretch_grid[# _line_stretch_count, __SCRIBBLE_GEN_STRETCH_BIDI      ] = _stretch_bidi;
+                var _stretchStruct = _stretch_array[_line_stretch_count];
+                _stretchStruct.__wordStart = _stretch_word_start;
+                _stretchStruct.__wordEnd   = _w - 1;
+                _stretchStruct.__bidi      = _stretch_bidi;
+                
                 _line_stretch_count++;
             }
             
@@ -184,12 +195,13 @@ function __scribble_gen_8_position_glyphs()
                 var _k = _line_stretch_count-1;
                 var _stretch_incr = -1;
             }
-        
+            
             repeat(_line_stretch_count)
             {
-                var _stretch_word_start = _stretch_grid[# _k, __SCRIBBLE_GEN_STRETCH_WORD_START];
-                var _stretch_word_end   = _stretch_grid[# _k, __SCRIBBLE_GEN_STRETCH_WORD_END  ];
-                var _stretch_bidi       = _stretch_grid[# _k, __SCRIBBLE_GEN_STRETCH_BIDI      ];
+                var _stretchStruct = _stretch_array[_k];
+                var _stretch_word_start = _stretchStruct.__wordStart;
+                var _stretch_word_end   = _stretchStruct.__wordEnd;
+                var _stretch_bidi       = _stretchStruct.__bidi;
             
                 if (_stretch_bidi < __SCRIBBLE_BIDI_R2L)
                 {

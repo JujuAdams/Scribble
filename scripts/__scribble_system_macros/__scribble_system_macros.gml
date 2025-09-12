@@ -87,11 +87,6 @@
 #macro __SCRIBBLE_GEN_WORD_HEIGHT       5
 #macro __SCRIBBLE_GEN_WORD_SIZE         6
 
-#macro __SCRIBBLE_GEN_STRETCH_WORD_START  0
-#macro __SCRIBBLE_GEN_STRETCH_WORD_END    1
-#macro __SCRIBBLE_GEN_STRETCH_BIDI        2
-#macro __SCRIBBLE_GEN_STRETCH_SIZE        3
-
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_xboxseriesxs) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone) || (os_type == os_operagx))
 #macro __SCRIBBLE_ON_MOBILE            ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))
 #macro __SCRIBBLE_ON_WEB               (os_browser != browser_not_a_browser)
