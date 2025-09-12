@@ -315,14 +315,16 @@ function __scribble_gen_10_write_vbuffs()
                         buffer_write(_string_buffer, buffer_u8, SCRIBBLE_UNICODE_SUB);
                     }
                     
-                    var _glyph_x         = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_X           ];
-                    var _glyph_y         = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_Y           ];
-                    var _glyph_width     = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_WIDTH       ];
-                    var _glyph_height    = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_HEIGHT      ];
-                    var _sprite_index    = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_SPRITE_INDEX];
-                    var _image_index     = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_IMAGE_INDEX ];
-                    var _image_speed     = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_IMAGE_SPEED ];
-                    var _sprite_once     = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_SPRITE_ONCE ];
+                    var _glyph_x      = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_X          ];
+                    var _glyph_y      = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_Y          ];
+                    var _glyph_width  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_WIDTH      ];
+                    var _glyph_height = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_HEIGHT     ];
+                    var _sprite_data  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_SPRITE_DATA];
+                    
+                    var _sprite_index = _sprite_data.__spriteIndex;
+                    var _image_index  = _sprite_data.__imageIndex;
+                    var _image_speed  = _sprite_data.__imageSpeed;
+                    var _sprite_once  = _sprite_data.__spriteOnce;
                     
                     var _glyph_xscale = sprite_get_width( _sprite_index) / _glyph_width;
                     var _glyph_yscale = sprite_get_height(_sprite_index) / _glyph_height;

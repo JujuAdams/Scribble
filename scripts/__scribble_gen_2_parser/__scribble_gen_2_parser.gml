@@ -1167,10 +1167,12 @@ function __scribble_gen_2_parser()
                                 
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                                 
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SPRITE_INDEX ] = _sprite_index;
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_IMAGE_INDEX  ] = _image_index;
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_IMAGE_SPEED  ] = _image_speed;
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SPRITE_ONCE  ] = _sprite_once;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SPRITE_DATA] = {
+                                            __spriteIndex: _sprite_index,
+                                            __imageIndex:  _image_index,
+                                            __imageSpeed:  _image_speed,
+                                            __spriteOnce:  _sprite_once,
+                                        };
                                         
                                         if (_spritesDontScale && (_state_scale != 1))
                                         {

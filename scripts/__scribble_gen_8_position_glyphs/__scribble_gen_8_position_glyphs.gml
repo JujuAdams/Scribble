@@ -91,7 +91,7 @@ function __scribble_gen_8_position_glyphs()
             // Figure out what order words should come in
             ///////
             
-            // TODO - Do this whilst building lines
+            // FIXME - Do we need to pre-build stretches? Can't we handle this later?
             var _line_stretch_count = 0;
             var _stretch_bidi = _word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD_BIDI];
             
