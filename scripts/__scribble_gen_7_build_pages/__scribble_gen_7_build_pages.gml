@@ -19,7 +19,7 @@ function __scribble_gen_7_build_pages()
     
     var _simulated_model_height = (__layoutType == SCRIBBLE_LAYOUT_FIT)? infinity : (_modelMaxHeight / __fitScale);
     
-    var _page_data = __NewPage(0);
+    var _page_data = __AddPage(0);
     var _firstLine = true;
     var _line_y = 0;
     
@@ -51,7 +51,7 @@ function __scribble_gen_7_build_pages()
             
             if (not _skippingLines)
             {
-                _page_data = __NewPage(_line);
+                _page_data = __AddPage(_line);
             }
         }
         else

@@ -285,7 +285,7 @@ function __scribble_class_element_parent(_text) constructor
             __layoutMaxWidth  = _width;
             __layoutMaxHeight = _height;
             
-            if (_layout == SCRIBBLE_LAYOUT_SCALE)
+            if (__layoutType == SCRIBBLE_LAYOUT_SCALE)
             {
                 __scale_to_box_dirty = true;
             }
@@ -294,6 +294,8 @@ function __scribble_class_element_parent(_text) constructor
                 __modelDirty = true;
             }
         }
+        
+        return self;
     }
     
     static get_max_width = function()
@@ -308,7 +310,7 @@ function __scribble_class_element_parent(_text) constructor
     
     static layout = function(_layout, _forcePerChar = false, _maxScale = 1)
     {
-        if ((_layout != __layout) || (_forcePerChar != __layoutForcePerChar))
+        if ((_layout != __layoutType) || (_forcePerChar != __layoutForcePerChar))
         {
             __layoutType = _layout;
             __layoutForcePerChar = _forcePerChar;
@@ -325,6 +327,8 @@ function __scribble_class_element_parent(_text) constructor
                 __modelDirty = true;
             }
         }
+        
+        return self;
     }
     
     static get_layout = function()
@@ -346,6 +350,8 @@ function __scribble_class_element_parent(_text) constructor
                 __modelDirty = true;
             }
         }
+        
+        return self;
     }
     
     static get_layout_trim_string = function()
@@ -367,6 +373,8 @@ function __scribble_class_element_parent(_text) constructor
     {
         __scrollY = _clamp? clamp(_y, 0, __scrollMaxY) : _y;
         __scrollWasClamped = _clamp;
+        
+        return self;
     }
     
     static scroll_ext = function(_x, _y, _clamp = true)
@@ -374,6 +382,8 @@ function __scribble_class_element_parent(_text) constructor
         __scrollX = _clamp? clamp(_x, 0, __scrollMaxX) : _x;
         __scrollY = _clamp? clamp(_y, 0, __scrollMaxY) : _y;
         __scrollWasClamped = _clamp;
+        
+        return self;
     }
     
     static get_scroll_x = function()

@@ -352,7 +352,7 @@ function __scribble_class_model(_element) constructor
         return __pages_array[_page].__glyph_grid;
     }
     
-    static __NewPage = function(_line_start)
+    static __AddPage = function(_line_start)
     {
         static _generator_state = __scribble_system().__generator_state;
         

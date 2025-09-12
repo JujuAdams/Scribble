@@ -62,18 +62,19 @@ function __scribble_class_page(_model) constructor
         __width       = ds_grid_get_max(_line_grid, __line_start, __SCRIBBLE_GEN_LINE_WIDTH, __line_end, __SCRIBBLE_GEN_LINE_WIDTH);
         __height      = _line_max_y;
             
-            //Correct page position for vertical alignment
-        if (__valign == fa_middle)
+        //Correct page position for vertical alignment
+        var _valign = __model.__valign;
+        if (_valign == fa_middle)
         {
             __min_y = -(_line_max_y div 2);
             __max_y =  (_line_max_y div 2);
         }
-        else if (__valign == fa_bottom)
+        else if (_valign == fa_bottom)
         {
             __min_y = -_line_max_y;
             __max_y = 0;
         }
-        else if (__valign == __SCRIBBLE_PIN_MIDDLE)
+        else if (_valign == __SCRIBBLE_PIN_MIDDLE)
         {
             if (SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE || (_modelMaxHeight == infinity))
             {
@@ -87,7 +88,7 @@ function __scribble_class_page(_model) constructor
                 __max_y = _modelMaxHeight - 0.5*_delta;
             }
         }
-        else if (__valign == __SCRIBBLE_PIN_BOTTOM)
+        else if (_valign == __SCRIBBLE_PIN_BOTTOM)
         {
             if (SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE || (_modelMaxHeight == infinity))
             {
@@ -126,10 +127,10 @@ function __scribble_class_page(_model) constructor
                 var _glyph_start = _word_grid[# _line_grid[# _line, __SCRIBBLE_GEN_LINE_WORD_START], __SCRIBBLE_GEN_WORD_GLYPH_START] - __glyph_start;
                 var _glyph_end   = _word_grid[# _line_grid[# _line, __SCRIBBLE_GEN_LINE_WORD_END  ], __SCRIBBLE_GEN_WORD_GLYPH_END  ] - __glyph_start;
                 __line_data_array[@ _line] = new __scribble_class_line(_line_grid[# _line, __SCRIBBLE_GEN_LINE_Y],
-                                                                    _line_height,
-                                                                    _line_grid[# _line, __SCRIBBLE_GEN_LINE_HALIGN],
-                                                                    _line_grid[# _line, __SCRIBBLE_GEN_LINE_FORCED_BREAK],
-                                                                    _glyph_start, _glyph_end);
+                                                                       _line_height,
+                                                                       _line_grid[# _line, __SCRIBBLE_GEN_LINE_HALIGN],
+                                                                       _line_grid[# _line, __SCRIBBLE_GEN_LINE_FORCED_BREAK],
+                                                                       _glyph_start, _glyph_end);
                 ++_line;
             }
         }
