@@ -1,6 +1,6 @@
 // Feather disable all
 
-#macro __SCRIBBLE_GEN_LINE_START  if ((array_length(_line_array) >= _maxLineCount) && (not _lastIteration))\
+#macro __SCRIBBLE_LINE_PUSH  if ((array_length(_line_array) >= _maxLineCount) && (not _lastIteration))\
                                   {\
                                       _failedFit = true;\
                                       break;\
@@ -28,7 +28,7 @@
                                   _word_x = _indent_x;
 
 
-#macro __SCRIBBLE_GEN_LINE_END  _lineStruct.__wordEnd = _line_word_end;\
+#macro __SCRIBBLE_LINE_POP  _lineStruct.__wordEnd = _line_word_end;\
                                 _lineStruct.__width   = _word_x;
 
 function __scribble_gen_6_build_lines()
@@ -102,7 +102,7 @@ function __scribble_gen_6_build_lines()
             var _line_word_start = 0;
             
             var _lineStruct = undefined;
-            __SCRIBBLE_GEN_LINE_START;
+            __SCRIBBLE_LINE_PUSH;
             
             repeat(_word_count)
             {
@@ -158,9 +158,9 @@ function __scribble_gen_6_build_lines()
                         {
                             //TODO - Implement R2L emergency per-glyph line wrapping
                             var _line_word_end = _i;
-                            __SCRIBBLE_GEN_LINE_END;
+                            __SCRIBBLE_LINE_POP;
                             _line_word_start = _i+1;
-                            __SCRIBBLE_GEN_LINE_START;
+                            __SCRIBBLE_LINE_PUSH;
                         }
                         else
                         {
@@ -192,9 +192,9 @@ function __scribble_gen_6_build_lines()
                             if ((_word_x + _glyph_width >= _simulated_model_max_width) && (_i > _line_word_start))
                             {
                                 var _line_word_end = _i-1;
-                                __SCRIBBLE_GEN_LINE_END;
+                                __SCRIBBLE_LINE_POP;
                                 _line_word_start = _i;
-                                __SCRIBBLE_GEN_LINE_START;
+                                __SCRIBBLE_LINE_PUSH;
                                 
                                 _new_word_start_x = 0;
                             }
@@ -218,9 +218,9 @@ function __scribble_gen_6_build_lines()
                                     ds_grid_add_region(_glyph_grid, _j, __SCRIBBLE_GEN_GLYPH_X, _original_word_glyph_end, __SCRIBBLE_GEN_GLYPH_X, -(_word_x - _new_word_start_x));
                                     
                                     var _line_word_end = _i;
-                                    __SCRIBBLE_GEN_LINE_END;
+                                    __SCRIBBLE_LINE_POP;
                                     _line_word_start = _i+1;
-                                    __SCRIBBLE_GEN_LINE_START;
+                                    __SCRIBBLE_LINE_PUSH;
                                     
                                     _new_word_start_x     = 0;
                                     _new_word_glyph_start = _j;
@@ -255,9 +255,9 @@ function __scribble_gen_6_build_lines()
                         _word_x += _word_width;
                         
                         var _line_word_end = _i;
-                        __SCRIBBLE_GEN_LINE_END;
+                        __SCRIBBLE_LINE_POP;
                         _line_word_start = _i+1;
-                        __SCRIBBLE_GEN_LINE_START;
+                        __SCRIBBLE_LINE_PUSH;
                         
                         //Ensure we don't carry the space's width over to the new line
                         _word_width = 0;
@@ -265,9 +265,9 @@ function __scribble_gen_6_build_lines()
                     else
                     {
                         var _line_word_end = _i-1;
-                        __SCRIBBLE_GEN_LINE_END;
+                        __SCRIBBLE_LINE_POP;
                         _line_word_start = _i;
-                        __SCRIBBLE_GEN_LINE_START;
+                        __SCRIBBLE_LINE_PUSH;
                     }
                 }
                 else
@@ -281,10 +281,10 @@ function __scribble_gen_6_build_lines()
                         
                         //Linebreak after this word
                         var _line_word_end = _i;
-                        __SCRIBBLE_GEN_LINE_END;
+                        __SCRIBBLE_LINE_POP;
                         _line_word_start = _i+1;
                         _forced_break = true; //Gets reset to `false`
-                        __SCRIBBLE_GEN_LINE_START;
+                        __SCRIBBLE_LINE_PUSH;
                     }
                     else if (_glyph_start_ord == 0x00) //Null, indicates a new page
                     {
@@ -293,10 +293,10 @@ function __scribble_gen_6_build_lines()
                         
                         //Pagebreak after this word
                         var _line_word_end = _i;
-                        __SCRIBBLE_GEN_LINE_END;
+                        __SCRIBBLE_LINE_POP;
                         _line_word_start = _i+1;
                         _forced_break = true; //Gets reset to `false`
-                        __SCRIBBLE_GEN_LINE_START;
+                        __SCRIBBLE_LINE_PUSH;
                         
                         //Only mark the new line as beginning a new page if this null *isn't* the last glyph for the input string
                         if (_i < _word_count-1)
@@ -316,7 +316,7 @@ function __scribble_gen_6_build_lines()
             if (_line_word_end >= _line_word_start)
             {
                 //Only keep the last line if we actually have glyphs
-                __SCRIBBLE_GEN_LINE_END;
+                __SCRIBBLE_LINE_POP;
             }
             else
             {

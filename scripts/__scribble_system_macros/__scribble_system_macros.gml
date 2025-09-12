@@ -92,17 +92,6 @@
 #macro __SCRIBBLE_GEN_STRETCH_BIDI        2
 #macro __SCRIBBLE_GEN_STRETCH_SIZE        3
 
-#macro __SCRIBBLE_GEN_LINE_X                   0
-#macro __SCRIBBLE_GEN_LINE_Y                   1
-#macro __SCRIBBLE_GEN_LINE_WORD_START          2
-#macro __SCRIBBLE_GEN_LINE_WORD_END            3
-#macro __SCRIBBLE_GEN_LINE_WIDTH               4
-#macro __SCRIBBLE_GEN_LINE_HALIGN              5
-#macro __SCRIBBLE_GEN_LINE_DISABLE_JUSTIFY     6
-#macro __SCRIBBLE_GEN_LINE_STARTS_MANUAL_PAGE  7
-#macro __SCRIBBLE_GEN_LINE_FORCED_BREAK        8
-#macro __SCRIBBLE_GEN_LINE_SIZE                9
-
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_xboxseriesxs) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone) || (os_type == os_operagx))
 #macro __SCRIBBLE_ON_MOBILE            ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))
 #macro __SCRIBBLE_ON_WEB               (os_browser != browser_not_a_browser)
