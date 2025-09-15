@@ -14,6 +14,10 @@
 //The default animation speed for sprites inserted into text.
 #macro SCRIBBLE_DEFAULT_SPRITE_SPEED  1
 
+//Global scaling factor applied to all sprites. This is applied multiplicatively with the [scale]
+//tag etc.
+#macro SCRIBBLE_GLOBAL_SPRITE_SCALE  1
+
 //Default duration of the [delay] command, in milliseconds.
 #macro SCRIBBLE_DEFAULT_DELAY_DURATION  450
 

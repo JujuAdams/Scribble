@@ -1101,14 +1101,16 @@ function __scribble_gen_2_parser()
                                     
                                     if (sprite_exists(_sprite_index) && ((not SCRIBBLE_USE_SPRITE_WHITELIST) || (_sprite_whitelist_map[? _sprite_index] ?? false)))
                                     {
-                                        var _sprite_w = sprite_get_width( _sprite_index);
-                                        var _sprite_h = sprite_get_height(_sprite_index);
+                                        var _sprite_scale = SCRIBBLE_GLOBAL_SPRITE_SCALE;
+                                        var _sprite_w = _sprite_scale*sprite_get_width( _sprite_index);
+                                        var _sprite_h = _sprite_scale*sprite_get_height(_sprite_index);
                                 
                                         if (SCRIBBLE_SHRINK_INLINE_SPRITES)
                                         {
                                             var _scale = min(1, _font_line_height/_sprite_h);
                                             _sprite_w *= _scale;
                                             _sprite_h *= _scale;
+                                            _sprite_scale *= _scale;
                                         }
                                 
                                         var _image_index = 0;
@@ -1163,7 +1165,7 @@ function __scribble_gen_2_parser()
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _sprite_h;
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = _sprite_w;
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SCALE        ] = 1;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SCALE        ] = _sprite_scale;
                                 
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
                                 
