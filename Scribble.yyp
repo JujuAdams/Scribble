@@ -191,6 +191,7 @@
     {"id":{"name":"obj_test_is_animated","path":"objects/obj_test_is_animated/obj_test_is_animated.yy",},},
     {"id":{"name":"obj_test_justify_multiline","path":"objects/obj_test_justify_multiline/obj_test_justify_multiline.yy",},},
     {"id":{"name":"obj_test_kerning","path":"objects/obj_test_kerning/obj_test_kerning.yy",},},
+    {"id":{"name":"obj_test_layout_trim","path":"objects/obj_test_layout_trim/obj_test_layout_trim.yy",},},
     {"id":{"name":"obj_test_line_height","path":"objects/obj_test_line_height/obj_test_line_height.yy",},},
     {"id":{"name":"obj_test_line_spacing","path":"objects/obj_test_line_spacing/obj_test_line_spacing.yy",},},
     {"id":{"name":"obj_test_linewrap_multi_vbuff","path":"objects/obj_test_linewrap_multi_vbuff/obj_test_linewrap_multi_vbuff.yy",},},
