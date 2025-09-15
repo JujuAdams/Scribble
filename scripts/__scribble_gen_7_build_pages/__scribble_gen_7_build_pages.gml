@@ -34,7 +34,7 @@ function __scribble_gen_7_build_pages()
         }
         
         var _starts_manual_page = _lineStruct.startsManualPage;
-        var _overflow = _line_y + _line_height >= _simulated_model_height;
+        var _overflow = _line_y + _line_height > _simulated_model_height;
         
         if (_starts_manual_page || (_overflow && (not _firstLine) && (not _skippingLines)))
         {

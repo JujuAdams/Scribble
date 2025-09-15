@@ -1,18 +1,21 @@
 // Feather disable all
 
-#macro __SCRIBBLE_LINE_PUSH  if (array_length(_line_array) >= _maxLineCount)\
+#macro __SCRIBBLE_LINE_PUSH  if (_trimText && (array_length(_line_array) >= _maxLineCount))\
                              {\
-                                 if (_trimText)\
+                                 _breakOnTrim = true;\
+                                 \
+                                 if (__layoutType == SCRIBBLE_LAYOUT_TRIM_ELLIPSIS)\
                                  {\
-                                     _breakOnTrim = true;\
                                      _funcTrim(_line_array, _simulated_model_max_width);\
-                                     break;\
                                  }\
-                                 else if (_fitToBox && (not _lastIteration))\
-                                 {\
-                                     _failedFit = true;\
-                                     break;\
-                                 }\
+                                 \
+                                 break;\
+                             }\
+                             \
+                             if (_fitToBox && (not _lastIteration) && (array_length(_line_array) >= _maxLineCount))\
+                             {\
+                                 _failedFit = true;\
+                                 break;\
                              }\
                              \
                              _lineStruct = new __scribble_class_line(_indent_x, _line_height, _line_word_start, _state_halign, _forced_break);\
@@ -162,7 +165,7 @@ function __scribble_gen_6_build_lines()
     }
     
     var _wrapText       = ((__layoutType != SCRIBBLE_LAYOUT_NONE) && (__layoutType != SCRIBBLE_LAYOUT_SCALE));
-    var _trimText       = (__layoutType == SCRIBBLE_LAYOUT_TRIM);
+    var _trimText       = ((__layoutType == SCRIBBLE_LAYOUT_TRIM) || (__layoutType == SCRIBBLE_LAYOUT_TRIM_ELLIPSIS));
     var _fitToBox       = (__layoutType == SCRIBBLE_LAYOUT_FIT);
     var _fitScale       = 1;
     var _layoutMaxScale = __layoutMaxScale;

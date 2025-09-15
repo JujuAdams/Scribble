@@ -56,12 +56,13 @@
 #macro SCRIBBLE_TYPIST_ANIM_APPEAR     1
 #macro SCRIBBLE_TYPIST_ANIM_DISAPPEAR  2
 
-#macro SCRIBBLE_LAYOUT_NONE      0 //No layout logic is applied
-#macro SCRIBBLE_LAYOUT_WRAP      1 //Text is wrapped with no other behaviour. This mode ignores the maximum height
-#macro SCRIBBLE_LAYOUT_TRIM      2 //Text is wrapped. Any text that overflows the bottom is trimmed
-#macro SCRIBBLE_LAYOUT_SCALE     3 //Text is shrunk down using a straight-forward scaling operation
-#macro SCRIBBLE_LAYOUT_FIT       4 //Text is dynamically shrunk and reflowed down until it all fits into the max size
-#macro SCRIBBLE_LAYOUT_PAGINATE  5 //Text that overflows is placed onto a new page
+#macro SCRIBBLE_LAYOUT_NONE           0 //No layout logic is applied
+#macro SCRIBBLE_LAYOUT_WRAP           1 //Text is wrapped with no other behaviour. This mode ignores the maximum height
+#macro SCRIBBLE_LAYOUT_TRIM           2 //Text is wrapped. Any text that overflows the bottom is trimmed
+#macro SCRIBBLE_LAYOUT_TRIM_ELLIPSIS  3 //Text is wrapped. Any text that overflows the bottom is trimmed with an ellipsis
+#macro SCRIBBLE_LAYOUT_SCALE          4 //Text is shrunk down using a straight-forward scaling operation
+#macro SCRIBBLE_LAYOUT_FIT            5 //Text is dynamically shrunk and reflowed down until it all fits into the max size
+#macro SCRIBBLE_LAYOUT_PAGINATE       6 //Text that overflows is placed onto a new page
 
 #macro SCRIBBLE_UNICODE_TAB          0x0009
 #macro SCRIBBLE_UNICODE_NEWLINE      0x000A

@@ -335,29 +335,6 @@ function __scribble_class_element_parent(_text) constructor
         return __layoutType;
     }
     
-    static layout_trim_string = function(_trimString)
-    {
-        _trimString = string(_trimString);
-        
-        if (_trimString != __layoutTrimString)
-        {
-            __layoutTrimString = _trimString;
-            
-            if ((__layoutType == SCRIBBLE_LAYOUT_TRIM) || (__layoutType == SCRIBBLE_LAYOUT_PAGINATE))
-            {
-                //This value is only used for a couple layout styles
-                __modelDirty = true;
-            }
-        }
-        
-        return self;
-    }
-    
-    static get_layout_trim_string = function()
-    {
-        return __layoutTrimString;
-    }
-    
     static clip = function(_state = true)
     {
         __clip = _state;
