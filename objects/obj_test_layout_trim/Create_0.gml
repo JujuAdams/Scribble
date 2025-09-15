@@ -1,6 +1,6 @@
 // Feather disable all
 
-maxWidth  = 140;
-maxHeight = 150;
+maxWidth  = 216;
+maxHeight = 266;
 
 smoothedTime = 0;
