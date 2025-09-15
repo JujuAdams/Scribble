@@ -40,7 +40,7 @@
                                       }\
                                       \//Add this glyph to our grid by copying from the font's own glyph data grid
                                       ds_grid_set_grid_region(_glyph_grid, _font_glyph_data_grid, _data_index, __SCRIBBLE_GLYPH_PROPR_UNICODE, _data_index, __SCRIBBLE_GLYPH_PROPR_V1, _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE);\
-                                      _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;\
+                                      _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;\ //FIXME - Use region function and control pop to make this more efficient
                                       \
                                       if (SCRIBBLE_USE_KERNING)\
                                       {\
@@ -80,9 +80,8 @@
                                     var _font_space_width = _font_glyph_data_grid[# _space_data_index, __SCRIBBLE_GLYPH_PROPR_SEPARATION];\
                                     var _font_line_height = _font_data.__height;\
                                     \
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_FONT;\
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _font_name;\
-                                    ++_control_count;
+                                    array_push(_controlArray, new __scribble_class_control_font(_font_name));\
+                                    ++_controlCount;
 
 
 
@@ -178,7 +177,7 @@ function __scribble_gen_2_parser()
     {
         var _glyph_grid     = __glyph_grid;
         var _word_grid      = __word_grid;
-        var _control_grid   = __control_grid; //This grid is cleared at the bottom of __scribble_generate_model()
+        var _controlArray   = __controlArray;
         var _vbuff_pos_grid = __vbuff_pos_grid;
     }
     
@@ -230,7 +229,7 @@ function __scribble_gen_2_parser()
     var _glyph_prev_prev             = 0x0000;
     var _glyph_prev_arabic_join_next = false;
     
-    var _control_count = 0;
+    var _controlCount = 0;
     var _skip_write    = false;
     var _sectionStart  = 0;
     var _sectionCount  = 0;
@@ -249,13 +248,11 @@ function __scribble_gen_2_parser()
     
     var _offset_data_array = []; // start glyph, dX, dY
     
-    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_HALIGN;
-    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_halign;
-    ++_control_count;
+    array_push(_controlArray, new __scribble_class_control_halign(_state_halign));
+    ++_controlCount;
     
-    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR;
-    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_colour;
-    ++_control_count;
+    array_push(_controlArray, new __scribble_class_control_color(_state_colour));
+    ++_controlCount;
     
     __SCRIBBLE_PARSER_SET_FONT;
     
@@ -350,20 +347,14 @@ function __scribble_gen_2_parser()
                             _state_scale        = _pre_scale;
                             _state_colour       = 0xFF000000 | _starting_colour;
                             
-                            //Add an effect flag control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = 0;
-                            ++_control_count;
+                            array_push(_controlArray, new __scribble_class_control_effect(0));
+                            ++_controlCount;
                             
-                            //Add a colour control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_colour;
-                            ++_control_count;
+                            array_push(_controlArray, new __scribble_class_control_color(_state_colour));
+                            ++_controlCount;
                             
-                            //Add a cycle control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_CYCLE;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = -1;
-                            ++_control_count;
+                            array_push(_controlArray, new __scribble_class_control_cycle(-1));
+                            ++_controlCount;
                         break;
                     
                         // [/font]
@@ -381,22 +372,18 @@ function __scribble_gen_2_parser()
                         // [/c]
                         case 2:
                             _state_colour = (_state_colour & 0xFF000000) | _starting_colour;
-                        
-                            //Add a colour control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_colour;
-                            ++_control_count;
+                            
+                            array_push(_controlArray, new __scribble_class_control_color(_state_colour));
+                            ++_controlCount;
                         break;
                     
                         // [/alpha]
                         // [/a]
                         case 3:
                             _state_colour = 0xFF000000 | _state_colour;
-                        
-                            //Add a colour control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_colour;
-                            ++_control_count;
+                            
+                            array_push(_controlArray, new __scribble_class_control_color(_state_colour));
+                            ++_controlCount;
                         break;
                     
                         // [/scale]
@@ -420,7 +407,7 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _font_line_height;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                             
                             _glyph_write = 0x0000;
                             __SCRIBBLE_PARSER_NEXT_GLYPH
@@ -429,31 +416,29 @@ function __scribble_gen_2_parser()
                         // [ul]
                         case 45:
                             var _underlineThickness = (_tag_parameter_count > 1)? real(_tag_parameters[1]) : 1;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_UNDERLINE;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _underlineThickness;
-                            ++_control_count;
+                            
+                            array_push(_controlArray, new __scribble_class_control_underline(_underlineThickness));
+                            ++_controlCount;
                         break;
                         
                         // [/ul]
                         case 46:
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_UNDERLINE;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = 0;
-                            ++_control_count;
+                            array_push(_controlArray, new __scribble_class_control_underline(0));
+                            ++_controlCount;
                         break;
                         
                         // [strike]
                         case 47:
                             var _strikeThickness = (_tag_parameter_count > 1)? real(_tag_parameters[1]) : 1;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_STRIKE;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _strikeThickness;
-                            ++_control_count;
+                            
+                            array_push(_controlArray, new __scribble_class_control_strike(_strikeThickness));
+                            ++_controlCount;
                         break;
                         
                         // [/strike]
                         case 48:
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_STRIKE;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = 0;
-                            ++_control_count;
+                            array_push(_controlArray, new __scribble_class_control_strike(0));
+                            ++_controlCount;
                         break;
                         
                         #region Scale
@@ -514,11 +499,9 @@ function __scribble_gen_2_parser()
                         // [alpha]
                         case 10:
                             _state_colour = (floor(255*clamp(real(_tag_parameters[1]), 0, 1)) << 24) | (_state_colour & 0x00FFFFFF);
-                        
-                            //Add a colour control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_colour;
-                            ++_control_count;
+                            
+                            array_push(_controlArray, new __scribble_class_control_color(_state_colour));
+                            ++_controlCount;
                         break;
                     
                         #region Font Alignment
@@ -610,7 +593,7 @@ function __scribble_gen_2_parser()
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _font_line_height;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = _font_space_width;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
-                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                                 
                                 _glyph_write = SCRIBBLE_UNICODE_NBSP;
                                 __SCRIBBLE_PARSER_NEXT_GLYPH
@@ -632,7 +615,7 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _font_line_height;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                             
                             _glyph_write = SCRIBBLE_UNICODE_ZWSP;
                             __SCRIBBLE_PARSER_NEXT_GLYPH
@@ -651,7 +634,7 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _font_line_height;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                             
                             _glyph_write = SCRIBBLE_UNICODE_R2L;
                             __SCRIBBLE_PARSER_NEXT_GLYPH
@@ -668,7 +651,7 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _font_line_height;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                             
                             _glyph_write = SCRIBBLE_UNICODE_L2R;
                             __SCRIBBLE_PARSER_NEXT_GLYPH
@@ -705,20 +688,16 @@ function __scribble_gen_2_parser()
                             
                             _state_effect_flags = _state_effect_flags | (1 << __SCRIBBLE_FLAG_CYCLE);
                             
-                            //Add an effect flag control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_effect_flags;
-                            ++_control_count;
+                            array_push(_controlArray, new __scribble_class_control_effect(_state_effect_flags));
+                            ++_controlCount;
                             
                             var _ms = game_get_speed(gamespeed_microseconds) / 1000;
                             var _cycleIndex = clamp(_cycle_data.__index, 0, 255);
                             var _cycleSpeed = clamp(255*_cycle_speed/_ms, 1, 255);
                             var _cycleFreq  = clamp(255*_cycle_freq/_ms, 0, 255);
                             
-                            //Add a cycle control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_CYCLE;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _cycleIndex | (_cycleSpeed << 8) | (_cycleFreq << 16) | 0xFF000000;
-                            ++_control_count;
+                            array_push(_controlArray, new __scribble_class_control_cycle(_cycleIndex | (_cycleSpeed << 8) | (_cycleFreq << 16) | 0xFF000000));
+                            ++_controlCount;
                             
                             __has_animation = true;
                             __has_cycle = true;
@@ -729,15 +708,11 @@ function __scribble_gen_2_parser()
                         case 23:
                             _state_effect_flags = ~((~_state_effect_flags) | (1 << __SCRIBBLE_FLAG_CYCLE));
                             
-                            //Add an effect flag control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_effect_flags;
-                            ++_control_count;
+                            array_push(_controlArray, new __scribble_class_control_effect(_state_effect_flags));
+                            ++_controlCount;
                             
-                            //Add a cycle control
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_CYCLE;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = -1;
-                            ++_control_count;
+                            array_push(_controlArray, new __scribble_class_control_cycle(-1));
+                            ++_controlCount;
                         break;
                             
                         #endregion
@@ -862,7 +837,7 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_U1      ] = 1;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_V1      ] = 1;
                         
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                             
                             if (_spritesDontScale && (_state_scale != 1))
                             {
@@ -881,16 +856,14 @@ function __scribble_gen_2_parser()
                         case 29:
                             if (array_length(_tag_parameters) != 2) __scribble_error("[region] tags must contain a name e.g. [region,This is a region]");
                             
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_REGION;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _tag_parameters[1];
-                            ++_control_count;
+                            array_push(_controlArray, new __scribble_class_control_region(_tag_parameters[1]));
+                            ++_controlCount;
                         break;
                     
                         // [/region]
                         case 30:
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_REGION;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = undefined;
-                            ++_control_count;
+                            array_push(_controlArray, new __scribble_class_control_region(undefined));
+                            ++_controlCount;
                         break;
                     
                         #endregion
@@ -904,9 +877,8 @@ function __scribble_gen_2_parser()
                             }
                             else
                             {
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EVENT;
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = new __scribble_class_event(__SCRIBBLE_TYPIST_SOUND_COMMAND_TAG, _tag_parameters);
-                                ++_control_count;
+                                array_push(_controlArray, new __scribble_class_control_event(__SCRIBBLE_TYPIST_SOUND_COMMAND_TAG, _tag_parameters));
+                                ++_controlCount;
                             }
                         break;
                     
@@ -917,9 +889,8 @@ function __scribble_gen_2_parser()
                             }
                             else
                             {
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EVENT;
-                                _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = new __scribble_class_event(__SCRIBBLE_TYPIST_SOUND_PER_CHAR_COMMAND_TAG, _tag_parameters);
-                                ++_control_count;
+                                array_push(_controlArray, new __scribble_class_control_event(__SCRIBBLE_TYPIST_SOUND_PER_CHAR_COMMAND_TAG, _tag_parameters));
+                                ++_controlCount;
                             }
                         break;
                     
@@ -928,15 +899,13 @@ function __scribble_gen_2_parser()
                         #region Indent
                     
                         case 36: // [indent]
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_INDENT_START;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = undefined;
-                            ++_control_count;
+                            array_push(_controlArray, new __scribble_class_control_indent_start());
+                            ++_controlCount;
                         break;
                     
                         case 37: // [/indent]
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_INDENT_STOP;
-                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = undefined;
-                            ++_control_count;
+                            array_push(_controlArray, new __scribble_class_control_indent_stop());
+                            ++_controlCount;
                         break;
                     
                         #endregion
@@ -985,7 +954,7 @@ function __scribble_gen_2_parser()
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_V0      ] = _v0;
                             _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_QUAD_V1      ] = _v1;
                             
-                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
+                            _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                             
                             if (_spritesDontScale && (_state_scale != 1))
                             {
@@ -1017,19 +986,15 @@ function __scribble_gen_2_parser()
                                 {
                                     _state_colour = (_state_colour & 0xFF000000) | (_tagData & 0x00FFFFFF);
                                     
-                                    //Add a colour control
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR;
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_colour;
-                                    ++_control_count;
+                                    array_push(_controlArray, new __scribble_class_control_color(_state_colour));
+                                    ++_controlCount;
                                 }
                                 else if (_tagType == __SCRIBBLE_TAG_EFFECT)
                                 {
                                     _state_effect_flags = _state_effect_flags | (1 << _tagData);
                                     
-                                    //Add an effect flag control
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT;
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_effect_flags;
-                                    ++_control_count;
+                                    array_push(_controlArray, new __scribble_class_control_effect(_state_effect_flags));
+                                    ++_controlCount;
                                     
                                     __has_animation = true;
                                 }
@@ -1037,18 +1002,15 @@ function __scribble_gen_2_parser()
                                 {
                                     _state_effect_flags = ~((~_state_effect_flags) | (1 << _tagData));
                                     
-                                    //Add an effect flag control
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT;
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_effect_flags;
-                                    ++_control_count;
+                                    array_push(_controlArray, new __scribble_class_control_effect(_state_effect_flags));
+                                    ++_controlCount;
                                 }
                                 else if (_tagType == __SCRIBBLE_TAG_EVENT)
                                 {
                                     array_delete(_tag_parameters, 0, 1);
                                     
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EVENT;
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = new __scribble_class_event(_tag_command_name, _tag_parameters);
-                                    ++_control_count;
+                                    array_push(_controlArray, new __scribble_class_control_event(_tag_command_name, _tag_parameters));
+                                    ++_controlCount;
                                 }
                                 else if (_tagType == __SCRIBBLE_TAG_MACRO)
                                 {
@@ -1167,7 +1129,7 @@ function __scribble_gen_2_parser()
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SCALE        ] = _sprite_scale;
                                 
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                                 
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SPRITE_DATA] = {
                                             __spriteIndex: _sprite_index,
@@ -1189,16 +1151,15 @@ function __scribble_gen_2_parser()
                                 }
                                 else if (asset_get_type(_tag_command_name) == asset_sound)
                                 {
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EVENT;
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = new __scribble_class_event(__SCRIBBLE_AUDIO_COMMAND_TAG, _tag_parameters);
-                                    ++_control_count;
+                                    array_push(_controlArray, new __scribble_class_control_event(__SCRIBBLE_AUDIO_COMMAND_TAG, _tag_parameters));
+                                    ++_controlCount;
                                 }
                                 else if (ds_map_exists(_external_sound_map, _tag_command_name))
                                 {
                                     //External audio added via scribble_external_sound_add()
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EVENT;
-                                    _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = new __scribble_class_event(__SCRIBBLE_AUDIO_COMMAND_TAG, [_external_sound_map[? _tag_command_name]]);
-                                    ++_control_count;
+                                    
+                                    array_push(_controlArray, new __scribble_class_control_event(__SCRIBBLE_AUDIO_COMMAND_TAG, [_external_sound_map[? _tag_command_name]]));
+                                    ++_controlCount;
                                 }
                                 else
                                 {
@@ -1220,11 +1181,9 @@ function __scribble_gen_2_parser()
                                         }
                                 
                                         _state_colour = (_state_colour & 0xFF000000) | (_decoded_colour & 0x00FFFFFF);
-                                
-                                        //Add a colour control
-                                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR;
-                                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_colour;
-                                        ++_control_count;
+                                        
+                                        array_push(_controlArray, new __scribble_class_control_color(_state_colour));
+                                        ++_controlCount;
                                     }
                                     else
                                     {
@@ -1246,12 +1205,10 @@ function __scribble_gen_2_parser()
                                             }
                                     
                                             _state_colour = (_state_colour & 0xFF000000) | (_decoded_colour & 0x00FFFFFF);
-                                    
-                                            //Add a colour control
-                                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR;
-                                            _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_colour;
-                                            ++_control_count;
-                                    
+                                            
+                                            array_push(_controlArray, new __scribble_class_control_color(_state_colour));
+                                            ++_controlCount;
+                                            
                                             #endregion
                                         }
                                         else
@@ -1274,9 +1231,8 @@ function __scribble_gen_2_parser()
                         _new_halign = undefined;
                         _stateHAlignOffset = _font_halign_offset_array[_state_halign];
                     
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_HALIGN;
-                        _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL_DATA] = _state_halign;
-                        ++_control_count;
+                        array_push(_controlArray, new __scribble_class_control_halign(_state_halign));
+                        ++_controlCount;
                     
                         if (_glyph_count > 0)
                         {
@@ -1292,7 +1248,7 @@ function __scribble_gen_2_parser()
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _font_line_height;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
                                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
-                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
+                                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                                 
                                 _glyph_write = SCRIBBLE_UNICODE_NEWLINE;
                                 __SCRIBBLE_PARSER_NEXT_GLYPH
@@ -1368,7 +1324,7 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                 
                 _glyph_write = SCRIBBLE_UNICODE_NEWLINE;
                 __SCRIBBLE_PARSER_NEXT_GLYPH
@@ -1388,7 +1344,7 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = SCRIBBLE_TAB_WIDTH*_font_space_width;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                 
                 _glyph_write = SCRIBBLE_UNICODE_TAB;
                 __SCRIBBLE_PARSER_NEXT_GLYPH
@@ -1410,7 +1366,7 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = _font_space_width;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                 
                 _glyph_write = SCRIBBLE_UNICODE_SPACE;
                 __SCRIBBLE_PARSER_NEXT_GLYPH
@@ -1432,7 +1388,7 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = _font_space_width;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                 
                 _glyph_write = SCRIBBLE_UNICODE_NBSP;
                 __SCRIBBLE_PARSER_NEXT_GLYPH
@@ -1454,7 +1410,7 @@ function __scribble_gen_2_parser()
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _font_line_height;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
                 _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
-                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
+                _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                 
                 _glyph_write = SCRIBBLE_UNICODE_ZWSP;
                 __SCRIBBLE_PARSER_NEXT_GLYPH
@@ -1624,7 +1580,7 @@ function __scribble_gen_2_parser()
                         
                         //Create a placeholder glyph entry
                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = _glyph_write;
-                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count;
+                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                         
                         __SCRIBBLE_PARSER_NEXT_GLYPH
                     }
@@ -1806,13 +1762,12 @@ function __scribble_gen_2_parser()
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
-    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _control_count; //Make sure we collect controls at the end of a string
+    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount; //Make sure we collect controls at the end of a string
     _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX ] = _sectionCount;
     
     with(_generator_state)
     {
         __glyph_count   = _glyph_count+1;
-        __control_count = _control_count;
         __sectionCount  = _sectionCount;
     }
 }

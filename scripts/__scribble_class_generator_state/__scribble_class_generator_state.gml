@@ -3,7 +3,7 @@
 function __scribble_class_generator_state() constructor
 {
     __glyph_grid     = ds_grid_create(1000, __SCRIBBLE_GEN_GLYPH_SIZE);
-    __control_grid   = ds_grid_create(1000, __SCRIBBLE_GEN_CONTROL_SIZE); //This grid is cleared at the bottom of __scribble_generate_model()
+    __controlArray   = [];
     __word_grid      = ds_grid_create(1000, __SCRIBBLE_GEN_WORD_SIZE);
     __line_array     = [];
     __temp_grid      = ds_grid_create(1000, __SCRIBBLE_GEN_WORD_SIZE); //For some reason, changing the width of this grid causes GM to crash
@@ -15,10 +15,10 @@ function __scribble_class_generator_state() constructor
     static __Reset = function()
     {
         array_resize(__line_array, 0);
+        array_resize(__controlArray, 0);
         
         //Model class
         __glyph_count    = 0;
-        __control_count  = 0;
         __sectionCount   = 0; // [/section] tags. Optional feature
         __word_count     = 0;
         __line_count     = 0;

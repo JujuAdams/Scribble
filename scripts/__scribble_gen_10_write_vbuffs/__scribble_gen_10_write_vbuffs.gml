@@ -74,7 +74,7 @@ function __scribble_gen_10_write_vbuffs()
     with(_generator_state)
     {
         var _vbuff_pos_grid = __vbuff_pos_grid;
-        var _control_grid   = __control_grid;
+        var _controlArray   = __controlArray;
         var _glyph_grid     = __glyph_grid;
         var _word_grid      = __word_grid;
         var _line_array     = __line_array;
@@ -221,70 +221,70 @@ function __scribble_gen_10_write_vbuffs()
                 var _control_delta = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] - _control_index;
                 repeat(_control_delta)
                 {
-                    switch(_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_TYPE])
+                    var _controlStruct = _controlArray[_control_index];
+                    var _controlType = _controlStruct.__type;
+                    if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR)
                     {
-                        case __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR:
-                            _glyph_colour = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_DATA];
-                            var _write_colour = (__SCRIBBLE_FIX_ARGB? __scribble_rgb_to_bgr(_glyph_colour) : _glyph_colour); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
-                        break;
+                        _glyph_colour = _controlStruct.__color;
+                        var _write_colour = (__SCRIBBLE_FIX_ARGB? __scribble_rgb_to_bgr(_glyph_colour) : _glyph_colour); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
+                    }
+                    else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT)
+                    {
+                        _glyph_effect_flags = _controlStruct.__bitflags;
+                    }
+                    else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_CYCLE)
+                    {
+                        _glyph_cycle = _controlStruct.__value;
                         
-                        case __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT:
-                            _glyph_effect_flags = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_DATA];
-                        break;
+                        if (_glyph_cycle == -1)
+                        {
+                            _write_colour = (__SCRIBBLE_FIX_ARGB? __scribble_rgb_to_bgr(_glyph_colour) : _glyph_colour); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
+                        }
+                        else
+                        {
+                            _write_colour = (__SCRIBBLE_FIX_ARGB? __scribble_rgb_to_bgr(_glyph_cycle) : _glyph_cycle); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
+                        }
+                    }
+                    else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_EVENT)
+                    {
+                        //FIXME - Add character index (and line index if possible)
+                        var _event = _controlStruct.__event;
+                        _event.reveal_index = _reveal_index;
                         
-                        case __SCRIBBLE_GEN_CONTROL_TYPE_CYCLE:
-                            _glyph_cycle = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_DATA];
-                            
-                            if (_glyph_cycle == -1)
-                            {
-                                _write_colour = (__SCRIBBLE_FIX_ARGB? __scribble_rgb_to_bgr(_glyph_colour) : _glyph_colour); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
-                            }
-                            else
-                            {
-                                _write_colour = (__SCRIBBLE_FIX_ARGB? __scribble_rgb_to_bgr(_glyph_cycle) : _glyph_cycle); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
-                            }
-                        break;
+                        var _event_array = _page_events_dict[$ _reveal_index]; //Find the correct event array in the dictionary, creating a new one if needed
                         
-                        case __SCRIBBLE_GEN_CONTROL_TYPE_EVENT:
-                            //FIXME - Add character index (and line index if possible)
-                            var _event = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_DATA];
-                            _event.reveal_index = _reveal_index;
-                            
-                            var _event_array = _page_events_dict[$ _reveal_index]; //Find the correct event array in the dictionary, creating a new one if needed
-                            
-                            if (!is_array(_event_array))
-                            {
-                                var _event_array = [];
-                                _page_events_dict[$ _reveal_index] = _event_array;
-                            }
-                            
-                            array_push(_event_array, _event);
-                        break;
+                        if (!is_array(_event_array))
+                        {
+                            var _event_array = [];
+                            _page_events_dict[$ _reveal_index] = _event_array;
+                        }
                         
-                        case __SCRIBBLE_GEN_CONTROL_TYPE_REGION:
-                            if (_region_name != undefined)
-                            {
-                                _func_region_pop(_page_data, _region_name, _region_start, _glyphIndex-1);
-                            }
-                            
-                            // [/region] just sets the .DATA field to undefined
-                            _region_name  = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_DATA];
-                            _region_start = _glyphIndex;
-                        break;
+                        array_push(_event_array, _event);
+                    }
+                    else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_REGION)
+                    {
+                        if (_region_name != undefined)
+                        {
+                            _func_region_pop(_page_data, _region_name, _region_start, _glyphIndex-1);
+                        }
                         
-                        case __SCRIBBLE_GEN_CONTROL_TYPE_FONT:
-                            var _fontData = __scribble_get_font_data(_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_DATA]);
-                            var _fontUnderlineY = floor(_fontData.__underlineY);
-                            var _fontStrikeY    = floor(_fontData.__strikeY);
-                        break;
-                        
-                        case __SCRIBBLE_GEN_CONTROL_TYPE_UNDERLINE:
-                            _underline = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_DATA];
-                        break;
-                        
-                        case __SCRIBBLE_GEN_CONTROL_TYPE_STRIKE:
-                            _strike = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_DATA];
-                        break;
+                        // [/region] just sets the .DATA field to undefined
+                        _region_name  = _controlStruct.__name;
+                        _region_start = _glyphIndex;
+                    }
+                    else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_FONT)
+                    {
+                        var _fontData = __scribble_get_font_data(_controlStruct.__fontName);
+                        var _fontUnderlineY = floor(_fontData.__underlineY);
+                        var _fontStrikeY    = floor(_fontData.__strikeY);
+                    }
+                    else if ( _controlType == __SCRIBBLE_GEN_CONTROL_TYPE_UNDERLINE)
+                    {
+                        _underline = _controlStruct.__thickness;
+                    }
+                    else if ( _controlType == __SCRIBBLE_GEN_CONTROL_TYPE_STRIKE)
+                    {
+                        _strike = _controlStruct.__thickness;
                     }
                     
                     _control_index++;
@@ -532,10 +532,11 @@ function __scribble_gen_10_write_vbuffs()
     var _control_delta = _glyph_grid[# _glyphIndex-1, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] - _control_index;
     repeat(_control_delta)
     {
-        if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE_EVENT)
+        var _controlStruct = _controlArray[_control_index];
+        if (_controlStruct.__type == __SCRIBBLE_GEN_CONTROL_TYPE_EVENT)
         {
             //FIXME - Add character index (and line index if possible)
-            var _event = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_DATA];
+            var _event = _controlStruct.__event;
             _event.reveal_index = _reveal_index;
             
             

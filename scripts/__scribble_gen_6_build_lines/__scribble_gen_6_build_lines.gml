@@ -44,12 +44,11 @@ function __scribble_gen_6_build_lines()
     {
         var _glyph_grid            = __glyph_grid;
         var _word_grid             = __word_grid;
-        var _control_grid          = __control_grid;
+        var _controlArray          = __controlArray;
         var _temp_grid             = __temp_grid;
         var _glyph_count           = __glyph_count;
         var _word_count            = __word_count;
         var _sectionCount          = __sectionCount;
-        var _controlCount          = __control_count;
         var _line_height           = __line_height;
         var _line_spacing_add      = __line_spacing_add;
         var _line_spacing_multiply = __line_spacing_multiply;
@@ -88,9 +87,9 @@ function __scribble_gen_6_build_lines()
             var _control_delta = _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] - _control_index;
             repeat(_control_delta)
             {
-                if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE_HALIGN)
+                if (_controlArray[_control_index].__type == __SCRIBBLE_GEN_CONTROL_TYPE_HALIGN)
                 {
-                    _state_halign = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_DATA];
+                    _state_halign = _controlArray[_control_index].__hAlign;
                 }
                 
                 _control_index++;
@@ -113,19 +112,18 @@ function __scribble_gen_6_build_lines()
                 var _control_delta = _glyph_grid[# _word_start_glyph, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] - _control_index;
                 repeat(_control_delta)
                 {
-                    switch(_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_TYPE])
+                    var _controlType = _controlArray[_control_index].__type;
+                    if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_HALIGN)
                     {
-                        case __SCRIBBLE_GEN_CONTROL_TYPE_HALIGN:
-                            _state_halign = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_DATA];
-                        break;
-                        
-                        case __SCRIBBLE_GEN_CONTROL_TYPE_INDENT_START:
-                            _indent_x = _word_x;
-                        break;
-                        
-                        case __SCRIBBLE_GEN_CONTROL_TYPE_INDENT_STOP:
-                            _indent_x = 0;
-                        break;
+                        _state_halign = _controlArray[_control_index].__hAlign;
+                    }
+                    else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_INDENT_START)
+                    {
+                        _indent_x = _word_x;
+                    }
+                    else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_INDENT_STOP)
+                    {
+                        _indent_x = 0;
                     }
                     
                     _control_index++;
@@ -452,28 +450,19 @@ function __scribble_gen_6_build_lines()
             var _line_end_glyph      = _word_grid[# _line_array[_i].wordEnd, __SCRIBBLE_GEN_WORD_GLYPH_END];
             var _lineEndControlCount = _glyph_grid[# _line_end_glyph, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT];
             
-            if (_lineEndControlCount <= _controlCount-1)
-            {
-                ds_grid_set_grid_region(_temp_grid, _control_grid, _lineEndControlCount, __SCRIBBLE_GEN_CONTROL_TYPE, _controlCount-1, __SCRIBBLE_GEN_CONTROL_DATA, 0, 0);
-                ds_grid_set_grid_region(_control_grid, _temp_grid, 0, __SCRIBBLE_GEN_CONTROL_TYPE, _controlCount - _lineEndControlCount, __SCRIBBLE_GEN_CONTROL_DATA, _lineEndControlCount+1, 0);
-            }
-            
-            _control_grid[# _lineEndControlCount, __SCRIBBLE_GEN_CONTROL_TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE_EVENT;
-            _control_grid[# _lineEndControlCount, __SCRIBBLE_GEN_CONTROL_DATA] = new __scribble_class_event(__SCRIBBLE_DELAY_COMMAND_TAG, [__newline_delay]);
+            array_insert(_controlArray, _lineEndControlCount+1, new __scribble_class_control_event(__SCRIBBLE_DELAY_COMMAND_TAG, [__newline_delay]));
             
             var _line_start_glyph = _word_grid[# _line_array[_i+1].wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START];
             ds_grid_add_region(_glyph_grid, _line_start_glyph, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT, _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT, 1);
             
-            ++_controlCount;
             ++_i;
         }
     }
     
     with(_generator_state)
     {
-        __word_count    = _word_count;
-        __line_count    = array_length(_line_array);
-        __control_count = _controlCount;
+        __word_count = _word_count;
+        __line_count = array_length(_line_array);
     }
 }
 

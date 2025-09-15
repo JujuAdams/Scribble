@@ -21,9 +21,9 @@ function __scribble_gen_3_devanagari()
     with(_generator_state)
     {
         var _glyph_grid   = __glyph_grid;
-        var _control_grid = __control_grid;
+        var _controlArray = __controlArray;
         var _temp_grid    = __temp2_grid;
-        var _glyph_count = _generator_state.__glyph_count;
+        var _glyph_count  = _generator_state.__glyph_count;
     }
     
     //Glyph count includes the terminating null. We don't need that for Krutidev conversion
@@ -340,9 +340,9 @@ function __scribble_gen_3_devanagari()
         var _control_delta = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] - _control_index;
         repeat(_control_delta)
         {
-            if (_control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_TYPE] == __SCRIBBLE_GEN_CONTROL_TYPE_FONT)
+            if (_controlArray[_control_index].__type == __SCRIBBLE_GEN_CONTROL_TYPE_FONT)
             {
-                var _font_name            = _control_grid[# _control_index, __SCRIBBLE_GEN_CONTROL_DATA];
+                var _font_name            = _controlArray[_control_index].__fontName;
                 var _font_data            = __scribble_get_font_data(_font_name);
                 var _font_glyph_data_grid = _font_data.__glyph_data_grid;
                 var _font_glyphs_map      = _font_data.__glyphs_map;
