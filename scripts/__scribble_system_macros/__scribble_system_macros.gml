@@ -49,6 +49,14 @@
 #macro __SCRIBBLE_GEN_GLYPH_SPRITE_DATA      18 // Only used for sprites
 #macro __SCRIBBLE_GEN_GLYPH_SIZE             19 //
 
+#macro __SCRIBBLE_GEN_WORD_BIDI_RAW     0
+#macro __SCRIBBLE_GEN_WORD_BIDI         1
+#macro __SCRIBBLE_GEN_WORD_GLYPH_START  2
+#macro __SCRIBBLE_GEN_WORD_GLYPH_END    3
+#macro __SCRIBBLE_GEN_WORD_WIDTH        4
+#macro __SCRIBBLE_GEN_WORD_HEIGHT       5
+#macro __SCRIBBLE_GEN_WORD_SIZE         6
+
 #macro __SCRIBBLE_GEN_VBUFF_POS_QUAD_L  0
 #macro __SCRIBBLE_GEN_VBUFF_POS_QUAD_T  1
 #macro __SCRIBBLE_GEN_VBUFF_POS_QUAD_R  2
@@ -71,14 +79,6 @@
 #macro __SCRIBBLE_GLYPH_REPL_SPRITE   -1
 #macro __SCRIBBLE_GLYPH_REPL_SURFACE  -2
 #macro __SCRIBBLE_GLYPH_REPL_TEXTURE  -3
-
-#macro __SCRIBBLE_GEN_WORD_BIDI_RAW     0
-#macro __SCRIBBLE_GEN_WORD_BIDI         1
-#macro __SCRIBBLE_GEN_WORD_GLYPH_START  2
-#macro __SCRIBBLE_GEN_WORD_GLYPH_END    3
-#macro __SCRIBBLE_GEN_WORD_WIDTH        4
-#macro __SCRIBBLE_GEN_WORD_HEIGHT       5
-#macro __SCRIBBLE_GEN_WORD_SIZE         6
 
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_xboxseriesxs) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone) || (os_type == os_operagx))
 #macro __SCRIBBLE_ON_MOBILE            ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))

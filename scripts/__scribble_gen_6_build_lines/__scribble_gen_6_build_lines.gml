@@ -1,9 +1,18 @@
 // Feather disable all
 
-#macro __SCRIBBLE_LINE_PUSH  if ((array_length(_line_array) >= _maxLineCount) && (not _lastIteration))\
+#macro __SCRIBBLE_LINE_PUSH  if (array_length(_line_array) >= _maxLineCount)\
                              {\
-                                 _failedFit = true;\
-                                 break;\
+                                 if (_trimText)\
+                                 {\
+                                     _breakOnTrim = true;\
+                                     _funcTrim(_line_array, _simulated_model_max_width);\
+                                     break;\
+                                 }\
+                                 else if (_fitToBox && (not _lastIteration))\
+                                 {\
+                                     _failedFit = true;\
+                                     break;\
+                                 }\
                              }\
                              \
                              _lineStruct = new __scribble_class_line(_indent_x, _line_height, _line_word_start, _state_halign, _forced_break);\
@@ -35,7 +44,125 @@ function __scribble_gen_6_build_lines()
 {
     static _generator_state = __scribble_system().__generator_state;
     
+    static _funcTrim = function(_line_array, _simulated_model_max_width)
+    {
+        static _generator_state = __scribble_system().__generator_state;
+        var _word_grid  = _generator_state.__word_grid;
+        var _glyph_grid = _generator_state.__glyph_grid;
+        var _controlArray = _generator_state.__controlArray;
+        
+        var _lineStruct = array_last(_line_array);
+        var _wordStart = _lineStruct.wordStart;
+        var _wordEnd   = _lineStruct.wordEnd;
+        
+        //Find a word that we can glue ellipsis onto ...
+        var _right = _lineStruct.width;
+        var _word = _wordEnd;
+        repeat(1 + _wordEnd - _wordStart)
+        {
+            var _bidiRaw = _word_grid[# _word, __SCRIBBLE_GEN_WORD_BIDI_RAW];
+            if ((_word == _wordStart) || ((_bidiRaw != __SCRIBBLE_BIDI_WHITESPACE) && (_bidiRaw != __SCRIBBLE_BIDI_SYMBOL)))
+            {
+                //TODO - Optimise
+                var _glyphEndIndex        = _word_grid[# _word, __SCRIBBLE_GEN_WORD_GLYPH_END];
+                var _glyphEndScale        = _glyph_grid[# _glyphEndIndex, __SCRIBBLE_GEN_GLYPH_SCALE];
+                var _glyphEndControlCount = _glyph_grid[# _glyphEndIndex, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT];
+                
+                var _fontName = undefined;
+                var _controlIndex = _glyphEndControlCount-1;
+                repeat(_glyphEndControlCount)
+                {
+                    if (_controlArray[_controlIndex].__type == __SCRIBBLE_GEN_CONTROL_TYPE_FONT)
+                    {
+                        _fontName = _controlArray[_controlIndex].__fontName;
+                        break;
+                    }
+                    
+                    --_controlIndex;
+                }
+                
+                if (_fontName == undefined)
+                {
+                    __scribble_error("Could not find font during trim backtracking");
+                }
+                
+                var _fontData          = __scribble_get_font_data(_fontName);
+                var _fontGlyphDataGrid = _fontData.__glyph_data_grid;
+                var _fontGlyphsMap     = _fontData.__glyphs_map;
+                
+                var _dataIndex = _fontGlyphsMap[? ord(".")];
+                if (_dataIndex == undefined)
+                {
+                    __scribble_trace("Couldn't find glyph data for character code ", ord("."), " (.) in font \"", _fontName, "\"");
+                    return;
+                }
+                
+                var _ellpsisWidth = _glyphEndScale*(2*_fontGlyphDataGrid[# _dataIndex, __SCRIBBLE_GLYPH_PROPR_SEPARATION] + _fontGlyphDataGrid[# _dataIndex, __SCRIBBLE_GLYPH_PROPR_WIDTH]);
+                if (_right + _glyphEndScale*_ellpsisWidth < _simulated_model_max_width)
+                {
+                    break;
+                }
+            }
+            
+            _right -= _word_grid[# _word, __SCRIBBLE_GEN_WORD_WIDTH];
+            --_word;
+        }
+        
+        var _glyphIndex = _glyphEndIndex + 1;
+        var _glyphRevealIndex = _glyph_grid[# _glyphEndIndex, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX] + 1;
+        
+        var _x = 0;
+        repeat(3)
+        {
+            ds_grid_set_grid_region(_glyph_grid, _fontGlyphDataGrid, _dataIndex, __SCRIBBLE_GLYPH_PROPR_UNICODE, _dataIndex, __SCRIBBLE_GLYPH_PROPR_V1, _glyphIndex, __SCRIBBLE_GEN_GLYPH_UNICODE);
+            
+            //Ensure the correct scale
+            ds_grid_multiply_region(_glyph_grid, _dataIndex, __SCRIBBLE_GEN_GLYPH_X, _dataIndex, __SCRIBBLE_GEN_GLYPH_SCALE, _glyphEndScale);
+            
+            //Set the position of the glyph
+            _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_X] += _x;
+            _x += _fontGlyphDataGrid[# _dataIndex, __SCRIBBLE_GLYPH_PROPR_SEPARATION];
+            
+            //Make sure we have a sensible control count
+            _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _glyphEndControlCount;
+            
+            //Set our reveal
+            _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX] = _glyphRevealIndex;
+            ++_glyphRevealIndex; //FIXME - Only works with per-char reveal
+            
+            ++_glyphIndex;
+        }
+        
+        //Ensure we still have a sensible null terminator
+        //FIXME - Do we need to update the final word too? Probably
+        _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x00;
+        _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_SYMBOL; //Replaced in the next generator phase
+        _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
+        _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;
+        _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_WIDTH        ] = 0;
+        _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_HEIGHT       ] = 0;
+        _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = 0;
+        _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
+        _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
+        _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _glyphEndControlCount; //Make sure we collect controls at the end of a string
+        _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX ] = _glyphRevealIndex;
+        
+        //Create a new word for the ellipsis
+        var _ellpsisHeight = _glyphEndScale*(_fontGlyphDataGrid[# _dataIndex, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT]);
+        
+        var _newWord = _word + 1;
+        _lineStruct.wordEnd = _newWord;
+        
+        _word_grid[# _newWord, __SCRIBBLE_GEN_WORD_BIDI_RAW   ] = __SCRIBBLE_BIDI_SYMBOL;
+        _word_grid[# _newWord, __SCRIBBLE_GEN_WORD_BIDI       ] = __SCRIBBLE_BIDI_L2R; //FIXME - Implement for R2l
+        _word_grid[# _newWord, __SCRIBBLE_GEN_WORD_GLYPH_START] = _glyphEndIndex+1;
+        _word_grid[# _newWord, __SCRIBBLE_GEN_WORD_GLYPH_END  ] = _glyphEndIndex+3;
+        _word_grid[# _newWord, __SCRIBBLE_GEN_WORD_WIDTH      ] = _ellpsisWidth;
+        _word_grid[# _newWord, __SCRIBBLE_GEN_WORD_HEIGHT     ] = _ellpsisHeight;
+    }
+    
     var _wrapText       = ((__layoutType != SCRIBBLE_LAYOUT_NONE) && (__layoutType != SCRIBBLE_LAYOUT_SCALE));
+    var _trimText       = (__layoutType == SCRIBBLE_LAYOUT_TRIM);
     var _fitToBox       = (__layoutType == SCRIBBLE_LAYOUT_FIT);
     var _fitScale       = 1;
     var _layoutMaxScale = __layoutMaxScale;
@@ -64,6 +191,7 @@ function __scribble_gen_6_build_lines()
     var _failedFit = false;
     var _forced_break = true; //Start with a forced break because it's the first line!
     var _lastIteration = false;
+    var _breakOnTrim = false;
     
     var _fitIterations = 0;
     var _lower_limit = undefined;
@@ -74,7 +202,7 @@ function __scribble_gen_6_build_lines()
         
         var _simulated_model_max_width  = _modelMaxWidth  / _fitScale;
         var _simulated_model_max_height = _modelMaxHeight / _fitScale;
-        var _maxLineCount = _fitToBox? floor((_simulated_model_max_height + _line_spacing_add) / (_line_height*_line_spacing_multiply + _line_spacing_add)) : infinity;
+        var _maxLineCount = floor((_simulated_model_max_height + _line_spacing_add) / (_line_height*_line_spacing_multiply + _line_spacing_add));
         
         if (_word_count > 0)
         {
@@ -308,23 +436,26 @@ function __scribble_gen_6_build_lines()
                 ++_i;
             }
             
-            //Finalize the line we've already started
-            //Generally speaking this should never actually execute as 0x00 NULL will terminate a line and 0x00 always appears as the final glyph
-            var _line_word_end = _i-1;
-            if (_line_word_end >= _line_word_start)
+            if (not _breakOnTrim)
             {
-                //Only keep the last line if we actually have glyphs
-                __SCRIBBLE_LINE_POP;
-            }
-            else
-            {
-                //Otherwise forget this line ever happened
-                array_pop(_line_array);
+                //Finalize the line we've already started
+                //Generally speaking this should never actually execute as 0x00 NULL will terminate a line and 0x00 always appears as the final glyph
+                var _line_word_end = _i-1;
+                if (_line_word_end >= _line_word_start)
+                {
+                    //Only keep the last line if we actually have glyphs
+                    __SCRIBBLE_LINE_POP;
+                }
+                else
+                {
+                    //Otherwise forget this line ever happened
+                    array_pop(_line_array);
+                }
             }
         }
         
         //If we're not running .fit_to_box() behaviour then escape now!
-        if ((not _fitToBox) || (SCRIBBLE_FIT_TO_BOX_ITERATIONS <= 1)) break;
+        if ((not _fitToBox) || _breakOnTrim || (SCRIBBLE_FIT_TO_BOX_ITERATIONS <= 1)) break;
         
         
         
