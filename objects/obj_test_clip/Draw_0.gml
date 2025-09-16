@@ -1,4 +1,4 @@
-scribble("Draw event\n" + text).clip(true).max_size(maxWidth, maxHeight).transform(1, 1, -10).draw(10, 10);
+scribble("Draw event\n" + text).clip().max_size(maxWidth, maxHeight).transform(1, 1, -10).draw(10, 10);
 
 draw_rectangle(10, 10, 10 + maxWidth, 10 + maxHeight, true);
 

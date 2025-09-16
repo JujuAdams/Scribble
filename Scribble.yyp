@@ -233,6 +233,7 @@
     {"id":{"name":"obj_test_scale_to_box_maximise","path":"objects/obj_test_scale_to_box_maximise/obj_test_scale_to_box_maximise.yy",},},
     {"id":{"name":"obj_test_scale_to_box_plus_transformation","path":"objects/obj_test_scale_to_box_plus_transformation/obj_test_scale_to_box_plus_transformation.yy",},},
     {"id":{"name":"obj_test_scale_to_box","path":"objects/obj_test_scale_to_box/obj_test_scale_to_box.yy",},},
+    {"id":{"name":"obj_test_scroll","path":"objects/obj_test_scroll/obj_test_scroll.yy",},},
     {"id":{"name":"obj_test_sdf_comparison","path":"objects/obj_test_sdf_comparison/obj_test_sdf_comparison.yy",},},
     {"id":{"name":"obj_test_sdf_drop_shadow","path":"objects/obj_test_sdf_drop_shadow/obj_test_sdf_drop_shadow.yy",},},
     {"id":{"name":"obj_test_sdf_outline_thickness_arabic","path":"objects/obj_test_sdf_outline_thickness_arabic/obj_test_sdf_outline_thickness_arabic.yy",},},

@@ -72,18 +72,17 @@ varying vec2 v_vModelPosition;
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 varying vec2 v_vCycle;
-                                              
+
 uniform vec4  u_vColourBlend;                  //4
 uniform vec4  u_vGradient;                     //4
 uniform vec2  u_vSkew;                         //2
 uniform vec2  u_vRegionActive;                 //2
 uniform vec4  u_vRegionColour;                 //4
 uniform float u_fTime;                         //1
-uniform float u_aDataFields[MAX_ANIM_FIELDS];  //21
+uniform float u_aDataFields[MAX_ANIM_FIELDS];  //16
 uniform vec2  u_aBezier[3];                    //6
 uniform vec2  u_vScroll;                       //2
 
-uniform int   u_iTypewriterUseLines;       //1
 uniform int   u_iTypewriterMethod;         //1
 uniform vec3  u_fTypewriterHeadArray;      //3 - Presuming head count of 3
 uniform vec3  u_fTypewriterHeadLimitArray; //3 - Presuming head count of 3

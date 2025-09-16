@@ -182,6 +182,7 @@
     {"name":"obj_test_scale_to_box_maximise","order":5,"path":"objects/obj_test_scale_to_box_maximise/obj_test_scale_to_box_maximise.yy",},
     {"name":"obj_test_scale_to_box_plus_transformation","order":6,"path":"objects/obj_test_scale_to_box_plus_transformation/obj_test_scale_to_box_plus_transformation.yy",},
     {"name":"obj_test_scale_to_box","order":4,"path":"objects/obj_test_scale_to_box/obj_test_scale_to_box.yy",},
+    {"name":"obj_test_scroll","order":2,"path":"objects/obj_test_scroll/obj_test_scroll.yy",},
     {"name":"obj_test_sdf_comparison","order":2,"path":"objects/obj_test_sdf_comparison/obj_test_sdf_comparison.yy",},
     {"name":"obj_test_sdf_drop_shadow","order":3,"path":"objects/obj_test_sdf_drop_shadow/obj_test_sdf_drop_shadow.yy",},
     {"name":"obj_test_sdf_outline_thickness_arabic","order":4,"path":"objects/obj_test_sdf_outline_thickness_arabic/obj_test_sdf_outline_thickness_arabic.yy",},
