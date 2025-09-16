@@ -146,6 +146,7 @@
     {"id":{"name":"obj_test_build","path":"objects/obj_test_build/obj_test_build.yy",},},
     {"id":{"name":"obj_test_chinese_versus_gm","path":"objects/obj_test_chinese_versus_gm/obj_test_chinese_versus_gm.yy",},},
     {"id":{"name":"obj_test_chinese","path":"objects/obj_test_chinese/obj_test_chinese.yy",},},
+    {"id":{"name":"obj_test_clip","path":"objects/obj_test_clip/obj_test_clip.yy",},},
     {"id":{"name":"obj_test_colour","path":"objects/obj_test_colour/obj_test_colour.yy",},},
     {"id":{"name":"obj_test_combine_and_scale","path":"objects/obj_test_combine_and_scale/obj_test_combine_and_scale.yy",},},
     {"id":{"name":"obj_test_cycle_comparison","path":"objects/obj_test_cycle_comparison/obj_test_cycle_comparison.yy",},},
