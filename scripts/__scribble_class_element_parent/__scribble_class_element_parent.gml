@@ -65,6 +65,8 @@ function __scribble_class_element_parent(_text) constructor
     __wrap_no_pages      = false;
     __layoutMaxScale     = 1;
     
+    __clip = false;
+    
     __scrollX = 0;
     __scrollY = 0;
     __scrollMaxX = 0;
@@ -423,6 +425,7 @@ function __scribble_class_element_parent(_text) constructor
     static clip = function(_state = true)
     {
         __clip = _state;
+        return self;
     }
     
     static get_clip = function()
@@ -432,7 +435,7 @@ function __scribble_class_element_parent(_text) constructor
     
     static scroll = function(_y, _clamp = true)
     {
-        __scrollY = _clamp? clamp(_y, 0, __scrollMaxY) : _y;
+        __scrollY = _clamp? clamp(_y, 0, get_scroll_max_y()) : _y;
         __scrollWasClamped = _clamp;
         
         return self;
@@ -440,8 +443,8 @@ function __scribble_class_element_parent(_text) constructor
     
     static scroll_ext = function(_x, _y, _clamp = true)
     {
-        __scrollX = _clamp? clamp(_x, 0, __scrollMaxX) : _x;
-        __scrollY = _clamp? clamp(_y, 0, __scrollMaxY) : _y;
+        __scrollX = _clamp? clamp(_x, 0, get_scroll_max_x()) : _x;
+        __scrollY = _clamp? clamp(_y, 0, get_scroll_max_y()) : _y;
         __scrollWasClamped = _clamp;
         
         return self;
@@ -457,28 +460,18 @@ function __scribble_class_element_parent(_text) constructor
         return __scrollY;
     }
     
-    static get_scroll_max_x = function()
+    static get_scroll_max_x = function(_page = __page)
     {
-        return __scrollMaxX;
+        var _model = __EnsureModel();
+        if (not is_struct(_model)) return 0;
+        return _model.__GetScrollMaxX(_page);
     }
     
-    static get_scroll_max_y = function()
+    static get_scroll_max_y = function(_page = __page)
     {
-        return __scrollMaxY;
-    }
-    
-    static __CalculateScrollLimits = function()
-    {
-        //FIXME - This should probably be handled in the model?
-        
-        __scrollMaxX = max(0, get_width() - __layoutMaxWidth);
-        __scrollMaxY = max(0, get_height() - __layoutMaxHeight);
-        
-        if (__scrollWasClamped)
-        {
-            __scrollX = clamp(__scrollX, 0, __scrollMaxX);
-            __scrollY = clamp(__scrollY, 0, __scrollMaxY);
-        }
+        var _model = __EnsureModel();
+        if (not is_struct(_model)) return 0;
+        return _model.__GetScrollMaxY(_page);
     }
     
     #endregion
@@ -1128,7 +1121,17 @@ function __scribble_class_element_parent(_text) constructor
             __page = 0;
         }
         
-        if (_old_page != __page) __bbox_dirty = true;
+        if (_old_page != __page)
+        {
+            __bbox_dirty = true;
+            
+            //Update our scroll limits if the user wants to clamp position
+            if (__scrollWasClamped)
+            {
+                __scrollX = clamp(__scrollX, 0, get_scroll_max_x());
+                __scrollY = clamp(__scrollY, 0, get_scroll_max_y());
+            }
+        }
         
         return self;
     }
@@ -1516,7 +1519,16 @@ function __scribble_class_element_parent(_text) constructor
             __bbox_dirty         = true;
             __scale_to_box_dirty = true; //The dimensions of the text element might change as a result of a model change
             
-            return __weakRef.__Refresh();
+            var _model = __weakRef.__Refresh();
+            
+            //Update our scroll limits if the user wants to clamp position
+            if (__scrollWasClamped)
+            {
+                __scrollX = clamp(__scrollX, 0, get_scroll_max_x());
+                __scrollY = clamp(__scrollY, 0, get_scroll_max_y());
+            }
+            
+            return _model;
         }
         else
         {

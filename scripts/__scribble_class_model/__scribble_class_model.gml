@@ -187,7 +187,6 @@ function __scribble_class_model(_element) constructor
             var _top    = _page_data.__min_y;
             var _right  = _page_data.__max_x;
             var _bottom = _page_data.__max_y;
-            
         }
         else
         {
@@ -272,6 +271,26 @@ function __scribble_class_model(_element) constructor
     static __get_page_count = function()
     {
         return __pages;
+    }
+    
+    static __GetScrollMaxX = function(_page)
+    {
+        if ((_page < 0) || (_page > array_length(__pages_array)))
+        {
+            return 0;
+        }
+        
+        return max(0, __pages_array[_page].__max_x - __layoutMaxWidth);
+    }
+    
+    static __GetScrollMaxY = function(_page)
+    {
+        if ((_page < 0) || (_page > array_length(__pages_array)))
+        {
+            return 0;
+        }
+        
+        return max(0, __pages_array[_page].__max_y - __layoutMaxHeight);
     }
     
     /// @param page

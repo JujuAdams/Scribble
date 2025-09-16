@@ -126,6 +126,8 @@ function __scribble_class_cached_element(_text, _uniqueID) : __scribble_class_el
     
     
     
+    flush = __weakRef.__Flush;
+    
     /// @param x
     /// @param y
     /// @param [revealIndex]
@@ -151,6 +153,27 @@ function __scribble_class_cached_element(_text, _uniqueID) : __scribble_class_el
         __lastDrawn = _system.__frames;
         __weakRef.__AddToCache();
         
+        if (__clip)
+        {
+            //Make sure we have valid bounding box data
+            __update_bbox_matrix();
+            
+            //Clear the whole surface
+            gpu_set_stencil_enable(true);
+            draw_clear_stencil(0);
+            
+            gpu_set_stencil_ref(1);
+            gpu_set_stencil_func(cmpfunc_greaterequal);
+            gpu_set_stencil_pass(stencilop_replace);
+            
+            gpu_set_colorwriteenable(false, false, false, false);
+            draw_sprite_ext(__scribble_clip_sprite, 0, _x + __bbox_obb_x0, _y + __bbox_obb_y0, __layoutMaxWidth, __layoutMaxHeight, __post_angle, c_black, 1);
+                
+            gpu_set_stencil_ref(0);
+            gpu_set_stencil_func(cmpfunc_less);
+            gpu_set_colorwriteenable(true, true, true, true);
+        }
+        
         shader_set(__shd_scribble);
         __SetStandardUniforms();
         __SetRevealUniforms(_revealIndex);
@@ -163,10 +186,13 @@ function __scribble_class_cached_element(_text, _uniqueID) : __scribble_class_el
         matrix_stack_pop();
         matrix_set(matrix_world, matrix_stack_top());
         
+        if (__clip)
+        {
+            gpu_set_stencil_enable(false);
+        }
+        
         if (SCRIBBLE_SHOW_WRAP_BOUNDARY) debug_draw_bbox(_x, _y);
     }
-    
-    flush = __weakRef.__Flush;
     
     /// @param string
     /// @param [uniqueID]
