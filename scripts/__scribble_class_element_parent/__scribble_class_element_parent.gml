@@ -307,7 +307,7 @@ function __scribble_class_element_parent(_text) constructor
         return __layoutMaxHeight;
     }
     
-    static layout = function(_layout, _forcePerChar = false, _maxScale = 1)
+    static layout_ext = function(_layout, _forcePerChar = false, _maxScale = 1)
     {
         if ((_layout != __layoutType) || (_forcePerChar != __layoutForcePerChar))
         {
@@ -325,6 +325,91 @@ function __scribble_class_element_parent(_text) constructor
             {
                 __modelDirty = true;
             }
+        }
+        
+        return self;
+    }
+    
+    static layout_none = function()
+    {
+        if (__layoutType != SCRIBBLE_LAYOUT_NONE)
+        {
+            __layoutType = SCRIBBLE_LAYOUT_NONE;
+            __modelDirty = true;
+        }
+        
+        return self;
+    }
+    
+    static layout_wrap = function(_forcePerChar = false)
+    {
+        if ((__layoutType != SCRIBBLE_LAYOUT_WRAP) || (_forcePerChar != __layoutForcePerChar))
+        {
+            __layoutType         = SCRIBBLE_LAYOUT_WRAP;
+            __layoutForcePerChar = _forcePerChar;
+            __modelDirty        = true;
+        }
+        
+        return self;
+    }
+    
+    static layout_trim = function(_forcePerChar = false)
+    {
+        if ((__layoutType != SCRIBBLE_LAYOUT_TRIM) || (_forcePerChar != __layoutForcePerChar))
+        {
+            __layoutType         = SCRIBBLE_LAYOUT_TRIM;
+            __layoutForcePerChar = _forcePerChar;
+            __modelDirty         = true;
+        }
+        
+        return self;
+    }
+    
+    static layout_trim_ellipsis = function(_forcePerChar = false)
+    {
+        if ((__layoutType != SCRIBBLE_LAYOUT_TRIM_ELLIPSIS) || (_forcePerChar != __layoutForcePerChar))
+        {
+            __layoutType         = SCRIBBLE_LAYOUT_TRIM_ELLIPSIS;
+            __layoutForcePerChar = _forcePerChar;
+            __modelDirty         = true;
+        }
+        
+        return self;
+    }
+    
+    static layout_page = function(_forcePerChar = false)
+    {
+        if ((__layoutType != SCRIBBLE_LAYOUT_PAGINATE) || (_forcePerChar != __layoutForcePerChar))
+        {
+            __layoutType         = SCRIBBLE_LAYOUT_PAGINATE;
+            __layoutForcePerChar = _forcePerChar;
+            __modelDirty         = true;
+        }
+        
+        return self;
+    }
+    
+    static layout_scale = function(_forcePerChar = false, _maxScale = 1)
+    {
+        if ((__layoutType != SCRIBBLE_LAYOUT_SCALE) || (_forcePerChar != __layoutForcePerChar) || (_maxScale != __layoutMaxScale))
+        {
+            __layoutType         = SCRIBBLE_LAYOUT_SCALE;
+            __layoutForcePerChar = _forcePerChar;
+            __layoutMaxScale     = _maxScale;
+            __modelDirty         = true;
+        }
+        
+        return self;
+    }
+    
+    static layout_fit = function(_forcePerChar = false, _maxScale = 1)
+    {
+        if ((__layoutType != SCRIBBLE_LAYOUT_FIT) || (_forcePerChar != __layoutForcePerChar) || (_maxScale != __layoutMaxScale))
+        {
+            __layoutType         = SCRIBBLE_LAYOUT_FIT;
+            __layoutForcePerChar = _forcePerChar;
+            __layoutMaxScale     = _maxScale;
+            __modelDirty         = true;
         }
         
         return self;
