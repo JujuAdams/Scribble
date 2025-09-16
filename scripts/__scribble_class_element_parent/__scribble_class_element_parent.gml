@@ -1550,6 +1550,7 @@ function __scribble_class_element_parent(_text) constructor
         static _u_aDataFields   = shader_get_uniform(__shd_scribble, "u_aDataFields"  );
         static _u_aBezier       = shader_get_uniform(__shd_scribble, "u_aBezier"      );
         static _u_vClip         = shader_get_uniform(__shd_scribble, "u_vClip"        );
+        static _u_vScroll       = shader_get_uniform(__shd_scribble, "u_vScroll"      );
         
         static _u_vShadowOffsetAndSoftness = shader_get_uniform(__shd_scribble, "u_vShadowOffsetAndSoftness");
         static _u_vShadowColour            = shader_get_uniform(__shd_scribble, "u_vShadowColour"           );
@@ -1640,6 +1641,8 @@ function __scribble_class_element_parent(_text) constructor
         {
             shader_set_uniform_f(_u_vClip, -999999, -999999, 999999, 999999);
         }
+        
+        shader_set_uniform_f(_u_vScroll, __scrollX, __scrollY);
         
         if (__bezier_using)
         {

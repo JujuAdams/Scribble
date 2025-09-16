@@ -81,6 +81,7 @@ uniform vec4  u_vRegionColour;                 //4
 uniform float u_fTime;                         //1
 uniform float u_aDataFields[MAX_ANIM_FIELDS];  //21
 uniform vec2  u_aBezier[3];                    //6
+uniform vec2  u_vScroll;                       //2
 
 uniform int   u_iTypewriterUseLines;       //1
 uniform int   u_iTypewriterMethod;         //1
@@ -341,7 +342,7 @@ void main()
     
     
     //Use the input vertex position from the vertex attributes. We ignore the z-component because it's used for other data
-    v_vModelPosition = in_Position.xy;
+    v_vModelPosition = in_Position.xy - u_vScroll;
     v_vModelPosition.x += step(u_vTypewriterOffsetRange.y, REVEAL_INDEX)*step(REVEAL_INDEX, u_vTypewriterOffsetRange.z)*u_vTypewriterOffsetRange.x;
     
     
