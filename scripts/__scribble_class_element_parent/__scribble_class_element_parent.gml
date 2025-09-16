@@ -488,29 +488,97 @@ function __scribble_class_element_parent(_text) constructor
         return self;
     }
     
+    static scroll_to_glyph_x = function(_index)
+    {
+        var _model = __EnsureModel();
+        if (not is_struct(_model)) return undefined;
+        
+        if (not _model.__allow_glyph_data_getter)
+        {
+            __scribble_error("Scrolling to a glyph's x position requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
+        }
+        
+        var _glyphData = _model.__get_glyph_data(_index, __page);
+        return scroll_to_x(_glyphData.left, _glyphData.right);
+    }
+    
+    static scroll_to_glyph_y = function(_index)
+    {
+        var _model = __EnsureModel();
+        if (not is_struct(_model)) return undefined;
+        
+        if (_model.__allow_glyph_data_getter)
+        {
+            var _glyphData = _model.__get_glyph_data(_index, __page);
+            return scroll_to_y(_glyphData.top, _glyphData.bottom);
+        }
+        else
+        {
+            var _lineArray = _model.__line_array;
+            var _i = 0;
+            repeat(array_length(_lineArray))
+            {
+                if ((_index >= _lineArray[_i].glyphStart) && (_index <= _lineArray[_i].glyphEnd))
+                {
+                    return scroll_to_line(_i);
+                }
+                
+                ++_i;
+            }
+        }
+        
+        return self;
+    }
+    
     static scroll_to_line = function(_index)
     {
         var _model = __EnsureModel();
         if (not is_struct(_model)) return undefined;
         var _line_data = _model.__get_line_data(_index, __page);
-        
-        var _min = -__scrollY + _line_data.y;
-        var _max = _min + _line_data.height;
-        
-        if (_line_data.height > __layoutMaxHeight)
+        return scroll_to_y(_line_data.y, _line_data.y + _line_data.height-1);
+    }
+    
+    static scroll_to_x = function(_min, _max)
+    {
+        if (1 + _max - _min > __layoutMaxWidth)
         {
             //Line is bigger than can be displayed, centre the line
-            __scrollY = clamp(0.5*(_min + _max) + __scrollY - 0.5*__layoutMaxHeight, 0, get_scroll_max_y());
+            __scrollX = clamp(((_min + _max) div 2) - (__layoutMaxWidth div 2), 0, get_scroll_max_x());
         }
-        else if (_min < 0)
+        else if (_min < __scrollX)
         {
             //Line is above the top of the region
-            __scrollY = clamp(_min + __scrollY, 0, get_scroll_max_y());
+            __scrollX = clamp(_min, 0, get_scroll_max_x());
         }
-        else if (_max >= __layoutMaxHeight)
+        else if (_max >= __layoutMaxWidth + __scrollX)
         {
             //Line is below the bottom of the region
-            __scrollY = clamp(_max + __scrollY - __layoutMaxHeight, 0, get_scroll_max_y());
+            __scrollX = clamp(_max - __layoutMaxWidth, 0, get_scroll_max_x());
+        }
+        else
+        {
+            //Line is visible, do nothing
+        }
+        
+        return self;
+    }
+    
+    static scroll_to_y = function(_min, _max)
+    {
+        if (1 + _max - _min > __layoutMaxHeight)
+        {
+            //Line is bigger than can be displayed, centre the line
+            __scrollY = clamp(((_min + _max) div 2) - (__layoutMaxHeight div 2), 0, get_scroll_max_y());
+        }
+        else if (_min < __scrollY)
+        {
+            //Line is above the top of the region
+            __scrollY = clamp(_min, 0, get_scroll_max_y());
+        }
+        else if (_max >= __layoutMaxHeight + __scrollY)
+        {
+            //Line is below the bottom of the region
+            __scrollY = clamp(_max - __layoutMaxHeight, 0, get_scroll_max_y());
         }
         else
         {
