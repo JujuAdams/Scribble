@@ -514,7 +514,7 @@ function __scribble_class_element_parent(_text) constructor
         }
         else
         {
-            var _lineArray = _model.__line_array;
+            var _lineArray = _model.__pages_array[__page].__line_data_array;
             var _i = 0;
             repeat(array_length(_lineArray))
             {

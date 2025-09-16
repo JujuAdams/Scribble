@@ -225,8 +225,8 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
     }
     
     /// @param speed
-    /// @param smoothness
-    static in = function(_speed, _smoothness)
+    /// @param [smoothness=0]
+    static in = function(_speed, _smoothness = 0)
     {
         var _oldAnim = __typistAnim;
         
@@ -245,9 +245,9 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
     }
     
     /// @param speed
-    /// @param smoothness
+    /// @param [smoothness=0]
     /// @param [backwards=false]
-    static out = function(_speed, _smoothness, _backwards = false)
+    static out = function(_speed, _smoothness = 0, _backwards = false)
     {
         var _oldAnim = __typistAnim;
         
