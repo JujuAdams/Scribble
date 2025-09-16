@@ -1109,7 +1109,16 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
                     else
                     {
                         __typistHeadArray[@ 0] = _eventRevealIndex;
-                    
+                        
+                        if (__revealType == SCRIBBLE_REVEAL_PER_CHAR)
+                        {
+                            scroll_to_glyph_y(_eventRevealIndex);
+                        }
+                        else if (__revealType == SCRIBBLE_REVEAL_PER_LINE)
+                        {
+                            scroll_to_line(_eventRevealIndex);
+                        }
+                        
                         if (__typistEventRevealIndex <= _pageRevealCount)
                         {
                             if (not __typistSkip)
