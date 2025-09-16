@@ -68,6 +68,7 @@ attribute vec4 in_Colour;       //Colour
 attribute vec2 in_TextureCoord; //UVs
 attribute vec2 in_Colour2;      //{dX, dY}
 
+varying vec2 v_vModelPosition;
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 varying vec2 v_vCycle;
@@ -340,8 +341,8 @@ void main()
     
     
     //Use the input vertex position from the vertex attributes. We ignore the z-component because it's used for other data
-    vec2 pos = in_Position.xy;
-    pos.x += step(u_vTypewriterOffsetRange.y, REVEAL_INDEX)*step(REVEAL_INDEX, u_vTypewriterOffsetRange.z)*u_vTypewriterOffsetRange.x;
+    v_vModelPosition = in_Position.xy;
+    v_vModelPosition.x += step(u_vTypewriterOffsetRange.y, REVEAL_INDEX)*step(REVEAL_INDEX, u_vTypewriterOffsetRange.z)*u_vTypewriterOffsetRange.x;
     
     
     
@@ -354,18 +355,18 @@ void main()
         centre = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
         
         vec2 orientation = bezierDerivative(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
-        pos = rotate_by_vector(centre - in_Colour2, centre, normalize(orientation));
+        v_vModelPosition = rotate_by_vector(centre - in_Colour2, centre, normalize(orientation));
         
         vec2 perpendicular = normalize(vec2(-u_aBezier[2].y, u_aBezier[2].x));
-        pos += in_Position.y*perpendicular;
+        v_vModelPosition += in_Position.y*perpendicular;
     }
     else
     {
-        centre = pos + in_Colour2;
+        centre = v_vModelPosition + in_Colour2;
     }
     
-    pos += u_vSkew*centre.yx;
-    if (SLANT_FLAG > 0.5) pos.x += in_Colour2.y*SLANT_GRADIENT;
+    v_vModelPosition += u_vSkew*centre.yx;
+    if (SLANT_FLAG > 0.5) v_vModelPosition.x += in_Colour2.y*SLANT_GRADIENT;
     
     
     
@@ -381,7 +382,7 @@ void main()
     }
     
     //Apply the gradient effect
-    if (pos.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
+    if (v_vModelPosition.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
     
     if (!BLEND_GRAPHICS && (GRAPHIC_FLAG > 0.5))
     {
@@ -402,9 +403,9 @@ void main()
     
     
     //Vertex animation
-    pos.xy = wobble(pos, centre);
-    pos.xy = pulse(pos, centre, ANIMATION_INDEX);
-    if (JITTER_FLAG > 0.5) pos.xy = jitter(pos, centre, ANIMATION_INDEX); //Apply the jitter effect
+    v_vModelPosition = wobble(v_vModelPosition, centre);
+    v_vModelPosition = pulse(v_vModelPosition, centre, ANIMATION_INDEX);
+    if (JITTER_FLAG > 0.5) v_vModelPosition = jitter(v_vModelPosition, centre, ANIMATION_INDEX); //Apply the jitter effect
     
     
     
@@ -429,22 +430,23 @@ void main()
         else if (easeMethod == EASE_ELASTIC    ) { time = 1.0 - easeElastic(1.0 - time); }
         else if (easeMethod == EASE_BOUNCE     ) { time = 1.0 - easeBounce( 1.0 - time); }
         
-        pos = scale(pos, centre, mix(u_vTypewriterStartScale, vec2(1.0), time));
-        pos = rotate(pos, centre, mix(-u_fTypewriterStartRotation, 0.0, time));
-        pos.xy += mix(u_vTypewriterStartPos, vec2(0.0), time);
+        v_vModelPosition = scale(v_vModelPosition, centre, mix(u_vTypewriterStartScale, vec2(1.0), time));
+        v_vModelPosition = rotate(v_vModelPosition, centre, mix(-u_fTypewriterStartRotation, 0.0, time));
+        v_vModelPosition += mix(u_vTypewriterStartPos, vec2(0.0), time);
     }
     
     
     
     //Vertex
-    pos.xy = wave( pos, ANIMATION_INDEX); //Apply the wave effect
-    pos.xy = wheel(pos, ANIMATION_INDEX); //Apply the wheel effect
-    pos.xy = shake(pos, ANIMATION_INDEX); //Apply the shake effect
+    v_vModelPosition = wave( v_vModelPosition, ANIMATION_INDEX); //Apply the wave effect
+    v_vModelPosition = wheel(v_vModelPosition, ANIMATION_INDEX); //Apply the wheel effect
+    v_vModelPosition = shake(v_vModelPosition, ANIMATION_INDEX); //Apply the shake effect
     
     
     
     //Final positioning
-    gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION]*vec4(pos, 0.0, 1.0);
+    v_vModelPosition = v_vModelPosition;
+    gl_Position = gm_Matrices[MATRIX_WORLD_VIEW_PROJECTION]*vec4(v_vModelPosition, 0.0, 1.0);
     
     
     

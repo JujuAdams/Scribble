@@ -5,6 +5,7 @@ precision highp float;
 #define PREMULTIPLY_ALPHA false
 #define USE_ALPHA_FOR_DISTANCE true
 
+varying vec2 v_vModelPosition;
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 varying vec2 v_vCycle;
@@ -17,6 +18,7 @@ uniform vec4  u_vFlash;
 uniform vec4  u_vShadowColour;
 uniform vec3  u_vOutlineColour;
 uniform float u_fSecondDraw;
+uniform vec4  u_vClip;
 
 //SDF-only
 uniform vec2  u_vTexel;
@@ -33,6 +35,13 @@ float SDFValue(vec2 texcoord)
 
 void main()
 {
+    vec2 inside = step(u_vClip.zw, v_vModelPosition) - step(u_vClip.xy, v_vModelPosition);
+    if (inside.x*inside.y <= 0.0)
+    {
+        discard;
+    }
+    
+    //Handle cycle colour
     vec4 colour;
     if (v_vCycle.y >= 0.0)
     {

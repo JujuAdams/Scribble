@@ -1549,6 +1549,7 @@ function __scribble_class_element_parent(_text) constructor
         static _u_vRegionColour = shader_get_uniform(__shd_scribble, "u_vRegionColour");
         static _u_aDataFields   = shader_get_uniform(__shd_scribble, "u_aDataFields"  );
         static _u_aBezier       = shader_get_uniform(__shd_scribble, "u_aBezier"      );
+        static _u_vClip         = shader_get_uniform(__shd_scribble, "u_vClip"        );
         
         static _u_vShadowOffsetAndSoftness = shader_get_uniform(__shd_scribble, "u_vShadowOffsetAndSoftness");
         static _u_vShadowColour            = shader_get_uniform(__shd_scribble, "u_vShadowColour"           );
@@ -1628,6 +1629,16 @@ function __scribble_class_element_parent(_text) constructor
                 __shader_anim_default = __shader_anim_desync_to_default;
                 shader_set_uniform_f_array(_u_aDataFields, __shader_anim_disabled? _shader_uniforms_disabled : _anim_properties_array);
             }
+        }
+        
+        if (__clip)
+        {
+            //FIXME - Implement offsets for different h/v alignments
+            shader_set_uniform_f(_u_vClip, 0, 0, __layoutMaxWidth, __layoutMaxHeight);
+        }
+        else
+        {
+            shader_set_uniform_f(_u_vClip, -999999, -999999, 999999, 999999);
         }
         
         if (__bezier_using)
