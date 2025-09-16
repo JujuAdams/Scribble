@@ -1,14 +1,11 @@
 // Feather disable all
 
-maxWidth  = 216;
-maxHeight = 266;
-
 text = "";
 
 var _i = ord("a");
 repeat(26)
 {
-    repeat(10)
+    repeat(5)
     {
         text += chr(_i);
     }
