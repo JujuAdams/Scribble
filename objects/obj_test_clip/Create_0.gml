@@ -3,4 +3,4 @@
 maxWidth  = 216;
 maxHeight = 266;
 
-smoothedTime = 0;
+text = "aaaaaaaaaa\nbbnnbbbbbb\ncccccccccc\ndddddddddd";
