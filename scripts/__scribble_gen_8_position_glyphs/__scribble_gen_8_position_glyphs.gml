@@ -20,8 +20,9 @@ function __scribble_gen_8_position_glyphs()
         var _temp_grid     = __temp_grid;
         var _overall_bidi  = __overall_bidi;
         var _modelMaxWidth = __modelMaxWidth;
-        var _line_height   = __line_height;
     }
+    
+    var _line_height = __line_height;
     
     ds_grid_clear(_temp_grid, 0); //FIXME - Works around a bug in ds_grid_add_grid_region() (runtime 2.3.7.474  2021-12-03)
     

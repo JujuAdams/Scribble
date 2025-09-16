@@ -32,10 +32,7 @@ function __scribble_class_generator_state() constructor
         
         __bezier_lengths_array = undefined;
         
-        __modelMaxWidth       = 0;
-        __modelMaxHeight      = 0;
-        __line_height           = 0;
-        __line_spacing_add      = 0;
-        __line_spacing_multiply = 0;
+        __modelMaxWidth  = 0;
+        __modelMaxHeight = 0;
     }
 }

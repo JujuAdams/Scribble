@@ -179,15 +179,16 @@ function __scribble_gen_6_build_lines()
         var _glyph_count           = __glyph_count;
         var _word_count            = __word_count;
         var _sectionCount          = __sectionCount;
-        var _line_height           = __line_height;
-        var _line_spacing_add      = __line_spacing_add;
-        var _line_spacing_multiply = __line_spacing_multiply;
         var _modelMaxWidth         = (_wrapText? __modelMaxWidth  : infinity);
         var _modelMaxHeight        = (_wrapText? __modelMaxHeight : infinity);
         
         var _line_array = [];
         __line_array = _line_array;
     }
+    
+    var _line_height           = __line_height;
+    var _line_spacing_add      = __line_spacing_add;
+    var _line_spacing_multiply = __line_spacing_multiply;
     
     var _line_reveal = (__revealType == SCRIBBLE_REVEAL_PER_LINE) && (_sectionCount <= 0);
     

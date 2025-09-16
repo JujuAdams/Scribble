@@ -50,7 +50,6 @@ function __scribble_class_page(_model) constructor
             var _word_grid      = __word_grid;
             var _line_array     = __line_array;
             var _modelMaxHeight = __modelMaxHeight;
-            var _line_height    = __line_height;
         }
         
         __line_end    = _page_end_line;
@@ -68,7 +67,7 @@ function __scribble_class_page(_model) constructor
         
         __width = _pageWidth;
         
-        var _line_max_y = _line_array[_page_end_line].y + _line_height;
+        var _line_max_y = _line_array[_page_end_line].y + _line_array[_page_end_line].height;
         __height = _line_max_y;
             
         //Correct page position for vertical alignment

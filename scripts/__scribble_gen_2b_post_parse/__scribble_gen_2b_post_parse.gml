@@ -58,7 +58,7 @@ function __scribble_gen_2b_post_parse()
         ///////
         
         //If the line height has not been manually set using `.line_height()` then we need to deduce it
-        if (__line_height < 0)
+        if (other.__line_height < 0)
         {
             //Find the first text character and use its font height
             var _line_height = undefined;
@@ -81,7 +81,7 @@ function __scribble_gen_2b_post_parse()
             }
             
             //Always fall back on something valid
-            __line_height = _line_height ?? 1;
+            other.__line_height = _line_height ?? 1;
         }
     }
 }

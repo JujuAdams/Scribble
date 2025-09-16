@@ -60,21 +60,26 @@ function __scribble_class_model(_element) constructor
         //Record the start time so we can get a duration later
         if (SCRIBBLE_VERBOSE) var _timer_total = get_timer();
         
-        __pages    = 0;
-        __width    = 0;
-        __height   = 0;
-        __min_x    = 0;
-        __min_y    = 0;
-        __max_x    = 0;
-        __max_y    = 0;
-        __valign   = undefined; // If this is still <undefined> after the main string parsing then we set the valign to fa_top
-        __fitScale = 1.0;
-        __wrapped  = false;
+        __pages       = 0;
+        __width       = 0;
+        __height      = 0;
+        __line_height = __element_line_height;
+        __min_x       = 0;
+        __min_y       = 0;
+        __max_x       = 0;
+        __max_y       = 0;
+        __valign      = undefined; // If this is still <undefined> after the main string parsing then we set the valign to fa_top
+        __fitScale    = 1.0;
+        __wrapped     = false;
         
         __pad_bbox_l = false;
         __pad_bbox_t = false;
         __pad_bbox_r = false;
         __pad_bbox_b = false;
+        
+        var _result = __scribble_parse_line_spacing(__line_spacing);
+        __line_spacing_add      = _result.__add;
+        __line_spacing_multiply = _result.__multiply;
         
         __has_r2l        = false;
         __has_arabic     = false;
