@@ -488,6 +488,38 @@ function __scribble_class_element_parent(_text) constructor
         return self;
     }
     
+    static scroll_to_line = function(_index)
+    {
+        var _model = __EnsureModel();
+        if (not is_struct(_model)) return undefined;
+        var _line_data = _model.__get_line_data(_index, __page);
+        
+        var _min = -__scrollY + _line_data.y;
+        var _max = _min + _line_data.height;
+        
+        if (_line_data.height > __layoutMaxHeight)
+        {
+            //Line is bigger than can be displayed, centre the line
+            __scrollY = clamp(0.5*(_min + _max) + __scrollY - 0.5*__layoutMaxHeight, 0, get_scroll_max_y());
+        }
+        else if (_min < 0)
+        {
+            //Line is above the top of the region
+            __scrollY = clamp(_min + __scrollY, 0, get_scroll_max_y());
+        }
+        else if (_max >= __layoutMaxHeight)
+        {
+            //Line is below the bottom of the region
+            __scrollY = clamp(_max + __scrollY - __layoutMaxHeight, 0, get_scroll_max_y());
+        }
+        else
+        {
+            //Line is visible, do nothing
+        }
+        
+        return self;
+    }
+    
     static scroll = function(_y, _clamp = true)
     {
         __scrollAuto = 0;
@@ -1359,6 +1391,14 @@ function __scribble_class_element_parent(_text) constructor
         var _model = __EnsureModel();
         if (!is_struct(_model)) return 0;
         return _model.__get_line_count(_page);
+    }
+    
+    /// @param [page]
+    static get_lines_visible = function(_integer = true)
+    {
+        var _model = __EnsureModel();
+        if (not is_struct(_model)) return 0;
+        return _model.__get_lines_visible(_integer);
     }
     
     #endregion

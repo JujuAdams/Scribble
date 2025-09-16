@@ -350,6 +350,12 @@ function __scribble_class_model(_element) constructor
         return __pages_array[_page].__line_count;
     }
     
+    static __get_lines_visible = function(_integer)
+    {
+        var _count = (__layoutMaxHeight + __line_spacing_add) / max(1, __line_height*__line_spacing_multiply + __line_spacing_add);
+        return _integer? floor(_count) : _count;
+    }
+    
     /// @param page
     static __get_glyph_count = function(_page)
     {
