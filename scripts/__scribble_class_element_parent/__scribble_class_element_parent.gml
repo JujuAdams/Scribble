@@ -69,9 +69,12 @@ function __scribble_class_element_parent(_text) constructor
     
     __scrollX = 0;
     __scrollY = 0;
-    __scrollMaxX = 0;
-    __scrollMaxY = 0;
     __scrollWasClamped = true;
+    __scrollSpeed = 0;
+    __scrollPause = 0;
+    __scrollAuto  = 0; //0 = off, 1 = x-axis, 2 = y-axis
+    __scrollState = 0;
+    __scrollPauseCounter = 0;
     
     __scale_to_box_dirty    = true;
     __scale_to_box_width    = 0;
@@ -422,6 +425,12 @@ function __scribble_class_element_parent(_text) constructor
         return __layoutType;
     }
     
+    #endregion
+    
+    
+    
+    #region Clip & Scroll
+    
     static clip = function(_state = true)
     {
         __clip = _state;
@@ -433,8 +442,56 @@ function __scribble_class_element_parent(_text) constructor
         return __clip;
     }
     
+    static scroll_auto_x = function(_speed = SCRIBBLE_DEFAULT_AUTOSCROLL_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME)
+    {
+        //Skip the pause if we're starting autoscroll
+        if (__scrollAuto == 0)
+        {
+            if (__scrollState == 1)
+            {
+                __scrollState = 2;
+            }
+            else if (__scrollState == 3)
+            {
+                __scrollState = 0;
+            }
+        }
+        
+        __scrollAuto = 1;
+        
+        __scrollSpeed = _speed;
+        __scrollPause = _pauseTime;
+        
+        return self;
+    }
+    
+    static scroll_auto_y = function(_speed = SCRIBBLE_DEFAULT_AUTOSCROLL_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME)
+    {
+        //Skip the pause if we're starting autoscroll
+        if (__scrollAuto == 0)
+        {
+            if (__scrollState == 1)
+            {
+                __scrollState = 2;
+            }
+            else if (__scrollState == 3)
+            {
+                __scrollState = 0;
+            }
+        }
+        
+        __scrollAuto = 2;
+        
+        __scrollSpeed = _speed;
+        __scrollPause = _pauseTime;
+        
+        return self;
+    }
+    
     static scroll = function(_y, _clamp = true)
     {
+        __scrollAuto = 0;
+        
         __scrollY = _clamp? clamp(_y, 0, get_scroll_max_y()) : _y;
         __scrollWasClamped = _clamp;
         
@@ -443,6 +500,8 @@ function __scribble_class_element_parent(_text) constructor
     
     static scroll_ext = function(_x, _y, _clamp = true)
     {
+        __scrollAuto = 0;
+        
         __scrollX = _clamp? clamp(_x, 0, get_scroll_max_x()) : _x;
         __scrollY = _clamp? clamp(_y, 0, get_scroll_max_y()) : _y;
         __scrollWasClamped = _clamp;
@@ -472,6 +531,96 @@ function __scribble_class_element_parent(_text) constructor
         var _model = __EnsureModel();
         if (not is_struct(_model)) return 0;
         return _model.__GetScrollMaxY(_page);
+    }
+    
+    static __AutoScroll = function()
+    {
+        if (__scrollAuto == 1)
+        {
+            if (__scrollState == 0)
+            {
+                __scrollX += __scrollSpeed*_system.__tickSize;
+                
+                if (__scrollX >= get_scroll_max_x())
+                {
+                    __scrollX = get_scroll_max_x();
+                    __scrollPauseCounter = 0;
+                    __scrollState = 1;
+                }
+            }
+            else if (__scrollState == 1)
+            {
+                __scrollPauseCounter += _system.__tickSize
+                
+                if (__scrollPauseCounter >= __scrollPause)
+                {
+                    __scrollState = 2;
+                }
+            }
+            else if (__scrollState == 2)
+            {
+                __scrollX -= __scrollSpeed*_system.__tickSize;
+                
+                if (__scrollX <= 0)
+                {
+                    __scrollX = 0;
+                    __scrollPauseCounter = 0;
+                    __scrollState = 3;
+                }
+            }
+            else if (__scrollState == 3)
+            {
+                __scrollPauseCounter += _system.__tickSize
+                
+                if (__scrollPauseCounter >= __scrollPause)
+                {
+                    __scrollState = 0;
+                }
+            }
+        }
+        else if (__scrollAuto == 2)
+        {
+            if (__scrollState == 0)
+            {
+                __scrollY += __scrollSpeed*_system.__tickSize;
+                
+                if (__scrollY >= get_scroll_max_y())
+                {
+                    __scrollY = get_scroll_max_y();
+                    __scrollPauseCounter = 0;
+                    __scrollState = 1;
+                }
+            }
+            else if (__scrollState == 1)
+            {
+                __scrollPauseCounter += _system.__tickSize
+                
+                if (__scrollPauseCounter >= __scrollPause)
+                {
+                    __scrollState = 2;
+                }
+            }
+            else if (__scrollState == 2)
+            {
+                __scrollY -= __scrollSpeed*_system.__tickSize;
+                
+                if (__scrollY <= 0)
+                {
+                    __scrollY = 0;
+                    __scrollPauseCounter = 0;
+                    __scrollState = 3;
+                }
+            }
+            else if (__scrollState == 3)
+            {
+                __scrollPauseCounter += _system.__tickSize
+                
+                if (__scrollPauseCounter >= __scrollPause)
+                {
+                    __scrollState = 0;
+                }
+            }
+        }
     }
     
     #endregion

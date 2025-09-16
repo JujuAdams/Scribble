@@ -76,7 +76,7 @@ varying vec2 v_vCycle;
 uniform vec4  u_vColourBlend;                  //4
 uniform vec4  u_vGradient;                     //4
 uniform vec2  u_vSkew;                         //2
-uniform vec2  u_vRegionActive;                 //2
+uniform vec2  u_vRegionActive;                 //2 //FIXME - This will break when not revealing per char
 uniform vec4  u_vRegionColour;                 //4
 uniform float u_fTime;                         //1
 uniform float u_aDataFields[MAX_ANIM_FIELDS];  //16

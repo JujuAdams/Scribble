@@ -153,6 +153,8 @@ function __scribble_class_cached_element(_text, _uniqueID) : __scribble_class_el
         __lastDrawn = _system.__frames;
         __weakRef.__AddToCache();
         
+        __AutoScroll();
+        
         shader_set(__shd_scribble);
         __SetStandardUniforms();
         __SetRevealUniforms(_revealIndex);

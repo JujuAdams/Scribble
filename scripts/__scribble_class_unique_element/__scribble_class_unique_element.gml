@@ -86,6 +86,8 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         
         __lastDrawn = _system.__frames;
         
+        __AutoScroll();
+        
         shader_set(__shd_scribble);
         __SetStandardUniforms();
         
