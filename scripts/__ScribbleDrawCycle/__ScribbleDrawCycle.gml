@@ -4,9 +4,9 @@
 
 function __ScribbleDrawCycle(_name)
 {
-    static _data_map = __ScribbleSystem().__cycle_data_map;
+    static _dataMap = __ScribbleSystem().__cycleDataMap;
     
-    var _data = _data_map[? _name];
+    var _data = _dataMap[? _name];
     if (_data == undefined)
     {
         __ScribbleError("Cycle \"", _name, "\" doesn't exist");

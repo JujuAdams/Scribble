@@ -156,8 +156,8 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __fontDataMap = ds_map_create();
         
         //Other caching maps
-        __sprite_texture_index_map    = ds_map_create();
-        __sprite_texture_material_map = ds_map_create();
+        __spriteTextureIndexMap    = ds_map_create();
+        __spriteTextureMaterialMap = ds_map_create();
         __material_map                = ds_map_create();
         
         //Multi-use buffers
@@ -173,7 +173,7 @@ function __ScribbleSystem(_calledFromInitialize = false)
         
         //Contains global state information that is shared between various features
         __state = {
-            __default_font: "fntScribbleFallback",
+            __defaultFont: "fntScribbleFallback",
             
             __shader_anim_desync:            false,
             __shader_anim_desync_to_default: false,
@@ -185,7 +185,7 @@ function __ScribbleSystem(_calledFromInitialize = false)
             __markdown_styles_struct: {},
             
             __sprite_whitelist_map: ds_map_create(),
-            __sound_whitelist_map:  ds_map_create(),
+            __soundWhitelistMap:  ds_map_create(),
         };
         
         __elementWeakArray = [];
@@ -194,13 +194,13 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __generatorState = new __ScribbleClassGeneratorState();
         
         //Contains Unicode data, necessary for extended language support
-        __glyph_data                = __ScribbleGlyphDataInitialize();
+        __glyphData                = __ScribbleGlyphDataInitialize();
         __krutidev_lookup_map       = __ScribbleKrutidevLookupMapInitialize();
         __krutidev_matra_lookup_map = __ScribbleKrutidevMatraLookupMapInitialize();
         
         //External sound reference storage
         __external_sprite_map = ds_map_create();
-        __external_sound_map  = ds_map_create();
+        __externalSoundMap  = ds_map_create();
         
         __tagDict = {};
         
@@ -257,9 +257,9 @@ function __ScribbleSystem(_calledFromInitialize = false)
             ++_i;
         }
         
-        __cycle_surface = -1;
+        __cycleSurface = -1;
         __cycle_data_open_array = [];
-        __cycle_data_map = ds_map_create();
+        __cycleDataMap = ds_map_create();
         scribble_cycle_add_from_array(SCRIBBLE_RAINBOW_CYCLE, [c_red, c_yellow, c_lime, c_aqua, c_blue, c_fuchsia], true, false);
         
         //Unpack texture group data into an easy-to-use dictionary. This should, of course, just be a native

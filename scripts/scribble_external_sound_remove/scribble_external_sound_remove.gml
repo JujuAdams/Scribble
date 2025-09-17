@@ -2,6 +2,6 @@
 
 function scribble_external_sound_remove(_alias)
 {
-    static _external_sound_map = __ScribbleSystem().__external_sound_map;
-    ds_map_delete(_external_sound_map, _alias);
+    static _externalSoundMap = __ScribbleSystem().__externalSoundMap;
+    ds_map_delete(_externalSoundMap, _alias);
 }

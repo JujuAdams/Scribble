@@ -28,7 +28,7 @@ function draw_text_scribble(_x, _y, _string, _reveal = undefined)
     }
     else
     {
-        _font = _scribbleState.__default_font;
+        _font = _scribbleState.__defaultFont;
     }
     
     scribble(_string, "__draw_text_scribble__")

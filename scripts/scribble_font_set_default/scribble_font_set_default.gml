@@ -13,6 +13,6 @@ function scribble_font_set_default(_font)
     }
     
     static _scribbleState = __ScribbleSystem().__state;
-    if (SCRIBBLE_VERBOSE && (_scribbleState.__default_font == undefined)) __ScribbleTrace("Setting default font to \"" + string(_font) + "\"");
-    _scribbleState.__default_font = _font;
+    if (SCRIBBLE_VERBOSE && (_scribbleState.__defaultFont == undefined)) __ScribbleTrace("Setting default font to \"" + string(_font) + "\"");
+    _scribbleState.__defaultFont = _font;
 }

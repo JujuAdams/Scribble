@@ -21,15 +21,15 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
     if (SCRIBBLE_VERBOSE) __ScribbleTrace("Adding \"", _name, "\" as standard font");
     
     var _scribbleState = __ScribbleSystem().__state;
-    if (_scribbleState.__default_font == undefined)
+    if (_scribbleState.__defaultFont == undefined)
     {
         if (SCRIBBLE_VERBOSE) __ScribbleTrace("Setting default font to \"" + string(_name) + "\"");
-        _scribbleState.__default_font = _name;
+        _scribbleState.__defaultFont = _name;
     }
     
     try
     {
-        var _global_glyph_bidi_map = __ScribbleSystem().__glyph_data.__bidi_map;
+        var _globalGlyphBidiMap = __ScribbleSystem().__glyphData.__bidiMap;
         
         //Get font info from the runtime
         var _textureIndex   = _fontInfo.texture;
@@ -129,7 +129,7 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
         var _font_glyphs_map   = _fontData.__glyphsMap;
         var _fontGlyphDataGrid = _fontData.__glyphDataGrid;
         var _font_kerning_map  = _fontData.__kerningMap;
-        if (_isKrutidev) _fontData.__is_krutidev = true;
+        if (_isKrutidev) _fontData.__isKrutidev = true;
         
         //Set some basic repeated values in bulk for a little speed boost
         var _material = __ScribbleGetMaterial(_name, _textureIndex, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _sdfPxRange, _sdfThicknessOffset, _fontData.__bilinear);
@@ -169,7 +169,7 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
             }
             else
             {
-                var _bidi = _global_glyph_bidi_map[? _unicode];
+                var _bidi = _globalGlyphBidiMap[? _unicode];
                 if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI_L2R;
             }
             

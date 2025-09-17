@@ -5,14 +5,14 @@
 
 function __ScribbleSpriteGetMaterial(_sprite, _image)
 {
-    static _sprite_texture_material_map = __ScribbleSystem().__sprite_texture_material_map;
+    static _spriteTextureMaterialMap = __ScribbleSystem().__spriteTextureMaterialMap;
     
     var _textureIndex = __ScribbleSpriteGetTextureIndex(_sprite, _image);
-    var _material = _sprite_texture_material_map[? _textureIndex];
+    var _material = _spriteTextureMaterialMap[? _textureIndex];
     if (_material == undefined)
     {
         var _material = __ScribbleGetMaterial(sprite_get_name(_sprite), _textureIndex, __SCRIBBLE_RENDER_RASTER, undefined, undefined, SCRIBBLE_SPRITE_BILINEAR_FILTERING);
-        _sprite_texture_material_map[? _textureIndex] = _material;
+        _spriteTextureMaterialMap[? _textureIndex] = _material;
     }
     
     return _material;

@@ -6,12 +6,12 @@
 
 function __ScribblePlaySound(_asset, _gain, _pitch)
 {
-    static _sound_whitelist_map = __ScribbleSystem().__state.__sound_whitelist_map;
-    static _external_sound_map  = __ScribbleSystem().__external_sound_map;
+    static _soundWhitelistMap = __ScribbleSystem().__state.__soundWhitelistMap;
+    static _externalSoundMap  = __ScribbleSystem().__externalSoundMap;
     
     if (is_string(_asset))
     {
-        _asset = _external_sound_map[? _asset] ?? asset_get_index(_asset);
+        _asset = _externalSoundMap[? _asset] ?? asset_get_index(_asset);
     }
     
     if (not audio_exists(_asset))
@@ -19,7 +19,7 @@ function __ScribblePlaySound(_asset, _gain, _pitch)
         return -1;
     }
     
-    if ((not SCRIBBLE_USE_SOUND_WHITELIST) || (_sound_whitelist_map[? _asset] ?? false))
+    if ((not SCRIBBLE_USE_SOUND_WHITELIST) || (_soundWhitelistMap[? _asset] ?? false))
     {
         var _func = SCRIBBLE_AUDIO_PLAY_FUNCTION;
         if (is_callable(_func))

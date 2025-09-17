@@ -5,7 +5,7 @@
 
 function __ScribbleSpriteGetTextureIndex(_sprite, _image)
 {
-    static _sprite_texture_index_map = __ScribbleSystem().__sprite_texture_index_map;
+    static _spriteTextureIndexMap = __ScribbleSystem().__spriteTextureIndexMap;
     
     if (not sprite_exists(_sprite))
     {
@@ -20,15 +20,15 @@ function __ScribbleSpriteGetTextureIndex(_sprite, _image)
     var _count = sprite_get_number(_sprite);
     
     //Check the cache for pre-calculated texture indexes
-    var _array = _sprite_texture_index_map[? _sprite];
+    var _array = _spriteTextureIndexMap[? _sprite];
     if (not is_array(_array))
     {
         //No array found, extract texture indexs from sprite info into a new array for the cache
         _array = array_create(_count);
-        _sprite_texture_index_map[? _sprite] = _array;
+        _spriteTextureIndexMap[? _sprite] = _array;
         
-        var _sprite_info = sprite_get_info(_sprite);
-        var _frame_array = _sprite_info.frames;
+        var _spriteInfo = sprite_get_info(_sprite);
+        var _frame_array = _spriteInfo.frames;
         
         var _i = 0;
         repeat(_count)

@@ -98,19 +98,19 @@ function __ScribbleClassModel(_element) constructor
             __overallBidi = other.__bidiHint;
         };
         
-        __scribble_gen_1_model_limits_and_bezier_curves();
-        __scribble_gen_2_parser();
-        __scribble_gen_2b_post_parse();
-        __scribble_gen_3_devanagari();
-        __scribble_gen_4_build_words();
-        __scribble_gen_5_finalize_bidi();
-        __scribble_gen_6_build_lines();
-        __scribble_gen_7_build_pages();
-        __scribble_gen_8_position_glyphs();
-        __scribble_gen_9_build_vbuff_grids();
-        __scribble_gen_10_write_vbuffs();
-        __scribble_gen_11_set_padding_flags();
-        __scribble_gen_12_dynamic_macros();
+        __ScribbleGen1_ModelLimitsAndBezierCurves();
+        __ScribbleGen2_Parser();
+        __ScribbleGen2b_PostParse();
+        __ScribbleGen3_Devanagari();
+        __ScribbleGen4_BuildWords();
+        __ScribbleGen5_FinalizeBidi();
+        __ScribbleGen6_BuildLines();
+        __ScribbleGen7_BuildPages();
+        __ScribbleGen8_PositionGlyphs();
+        __ScribbleGen9_BuildVBuffGrids();
+        __ScribbleGen10_WriteVBuffs();
+        __ScribbleGen11_SetPaddingFlags();
+        __ScribbleGen12_DynamicMacros();
         
         if (SCRIBBLE_VERBOSE)
         {

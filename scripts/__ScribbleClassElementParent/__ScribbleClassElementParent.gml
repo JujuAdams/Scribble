@@ -24,7 +24,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     __preprocessorFunc = undefined;
     
-    __startingFont   = _system.__state.__default_font;
+    __startingFont   = _system.__state.__defaultFont;
     __startingColor = __ScribbleProcessColor(SCRIBBLE_DEFAULT_COLOR);
     __startingHAlign = SCRIBBLE_DEFAULT_HALIGN;
     __startingVAlign = SCRIBBLE_DEFAULT_VALIGN;
@@ -1606,11 +1606,11 @@ function __ScribbleClassElementParent(_text) constructor
     
     #region SDF
     
-    static sdf_shadow = function(_colour, _alpha, _x_offset, _y_offset, _softness = 0.25)
+    static sdf_shadow = function(_colour, _alpha, _xOffset, _y_offset, _softness = 0.25)
     {
         __sdf_shadow_colour   = _colour;
         __sdf_shadow_alpha    = _alpha;
-        __sdf_shadow_xoffset  = _x_offset;
+        __sdf_shadow_xoffset  = _xOffset;
         __sdf_shadow_yoffset  = _y_offset;
         __sdf_shadow_softness = max(0, _softness);
         
@@ -2050,15 +2050,15 @@ function __ScribbleClassElementParent(_text) constructor
             __matrix_x       = _x;
             __matrix_y       = _y;
             
-            var _x_offset = -__origin_x;
+            var _xOffset = -__origin_x;
             var _y_offset = -__origin_y;
             var _xscale   = __scale_to_box_scale*_model.__fitScale*__post_xscale;
             var _yscale   = __scale_to_box_scale*_model.__fitScale*__post_yscale;
             var _angle    = __post_angle;
             
-            if (!_model.__padBboxL) _x_offset += __paddingL;
+            if (!_model.__padBboxL) _xOffset += __paddingL;
             if (!_model.__padBboxT) _y_offset += __paddingT;
-            if (!_model.__padBboxR) _x_offset -= __paddingR;
+            if (!_model.__padBboxR) _xOffset -= __paddingR;
             if (!_model.__padBboxB) _y_offset -= __paddingB;
             
             //Build a matrix to transform the text...
@@ -2070,7 +2070,7 @@ function __ScribbleClassElementParent(_text) constructor
                 _matrix[@  1] = 0;
                 _matrix[@  4] = 0;
                 _matrix[@  5] = 1;
-                _matrix[@ 12] = _x_offset + _x;
+                _matrix[@ 12] = _xOffset + _x;
                 _matrix[@ 13] = _y_offset + _y;
                 _matrix[@ 14] = __z;
             }
@@ -2087,8 +2087,8 @@ function __ScribbleClassElementParent(_text) constructor
                 _matrix[@  1] =  _xSin;
                 _matrix[@  4] = -_ySin;
                 _matrix[@  5] =  _yCos;
-                _matrix[@ 12] =  _x + (_x_offset*_xCos - _y_offset*_ySin);
-                _matrix[@ 13] =  _y + (_x_offset*_xSin + _y_offset*_yCos);
+                _matrix[@ 12] =  _x + (_xOffset*_xCos - _y_offset*_ySin);
+                _matrix[@ 13] =  _y + (_xOffset*_xSin + _y_offset*_yCos);
                 _matrix[@ 14] =  __z;
             }
         }

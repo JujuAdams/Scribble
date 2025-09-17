@@ -4,5 +4,5 @@
 function scribble_font_get_default()
 {
     static _scribbleState = __ScribbleSystem().__state;
-    return _scribbleState.__default_font;
+    return _scribbleState.__defaultFont;
 }

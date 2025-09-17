@@ -6,23 +6,23 @@ function __ScribbleEnsureCycleSurface()
     
     with(_system)
     {
-        if (not surface_exists(__cycle_surface))
+        if (not surface_exists(__cycleSurface))
         {
-            __cycle_surface = surface_create(SCRIBBLE_CYCLE_TEXTURE_WIDTH, SCRIBBLE_CYCLE_TEXTURE_HEIGHT);
+            __cycleSurface = surface_create(SCRIBBLE_CYCLE_TEXTURE_WIDTH, SCRIBBLE_CYCLE_TEXTURE_HEIGHT);
             
-            surface_set_target(__cycle_surface);
+            surface_set_target(__cycleSurface);
             draw_clear(c_white);
             
-            var _key = ds_map_find_first(__cycle_data_map);
-            repeat(array_length(ds_map_size(__cycle_data_map)))
+            var _key = ds_map_find_first(__cycleDataMap);
+            repeat(array_length(ds_map_size(__cycleDataMap)))
             {
                 __ScribbleDrawCycle(_key);
-                _key = ds_map_find_next(__cycle_data_map, _key);
+                _key = ds_map_find_next(__cycleDataMap, _key);
             }
             
             surface_reset_target();
         }
         
-        return __cycle_surface;
+        return __cycleSurface;
     }
 }

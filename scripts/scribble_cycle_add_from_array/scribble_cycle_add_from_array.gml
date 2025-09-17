@@ -8,11 +8,11 @@
 function scribble_cycle_add_from_array(_name, _rgbArray, _smooth = true, _legacyBlend = false)
 {
     static _data_open_array = __ScribbleSystem().__cycle_data_open_array;
-    static _data_map        = __ScribbleSystem().__cycle_data_map;
+    static _dataMap        = __ScribbleSystem().__cycleDataMap;
     
-    if (ds_map_exists(_data_map, _name))
+    if (ds_map_exists(_dataMap, _name))
     {
-        var _data = _data_map[? _name];
+        var _data = _dataMap[? _name];
         var _index = _data.__index;
     }
     else
@@ -20,11 +20,11 @@ function scribble_cycle_add_from_array(_name, _rgbArray, _smooth = true, _legacy
         var _index = array_pop(_data_open_array);
         if (_index == undefined)
         {
-            _index = ds_map_size(_data_map);
+            _index = ds_map_size(_dataMap);
         }
     }
     
-    _data_map[? _name] = {
+    _dataMap[? _name] = {
         __index:       _index,
         __data:        _rgbArray,
         __image:       0,

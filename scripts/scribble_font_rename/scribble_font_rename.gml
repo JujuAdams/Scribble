@@ -12,5 +12,5 @@ function scribble_font_rename(_old, _new)
     ds_map_delete(_fontDataMap, _old);
     
     var _scribbleState = __ScribbleSystem().__state;
-    if (_scribbleState.__default_font == _old) _scribbleState.__default_font = _new;
+    if (_scribbleState.__defaultFont == _old) _scribbleState.__defaultFont = _new;
 }

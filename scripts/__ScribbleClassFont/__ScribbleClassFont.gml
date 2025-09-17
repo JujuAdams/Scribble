@@ -36,7 +36,7 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
     __kerningMap    = ds_map_create();
     __ligatureMap   = ds_map_create();
     
-    __is_krutidev = false;
+    __isKrutidev = false;
     __bilinear    = (__renderType == __SCRIBBLE_RENDER_SDF)? true : undefined;
     
     __superfont    = false;

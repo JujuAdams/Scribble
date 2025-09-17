@@ -3,7 +3,7 @@
 function __ScribbleGlyphDataInitialize()
 {
     var _data_struct = {
-        __bidi_map   : ds_map_create(),
+        __bidiMap   : ds_map_create(),
         __mirror_map : ds_map_create(),
         
         __arabic_isolated_map  : ds_map_create(),
@@ -32,7 +32,7 @@ function __ScribbleGlyphDataInitialize()
     #macro __SCRIBBLE_BIDI_R2L             6
     #macro __SCRIBBLE_BIDI_R2L_ARABIC      7 //Cursive. Animation indexes are calculated per word
     
-    var _map = _data_struct.__bidi_map;
+    var _map = _data_struct.__bidiMap;
     _map[? __SCRIBBLE_GLYPH_REPL_SPRITE ] = __SCRIBBLE_BIDI_SYMBOL;
     _map[? __SCRIBBLE_GLYPH_REPL_SURFACE] = __SCRIBBLE_BIDI_SYMBOL;
     for(var _i = 0x0000; _i <= 0x0009; _i++) _map[? _i] = __SCRIBBLE_BIDI_SYMBOL;
