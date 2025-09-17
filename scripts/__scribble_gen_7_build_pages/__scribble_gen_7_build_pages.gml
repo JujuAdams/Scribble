@@ -7,7 +7,7 @@ function __scribble_gen_7_build_pages()
     with(_generatorState)
     {
         var _modelMaxHeight  = __modelMaxHeight;
-        var _line_array      = __line_array;
+        var _lineArray      = __line_array;
     }
     
     var _layoutMaxHeight       = __layoutMaxHeight;
@@ -32,9 +32,9 @@ function __scribble_gen_7_build_pages()
     var _width = 0;
     
     var _line = 0;
-    repeat(array_length(_line_array))
+    repeat(array_length(_lineArray))
     {
-        var _lineStruct = _line_array[_line];
+        var _lineStruct = _lineArray[_line];
         
         if (not _skippingLines)
         {

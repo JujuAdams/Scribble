@@ -180,7 +180,7 @@ function __scribble_system(_calledFromInitialize = false)
             __shader_anim_default:           false,
             __shader_anim_disabled:          false,
             
-            __sdf_thickness_offset: 0,
+            __sdfThicknessOffset: 0,
             
             __markdown_styles_struct: {},
             

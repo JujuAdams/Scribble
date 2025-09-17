@@ -4,21 +4,21 @@
                                     var _quad_r = _vbuff_pos_grid[# _glyphIndex, __SCRIBBLE_GEN_VBUFF_POS_QUAD_R];\
                                     var _quad_b = _vbuff_pos_grid[# _glyphIndex, __SCRIBBLE_GEN_VBUFF_POS_QUAD_B];\
                                     \
-                                    var _material = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_MATERIAL];\
-                                    var _quad_u0  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_U0];\
-                                    var _quad_v0  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_V0];\
-                                    var _quad_u1  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_U1];\
-                                    var _quad_v1  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_V1];\
+                                    var _material = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_MATERIAL];\
+                                    var _quad_u0  = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_U0];\
+                                    var _quad_v0  = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_V0];\
+                                    var _quad_u1  = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_U1];\
+                                    var _quad_v1  = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_V1];\
                                     \
-                                    var _half_w = 0.5*_glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_WIDTH ];\
-                                    var _half_h = 0.5*_glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_HEIGHT];
+                                    var _half_w = 0.5*_glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_WIDTH ];\
+                                    var _half_h = 0.5*_glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_HEIGHT];
 
 
 
 #macro __SCRIBBLE_VBUFF_WRITE_GLYPH  if (_material != _material_prev)\ //Swap vertex buffer if the material has changed
                                      {\
                                          _material_prev = _material;\
-                                         _vbuff = _pageData.__get_vertex_buffer(_material);\
+                                         _vbuff = _pageData.__GetVertexBuffer(_material);\
                                      }\
                                      if (_bezier_do)\
                                      {\
@@ -75,10 +75,10 @@ function __scribble_gen_10_write_vbuffs()
     {
         var _vbuff_pos_grid = __vbuff_pos_grid;
         var _controlArray   = __controlArray;
-        var _glyph_grid     = __glyph_grid;
+        var _glyphGrid     = __glyphGrid;
         var _word_grid      = __word_grid;
-        var _line_array     = __line_array;
-        var _glyphCount    = __glyph_count;
+        var _lineArray     = __line_array;
+        var _glyphCount    = __glyphCount;
     }
     
     var _text_getter       = __allowTextGetter;
@@ -87,13 +87,13 @@ function __scribble_gen_10_write_vbuffs()
     
     
     //Copy the x/y offset into the quad LTRB
-    ds_grid_set_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH_X, _glyphCount-1, __SCRIBBLE_GEN_GLYPH_Y, 0, __SCRIBBLE_GEN_VBUFF_POS_QUAD_L);
-    ds_grid_set_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH_X, _glyphCount-1, __SCRIBBLE_GEN_GLYPH_Y, 0, __SCRIBBLE_GEN_VBUFF_POS_QUAD_R);
+    ds_grid_set_grid_region(_vbuff_pos_grid, _glyphGrid, 0, __SCRIBBLE_GEN_GLYPH_X, _glyphCount-1, __SCRIBBLE_GEN_GLYPH_Y, 0, __SCRIBBLE_GEN_VBUFF_POS_QUAD_L);
+    ds_grid_set_grid_region(_vbuff_pos_grid, _glyphGrid, 0, __SCRIBBLE_GEN_GLYPH_X, _glyphCount-1, __SCRIBBLE_GEN_GLYPH_Y, 0, __SCRIBBLE_GEN_VBUFF_POS_QUAD_R);
     
     //Then add the deltas to give us the final quad LTRB positions
     //Note that the delta are already scaled via font scale / scaling tags etc
-    ds_grid_add_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH_WIDTH,   _glyphCount-1, __SCRIBBLE_GEN_GLYPH_WIDTH,   0, __SCRIBBLE_GEN_VBUFF_POS_QUAD_R);
-    ds_grid_add_grid_region(_vbuff_pos_grid, _glyph_grid, 0, __SCRIBBLE_GEN_GLYPH_HEIGHT,  _glyphCount-1, __SCRIBBLE_GEN_GLYPH_HEIGHT,  0, __SCRIBBLE_GEN_VBUFF_POS_QUAD_B);
+    ds_grid_add_grid_region(_vbuff_pos_grid, _glyphGrid, 0, __SCRIBBLE_GEN_GLYPH_WIDTH,   _glyphCount-1, __SCRIBBLE_GEN_GLYPH_WIDTH,   0, __SCRIBBLE_GEN_VBUFF_POS_QUAD_R);
+    ds_grid_add_grid_region(_vbuff_pos_grid, _glyphGrid, 0, __SCRIBBLE_GEN_GLYPH_HEIGHT,  _glyphCount-1, __SCRIBBLE_GEN_GLYPH_HEIGHT,  0, __SCRIBBLE_GEN_VBUFF_POS_QUAD_B);
     
     
     
@@ -138,7 +138,7 @@ function __scribble_gen_10_write_vbuffs()
         var _region_bbox_array = [];
         
         var _vbuff_pos_grid = _generatorState.__vbuff_pos_grid;
-        var _line_array     = _generatorState.__line_array;
+        var _lineArray     = _generatorState.__line_array;
         var _word_grid      = _generatorState.__word_grid;
         
         var _line = 0;
@@ -147,7 +147,7 @@ function __scribble_gen_10_write_vbuffs()
         
         while(_region_end >= _region_bbox_start)
         {
-            _region_bbox_end = min(_region_end, _word_grid[# _line_array[_line].wordEnd, __SCRIBBLE_GEN_WORD_GLYPH_END]);
+            _region_bbox_end = min(_region_end, _word_grid[# _lineArray[_line].wordEnd, __SCRIBBLE_GEN_WORD_GLYPH_END]);
             
             if (_region_bbox_start <= _region_bbox_end)
             {
@@ -167,7 +167,7 @@ function __scribble_gen_10_write_vbuffs()
         }
         
         //N.B. This array is exposed to the end-user via .region_get_bboxes()
-        array_push(_pageData.__region_array, {
+        array_push(_pageData.__regionArray, {
             name        : _region_name,
             bbox_array  : _region_bbox_array,
             start_glyph : _region_start - _pageData.__glyphStart,
@@ -179,7 +179,7 @@ function __scribble_gen_10_write_vbuffs()
     repeat(__pages)
     {
         var _pageData        = __pagesArray[_pageIndex];
-        var _page_events_dict = _pageData.__events_dict;
+        var _page_events_dict = _pageData.__eventsDict;
         var _vbuff            = undefined;
         var _material_prev    = undefined;
         var _animation_index  = 0;
@@ -189,10 +189,10 @@ function __scribble_gen_10_write_vbuffs()
         {
             with(_pageData)
             {
-                __ensure_glyph_grid();
-                ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyphStart, __SCRIBBLE_GEN_GLYPH_UNICODE, __glyph_end, __SCRIBBLE_GEN_GLYPH_UNICODE, 0, __SCRIBBLE_GLYPH_LAYOUT_UNICODE);
-                ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyphStart, __SCRIBBLE_GEN_GLYPH_Y, __glyph_end, __SCRIBBLE_GEN_GLYPH_Y, 0, __SCRIBBLE_GLYPH_LAYOUT_Y_OFFSET);
-                ds_grid_set_grid_region(__glyph_grid, _vbuff_pos_grid, __glyphStart, 0, __glyph_end, __SCRIBBLE_GEN_VBUFF_POS_SIZE-1, 0, __SCRIBBLE_GLYPH_LAYOUT_LEFT);
+                __EnsureGlyphGrid();
+                ds_grid_set_grid_region(__glyphGrid, _glyphGrid, __glyphStart, __SCRIBBLE_GEN_GLYPH_UNICODE, __glyphEnd, __SCRIBBLE_GEN_GLYPH_UNICODE, 0, __SCRIBBLE_GLYPH_LAYOUT_UNICODE);
+                ds_grid_set_grid_region(__glyphGrid, _glyphGrid, __glyphStart, __SCRIBBLE_GEN_GLYPH_Y, __glyphEnd, __SCRIBBLE_GEN_GLYPH_Y, 0, __SCRIBBLE_GLYPH_LAYOUT_Y_OFFSET);
+                ds_grid_set_grid_region(__glyphGrid, _vbuff_pos_grid, __glyphStart, 0, __glyphEnd, __SCRIBBLE_GEN_VBUFF_POS_SIZE-1, 0, __SCRIBBLE_GLYPH_LAYOUT_LEFT);
             }
         }
         
@@ -202,9 +202,9 @@ function __scribble_gen_10_write_vbuffs()
         }
         
         var _lineIndex = _pageData.__lineStart;
-        repeat(_pageData.__line_count)
+        repeat(_pageData.__lineCount)
         {
-            var _lineStruct = _line_array[_lineIndex];
+            var _lineStruct = _lineArray[_lineIndex];
             var _lineY = _lineStruct.y;
             
             var _glyphStart = _word_grid[# _lineStruct.wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START];
@@ -213,12 +213,12 @@ function __scribble_gen_10_write_vbuffs()
             var _glyphIndex = _glyphStart;
             repeat(1 + _glyphEnd - _glyphStart)
             {
-                var _animation_index = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX];
-                var _reveal_index    = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX   ];
+                var _animation_index = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX];
+                var _reveal_index    = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX   ];
                 
                 #region Read controls
                 
-                var _control_delta = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] - _control_index;
+                var _control_delta = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] - _control_index;
                 repeat(_control_delta)
                 {
                     var _controlStruct = _controlArray[_control_index];
@@ -292,7 +292,7 @@ function __scribble_gen_10_write_vbuffs()
                 
                 #endregion
                 
-                var _glyph_ord = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_UNICODE];
+                var _glyph_ord = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_UNICODE];
                 if (_glyph_ord >= 0)
                 {
                     if (_text_getter)
@@ -315,11 +315,11 @@ function __scribble_gen_10_write_vbuffs()
                         buffer_write(_string_buffer, buffer_u8, SCRIBBLE_UNICODE_SUB);
                     }
                     
-                    var _glyph_x      = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_X          ];
-                    var _glyph_y      = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_Y          ];
-                    var _glyph_width  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_WIDTH      ];
-                    var _glyph_height = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_HEIGHT     ];
-                    var _sprite_data  = _glyph_grid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_SPRITE_DATA];
+                    var _glyph_x      = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_X          ];
+                    var _glyph_y      = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_Y          ];
+                    var _glyph_width  = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_WIDTH      ];
+                    var _glyph_height = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_HEIGHT     ];
+                    var _sprite_data  = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_SPRITE_DATA];
                     
                     var _sprite_index = _sprite_data.__spriteIndex;
                     var _image_index  = _sprite_data.__imageIndex;
@@ -529,7 +529,7 @@ function __scribble_gen_10_write_vbuffs()
     }
     
     //Sweep up any remaining events
-    var _control_delta = _glyph_grid[# _glyphIndex-1, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] - _control_index;
+    var _control_delta = _glyphGrid[# _glyphIndex-1, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] - _control_index;
     repeat(_control_delta)
     {
         var _controlStruct = _controlArray[_control_index];

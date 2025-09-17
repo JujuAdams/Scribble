@@ -4,13 +4,13 @@
 /// @param hAlign
 /// @param offset
 
-function scribble_font_set_halign_offset(_font, _halign, _offset)
+function scribble_font_set_halign_offset(_font, _hAlign, _offset)
 {
-    if (_halign == "pin_left"  ) _halign = __SCRIBBLE_PIN_LEFT;
-    if (_halign == "pin_centre") _halign = __SCRIBBLE_PIN_CENTRE;
-    if (_halign == "pin_center") _halign = __SCRIBBLE_PIN_CENTRE;
-    if (_halign == "pin_right" ) _halign = __SCRIBBLE_PIN_RIGHT;
-    if (_halign == "fa_justify") _halign = __SCRIBBLE_FA_JUSTIFY;
+    if (_hAlign == "pin_left"  ) _hAlign = __SCRIBBLE_PIN_LEFT;
+    if (_hAlign == "pin_centre") _hAlign = __SCRIBBLE_PIN_CENTRE;
+    if (_hAlign == "pin_center") _hAlign = __SCRIBBLE_PIN_CENTRE;
+    if (_hAlign == "pin_right" ) _hAlign = __SCRIBBLE_PIN_RIGHT;
+    if (_hAlign == "fa_justify") _hAlign = __SCRIBBLE_FA_JUSTIFY;
     
-    __scribble_get_font_data(_font).__halignOffsetArray[_halign] = _offset;
+    __scribble_get_font_data(_font).__halignOffsetArray[_hAlign] = _offset;
 }

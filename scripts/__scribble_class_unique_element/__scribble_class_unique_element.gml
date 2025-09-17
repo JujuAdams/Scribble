@@ -534,7 +534,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         if (array_length(_pages_array) <= __page) return 0;
         var _pageData = _pages_array[__page];
         
-        return _pageData.__reveal_count;
+        return _pageData.__revealCount;
     }
     
     static get_state = function()
@@ -876,7 +876,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         var _pages_array = _model.__pagesArray;
         if (array_length(_pages_array) == 0) return;
         var _pageData = _pages_array[__page];
-        var _pageRevealCount = _pageData.__reveal_count;
+        var _pageRevealCount = _pageData.__revealCount;
         
         var _functionScope = __functionScope ?? _inFunctionScope;
         
@@ -1061,12 +1061,12 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
                                     //Always delay the last character if we find events to execute at the end of the page
                                     if ((__typistEventRevealIndex < _pageRevealCount-1) || (_foundEventsCount > 0))
                                     {
-                                        var _glyph_ord = _pageData.__glyph_grid[# __typistEventRevealIndex-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
+                                        var _glyph_ord = _pageData.__glyphGrid[# __typistEventRevealIndex-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
                                         var _delay = __characterDelayDict[$ _glyph_ord] ?? 0;
                                         
                                         if (__typistEventRevealIndex >= 2)
                                         {
-                                            _glyph_ord = (_glyph_ord << 32) | _pageData.__glyph_grid[# __typistEventRevealIndex-2, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
+                                            _glyph_ord = (_glyph_ord << 32) | _pageData.__glyphGrid[# __typistEventRevealIndex-2, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
                                             var _double_char_delay = __characterDelayDict[$ _glyph_ord];
                                             _double_char_delay = (_double_char_delay == undefined)? 0 : _double_char_delay;
                                             
@@ -1124,7 +1124,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
                             if (not __typistSkip)
                             {
                                 //Only play sound once per frame if we're going reaaaally fast
-                                __PlaySound(_eventRevealIndex, _useGlyphData? (_pageData.__glyph_grid[# _eventRevealIndex-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE]) : 0);
+                                __PlaySound(_eventRevealIndex, _useGlyphData? (_pageData.__glyphGrid[# _eventRevealIndex-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE]) : 0);
                             }
                         }
                         else
@@ -1206,7 +1206,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
                     _headPos = _headPosFloor;
                 }
                 
-                if ((_headPosFloor <= 0) || (_headPosFloor >= _pageData.__reveal_count))
+                if ((_headPosFloor <= 0) || (_headPosFloor >= _pageData.__revealCount))
                 {
                     shader_set_uniform_f(_u_vTypewriterOffsetRange, 0, 0, 0);
                 }
@@ -1217,7 +1217,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
                         __scribble_error("Must use `SCRIBBLE_REVEAL_PER_CHAR` with dynamic positioning");
                     }
                     
-                    var _lineDataArray = _pageData.__line_data_array;
+                    var _lineDataArray = _pageData.__lineDataArray;
                     var _i = 0;
                     repeat(array_length(_lineDataArray))
                     {
@@ -1230,15 +1230,15 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
                         ++_i;
                     }
                     
-                    var _halign = _lineData.hAlign;
+                    var _hAlign = _lineData.hAlign;
                     
-                    if ((_halign == fa_left) || (_halign == __SCRIBBLE_FA_JUSTIFY) || (_halign == __SCRIBBLE_PIN_LEFT))
+                    if ((_hAlign == fa_left) || (_hAlign == __SCRIBBLE_FA_JUSTIFY) || (_hAlign == __SCRIBBLE_PIN_LEFT))
                     {
                         shader_set_uniform_f(_u_vTypewriterOffsetRange, 0, 0, 0);
                     }
                     else
                     {
-                        if ((_halign == fa_center) || (_halign == __SCRIBBLE_PIN_CENTRE))
+                        if ((_hAlign == fa_center) || (_hAlign == __SCRIBBLE_PIN_CENTRE))
                         {
                             var _glyphDataStart = get_glyph_data(_lineData.glyphStart);
                             var _glyphDataA     = get_glyph_data(_headPosFloor-1);
@@ -1247,18 +1247,18 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
                             var _offsetB = -0.5*(_glyphDataStart.left + _glyphDataB.right);
                             var _offset = lerp(_offsetA, _offsetB, frac(_headPos));
                             
-                            if (_halign == __SCRIBBLE_PIN_CENTRE)
+                            if (_hAlign == __SCRIBBLE_PIN_CENTRE)
                             {
                                 _offset += 0.5*get_width();
                             }
                         }
-                        else if ((_halign == fa_right) || (_halign == __SCRIBBLE_PIN_RIGHT))
+                        else if ((_hAlign == fa_right) || (_hAlign == __SCRIBBLE_PIN_RIGHT))
                         {
                             var _glyphDataA = get_glyph_data(_headPosFloor-1);
                             var _glyphDataB = get_glyph_data(min(_lineData.glyph_end, _headPosFloor+1)-1);
                             var _offset = -lerp(_glyphDataA.right, _glyphDataB.right, frac(_headPos));
                             
-                            if (_halign == __SCRIBBLE_PIN_RIGHT)
+                            if (_hAlign == __SCRIBBLE_PIN_RIGHT)
                             {
                                 _offset += get_width();
                             }

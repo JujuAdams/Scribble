@@ -8,30 +8,30 @@
                                 \
                                 if (_word_bidi == __SCRIBBLE_BIDI_R2L_ARABIC)\ //Arabic visually groups glyphs together into words
                                 {\
-                                    ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_X, abs(_word_width));\
-                                    ds_grid_set_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _word_glyph_end, _gridRegionWriteMax, _word_glyph_start);\
+                                    ds_grid_add_region(_glyphGrid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_X, abs(_word_width));\
+                                    ds_grid_set_region(_glyphGrid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _word_glyph_end, _gridRegionWriteMax, _word_glyph_start);\
                                     _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_BIDI] = __SCRIBBLE_BIDI_R2L;\ //For the purposes for further text layout, force this bidi to generic R2L
                                 }\
                                 else if (_word_bidi == __SCRIBBLE_BIDI_L2R_DEVANAGARI)\ //Devanagari also visually groups glyphs together into words
                                 {\
-                                    ds_grid_set_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _word_glyph_end, _gridRegionWriteMax, _word_glyph_start);\
+                                    ds_grid_set_region(_glyphGrid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _word_glyph_end, _gridRegionWriteMax, _word_glyph_start);\
                                 }\
                                 else\
                                 {\
                                     if (_word_reveal)\
                                     {\
-                                        ds_grid_set_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _word_glyph_start);\
+                                        ds_grid_set_region(_glyphGrid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _word_glyph_start);\
                                     }\
                                     \
                                     if (_word_bidi == __SCRIBBLE_BIDI_R2L)\ //Any R2L languages, apart from Arabic
                                     {\
-                                        ds_grid_add_region(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_X, abs(_word_width));\
+                                        ds_grid_add_region(_glyphGrid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_X, abs(_word_width));\
                                     }\
                                 }\
                                 \
                                 _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_GLYPH_END   ] = _word_glyph_end;\
                                 _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_WIDTH       ] = abs(_word_width);\
-                                _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_HEIGHT      ] = ds_grid_get_max(_glyph_grid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT);\
+                                _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_HEIGHT      ] = ds_grid_get_max(_glyphGrid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT);\
                                 \
                                 _word_count++;
 
@@ -49,9 +49,9 @@ function __scribble_gen_4_build_words()
     static _generatorState = __scribble_system().__generatorState;
     with(_generatorState)
     {
-        var _glyph_grid   = __glyph_grid;
+        var _glyphGrid   = __glyphGrid;
         var _word_grid    = __word_grid;
-        var _glyphCount  = __glyph_count;
+        var _glyphCount  = __glyphCount;
         var _sectionCount = __sectionCount;
         var _overall_bidi = __overallBidi;
     }
@@ -72,30 +72,30 @@ function __scribble_gen_4_build_words()
     
     if (_glyphCount > 0)
     {
-        var _word_bidi = _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH_BIDI];
+        var _word_bidi = _glyphGrid[# 0, __SCRIBBLE_GEN_GLYPH_BIDI];
         
         __SCRIBBLE_GEN_WORD_START;
         
         if (_word_bidi < __SCRIBBLE_BIDI_R2L) //Any L2R text
         {
-            _word_width += _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH_SEPARATION];
-            _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX] = 0;
+            _word_width += _glyphGrid[# 0, __SCRIBBLE_GEN_GLYPH_SEPARATION];
+            _glyphGrid[# 0, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX] = 0;
             
             if (_char_reveal || _word_reveal)
             {
-                _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX] = 0;
+                _glyphGrid[# 0, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX] = 0;
             }
         }
         else
         {
-            _word_width -= _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH_SEPARATION];
-            _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH_X] += _word_width;
+            _word_width -= _glyphGrid[# 0, __SCRIBBLE_GEN_GLYPH_SEPARATION];
+            _glyphGrid[# 0, __SCRIBBLE_GEN_GLYPH_X] += _word_width;
         }
         
         var _i = 1;
         repeat(_glyphCount-1) //Ensure we fully handle the last word by including the null terminator in this loop
         {
-            var _glyph_bidi = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_BIDI];
+            var _glyph_bidi = _glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_BIDI];
             switch(_glyph_bidi)
             {
                 case __SCRIBBLE_BIDI_WHITESPACE:
@@ -179,9 +179,9 @@ function __scribble_gen_4_build_words()
                             var _j = _word_glyph_start;
                             repeat(_i - _j)
                             {
-                                _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH_X] += _word_width;
-                                _word_width -= _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH_SEPARATION];
-                                _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH_X] += _word_width;
+                                _glyphGrid[# _j, __SCRIBBLE_GEN_GLYPH_X] += _word_width;
+                                _word_width -= _glyphGrid[# _j, __SCRIBBLE_GEN_GLYPH_SEPARATION];
+                                _glyphGrid[# _j, __SCRIBBLE_GEN_GLYPH_X] += _word_width;
                                 ++_j;
                             }
                         }
@@ -195,19 +195,19 @@ function __scribble_gen_4_build_words()
             
             if (_word_bidi < __SCRIBBLE_BIDI_R2L) //Any non-R2L text is laid out left-to-right
             {
-                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_X] += _word_width;
-                _word_width += _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_SEPARATION];
-                ds_grid_set_region(_glyph_grid, _i, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _i, _gridRegionWriteMax, _i);
+                _glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_X] += _word_width;
+                _word_width += _glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_SEPARATION];
+                ds_grid_set_region(_glyphGrid, _i, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _i, _gridRegionWriteMax, _i);
             }
             else // __SCRIBBLE_BIDI_R2L or __SCRIBBLE_BIDI_R2L_ARABIC
             {
-                _word_width -= _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_SEPARATION];
-                _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_X] += _word_width;
+                _word_width -= _glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_SEPARATION];
+                _glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_X] += _word_width;
                 
                 //Only Arabic groups visually glyphs together into words. Other R2L (e.g. Hebrew) doesn't so we can assign animation indexes here
                 if (_word_bidi == __SCRIBBLE_BIDI_R2L)
                 {
-                    ds_grid_set_region(_glyph_grid, _i, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _i, _gridRegionWriteMax, _i);
+                    ds_grid_set_region(_glyphGrid, _i, __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX, _i, _gridRegionWriteMax, _i);
                 }
             }
             

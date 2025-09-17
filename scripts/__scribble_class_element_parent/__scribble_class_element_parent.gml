@@ -210,31 +210,31 @@ function __scribble_class_element_parent(_text) constructor
     
     /// @param halign
     /// @param valign
-    static align = function(_halign = __startingHAlign, _valign = __startingVAlign)
+    static align = function(_hAlign = __startingHAlign, _vAlign = __startingVAlign)
     {
-        if (_halign == "pin_left"  ) _halign = __SCRIBBLE_PIN_LEFT;
-        if (_halign == "pin_centre") _halign = __SCRIBBLE_PIN_CENTRE;
-        if (_halign == "pin_center") _halign = __SCRIBBLE_PIN_CENTRE;
-        if (_halign == "pin_right" ) _halign = __SCRIBBLE_PIN_RIGHT;
-        if (_valign == "pin_top"   ) _valign = __SCRIBBLE_PIN_TOP;
-        if (_valign == "pin_middle") _valign = __SCRIBBLE_PIN_MIDDLE;
-        if (_valign == "pin_bottom") _valign = __SCRIBBLE_PIN_BOTTOM;
-        if (_halign == "fa_justify") _halign = __SCRIBBLE_FA_JUSTIFY;
+        if (_hAlign == "pin_left"  ) _hAlign = __SCRIBBLE_PIN_LEFT;
+        if (_hAlign == "pin_centre") _hAlign = __SCRIBBLE_PIN_CENTRE;
+        if (_hAlign == "pin_center") _hAlign = __SCRIBBLE_PIN_CENTRE;
+        if (_hAlign == "pin_right" ) _hAlign = __SCRIBBLE_PIN_RIGHT;
+        if (_vAlign == "pin_top"   ) _vAlign = __SCRIBBLE_PIN_TOP;
+        if (_vAlign == "pin_middle") _vAlign = __SCRIBBLE_PIN_MIDDLE;
+        if (_vAlign == "pin_bottom") _vAlign = __SCRIBBLE_PIN_BOTTOM;
+        if (_hAlign == "fa_justify") _hAlign = __SCRIBBLE_FA_JUSTIFY;
         
-        if (_halign != __startingHAlign)
+        if (_hAlign != __startingHAlign)
         {
             __modelDirty = true;
             __bbox_dirty             = true;
             
-            __startingHAlign = _halign;
+            __startingHAlign = _hAlign;
         }
         
-        if (_valign != __startingVAlign)
+        if (_vAlign != __startingVAlign)
         {
             __modelDirty = true;
             __bbox_dirty             = true;
             
-            __startingVAlign = _valign;
+            __startingVAlign = _vAlign;
         }
         
         return self;
@@ -525,7 +525,7 @@ function __scribble_class_element_parent(_text) constructor
         }
         else
         {
-            var _lineArray = _model.__pagesArray[__page].__line_data_array;
+            var _lineArray = _model.__pagesArray[__page].__lineDataArray;
             var _i = 0;
             repeat(array_length(_lineArray))
             {
@@ -999,7 +999,7 @@ function __scribble_class_element_parent(_text) constructor
         if (!is_struct(_model)) return undefined;
         
         var _page         = _model.__pagesArray[__page];
-        var _region_array = _page.__region_array;
+        var _region_array = _page.__regionArray;
         
         var _matrix = __update_matrix(_model, _element_x, _element_y);
         
@@ -1055,7 +1055,7 @@ function __scribble_class_element_parent(_text) constructor
         if (!is_struct(_model)) return undefined;
         
         var _page         = _model.__pagesArray[__page];
-        var _region_array = _page.__region_array;
+        var _region_array = _page.__regionArray;
         
         var _i = 0;
         repeat(array_length(_region_array))
@@ -1095,7 +1095,7 @@ function __scribble_class_element_parent(_text) constructor
         var _model = __EnsureModel();
         if (!is_struct(_model)) return _emptyArray;
         
-        return _model.__pagesArray[__page].__region_array;
+        return _model.__pagesArray[__page].__regionArray;
     }
     
     static region_draw = function(_elementX, _elementY, _name, _padding = 0, _sprite = scribble_fallback_dot, _image = 0, _color = c_white, _alpha = 1)
@@ -1104,7 +1104,7 @@ function __scribble_class_element_parent(_text) constructor
         if (!is_struct(_model)) return undefined;
         
         var _page         = _model.__pagesArray[__page];
-        var _region_array = _page.__region_array;
+        var _region_array = _page.__regionArray;
         
         var _i = 0;
         repeat(array_length(_region_array))
@@ -1688,7 +1688,7 @@ function __scribble_class_element_parent(_text) constructor
         if (not is_struct(_model)) return _empty_array;
         
         var _page = _model.__pagesArray[_page_index];
-        var _event_struct = _page.__events_dict;
+        var _event_struct = _page.__eventsDict;
         
         var _events = _event_struct[$ _position];
         if (not is_array(_events)) return _empty_array;

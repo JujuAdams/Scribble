@@ -2,7 +2,7 @@
 
 function __scribble_class_generator_state() constructor
 {
-    __glyph_grid     = ds_grid_create(1000, __SCRIBBLE_GEN_GLYPH_SIZE);
+    __glyphGrid     = ds_grid_create(1000, __SCRIBBLE_GEN_GLYPH_SIZE);
     __controlArray   = [];
     __word_grid      = ds_grid_create(1000, __SCRIBBLE_GEN_WORD_SIZE);
     __line_array     = [];
@@ -18,10 +18,10 @@ function __scribble_class_generator_state() constructor
         array_resize(__controlArray, 0);
         
         //Model class
-        __glyph_count    = 0;
+        __glyphCount    = 0;
         __sectionCount   = 0; // [/section] tags. Optional feature
         __word_count     = 0;
-        __line_count     = 0;
+        __lineCount     = 0;
         __modelMaxWidth  = 0;
         __modelMaxHeight = 0;
         __overallBidi   = undefined;

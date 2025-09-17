@@ -16,9 +16,9 @@ function __scribble_gen_2b_post_parse()
         {
             //Searching until we find a glyph with a well-defined direction
             var _i = 0;
-            repeat(__glyph_count)
+            repeat(__glyphCount)
             {
-                var _glyph_ord = __glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE];
+                var _glyph_ord = __glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE];
                 if (_glyph_ord > 0)
                 {
                     var _bidi = _global_glyph_bidi_map[? _glyph_ord] ?? __SCRIBBLE_BIDI_L2R;
@@ -48,7 +48,7 @@ function __scribble_gen_2b_post_parse()
             _generatorState.__overallBidi = _overall_bidi;
             
             //Make sure the null terminator uses the overall bidi for the algorithm to function properly
-            __glyph_grid[# __glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI] = _overall_bidi;
+            __glyphGrid[# __glyphCount, __SCRIBBLE_GEN_GLYPH_BIDI] = _overall_bidi;
         }
         
         
@@ -63,11 +63,11 @@ function __scribble_gen_2b_post_parse()
             //Find the first text character and use its font height
             var _line_height = undefined;
             var _i = 0;
-            repeat(__glyph_count)
+            repeat(__glyphCount)
             {
-                if (__glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE] > 0)
+                if (__glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE] > 0)
                 {
-                    _line_height = __glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT];
+                    _line_height = __glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT];
                     break;
                 }
                 
@@ -75,9 +75,9 @@ function __scribble_gen_2b_post_parse()
             }
             
             //If we can't find a text character, use the first glyph
-            if ((_line_height == undefined) && (__glyph_count > 0))
+            if ((_line_height == undefined) && (__glyphCount > 0))
             {
-                _line_height = __glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT];
+                _line_height = __glyphGrid[# 0, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT];
             }
             
             //Always fall back on something valid

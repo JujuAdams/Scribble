@@ -290,24 +290,24 @@ function __ScribbleClassModel(_element) constructor
         
         if (not __allowGlyphDataGetter) __scribble_error("Getting the revealed glyph bounding box requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
         
-        var _glyph_grid = __GetGlyphDataGrid(_page);
+        var _glyphGrid = __GetGlyphDataGrid(_page);
         
         var _start = _inStart-1;
         var _end   = _inEnd-1;
         
         if (_end < 0)
         {
-            var _left   = _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT_LEFT  ];
-            var _top    = _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT_TOP   ];
-            var _right  = _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT_LEFT  ];
-            var _bottom = _glyph_grid[# 0, __SCRIBBLE_GLYPH_LAYOUT_BOTTOM];
+            var _left   = _glyphGrid[# 0, __SCRIBBLE_GLYPH_LAYOUT_LEFT  ];
+            var _top    = _glyphGrid[# 0, __SCRIBBLE_GLYPH_LAYOUT_TOP   ];
+            var _right  = _glyphGrid[# 0, __SCRIBBLE_GLYPH_LAYOUT_LEFT  ];
+            var _bottom = _glyphGrid[# 0, __SCRIBBLE_GLYPH_LAYOUT_BOTTOM];
         }
         else
         {
-            var _left   = ds_grid_get_min(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT_LEFT,   _end, __SCRIBBLE_GLYPH_LAYOUT_LEFT  );
-            var _top    = ds_grid_get_min(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT_TOP,    _end, __SCRIBBLE_GLYPH_LAYOUT_TOP   );
-            var _right  = ds_grid_get_max(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT_RIGHT,  _end, __SCRIBBLE_GLYPH_LAYOUT_RIGHT );
-            var _bottom = ds_grid_get_max(_glyph_grid, _start, __SCRIBBLE_GLYPH_LAYOUT_BOTTOM, _end, __SCRIBBLE_GLYPH_LAYOUT_BOTTOM);
+            var _left   = ds_grid_get_min(_glyphGrid, _start, __SCRIBBLE_GLYPH_LAYOUT_LEFT,   _end, __SCRIBBLE_GLYPH_LAYOUT_LEFT  );
+            var _top    = ds_grid_get_min(_glyphGrid, _start, __SCRIBBLE_GLYPH_LAYOUT_TOP,    _end, __SCRIBBLE_GLYPH_LAYOUT_TOP   );
+            var _right  = ds_grid_get_max(_glyphGrid, _start, __SCRIBBLE_GLYPH_LAYOUT_RIGHT,  _end, __SCRIBBLE_GLYPH_LAYOUT_RIGHT );
+            var _bottom = ds_grid_get_max(_glyphGrid, _start, __SCRIBBLE_GLYPH_LAYOUT_BOTTOM, _end, __SCRIBBLE_GLYPH_LAYOUT_BOTTOM);
         }
         
         if (__padBboxL) _left   -= _paddingL; else _right  += _paddingL;
@@ -419,7 +419,7 @@ function __ScribbleClassModel(_element) constructor
         if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
         
-        return __pagesArray[_page].__line_count;
+        return __pagesArray[_page].__lineCount;
     }
     
     static __GetLinesVisible = function(_integer)
@@ -435,7 +435,7 @@ function __ScribbleClassModel(_element) constructor
         if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
         
         //N.B. Off by one since we consider the terminating null as a glyph for the purposes of typists
-        return __pagesArray[_page].__glyph_count-1;
+        return __pagesArray[_page].__glyphCount-1;
     }
     
     static __GetGlyphDataGrid = function(_page)
@@ -445,14 +445,14 @@ function __ScribbleClassModel(_element) constructor
         
         if (not __allowGlyphDataGetter) __scribble_error("Getting glyph data requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
         
-        return __pagesArray[_page].__glyph_grid;
+        return __pagesArray[_page].__glyphGrid;
     }
     
     static __AddPage = function(_lineStart)
     {
         static _generatorState = __scribble_system().__generatorState;
         
-        var _pageData = new __scribble_class_page(self);
+        var _pageData = new __ScribbleClassPage(self);
         _pageData.__lineStart  = _lineStart
         _pageData.__glyphStart = _generatorState.__word_grid[# _generatorState.__line_array[_lineStart].wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START];
         
