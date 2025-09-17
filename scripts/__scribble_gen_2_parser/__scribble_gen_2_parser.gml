@@ -35,7 +35,7 @@
                                       \//If our glyph is missing, choose the missing character glyph instead!
                                       if (_data_index == undefined)\
                                       {\
-                                          __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_font_name) + "\"");\
+                                          __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_fontName) + "\"");\
                                           _data_index = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];\
                                       }\
                                       \//Add this glyph to our grid by copying from the font's own glyph data grid
@@ -55,7 +55,7 @@
 
 #macro __SCRIBBLE_PARSER_SET_FONT   __SCRIBBLE_PARSER_POP_ALIGNMENT_OFFSET\
                                     \
-                                    var _font_data = __scribble_get_font_data(_font_name);\
+                                    var _font_data = __scribble_get_font_data(_fontName);\
                                     _font_data.__EnsureTexelData();\
                                     if (_font_data.__superfont) _font_data.__EnsureAdditionalCharacters();\
                                     if (_font_data.__is_krutidev) __hasDevanagari = true;\
@@ -73,14 +73,14 @@
                                     var _space_data_index = _font_glyphs_map[? SCRIBBLE_UNICODE_SPACE];\
                                     if (_space_data_index == undefined)\
                                     {\
-                                        __scribble_error("The space character is missing from font definition for \"", _font_name, "\"");\
+                                        __scribble_error("The space character is missing from font definition for \"", _fontName, "\"");\
                                         return false;\
                                     }\
                                     \
                                     var _font_space_width = _font_glyph_data_grid[# _space_data_index, __SCRIBBLE_GLYPH_PROPR_SEPARATION];\
                                     var _font_line_height = _font_data.__height;\
                                     \
-                                    array_push(_controlArray, new __scribble_class_control_font(_font_name));\
+                                    array_push(_controlArray, new __scribble_class_control_font(_fontName));\
                                     ++_controlCount;
 
 
@@ -197,7 +197,7 @@ function __scribble_gen_2_parser()
     if (_starting_font == undefined) __scribble_error("The default font has not been set\nCheck that you've added fonts to Scribble (scribble_font_add() / scribble_font_add_from_sprite() etc.)");
     
     _starting_font = scribble_font_get_remap(_starting_font);
-    var _font_name = _starting_font;
+    var _fontName = _starting_font;
     
     //Run the pre-processor
     _element_text = ((__preprocessorFunc ?? _system.__defaultPreprocessorFunc)(_element_text)) ?? _element_text;
@@ -337,9 +337,9 @@ function __scribble_gen_2_parser()
                             
                             __SCRIBBLE_PARSER_PUSH_SCALE;
                             
-                            if (_font_name != _starting_font)
+                            if (_fontName != _starting_font)
                             {
-                                _font_name = _starting_font; //Starting font already remapped
+                                _fontName = _starting_font; //Starting font already remapped
                                 __SCRIBBLE_PARSER_SET_FONT;
                             }
                             
@@ -360,9 +360,9 @@ function __scribble_gen_2_parser()
                         // [/font]
                         // [/f]
                         case 1:
-                            if (_font_name != _starting_font)
+                            if (_fontName != _starting_font)
                             {
-                                _font_name = _starting_font; //Starting font already remapped
+                                _fontName = _starting_font; //Starting font already remapped
                                 __SCRIBBLE_PARSER_SET_FONT;
                             }
                         break;
@@ -733,15 +733,15 @@ function __scribble_gen_2_parser()
                             var _new_font = _font_data.__styleRegular;
                             if (_new_font == undefined)
                             {
-                                __scribble_trace("Regular style not set for font \"", _font_name, "\"");
+                                __scribble_trace("Regular style not set for font \"", _fontName, "\"");
                             }
                             else if (!ds_map_exists(_fontDataMap, _new_font))
                             {
-                                __scribble_trace("Font \"", _font_name, "\" not found (regular style for \"", _font_name, "\")");
+                                __scribble_trace("Font \"", _fontName, "\" not found (regular style for \"", _fontName, "\")");
                             }
                             else
                             {
-                                _font_name = scribble_font_get_remap(_new_font);
+                                _fontName = scribble_font_get_remap(_new_font);
                                 __SCRIBBLE_PARSER_SET_FONT;
                                 __SCRIBBLE_PARSER_PUSH_SCALE;
                             }
@@ -753,15 +753,15 @@ function __scribble_gen_2_parser()
                             var _new_font = _font_data.__styleBold;
                             if (_new_font == undefined)
                             {
-                                __scribble_trace("Bold style not set for font \"", _font_name, "\"");
+                                __scribble_trace("Bold style not set for font \"", _fontName, "\"");
                             }
                             else if (!ds_map_exists(_fontDataMap, _new_font))
                             {
-                                __scribble_trace("Font \"", _font_name, "\" not found (bold style for \"", _font_name, "\")");
+                                __scribble_trace("Font \"", _fontName, "\" not found (bold style for \"", _fontName, "\")");
                             }
                             else
                             {
-                                _font_name = scribble_font_get_remap(_new_font);
+                                _fontName = scribble_font_get_remap(_new_font);
                                 __SCRIBBLE_PARSER_SET_FONT;
                             }
                         break;
@@ -772,15 +772,15 @@ function __scribble_gen_2_parser()
                             var _new_font = _font_data.__styleItalic;
                             if (_new_font == undefined)
                             {
-                                __scribble_trace("Italic style not set for font \"", _font_name, "\"");
+                                __scribble_trace("Italic style not set for font \"", _fontName, "\"");
                             }
                             else if (!ds_map_exists(_fontDataMap, _new_font))
                             {
-                                __scribble_trace("Font \"", _font_name, "\" not found (italic style for \"", _font_name, "\")");
+                                __scribble_trace("Font \"", _fontName, "\" not found (italic style for \"", _fontName, "\")");
                             }
                             else
                             {
-                                _font_name = scribble_font_get_remap(_new_font);
+                                _fontName = scribble_font_get_remap(_new_font);
                                 __SCRIBBLE_PARSER_SET_FONT;
                             }
                         break;
@@ -791,15 +791,15 @@ function __scribble_gen_2_parser()
                             var _new_font = _font_data.__styleBoldItalic;
                             if (_new_font == undefined)
                             {
-                                __scribble_trace("Bold-Italic style not set for font \"", _font_name, "\"");
+                                __scribble_trace("Bold-Italic style not set for font \"", _fontName, "\"");
                             }
                             else if (!ds_map_exists(_fontDataMap, _new_font))
                             {
-                                __scribble_trace("Font \"", _font_name, "\" not found (bold-italic style for \"", _font_name, "\")");
+                                __scribble_trace("Font \"", _fontName, "\" not found (bold-italic style for \"", _fontName, "\")");
                             }
                             else
                             {
-                                _font_name = scribble_font_get_remap(_new_font);
+                                _fontName = scribble_font_get_remap(_new_font);
                                 __SCRIBBLE_PARSER_SET_FONT;
                             }
                         break;
@@ -1051,7 +1051,7 @@ function __scribble_gen_2_parser()
                             }                        
                             else if (ds_map_exists(_fontDataMap, _tag_command_name)) //Change font
                             {
-                                _font_name = scribble_font_get_remap(_tag_command_name);
+                                _fontName = scribble_font_get_remap(_tag_command_name);
                                 __SCRIBBLE_PARSER_SET_FONT;
                             }
                             else

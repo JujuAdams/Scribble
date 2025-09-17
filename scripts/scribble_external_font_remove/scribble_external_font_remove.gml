@@ -7,21 +7,21 @@
 /// 
 /// @param fontName
 
-function scribble_external_font_remove(_font_name)
+function scribble_external_font_remove(_fontName)
 {
     static _fontDataMap = __scribble_system().__fontDataMap;
     
-    if (not ds_map_exists(_fontDataMap, _font_name))
+    if (not ds_map_exists(_fontDataMap, _fontName))
     {
-        __scribble_trace($"Warning! Font \"{_font_name}\" has already been removed");
+        __scribble_trace($"Warning! Font \"{_fontName}\" has already been removed");
         return;
     }
     
-    var _font_data = _fontDataMap[? _font_name];
+    var _font_data = _fontDataMap[? _fontName];
     
     if (_font_data.__fromBundle)
     {
-        __scribble_error($"Cannot remove font \"{_font_name}\"\nIt was not added using `scribble_external_font_add()`");
+        __scribble_error($"Cannot remove font \"{_fontName}\"\nIt was not added using `scribble_external_font_add()`");
         return;
     }
     

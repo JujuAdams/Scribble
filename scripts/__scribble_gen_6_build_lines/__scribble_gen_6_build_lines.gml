@@ -18,7 +18,7 @@
                                  break;\
                              }\
                              \
-                             _lineStruct = new __scribble_class_line(_indent_x, _line_height, _line_word_start, _state_halign, _forced_break);\
+                             _lineStruct = new __ScribbleClassLine(_indent_x, _line_height, _line_word_start, _state_halign, _forced_break);\
                              array_push(_lineArray, _lineStruct);\
                              \
                              \ //Adjust the first word's width to account for visual tweaks

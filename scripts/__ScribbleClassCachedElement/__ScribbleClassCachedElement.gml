@@ -3,7 +3,7 @@
 /// @param text
 /// @param uniqueID
 
-function __scribble_class_cached_element(_text, _uniqueID) : __scribble_class_element_parent(_text) constructor
+function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElementParent(_text) constructor
 {
     __uniqueID = _uniqueID;
     

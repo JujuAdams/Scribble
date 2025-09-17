@@ -2,7 +2,7 @@
 
 /// @param text
 
-function __scribble_class_element_parent(_text) constructor
+function __ScribbleClassElementParent(_text) constructor
 {
     static _system = __scribble_system();
     
@@ -154,17 +154,17 @@ function __scribble_class_element_parent(_text) constructor
     {
         if (is_string(_font))
         {
-            var _font_name = _font;
+            var _fontName = _font;
         }
         else if (is_handle(_font))
         {
             if (asset_get_type(_font) == asset_font)
             {
-                var _font_name = font_get_name(_font);
+                var _fontName = font_get_name(_font);
             }
             else if (asset_get_type(_font) == asset_sprite)
             {
-                var _font_name = sprite_get_name(_font);
+                var _fontName = sprite_get_name(_font);
             }
             else
             {
@@ -180,10 +180,10 @@ function __scribble_class_element_parent(_text) constructor
             __scribble_error("Fonts should be specified using their name as a string\nUse <undefined> to not set a new font");
         }
         
-        if (_font_name != __startingFont)
+        if (_fontName != __startingFont)
         {
             __modelDirty = true;
-            __startingFont = _font_name;
+            __startingFont = _fontName;
         }
         
         return self;
@@ -1316,7 +1316,7 @@ function __scribble_class_element_parent(_text) constructor
     static get_bbox_revealed = function(_x, _y, _revealIndex = undefined)
     {
         //Default to the entire bounding box
-        if ((_revealIndex == undefined) && (not is_instanceof(self, __scribble_class_unique_element)))
+        if ((_revealIndex == undefined) && (not is_instanceof(self, __ScribbleClassUniqueElement)))
         {
             return get_bbox(_x, _y);
         }

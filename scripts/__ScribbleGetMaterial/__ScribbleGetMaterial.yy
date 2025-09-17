@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"__scribble_get_material",
+  "%Name":"__ScribbleGetMaterial",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"__scribble_get_material",
+  "name":"__ScribbleGetMaterial",
   "parent":{
     "name":"Don't call these functions!",
     "path":"folders/Scribble/(System)/Don't call these functions!.yy",

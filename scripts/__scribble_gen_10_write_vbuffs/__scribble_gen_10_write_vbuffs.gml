@@ -249,7 +249,7 @@ function __scribble_gen_10_write_vbuffs()
                     {
                         //FIXME - Add character index (and line index if possible)
                         var _event = _controlStruct.__event;
-                        _event.reveal_index = _reveal_index;
+                        _event.revealIndex = _reveal_index;
                         
                         var _event_array = _page_events_dict[$ _reveal_index]; //Find the correct event array in the dictionary, creating a new one if needed
                         
@@ -537,7 +537,7 @@ function __scribble_gen_10_write_vbuffs()
         {
             //FIXME - Add character index (and line index if possible)
             var _event = _controlStruct.__event;
-            _event.reveal_index = _reveal_index;
+            _event.revealIndex = _reveal_index;
             
             
             

@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"__scribble_class_line",
+  "%Name":"__ScribbleClassMaterial",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"__scribble_class_line",
+  "name":"__ScribbleClassMaterial",
   "parent":{
     "name":"Classes",
     "path":"folders/Scribble/(System)/Don't call these functions!/Classes.yy",

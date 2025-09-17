@@ -100,15 +100,15 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
         
         if (_sdf)
         {
-            var _sdf_pxrange          = 2*_font_info.sdfSpread;
-            var _sdf_thickness_offset = 0;
-            var _sdf_offset           = -_sdf_pxrange;
-            var _sdf_height_offset    = -_sdf_pxrange + 2; //idk why
+            var _sdfPxRange          = 2*_font_info.sdfSpread;
+            var _sdfThicknessOffset = 0;
+            var _sdf_offset           = -_sdfPxRange;
+            var _sdf_height_offset    = -_sdfPxRange + 2; //idk why
         }
         else
         {
-            var _sdf_pxrange          = undefined;
-            var _sdf_thickness_offset = undefined;
+            var _sdfPxRange          = undefined;
+            var _sdfThicknessOffset = undefined;
             var _sdf_offset           = 0;
             var _sdf_height_offset    = 0;
         }
@@ -132,7 +132,7 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
         if (_is_krutidev) _font_data.__is_krutidev = true;
         
         //Set some basic repeated values in bulk for a little speed boost
-        var _material = __scribble_get_material(_name, _textureIndex, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _sdf_pxrange, _sdf_thickness_offset, _font_data.__bilinear);
+        var _material = __ScribbleGetMaterial(_name, _textureIndex, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _sdfPxRange, _sdfThicknessOffset, _font_data.__bilinear);
         ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE,   _size-1, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE,    1);
         ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH_PROPR_MATERIAL,     _size-1, __SCRIBBLE_GLYPH_PROPR_MATERIAL,     _material);
         ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, _size-1, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, _texelsValid);

@@ -24,7 +24,7 @@ function __scribble_add_tag(_name, _type, _data, _protected, _debugText = "")
         }
     }
     
-    var _tag = new __scribble_class_tag(_name, _type, _data, _protected);
+    var _tag = new __ScribbleClassTag(_name, _type, _data, _protected);
     _tagDict[$ _name] = _tag;
     
     if (SCRIBBLE_VERBOSE) __scribble_trace("Added ", _protected? "protected " : "", "tag type ", _type, " [" + _name + "] ", _debugText);

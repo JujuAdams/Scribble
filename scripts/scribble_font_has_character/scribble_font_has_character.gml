@@ -5,7 +5,7 @@
 /// @param fontName   The target font, as a string
 /// @param character  Character to test for, as a string
 
-function scribble_font_has_character(_font_name, _character)
+function scribble_font_has_character(_fontName, _character)
 {
-    return ds_map_exists(__scribble_get_font_data(_font_name).__glyphsMap, ord(_character));
+    return ds_map_exists(__scribble_get_font_data(_fontName).__glyphsMap, ord(_character));
 }

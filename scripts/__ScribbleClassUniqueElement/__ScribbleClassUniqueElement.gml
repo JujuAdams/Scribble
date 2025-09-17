@@ -2,7 +2,7 @@
 
 /// @param string
 
-function __scribble_class_unique_element(_string) : __scribble_class_element_parent(_string) constructor
+function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_string) constructor
 {
     __weakRef = weak_ref_create(self);
     with(__weakRef)
@@ -669,7 +669,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         {
             //Pop the first event from the stack
             var _eventStruct = array_shift(__eventStack);
-            var _eventPosition = _eventStruct.reveal_index;
+            var _eventPosition = _eventStruct.revealIndex;
             var _eventName     = _eventStruct.name;
             var _eventData     = _eventStruct.data;
             
@@ -1075,7 +1075,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
                                         
                                         if (_delay > 0)
                                         {
-                                            array_push(__eventStack, new __scribble_class_event(__SCRIBBLE_DELAY_COMMAND_TAG, [_delay]));
+                                            array_push(__eventStack, new __ScribbleClassEvent(__SCRIBBLE_DELAY_COMMAND_TAG, [_delay]));
                                         }
                                     }
                                 }

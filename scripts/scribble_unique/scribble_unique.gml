@@ -4,5 +4,5 @@
 
 function scribble_unique(_string)
 {
-    return new __scribble_class_unique_element(string(_string));
+    return new __ScribbleClassUniqueElement(string(_string));
 }

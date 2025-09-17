@@ -6,7 +6,7 @@
 /// @param sdfThicknessOffset
 /// @param bilinear
 
-function __scribble_make_material_key(_texture_index_or_pointer, _renderType, _sdf_pxrange, _sdf_thickness_offset, _bilinear)
+function __scribble_make_material_key(_textureIndexOrPointer, _renderType, _sdfPxRange, _sdfThicknessOffset, _bilinear)
 {
-    return string_join(":", _texture_index_or_pointer, _renderType, _sdf_pxrange, _sdf_thickness_offset, _bilinear);
+    return string_join(":", _textureIndexOrPointer, _renderType, _sdfPxRange, _sdfThicknessOffset, _bilinear);
 }
