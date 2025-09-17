@@ -55,7 +55,7 @@ function __ScribbleGen1_ModelLimitsAndBezierCurves()
             ++_i;
         }
         
-        if ((_modelMaxWidth >= 0) && !is_infinity(_modelMaxWidth)) __ScribbleTrace("Warning! Maximum width (" + string(_modelMaxWidth) + ") has been replaced with Bezier curve length (" + string(_dist) + "). Use -1 as the maximum width to turn off this warning");
+        if ((_modelMaxWidth >= 0) && (not is_infinity(_modelMaxWidth))) __ScribbleTrace("Warning! Maximum width (" + string(_modelMaxWidth) + ") has been replaced with Bezier curve length (" + string(_dist) + "). Use -1 as the maximum width to turn off this warning");
         _modelMaxWidth = _dist;
         
         _generatorState.__bezierLengthsArray = _bezierLengths;

@@ -25,7 +25,7 @@ function draw_text_scribble_ext(_x, _y, _string, _width, _reveal = undefined)
     if (font_exists(_font))
     {
         _font = font_get_name(_font);
-        if (!scribble_font_exists(_font)) __ScribbleError("Font \"", _font, "\" does not exist in Scribble\n(Fonts added with font_add() are not supported)");
+        if (not scribble_font_exists(_font)) __ScribbleError("Font \"", _font, "\" does not exist in Scribble\n(Fonts added with font_add() are not supported)");
     }
     else
     {

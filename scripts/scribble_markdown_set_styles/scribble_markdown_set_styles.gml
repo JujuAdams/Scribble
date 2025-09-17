@@ -71,7 +71,7 @@ function scribble_markdown_set_styles(_rootStruct, _fastMode = false)
                     }
                     else if (is_numeric(_value))
                     {
-                        if (!sprite_exists(_value))
+                        if (not sprite_exists(_value))
                         {
                             __ScribbleError("<bulletSprite> sprite", _value, " does not exist");
                             return false;
@@ -120,7 +120,7 @@ function scribble_markdown_set_styles(_rootStruct, _fastMode = false)
                                 }
                                 else if (is_string(_childValue))
                                 {
-                                    if (!scribble_font_exists(_childValue))
+                                    if (not scribble_font_exists(_childValue))
                                     {
                                         __ScribbleError("\"font\" property \"", _childValue, "\" is not a font (style=\"", _rootName, "\")");
                                         return false;
@@ -134,7 +134,7 @@ function scribble_markdown_set_styles(_rootStruct, _fastMode = false)
                             }
                             else if ((_childName == "color") || (_childName == "scale"))
                             {
-                                if (!is_numeric(_childValue) && !is_undefined(_childValue))
+                                if ((not is_numeric(_childValue)) && (not is_undefined(_childValue)))
                                 {
                                     __ScribbleError("Child struct property \"", _childName, "\" must be a number (datatype=", typeof(_childValue), ", style=\"", _rootName, "\")");
                                     return false;
@@ -142,7 +142,7 @@ function scribble_markdown_set_styles(_rootStruct, _fastMode = false)
                             }
                             else if ((_childName == "bold") || (_childName == "italic"))
                             {
-                                if (!is_bool(_childValue) && !is_undefined(_childValue))
+                                if ((not is_bool(_childValue)) && (not is_undefined(_childValue)))
                                 {
                                     __ScribbleError("Child struct property \"bold\" must be <true> or <false> (datatype=", typeof(_childValue), ", style=\"", _rootName, "\")");
                                     return false;
@@ -150,7 +150,7 @@ function scribble_markdown_set_styles(_rootStruct, _fastMode = false)
                             }
                             else if ((_childName == "prefix") || (_childName == "suffix"))
                             {
-                                if (!is_string(_childValue) && !is_undefined(_childValue))
+                                if ((not is_string(_childValue)) && (not is_undefined(_childValue)))
                                 {
                                     __ScribbleError("Child struct property \"", _childName, "\" must be a string (datatype=", typeof(_childValue), ", style=\"", _rootName, "\")");
                                     return false;

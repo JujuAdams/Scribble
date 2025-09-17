@@ -109,7 +109,7 @@ function __ScribbleGlyphDuplicate(_sourceMap, _sourceGrid, _targetMap, _targetGr
     }
     else
     {
-        if (!_overwrite)
+        if (not _overwrite)
         {
             //Glyph already exists in target, skip it
             return;

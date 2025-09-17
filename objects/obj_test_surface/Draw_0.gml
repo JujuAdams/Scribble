@@ -1,4 +1,4 @@
-if (!surface_exists(surface)) surface = surface_create(32, 32);
+if (not surface_exists(surface)) surface = surface_create(32, 32);
 
 surface_set_target(surface);
 draw_clear_alpha(c_black, 0.0);

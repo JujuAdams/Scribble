@@ -543,7 +543,7 @@ function __ScribbleGen10_WriteVBuffs()
             
             var _eventArray = _pageEventsDict[$ _revealIndex]; //Find the correct event array in the diciontary, creating a new one if needed
             
-            if (!is_array(_eventArray))
+            if (not is_array(_eventArray))
             {
                 var _eventArray = [];
                 _pageEventsDict[$ _revealIndex] = _eventArray;

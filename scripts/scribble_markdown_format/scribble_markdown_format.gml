@@ -256,7 +256,7 @@ function scribble_markdown_format(_string)
                 __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
             }
             
-            if (!_writeStyle
+            if ((not _writeStyle)
             && ((_oldStyle == "quote")
              || (_oldStyle == "header1")
              || (_oldStyle == "header2")
@@ -493,7 +493,7 @@ function scribble_markdown_format(_string)
         }
         else
         {
-            if (!_inLink && (_value == ord("["))) //Links
+            if ((not _inLink) && (_value == ord("["))) //Links
             {
                 #region [text](region)
                 

@@ -7,7 +7,7 @@ typist.function_per_char(function(_element, _position, _typist)
     show_debug_message(_position);
     
     //Don't play any sound if the typist is set to skip typing
-    if (!_typist.get_skip())
+    if (not _typist.get_skip())
     {
         //Modulate our pitch on a sine curve
         var _pitch = lerp(0.8, 1.2, 0.5 + 0.5*dsin(36*_position));

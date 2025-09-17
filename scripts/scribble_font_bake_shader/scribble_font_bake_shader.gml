@@ -25,13 +25,13 @@ function scribble_font_bake_shader(_sourceFontName, _newFontName, _shader, _outl
             return vertex_format_end();
     })();
     
-    if (!is_string(_sourceFontName))
+    if (not is_string(_sourceFontName))
     {
         __ScribbleError("Fonts should be specified using their name as a string.\n(Input was an invalid datatype)");
         exit;
     }
     
-    if (!is_string(_newFontName))
+    if (not is_string(_newFontName))
     {
         __ScribbleError("Fonts should be specified using their name as a string.\n(Input was an invalid datatype)");
         exit;

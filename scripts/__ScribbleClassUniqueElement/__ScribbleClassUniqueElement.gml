@@ -334,7 +334,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     static sound = function(_in_sound_array, _overlap, _pitch_min, _pitch_max, _gain = 1)
     {
         var _soundArray = _in_sound_array;
-        if (!is_array(_soundArray)) _soundArray = [_soundArray];
+        if (not is_array(_soundArray)) _soundArray = [_soundArray];
         
         __soundArray     = _soundArray;
         __soundOverlap   = _overlap;
@@ -355,7 +355,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     static sound_per_char = function(_in_sound_array, _pitch_min, _pitch_max, _exception_string, _gain = 1, _interrupt = false)
     {
         var _soundArray = _in_sound_array;
-        if (!is_array(_soundArray)) _soundArray = [_soundArray];
+        if (not is_array(_soundArray)) _soundArray = [_soundArray];
         
         __soundArray            = _soundArray;
         __soundPitchMin         = _pitch_min;

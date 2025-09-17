@@ -735,7 +735,7 @@ function __ScribbleGen2_Parser()
                             {
                                 __ScribbleTrace("Regular style not set for font \"", _fontName, "\"");
                             }
-                            else if (!ds_map_exists(_fontDataMap, _newFont))
+                            else if (not ds_map_exists(_fontDataMap, _newFont))
                             {
                                 __ScribbleTrace("Font \"", _fontName, "\" not found (regular style for \"", _fontName, "\")");
                             }
@@ -755,7 +755,7 @@ function __ScribbleGen2_Parser()
                             {
                                 __ScribbleTrace("Bold style not set for font \"", _fontName, "\"");
                             }
-                            else if (!ds_map_exists(_fontDataMap, _newFont))
+                            else if (not ds_map_exists(_fontDataMap, _newFont))
                             {
                                 __ScribbleTrace("Font \"", _fontName, "\" not found (bold style for \"", _fontName, "\")");
                             }
@@ -774,7 +774,7 @@ function __ScribbleGen2_Parser()
                             {
                                 __ScribbleTrace("Italic style not set for font \"", _fontName, "\"");
                             }
-                            else if (!ds_map_exists(_fontDataMap, _newFont))
+                            else if (not ds_map_exists(_fontDataMap, _newFont))
                             {
                                 __ScribbleTrace("Font \"", _fontName, "\" not found (italic style for \"", _fontName, "\")");
                             }
@@ -793,7 +793,7 @@ function __ScribbleGen2_Parser()
                             {
                                 __ScribbleTrace("Bold-Italic style not set for font \"", _fontName, "\"");
                             }
-                            else if (!ds_map_exists(_fontDataMap, _newFont))
+                            else if (not ds_map_exists(_fontDataMap, _newFont))
                             {
                                 __ScribbleTrace("Font \"", _fontName, "\" not found (bold-italic style for \"", _fontName, "\")");
                             }
@@ -1301,7 +1301,7 @@ function __ScribbleGen2_Parser()
         }
         else
         {
-            if ((_glyphOrd == SCRIBBLE_COMMAND_TAG_OPEN) && !_ignoreCommands && (_stateCommandTagFlipflop || (__ScribbleBufferPeekUnicode(_stringBuffer, buffer_tell(_stringBuffer)) != SCRIBBLE_COMMAND_TAG_OPEN)))
+            if ((_glyphOrd == SCRIBBLE_COMMAND_TAG_OPEN) && (not _ignoreCommands) && (_stateCommandTagFlipflop || (__ScribbleBufferPeekUnicode(_stringBuffer, buffer_tell(_stringBuffer)) != SCRIBBLE_COMMAND_TAG_OPEN)))
             {
                 if (_stateCommandTagFlipflop)
                 {
@@ -1652,7 +1652,7 @@ function __ScribbleGen2_Parser()
                                             }
                                         }
                                     }
-                                    else if (!_followingNikhahit)
+                                    else if (not _followingNikhahit)
                                     {
                                         _glyphWrite += 0xf70a - 0x0e48;
                                     

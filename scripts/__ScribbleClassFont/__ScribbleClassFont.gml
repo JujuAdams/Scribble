@@ -87,7 +87,7 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
     
     static __clear = function()
     {
-        if (!__superfont) __ScribbleError("Cannot clear non-superfont fonts");
+        if (not __superfont) __ScribbleError("Cannot clear non-superfont fonts");
         
         ds_map_clear(__glyphsMap);
         

@@ -249,7 +249,7 @@ function __ScribbleClassPage(_model) constructor
     
     static __Freeze = function()
     {
-        if (!__frozen)
+        if (not __frozen)
         {
             if (SCRIBBLE_VERBOSE)
             {

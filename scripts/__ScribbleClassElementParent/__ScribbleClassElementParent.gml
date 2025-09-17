@@ -931,10 +931,10 @@ function __ScribbleClassElementParent(_text) constructor
         }
         else if (argument_count == 8)
         {
-            if (!is_numeric(_x1) || !is_numeric(_y1)
-            ||  !is_numeric(_x2) || !is_numeric(_y2)
-            ||  !is_numeric(_x3) || !is_numeric(_y3)
-            ||  !is_numeric(_x4) || !is_numeric(_y4))
+            if ((not is_numeric(_x1)) || (not is_numeric(_y1))
+            ||  (not is_numeric(_x2)) || (not is_numeric(_y2))
+            ||  (not is_numeric(_x3)) || (not is_numeric(_y3))
+            ||  (not is_numeric(_x4)) || (not is_numeric(_y4)))
             {
                 __ScribbleTrace("Warning! One or more Bezier parameters were not numeric (", _x1, ", ", _y1, ", ", _x2, ", ", _y2, ", ", _x3, ", ", _y3, ", ", _x4, ", ", _y4, ")");
                 
@@ -957,7 +957,7 @@ function __ScribbleClassElementParent(_text) constructor
                              _x3 - _x1, _y3 - _y1,
                              _x4 - _x1, _y4 - _y1];
         
-        if (!array_equals(__bezierArray, _bezierArray))
+        if (not array_equals(__bezierArray, _bezierArray))
         {
             __modelDirty  = true;
             __bezierArray = _bezierArray;
@@ -1041,7 +1041,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     static region_set_active = function(_name, _color, _blend_amount)
     {
-        if (!is_string(_name))
+        if (not is_string(_name))
         {
             __regionActive     = undefined;
             __regionGlyphStart = 0;
@@ -1680,14 +1680,14 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static get_events = function(_position, _page_index = __page)
+    static get_events = function(_position, _pageIndex = __page)
     {
         static _empty_array = [];
         
         var _model = __EnsureModel();
         if (not is_struct(_model)) return _empty_array;
         
-        var _page = _model.__pagesArray[_page_index];
+        var _page = _model.__pagesArray[_pageIndex];
         var _event_struct = _page.__eventsDict;
         
         var _events = _event_struct[$ _position];
@@ -1698,13 +1698,13 @@ function __ScribbleClassElementParent(_text) constructor
     
     /// @param templateFunction/Array
     /// @param [executeOnlyOnChange=true]
-    static template = function(_template, _on_change = true)
+    static template = function(_template, _onChange = true)
     {
         if (is_array(_template))
         {
-            if (!_on_change || !is_array(__template) || !array_equals(__template, _template))
+            if ((not _onChange) || (not is_array(__template)) || (not array_equals(__template, _template)))
             {
-                if (_on_change)
+                if (_onChange)
                 {
                     __template = array_create(array_length(_template));
                     array_copy(__template, 0, _template, 0, array_length(_template));
@@ -1724,7 +1724,7 @@ function __ScribbleClassElementParent(_text) constructor
         }
         else
         {
-            if (!_on_change || is_array(__template) || (__template != _template))
+            if (not _onChange || is_array(__template) || (__template != _template))
             {
                 __template = _template;
                 
@@ -2017,7 +2017,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     static __UpdateScaleToBoxScale = function()
     {
-        if (!__scaleToBoxDirty) return;
+        if (not __scaleToBoxDirty) return;
         __scaleToBoxDirty = false;
         
         var _model = __EnsureModel();
@@ -2030,7 +2030,7 @@ function __ScribbleClassElementParent(_text) constructor
         
         var _prevScaleToBoxScale = __scaleToBoxScale;
         __scaleToBoxScale = min(_xScale, _yScale);
-        if (!__scaleToBoxMaximize) __scaleToBoxScale = min(1, __scaleToBoxScale);
+        if (not __scaleToBoxMaximize) __scaleToBoxScale = min(1, __scaleToBoxScale);
         
         if (__scaleToBoxScale != _prevScaleToBoxScale)
         {
@@ -2056,10 +2056,10 @@ function __ScribbleClassElementParent(_text) constructor
             var _yScale  = __scaleToBoxScale*_model.__fitScale*__postYScale;
             var _angle   = __postAngle;
             
-            if (!_model.__padBboxL) _xOffset += __paddingL;
-            if (!_model.__padBboxT) _yOffset += __paddingT;
-            if (!_model.__padBboxR) _xOffset -= __paddingR;
-            if (!_model.__padBboxB) _yOffset -= __paddingB;
+            if (not _model.__padBboxL) _xOffset += __paddingL;
+            if (not _model.__padBboxT) _yOffset += __paddingT;
+            if (not _model.__padBboxR) _xOffset -= __paddingR;
+            if (not _model.__padBboxB) _yOffset -= __paddingB;
             
             //Build a matrix to transform the text...
             var _matrix = __matrix;

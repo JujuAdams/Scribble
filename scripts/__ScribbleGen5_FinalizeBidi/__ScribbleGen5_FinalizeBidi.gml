@@ -1,7 +1,7 @@
 // Feather disable all
 function __ScribbleGen5_FinalizeBidi()
 {
-    if (!__hasR2L) exit;
+    if (not __hasR2L) exit;
     
     static _generatorState = __ScribbleSystem().__generatorState;
     with(_generatorState)

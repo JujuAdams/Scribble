@@ -75,13 +75,13 @@ function StringDevanagariParse(_inString)
         {
             //Set up alternating single quote marks
             case ord("'"):
-                _inSingleQuote = !_inSingleQuote;
+                _inSingleQuote = not _inSingleQuote;
                 _charArray[@ _i] = _inSingleQuote? ord("^") : ord("*");
             break;
             
             //Set up alternating double quote marks
             case ord("\""):
-                _inDoubleQuote = !_inDoubleQuote;
+                _inDoubleQuote = not _inDoubleQuote;
                 _charArray[@ _i] = _inDoubleQuote? ord("ß") : ord("Þ");
             break;
             
