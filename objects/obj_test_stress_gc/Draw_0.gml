@@ -16,7 +16,7 @@ smoothed_time = lerp(smoothed_time, _t, 0.01);
 
 var _system = __ScribbleSystem();
 
-draw_set_font(scribble_fallback_font);
+draw_set_font(fntScribbleFallback);
 draw_text(10,  30, "cache array = " + string(array_length(_system.__elementWeakArray)));
 draw_text(10,  50, "cache map = " + string(ds_map_size(_system.__elementCacheMap)));
 draw_text(10,  90, "counter = " + string(counter));

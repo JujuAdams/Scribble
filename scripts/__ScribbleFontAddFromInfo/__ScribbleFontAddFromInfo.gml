@@ -1,0 +1,277 @@
+// Feather disable all
+
+/// @param fontName
+/// @param textureGroup
+/// @param textureUVs
+/// @param fontInfo
+/// @param [lineHeight]
+/// @param isKrutidev
+/// @param fromBundle
+
+function __ScribbleFontAddFromInfo(_name, _texture_group, _texture_uvs, _font_info, _line_height = undefined, _is_krutidev, _fromBundle)
+{
+    static _fontDataMap = __ScribbleSystem().__fontDataMap;
+    
+    if (ds_map_exists(_fontDataMap, _name))
+    {
+        __ScribbleTrace("Warning! A font for \"", _name, "\" has already been added. Destroying the old font and creating a new one");
+        _fontDataMap[? _name].__Destroy();
+    }
+    
+    if (SCRIBBLE_VERBOSE) __ScribbleTrace("Adding \"", _name, "\" as standard font");
+    
+    var _scribbleState = __ScribbleSystem().__state;
+    if (_scribbleState.__default_font == undefined)
+    {
+        if (SCRIBBLE_VERBOSE) __ScribbleTrace("Setting default font to \"" + string(_name) + "\"");
+        _scribbleState.__default_font = _name;
+    }
+    
+    try
+    {
+        var _global_glyph_bidi_map = __ScribbleSystem().__glyph_data.__bidi_map;
+        
+        //Get font info from the runtime
+        var _textureIndex    = _font_info.texture;
+        var _info_glyphs_dict = _font_info.glyphs;
+        var _ascender_offset  = _font_info.ascenderOffset;
+        
+        var _info_glyph_names = variable_struct_get_names(_info_glyphs_dict);
+        var _size = array_length(_info_glyph_names);
+        
+        var _info_glyphs_array = array_create(array_length(_info_glyph_names));
+        var _i = 0;
+        repeat(_size)
+        {
+            var _glyph = _info_glyph_names[_i];
+            var _struct = _info_glyphs_dict[$ _glyph];
+            _info_glyphs_array[@ _i] = _struct;
+            ++_i;
+        }
+        
+        if (SCRIBBLE_VERBOSE) __ScribbleTrace("Processing font \"" + _name + "\"");
+        
+        var _texelsValid = true;
+        
+        if (not __ScribbleTextureGroupGetReady(_texture_group))
+        {
+            //Uhoh, let's check to see if we've gotten valid texture dimensions
+            if ((texture_get_width(_textureIndex) == 1)
+            ||  (texture_get_height(_textureIndex) == 1)
+            ||  (texture_get_texel_width(_textureIndex) == 1)
+            ||  (texture_get_texel_height(_textureIndex) == 1))
+            {
+                //Nope, texels are invalid. We'll have to update them later
+                _texelsValid = false;
+                __ScribbleTrace("Font \"" + _name +"\" texture not ready, possibly a dynamic texture");
+            }
+        }
+        
+        if (_texelsValid)
+        {
+            var _texture_tw = texture_get_texel_width(_textureIndex);
+            var _texture_th = texture_get_texel_height(_textureIndex);
+            var _texture_w  = (_texture_uvs[2] - _texture_uvs[0])/_texture_tw; //texture_get_width(_textureIndex);
+            var _texture_h  = (_texture_uvs[3] - _texture_uvs[1])/_texture_th; //texture_get_height(_textureIndex);
+            var _texture_l  = round(_texture_uvs[0] / _texture_tw);
+            var _texture_t  = round(_texture_uvs[1] / _texture_th);
+            
+            if (SCRIBBLE_VERBOSE)
+            {
+                __ScribbleTrace("  \"" + _name +"\""
+                                 + ", texture = " + string(_textureIndex)
+                                 + ", top-left = " + string(_texture_l) + "," + string(_texture_t)
+                                 + ", size = " + string(_texture_w) + " x " + string(_texture_h)
+                                 + ", texel = " + string_format(_texture_tw, 1, 10) + " x " + string_format(_texture_th, 1, 10)
+                                 + ", uvs = " + string_format(_texture_uvs[0], 1, 10) + "," + string_format(_texture_uvs[1], 1, 10)
+                                 + " -> " + string_format(_texture_uvs[2], 1, 10) + "," + string_format(_texture_uvs[3], 1, 10));
+            }
+        }
+        else
+        {
+            var _texture_tw = 1;
+            var _texture_th = 1;
+            var _texture_l  = 0;
+            var _texture_t  = 0;
+        }
+        
+        
+        var _sdf = _font_info.sdfEnabled;
+        
+        if (_sdf)
+        {
+            var _sdfPxRange          = 2*_font_info.sdfSpread;
+            var _sdfThicknessOffset = 0;
+            var _sdf_offset           = -_sdfPxRange;
+            var _sdf_height_offset    = -_sdfPxRange + 2; //idk why
+        }
+        else
+        {
+            var _sdfPxRange          = undefined;
+            var _sdfThicknessOffset = undefined;
+            var _sdf_offset           = 0;
+            var _sdf_height_offset    = 0;
+        }
+        
+        var _ascender = _font_info.ascender;
+        
+        //Fix dodgy ascender values
+        if (_ascender <= 0)
+        {
+            _ascender = floor(_font_info.size * (4/3));
+        }
+        
+        var _underlineY = _ascender - _font_info.ascenderOffset;
+        var _strikeY    = ceil(0.666*_ascender) - _font_info.ascenderOffset;
+        
+        var _font_data = new __ScribbleClassFont(_name, _size, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _fromBundle, _texelsValid, _underlineY, _strikeY);
+        
+        var _font_glyphs_map      = _font_data.__glyphsMap;
+        var _font_glyph_data_grid = _font_data.__glyphDataGrid;
+        var _font_kerning_map     = _font_data.__kerningMap;
+        if (_is_krutidev) _font_data.__is_krutidev = true;
+        
+        //Set some basic repeated values in bulk for a little speed boost
+        var _material = __ScribbleGetMaterial(_name, _textureIndex, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _sdfPxRange, _sdfThicknessOffset, _font_data.__bilinear);
+        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE,   _size-1, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE,    1);
+        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH_PROPR_MATERIAL,     _size-1, __SCRIBBLE_GLYPH_PROPR_MATERIAL,     _material);
+        ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, _size-1, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, _texelsValid);
+        
+        var _i = 0;
+        repeat(_size)
+        {
+            var _glyph_dict = _info_glyphs_array[_i];
+            
+            var _unicode = _glyph_dict.char;
+            if ((_unicode >= 0x3000) && (_unicode <= 0x303F)) //CJK Symbols and Punctuation
+            {
+                var _bidi = __SCRIBBLE_BIDI_SYMBOL;
+            }
+            else if ((_unicode >= 0x3040) && (_unicode <= 0x30FF)) //Hiragana and Katakana
+            {
+                var _bidi = __SCRIBBLE_BIDI_ISOLATED_CJK;
+            }
+            else if ((_unicode >= 0x4E00) && (_unicode <= 0x9FFF)) //CJK Unified ideographs block
+            {
+                var _bidi = __SCRIBBLE_BIDI_ISOLATED_CJK;
+            }
+            else if ((_unicode >= 0xFF00) && (_unicode <= 0xFF0F)) //Fullwidth symbols
+            {
+                var _bidi = __SCRIBBLE_BIDI_SYMBOL;
+            }
+            else if ((_unicode >= 0xFF1A) && (_unicode <= 0xFF1F)) //More fullwidth symbols
+            {
+                var _bidi = __SCRIBBLE_BIDI_SYMBOL;
+            }
+            else if ((_unicode >= 0xFF5B) && (_unicode <= 0xFF64)) //Yet more fullwidth symbols
+            {
+                var _bidi = __SCRIBBLE_BIDI_SYMBOL;
+            }
+            else
+            {
+                var _bidi = _global_glyph_bidi_map[? _unicode];
+                if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI_L2R;
+            }
+            
+            if (_is_krutidev)
+            {
+                if (_bidi != __SCRIBBLE_BIDI_WHITESPACE)
+                {
+                    _bidi = __SCRIBBLE_BIDI_L2R_DEVANAGARI;
+                    _unicode += __SCRIBBLE_DEVANAGARI_OFFSET;
+                }
+            }
+            
+            if (SCRIBBLE_USE_KERNING)
+            {
+                var _kerning_array = _glyph_dict[$ "kerning"];
+                if (is_array(_kerning_array))
+                {
+                    var _j = 0;
+                    repeat(array_length(_kerning_array) div 2)
+                    {
+                        var _first = _kerning_array[_j];
+                        if (_first > 0) _font_kerning_map[? ((_unicode & 0xFFFF) << 16) | (_first & 0xFFFF)] = _kerning_array[_j+1];
+                        _j += 2;
+                    }
+                }
+            }
+            
+            var _char = chr(_unicode);
+            
+            //FIXME - Workaround for HTML5 in GMS2.3.7.606 and above
+            //        This doesn't seem to be needed in 2022.3.0.497
+            var _x = _glyph_dict[$ "x"];
+            var _y = _glyph_dict[$ "y"];
+            var _w = _glyph_dict.w;
+            var _h = _glyph_dict.h;
+            
+            var _xoffset = _glyph_dict.offset + 0.5*_sdf_offset;
+            var _yoffset = 0.5*_sdf_offset;
+            
+            if (_sdf && (SCRIBBLE_SDF_BORDER_TRIM > 0))
+            {
+                _x += SCRIBBLE_SDF_BORDER_TRIM;
+                _y += SCRIBBLE_SDF_BORDER_TRIM;
+                
+                _w -= 2*SCRIBBLE_SDF_BORDER_TRIM;
+                _h -= 2*SCRIBBLE_SDF_BORDER_TRIM;
+                
+                _xoffset += SCRIBBLE_SDF_BORDER_TRIM;
+                _yoffset += SCRIBBLE_SDF_BORDER_TRIM;
+            }
+            
+            var _u0 = _x*_texture_tw;
+            var _v0 = _y*_texture_th;
+            var _u1 = _u0 + _w*_texture_tw;
+            var _v1 = _v0 + _h*_texture_th;
+            
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_CHARACTER   ] = _char;
+            
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_UNICODE     ] = _unicode;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_BIDI        ] = _bidi;
+            
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_X_OFFSET    ] = _xoffset;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET    ] = _yoffset - _ascender_offset;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_WIDTH       ] = _w;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_HEIGHT      ] = _h;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT ] = _line_height + _sdf_height_offset;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_SEPARATION  ] = _glyph_dict.shift;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_LEFT_OFFSET ] = -_glyph_dict.offset;
+            //_font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE  ] = 1; //Set above in bulk
+                                                         
+            //_font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL    ] = _material; //Set above in bulk
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U0          ] = _u0;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U1          ] = _u1;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V0          ] = _v0;
+            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V1          ] = _v1;
+            //_font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = _texelsValid; //Set above in bulk
+            
+            _font_glyphs_map[? _unicode] = _i;
+            
+            ++_i;
+        }
+        
+        var _space_index = _font_glyphs_map[? SCRIBBLE_UNICODE_SPACE];
+        if (_line_height == undefined)
+        {
+            _line_height = _font_glyph_data_grid[# _space_index, __SCRIBBLE_GLYPH_PROPR_HEIGHT];
+        }
+        
+        _font_data.__height = _line_height + _sdf_height_offset;
+        _font_data.__EnsureAdditionalCharacters();
+        
+        //Check to see if this texture has been resized during compile
+        var _GM_scaling = _font_info.size / _font_glyph_data_grid[# _space_index, __SCRIBBLE_GLYPH_PROPR_HEIGHT];
+        if (_GM_scaling > 1)
+        {
+            __ScribbleTrace("Warning! Font \"", _name, "\" may have been scaled during compilation (font size = ", _font_info.size, ", space height = ", _font_glyph_data_grid[# _font_glyphs_map[? 32], __SCRIBBLE_GLYPH_PROPR_HEIGHT], ", scaling factor = ", _GM_scaling, "). Check that the font is rendering correctly. If it is not, try setting SCRIBBLE_ATTEMPT_FONT_SCALING_FIX to <false>");
+            if (SCRIBBLE_ATTEMPT_FONT_SCALING_FIX) scribble_font_scale(_name, ceil(_GM_scaling));
+        }
+    }
+    catch(_error)
+    {
+        __ScribbleTrace(_error);
+        __ScribbleError("There was an error whilst reading \"", _name, "\"\nPlease reimport the font into GameMaker and reset character ranges\nIf this issue persists, please report it");
+    }
+}

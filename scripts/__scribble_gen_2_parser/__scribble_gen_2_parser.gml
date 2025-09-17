@@ -836,7 +836,7 @@ function __scribble_gen_2_parser()
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = 1;
                         
                             //TODO - Add a way to force a regeneration of every text element that contains a given surface
-                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_MATERIAL     ] = __scribble_surface_get_material(_surface);
+                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_MATERIAL     ] = __ScribbleSurfaceGetMaterial(_surface);
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_QUAD_U0      ] = 0;
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_QUAD_V0      ] = 0;
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_QUAD_U1      ] = 1;
@@ -949,7 +949,7 @@ function __scribble_gen_2_parser()
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = 1;
                             
-                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_MATERIAL     ] = __scribble_texture_get_material(_tex_index);
+                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_MATERIAL     ] = __ScribbleTextureGetMaterial(_tex_index);
                             //_glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_QUAD_U0      ] = 0;
                             //_glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_QUAD_V0      ] = 0;
                             //_glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_QUAD_U1      ] = 1;

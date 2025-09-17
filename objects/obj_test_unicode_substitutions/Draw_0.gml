@@ -1,4 +1,4 @@
-draw_set_font(scribble_fallback_font);
+draw_set_font(fntScribbleFallback);
 draw_text(10, 10, "SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS = " + string(SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS));
 
 var _x = 10;

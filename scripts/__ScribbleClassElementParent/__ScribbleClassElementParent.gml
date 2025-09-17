@@ -1098,7 +1098,7 @@ function __ScribbleClassElementParent(_text) constructor
         return _model.__pagesArray[__page].__regionArray;
     }
     
-    static region_draw = function(_elementX, _elementY, _name, _padding = 0, _sprite = scribble_fallback_dot, _image = 0, _color = c_white, _alpha = 1)
+    static region_draw = function(_elementX, _elementY, _name, _padding = 0, _sprite = sprScribbleFallbackDot, _image = 0, _color = c_white, _alpha = 1)
     {
         var _model = __EnsureModel();
         if (!is_struct(_model)) return undefined;
@@ -1892,7 +1892,7 @@ function __ScribbleClassElementParent(_text) constructor
         
         if (__EnsureModel().__hasCycle)
         {
-            var _texture = surface_get_texture(__scribble_ensure_cycle_surface());
+            var _texture = surface_get_texture(__ScribbleEnsureCycleSurface());
             texture_set_stage(_u_sCycle, _texture);
             gpu_set_tex_filter_ext(_u_sCycle, true);
             gpu_set_tex_repeat_ext(_u_sCycle, true);

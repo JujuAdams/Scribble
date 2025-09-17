@@ -21,5 +21,5 @@ function scribble_typists_add_event(_name, _function)
         return;
     }
     
-    __scribble_add_tag(_name, __SCRIBBLE_TAG_EVENT, { __function: _function }, false);
+    __ScribbleAddTag(_name, __SCRIBBLE_TAG_EVENT, { __function: _function }, false);
 }

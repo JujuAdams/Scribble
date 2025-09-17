@@ -1,0 +1,23 @@
+// Feather disable all
+
+/// @param font
+
+function __ScribbleFontAddFromBundle(_font)
+{
+    static _font_to_texture_group_map = __ScribbleSystem().__font_to_texture_group_map;
+    
+    var _texture_group = _font_to_texture_group_map[? real(_font)];
+    
+    var _name        = font_get_name(_font);
+    var _asset       = asset_get_index(_name);
+    var _texture_uvs = font_get_uvs(_asset);
+    var _font_info   = font_get_info(_font);
+    var _is_krutidev = __ScribbleAssetIsKrutidev(_font, asset_font);
+    
+    var _old_font = draw_get_font();
+    draw_set_font(_font);
+    var _line_height = string_height(" ");
+    draw_set_font(_old_font);
+    
+    return __ScribbleFontAddFromInfo(_name, _texture_group, _texture_uvs, _font_info, _line_height, _is_krutidev, true);
+}

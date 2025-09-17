@@ -68,8 +68,8 @@ function __scribble_gen_10_write_vbuffs()
     static _generatorState = __ScribbleSystem().__generatorState;
     static _tagDict         = __ScribbleSystem().__tagDict;
     
-    static _scribbleDotUVs = sprite_get_uvs(scribble_fallback_dot, 0);
-    static _scribbleDotMaterial = __scribble_sprite_get_material(scribble_fallback_dot, 0);
+    static _scribbleDotUVs = sprite_get_uvs(sprScribbleFallbackDot, 0);
+    static _scribbleDotMaterial = __ScribbleSpriteGetMaterial(sprScribbleFallbackDot, 0);
     
     with(_generatorState)
     {
@@ -394,7 +394,7 @@ function __scribble_gen_10_write_vbuffs()
                     var _j = _image_index;
                     repeat(_count)
                     {
-                        var _material = __scribble_sprite_get_material(_sprite_index, _j);
+                        var _material = __ScribbleSpriteGetMaterial(_sprite_index, _j);
                         
                         var _uvs = sprite_get_uvs(_sprite_index, _j);
                         var _quad_u0 = _uvs[0];

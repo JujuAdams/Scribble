@@ -1,0 +1,38 @@
+// Feather disable all
+
+/// @param name
+/// @param type
+/// @param data
+/// @param protected
+/// @param [debugText]
+
+function __ScribbleAddTag(_name, _type, _data, _protected, _debugText = "")
+{
+    static _system  = __ScribbleSystem();
+    static _tagDict = _system.__tagDict;
+    
+    var _existingTag = _tagDict[$ _name];
+    if (is_struct(_existingTag))
+    {
+        if (_existingTag.__protected)
+        {
+            __ScribbleError("Tag [", _name, "] is protected and cannot be replaced");
+        }
+        else
+        {
+            __ScribbleTrace("Warning! Overwriting tag [", _name, "]");
+        }
+    }
+    
+    var _tag = new __ScribbleClassTag(_name, _type, _data, _protected);
+    _tagDict[$ _name] = _tag;
+    
+    if (SCRIBBLE_VERBOSE) __ScribbleTrace("Added ", _protected? "protected " : "", "tag type ", _type, " [" + _name + "] ", _debugText);
+    
+    if (is_struct(_existingTag))
+    {
+        scribble_flush_everything();
+    }
+    
+    return _tag;
+}

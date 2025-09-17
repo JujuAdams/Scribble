@@ -23,5 +23,5 @@ function scribble_add_macro(_name, _function, _dynamic = false)
         return;
     }
     
-    __scribble_add_tag(_name, __SCRIBBLE_TAG_MACRO, { __function: _function, __dynamic: _dynamic }, false, "(", _dynamic? "dynamic" : "static", ")");
+    __ScribbleAddTag(_name, __SCRIBBLE_TAG_MACRO, { __function: _function, __dynamic: _dynamic }, false, "(", _dynamic? "dynamic" : "static", ")");
 }

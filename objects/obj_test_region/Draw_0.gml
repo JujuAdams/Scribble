@@ -4,5 +4,5 @@ _element.region_set_active(_region, c_red, 0.5);
 _element.region_draw(10, 10, _region, 4, spr_highlight_test, undefined, c_lime, 0.2);
 _element.draw(10, 10);
 
-draw_set_font(scribble_fallback_font);
+draw_set_font(fntScribbleFallback);
 draw_text(10, 50, _region);

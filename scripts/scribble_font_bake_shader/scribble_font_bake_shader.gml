@@ -236,7 +236,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     surface_free(_surface_1);
     
     //Create a new material for this font
-    var _new_material = __ScribbleGetMaterial(_new_font_name, __scribble_sprite_get_texture_index(_sprite, 0), _new_font_data.__renderType, undefined, undefined, _new_font_data.__bilinear);
+    var _new_material = __ScribbleGetMaterial(_new_font_name, __ScribbleSpriteGetTextureIndex(_sprite, 0), _new_font_data.__renderType, undefined, undefined, _new_font_data.__bilinear);
     
     //Make bulk corrections to various glyph properties based on the input parameters
     ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_X_OFFSET,    _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_X_OFFSET,    -_l_pad);

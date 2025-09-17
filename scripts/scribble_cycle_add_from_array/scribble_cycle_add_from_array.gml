@@ -32,7 +32,7 @@ function scribble_cycle_add_from_array(_name, _rgbArray, _smooth = true, _legacy
         __legacyBlend: _legacyBlend,
     };
     
-    surface_set_target(__scribble_ensure_cycle_surface());
-    __scribble_cycle_draw(_name);
+    surface_set_target(__ScribbleEnsureCycleSurface());
+    __ScribbleDrawCycle(_name);
     surface_reset_target();
 }

@@ -1,11 +1,11 @@
-draw_set_font(scribble_fallback_font);
+draw_set_font(fntScribbleFallback);
 draw_text(10, 10, "SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE = " + string(SCRIBBLE_NEWLINES_TRIM_LEFT_SPACE));
 
 scribble("[scale,5]iiiii!").starting_format("spr_sprite_font").draw(10,  50);
 scribble("[scale,5]Hiiii!").starting_format("spr_sprite_font").draw(10, 110);
 
-scribble("[scale,5]!!!!!").starting_format("scribble_fallback_font").draw(10, 210);
-scribble("[scale,5]H!!!!").starting_format("scribble_fallback_font").draw(10, 310);
+scribble("[scale,5]!!!!!").starting_format("fntScribbleFallback").draw(10, 210);
+scribble("[scale,5]H!!!!").starting_format("fntScribbleFallback").draw(10, 310);
 
 draw_line(10, 50, 10, room_height);
 

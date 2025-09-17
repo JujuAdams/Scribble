@@ -11,7 +11,7 @@ function __ScribbleGetMaterial(_fontName, _textureIndexOrPointer, _renderType, _
 {
     static _material_map = __ScribbleSystem().__material_map;
     
-    var _key = __scribble_make_material_key(_textureIndexOrPointer, _renderType, _sdfPxRange, _sdfThicknessOffset, _bilinear);
+    var _key = __ScribbleMakeMaterialKey(_textureIndexOrPointer, _renderType, _sdfPxRange, _sdfThicknessOffset, _bilinear);
     
     var _material = _material_map[? _key];
     if (_material == undefined)

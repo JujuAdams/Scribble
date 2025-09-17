@@ -739,19 +739,19 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 case __SCRIBBLE_AUDIO_COMMAND_TAG: //TODO - Add warning when adding a conflicting custom event
                     if ((not __typistSkip) && (array_length(_eventData) >= 1))
                     {
-                        __scribble_play_sound(_eventData[0], __soundTagGain, 1);
+                        __ScribblePlaySound(_eventData[0], __soundTagGain, 1);
                     }
                 break;
                 
                 case __SCRIBBLE_TYPIST_SOUND_COMMAND_TAG: //TODO - Add warning when adding a conflicting custom event
-                    sound(__scribble_parse_sound_array_string(_eventData[1]), real(_eventData[2]), real(_eventData[3]), real(_eventData[4]));
+                    sound(__ScribbleParseSoundArrayString(_eventData[1]), real(_eventData[2]), real(_eventData[3]), real(_eventData[4]));
                 break;
                 
                 case __SCRIBBLE_TYPIST_SOUND_PER_CHAR_COMMAND_TAG: //TODO - Add warning when adding a conflicting custom event
                     switch(array_length(_eventData))
                     {
-                        case 4: sound_per_char(__scribble_parse_sound_array_string(_eventData[1]), real(_eventData[2]), real(_eventData[3])); break;
-                        case 5: sound_per_char(__scribble_parse_sound_array_string(_eventData[1]), real(_eventData[2]), real(_eventData[3]), _eventData[4]); break;
+                        case 4: sound_per_char(__ScribbleParseSoundArrayString(_eventData[1]), real(_eventData[2]), real(_eventData[3])); break;
+                        case 5: sound_per_char(__ScribbleParseSoundArrayString(_eventData[1]), real(_eventData[2]), real(_eventData[3]), _eventData[4]); break;
                     }
                 break;
                 
@@ -824,7 +824,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             {
                 __prevAudioReveal = _headPos;
                 
-                __soundVoice = __scribble_play_sound(_soundArray[floor(__ScribbleRandom()*array_length(_soundArray))], __soundGain, lerp(__soundPitchMin, __soundPitchMax, __ScribbleRandom()));
+                __soundVoice = __ScribblePlaySound(_soundArray[floor(__ScribbleRandom()*array_length(_soundArray))], __soundGain, lerp(__soundPitchMin, __soundPitchMax, __ScribbleRandom()));
                 if (__soundVoice >= 0)
                 {
                     __soundFinishTime = current_time + 1000*audio_sound_length(__soundVoice) - __soundOverlap;

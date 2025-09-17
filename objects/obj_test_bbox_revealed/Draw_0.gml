@@ -8,5 +8,5 @@ draw_rectangle(_bbox.left, _bbox.top, _bbox.right, _bbox.bottom, false);
 
 scribble(_text).draw(300, 300, _reveal);
 
-draw_set_font(scribble_fallback_font);
+draw_set_font(fntScribbleFallback);
 draw_text(10, 10, string(_reveal) + " of " + string(_glyphCount));

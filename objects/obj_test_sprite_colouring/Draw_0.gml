@@ -1,4 +1,4 @@
-draw_set_font(scribble_fallback_font);
+draw_set_font(fntScribbleFallback);
 draw_text(10, 10, "SCRIBBLE_COLORIZE_SPRITES = " + string(SCRIBBLE_COLORIZE_SPRITES));
 
 scribble(@"[spr_coin] <-- basic looping animation

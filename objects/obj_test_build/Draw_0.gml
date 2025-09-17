@@ -1,6 +1,6 @@
 draw_text(10, 10, "SCRIBBLE_INCREMENTAL_FREEZE = " + string(SCRIBBLE_INCREMENTAL_FREEZE));
 
-draw_set_font(scribble_fallback_font);
+draw_set_font(fntScribbleFallback);
 draw_text(10, 30, frozen_smoothed);
 draw_text(10 + room_width*0.5, 30, unfrozen_smoothed);
 

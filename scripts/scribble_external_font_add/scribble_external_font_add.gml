@@ -77,7 +77,7 @@ function scribble_external_font_add(_sprite, _image, _json, _fontName = undefine
         ++_i;
     }
     
-    __scribble_font_add_from_info(_fontName, undefined, _texture_uvs, _font_info, _json.lineHeight, _is_krutidev, false);
+    __ScribbleFontAddFromInfo(_fontName, undefined, _texture_uvs, _font_info, _json.lineHeight, _is_krutidev, false);
     
     return _fontName;
 }

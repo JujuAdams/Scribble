@@ -19,7 +19,7 @@ function scribble_color_set(_name, _colour)
 {
     if (_colour == undefined)
     {
-        __scribble_remove_tag(_name);
+        __ScribbleRemoveTag(_name);
         return;
     }
     
@@ -28,5 +28,5 @@ function scribble_color_set(_name, _colour)
         __ScribbleError("Colour values should be 24-bit BGR values");
     }
     
-    __scribble_add_tag(_name, __SCRIBBLE_TAG_COLOR, _colour, false);
+    __ScribbleAddTag(_name, __SCRIBBLE_TAG_COLOR, _colour, false);
 }

@@ -1,4 +1,4 @@
-draw_set_font(scribble_fallback_font);
+draw_set_font(fntScribbleFallback);
 
 var _t = get_timer();
 repeat(100) element.draw(room_width div 2, room_height div 2);

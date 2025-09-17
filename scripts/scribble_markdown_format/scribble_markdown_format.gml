@@ -208,7 +208,7 @@ function scribble_markdown_format(_string)
             italic: true,
         },
         
-        bullet_sprite: scribble_fallback_bulletpoint,
+        bullet_sprite: sprScribbleFallbackBulletpoint,
         
         link: {
             bold:  true,

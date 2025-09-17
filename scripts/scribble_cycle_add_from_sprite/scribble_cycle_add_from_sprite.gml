@@ -31,7 +31,7 @@ function scribble_cycle_add_from_sprite(_name, _sprite, _image, _smooth)
         __smooth: _smooth,
     };
     
-    surface_set_target(__scribble_ensure_cycle_surface());
-    __scribble_cycle_draw(_name);
+    surface_set_target(__ScribbleEnsureCycleSurface());
+    __ScribbleDrawCycle(_name);
     surface_reset_target();
 }
