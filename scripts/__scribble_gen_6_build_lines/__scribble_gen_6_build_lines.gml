@@ -585,7 +585,7 @@ function __scribble_gen_6_build_lines()
             var _line_end_glyph      = _word_grid[# _lineArray[_i].wordEnd, __SCRIBBLE_GEN_WORD_GLYPH_END];
             var _lineEndControlCount = _glyphGrid[# _line_end_glyph, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT];
             
-            array_insert(_controlArray, _lineEndControlCount+1, new __scribble_class_control_event(__SCRIBBLE_DELAY_COMMAND_TAG, [__newlineDelay]));
+            array_insert(_controlArray, _lineEndControlCount+1, new __ScribbleClassControlEvent(__SCRIBBLE_DELAY_COMMAND_TAG, [__newlineDelay]));
             
             var _line_start_glyph = _word_grid[# _lineArray[_i+1].wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START];
             ds_grid_add_region(_glyphGrid, _line_start_glyph, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT, _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT, 1);

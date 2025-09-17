@@ -80,7 +80,7 @@
                                     var _font_space_width = _font_glyph_data_grid[# _space_data_index, __SCRIBBLE_GLYPH_PROPR_SEPARATION];\
                                     var _font_line_height = _font_data.__height;\
                                     \
-                                    array_push(_controlArray, new __scribble_class_control_font(_fontName));\
+                                    array_push(_controlArray, new __ScribbleClassControlFont(_fontName));\
                                     ++_controlCount;
 
 
@@ -248,10 +248,10 @@ function __scribble_gen_2_parser()
     
     var _offset_data_array = []; // start glyph, dX, dY
     
-    array_push(_controlArray, new __scribble_class_control_halign(_state_halign));
+    array_push(_controlArray, new __ScribbleClassControlHAlign(_state_halign));
     ++_controlCount;
     
-    array_push(_controlArray, new __scribble_class_control_color(_state_colour));
+    array_push(_controlArray, new __ScribbleClassControlColor(_state_colour));
     ++_controlCount;
     
     __SCRIBBLE_PARSER_SET_FONT;
@@ -347,13 +347,13 @@ function __scribble_gen_2_parser()
                             _state_scale        = _pre_scale;
                             _state_colour       = 0xFF000000 | _starting_colour;
                             
-                            array_push(_controlArray, new __scribble_class_control_effect(0));
+                            array_push(_controlArray, new __ScribbleClassControlEffect(0));
                             ++_controlCount;
                             
-                            array_push(_controlArray, new __scribble_class_control_color(_state_colour));
+                            array_push(_controlArray, new __ScribbleClassControlColor(_state_colour));
                             ++_controlCount;
                             
-                            array_push(_controlArray, new __scribble_class_control_cycle(-1));
+                            array_push(_controlArray, new __ScribbleClassControlCycle(-1));
                             ++_controlCount;
                         break;
                     
@@ -373,7 +373,7 @@ function __scribble_gen_2_parser()
                         case 2:
                             _state_colour = (_state_colour & 0xFF000000) | _starting_colour;
                             
-                            array_push(_controlArray, new __scribble_class_control_color(_state_colour));
+                            array_push(_controlArray, new __ScribbleClassControlColor(_state_colour));
                             ++_controlCount;
                         break;
                     
@@ -382,7 +382,7 @@ function __scribble_gen_2_parser()
                         case 3:
                             _state_colour = 0xFF000000 | _state_colour;
                             
-                            array_push(_controlArray, new __scribble_class_control_color(_state_colour));
+                            array_push(_controlArray, new __ScribbleClassControlColor(_state_colour));
                             ++_controlCount;
                         break;
                     
@@ -418,13 +418,13 @@ function __scribble_gen_2_parser()
                         case 45:
                             var _underlineThickness = (_tag_parameter_count > 1)? real(_tag_parameters[1]) : 1;
                             
-                            array_push(_controlArray, new __scribble_class_control_underline(_underlineThickness));
+                            array_push(_controlArray, new __ScribbleClassControlUnderline(_underlineThickness));
                             ++_controlCount;
                         break;
                         
                         // [/ul]
                         case 46:
-                            array_push(_controlArray, new __scribble_class_control_underline(0));
+                            array_push(_controlArray, new __ScribbleClassControlUnderline(0));
                             ++_controlCount;
                         break;
                         
@@ -432,13 +432,13 @@ function __scribble_gen_2_parser()
                         case 47:
                             var _strikeThickness = (_tag_parameter_count > 1)? real(_tag_parameters[1]) : 1;
                             
-                            array_push(_controlArray, new __scribble_class_control_strike(_strikeThickness));
+                            array_push(_controlArray, new __ScribbleClassControlStrike(_strikeThickness));
                             ++_controlCount;
                         break;
                         
                         // [/strike]
                         case 48:
-                            array_push(_controlArray, new __scribble_class_control_strike(0));
+                            array_push(_controlArray, new __ScribbleClassControlStrike(0));
                             ++_controlCount;
                         break;
                         
@@ -501,7 +501,7 @@ function __scribble_gen_2_parser()
                         case 10:
                             _state_colour = (floor(255*clamp(real(_tag_parameters[1]), 0, 1)) << 24) | (_state_colour & 0x00FFFFFF);
                             
-                            array_push(_controlArray, new __scribble_class_control_color(_state_colour));
+                            array_push(_controlArray, new __ScribbleClassControlColor(_state_colour));
                             ++_controlCount;
                         break;
                     
@@ -693,7 +693,7 @@ function __scribble_gen_2_parser()
                             
                             _state_effect_flags = _state_effect_flags | (1 << __SCRIBBLE_FLAG_CYCLE);
                             
-                            array_push(_controlArray, new __scribble_class_control_effect(_state_effect_flags));
+                            array_push(_controlArray, new __ScribbleClassControlEffect(_state_effect_flags));
                             ++_controlCount;
                             
                             var _ms = game_get_speed(gamespeed_microseconds) / 1000;
@@ -701,7 +701,7 @@ function __scribble_gen_2_parser()
                             var _cycleSpeed = clamp(255*_cycle_speed/_ms, 1, 255);
                             var _cycleFreq  = clamp(255*_cycle_freq/_ms, 0, 255);
                             
-                            array_push(_controlArray, new __scribble_class_control_cycle(_cycleIndex | (_cycleSpeed << 8) | (_cycleFreq << 16) | 0xFF000000));
+                            array_push(_controlArray, new __ScribbleClassControlCycle(_cycleIndex | (_cycleSpeed << 8) | (_cycleFreq << 16) | 0xFF000000));
                             ++_controlCount;
                             
                             __hasAnimation = true;
@@ -713,10 +713,10 @@ function __scribble_gen_2_parser()
                         case 23:
                             _state_effect_flags = ~((~_state_effect_flags) | (1 << __SCRIBBLE_FLAG_CYCLE));
                             
-                            array_push(_controlArray, new __scribble_class_control_effect(_state_effect_flags));
+                            array_push(_controlArray, new __ScribbleClassControlEffect(_state_effect_flags));
                             ++_controlCount;
                             
-                            array_push(_controlArray, new __scribble_class_control_cycle(-1));
+                            array_push(_controlArray, new __ScribbleClassControlCycle(-1));
                             ++_controlCount;
                         break;
                             
@@ -861,13 +861,13 @@ function __scribble_gen_2_parser()
                         case 29:
                             if (array_length(_tag_parameters) != 2) __scribble_error("[region] tags must contain a name e.g. [region,This is a region]");
                             
-                            array_push(_controlArray, new __scribble_class_control_region(_tag_parameters[1]));
+                            array_push(_controlArray, new __ScribbleClassControlRegion(_tag_parameters[1]));
                             ++_controlCount;
                         break;
                     
                         // [/region]
                         case 30:
-                            array_push(_controlArray, new __scribble_class_control_region(undefined));
+                            array_push(_controlArray, new __ScribbleClassControlRegion(undefined));
                             ++_controlCount;
                         break;
                     
@@ -882,7 +882,7 @@ function __scribble_gen_2_parser()
                             }
                             else
                             {
-                                array_push(_controlArray, new __scribble_class_control_event(__SCRIBBLE_TYPIST_SOUND_COMMAND_TAG, _tag_parameters));
+                                array_push(_controlArray, new __ScribbleClassControlEvent(__SCRIBBLE_TYPIST_SOUND_COMMAND_TAG, _tag_parameters));
                                 ++_controlCount;
                             }
                         break;
@@ -894,7 +894,7 @@ function __scribble_gen_2_parser()
                             }
                             else
                             {
-                                array_push(_controlArray, new __scribble_class_control_event(__SCRIBBLE_TYPIST_SOUND_PER_CHAR_COMMAND_TAG, _tag_parameters));
+                                array_push(_controlArray, new __ScribbleClassControlEvent(__SCRIBBLE_TYPIST_SOUND_PER_CHAR_COMMAND_TAG, _tag_parameters));
                                 ++_controlCount;
                             }
                         break;
@@ -904,12 +904,12 @@ function __scribble_gen_2_parser()
                         #region Indent
                     
                         case 36: // [indent]
-                            array_push(_controlArray, new __scribble_class_control_indent_start());
+                            array_push(_controlArray, new __ScribbleClassControlIdentStart());
                             ++_controlCount;
                         break;
                     
                         case 37: // [/indent]
-                            array_push(_controlArray, new __scribble_class_control_indent_stop());
+                            array_push(_controlArray, new __ScribbleClassControlIdentStop());
                             ++_controlCount;
                         break;
                     
@@ -991,14 +991,14 @@ function __scribble_gen_2_parser()
                                 {
                                     _state_colour = (_state_colour & 0xFF000000) | (_tagData & 0x00FFFFFF);
                                     
-                                    array_push(_controlArray, new __scribble_class_control_color(_state_colour));
+                                    array_push(_controlArray, new __ScribbleClassControlColor(_state_colour));
                                     ++_controlCount;
                                 }
                                 else if (_tagType == __SCRIBBLE_TAG_EFFECT)
                                 {
                                     _state_effect_flags = _state_effect_flags | (1 << _tagData);
                                     
-                                    array_push(_controlArray, new __scribble_class_control_effect(_state_effect_flags));
+                                    array_push(_controlArray, new __ScribbleClassControlEffect(_state_effect_flags));
                                     ++_controlCount;
                                     
                                     __hasAnimation = true;
@@ -1007,14 +1007,14 @@ function __scribble_gen_2_parser()
                                 {
                                     _state_effect_flags = ~((~_state_effect_flags) | (1 << _tagData));
                                     
-                                    array_push(_controlArray, new __scribble_class_control_effect(_state_effect_flags));
+                                    array_push(_controlArray, new __ScribbleClassControlEffect(_state_effect_flags));
                                     ++_controlCount;
                                 }
                                 else if (_tagType == __SCRIBBLE_TAG_EVENT)
                                 {
                                     array_delete(_tag_parameters, 0, 1);
                                     
-                                    array_push(_controlArray, new __scribble_class_control_event(_tag_command_name, _tag_parameters));
+                                    array_push(_controlArray, new __ScribbleClassControlEvent(_tag_command_name, _tag_parameters));
                                     ++_controlCount;
                                 }
                                 else if (_tagType == __SCRIBBLE_TAG_MACRO)
@@ -1156,14 +1156,14 @@ function __scribble_gen_2_parser()
                                 }
                                 else if (asset_get_type(_tag_command_name) == asset_sound)
                                 {
-                                    array_push(_controlArray, new __scribble_class_control_event(__SCRIBBLE_AUDIO_COMMAND_TAG, _tag_parameters));
+                                    array_push(_controlArray, new __ScribbleClassControlEvent(__SCRIBBLE_AUDIO_COMMAND_TAG, _tag_parameters));
                                     ++_controlCount;
                                 }
                                 else if (ds_map_exists(_external_sound_map, _tag_command_name))
                                 {
                                     //External audio added via scribble_external_sound_add()
                                     
-                                    array_push(_controlArray, new __scribble_class_control_event(__SCRIBBLE_AUDIO_COMMAND_TAG, [_external_sound_map[? _tag_command_name]]));
+                                    array_push(_controlArray, new __ScribbleClassControlEvent(__SCRIBBLE_AUDIO_COMMAND_TAG, [_external_sound_map[? _tag_command_name]]));
                                     ++_controlCount;
                                 }
                                 else
@@ -1187,7 +1187,7 @@ function __scribble_gen_2_parser()
                                 
                                         _state_colour = (_state_colour & 0xFF000000) | (_decoded_colour & 0x00FFFFFF);
                                         
-                                        array_push(_controlArray, new __scribble_class_control_color(_state_colour));
+                                        array_push(_controlArray, new __ScribbleClassControlColor(_state_colour));
                                         ++_controlCount;
                                     }
                                     else
@@ -1211,7 +1211,7 @@ function __scribble_gen_2_parser()
                                     
                                             _state_colour = (_state_colour & 0xFF000000) | (_decoded_colour & 0x00FFFFFF);
                                             
-                                            array_push(_controlArray, new __scribble_class_control_color(_state_colour));
+                                            array_push(_controlArray, new __ScribbleClassControlColor(_state_colour));
                                             ++_controlCount;
                                             
                                             #endregion
@@ -1236,7 +1236,7 @@ function __scribble_gen_2_parser()
                         _new_halign = undefined;
                         _stateHAlignOffset = _font_halign_offset_array[_state_halign];
                     
-                        array_push(_controlArray, new __scribble_class_control_halign(_state_halign));
+                        array_push(_controlArray, new __ScribbleClassControlHAlign(_state_halign));
                         ++_controlCount;
                     
                         if (_glyphCount > 0)
