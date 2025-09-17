@@ -10,26 +10,26 @@
 
 function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _font_info, _line_height = undefined, _is_krutidev, _fromBundle)
 {
-    static _fontDataMap = __scribble_system().__fontDataMap;
+    static _fontDataMap = __ScribbleSystem().__fontDataMap;
     
     if (ds_map_exists(_fontDataMap, _name))
     {
-        __scribble_trace("Warning! A font for \"", _name, "\" has already been added. Destroying the old font and creating a new one");
+        __ScribbleTrace("Warning! A font for \"", _name, "\" has already been added. Destroying the old font and creating a new one");
         _fontDataMap[? _name].__Destroy();
     }
     
-    if (SCRIBBLE_VERBOSE) __scribble_trace("Adding \"", _name, "\" as standard font");
+    if (SCRIBBLE_VERBOSE) __ScribbleTrace("Adding \"", _name, "\" as standard font");
     
-    var _scribble_state = __scribble_system().__state;
-    if (_scribble_state.__default_font == undefined)
+    var _scribbleState = __ScribbleSystem().__state;
+    if (_scribbleState.__default_font == undefined)
     {
-        if (SCRIBBLE_VERBOSE) __scribble_trace("Setting default font to \"" + string(_name) + "\"");
-        _scribble_state.__default_font = _name;
+        if (SCRIBBLE_VERBOSE) __ScribbleTrace("Setting default font to \"" + string(_name) + "\"");
+        _scribbleState.__default_font = _name;
     }
     
     try
     {
-        var _global_glyph_bidi_map = __scribble_system().__glyph_data.__bidi_map;
+        var _global_glyph_bidi_map = __ScribbleSystem().__glyph_data.__bidi_map;
         
         //Get font info from the runtime
         var _textureIndex    = _font_info.texture;
@@ -49,7 +49,7 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
             ++_i;
         }
         
-        if (SCRIBBLE_VERBOSE) __scribble_trace("Processing font \"" + _name + "\"");
+        if (SCRIBBLE_VERBOSE) __ScribbleTrace("Processing font \"" + _name + "\"");
         
         var _texelsValid = true;
         
@@ -63,7 +63,7 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
             {
                 //Nope, texels are invalid. We'll have to update them later
                 _texelsValid = false;
-                __scribble_trace("Font \"" + _name +"\" texture not ready, possibly a dynamic texture");
+                __ScribbleTrace("Font \"" + _name +"\" texture not ready, possibly a dynamic texture");
             }
         }
         
@@ -78,7 +78,7 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
             
             if (SCRIBBLE_VERBOSE)
             {
-                __scribble_trace("  \"" + _name +"\""
+                __ScribbleTrace("  \"" + _name +"\""
                                  + ", texture = " + string(_textureIndex)
                                  + ", top-left = " + string(_texture_l) + "," + string(_texture_t)
                                  + ", size = " + string(_texture_w) + " x " + string(_texture_h)
@@ -265,13 +265,13 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
         var _GM_scaling = _font_info.size / _font_glyph_data_grid[# _space_index, __SCRIBBLE_GLYPH_PROPR_HEIGHT];
         if (_GM_scaling > 1)
         {
-            __scribble_trace("Warning! Font \"", _name, "\" may have been scaled during compilation (font size = ", _font_info.size, ", space height = ", _font_glyph_data_grid[# _font_glyphs_map[? 32], __SCRIBBLE_GLYPH_PROPR_HEIGHT], ", scaling factor = ", _GM_scaling, "). Check that the font is rendering correctly. If it is not, try setting SCRIBBLE_ATTEMPT_FONT_SCALING_FIX to <false>");
+            __ScribbleTrace("Warning! Font \"", _name, "\" may have been scaled during compilation (font size = ", _font_info.size, ", space height = ", _font_glyph_data_grid[# _font_glyphs_map[? 32], __SCRIBBLE_GLYPH_PROPR_HEIGHT], ", scaling factor = ", _GM_scaling, "). Check that the font is rendering correctly. If it is not, try setting SCRIBBLE_ATTEMPT_FONT_SCALING_FIX to <false>");
             if (SCRIBBLE_ATTEMPT_FONT_SCALING_FIX) scribble_font_scale(_name, ceil(_GM_scaling));
         }
     }
     catch(_error)
     {
-        __scribble_trace(_error);
-        __scribble_error("There was an error whilst reading \"", _name, "\"\nPlease reimport the font into GameMaker and reset character ranges\nIf this issue persists, please report it");
+        __ScribbleTrace(_error);
+        __ScribbleError("There was an error whilst reading \"", _name, "\"\nPlease reimport the font into GameMaker and reset character ranges\nIf this issue persists, please report it");
     }
 }

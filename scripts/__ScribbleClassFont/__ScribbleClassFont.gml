@@ -28,7 +28,7 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
     __underlineY = _underlineY; //*Not* the raw value. This value is changed by scribble_font_scale()
     __strikeY    = _strikeY;    //*Not* the raw value. This value is changed by scribble_font_scale()
     
-    static _fontDataMap = __scribble_system().__fontDataMap;
+    static _fontDataMap = __ScribbleSystem().__fontDataMap;
     _fontDataMap[? _name] = self;
     
     __glyphDataGrid = ds_grid_create(_glyphCount, __SCRIBBLE_GLYPH_PROPR_COUNT);
@@ -87,7 +87,7 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
     
     static __clear = function()
     {
-        if (!__superfont) __scribble_error("Cannot clear non-superfont fonts");
+        if (!__superfont) __ScribbleError("Cannot clear non-superfont fonts");
         
         ds_map_clear(__glyphsMap);
         
@@ -174,14 +174,14 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
     {
         if (not ds_map_exists(__glyphsMap, ord(SCRIBBLE_MISSING_CHARACTER)))
         {
-            __scribble_trace("Couldn't find \"missing character\" glyph data, character code ", ord(SCRIBBLE_MISSING_CHARACTER), " (", SCRIBBLE_MISSING_CHARACTER, ") in font \"", __name, "\"");
+            __ScribbleTrace("Couldn't find \"missing character\" glyph data, character code ", ord(SCRIBBLE_MISSING_CHARACTER), " (", SCRIBBLE_MISSING_CHARACTER, ") in font \"", __name, "\"");
             __glyphsMap[? ord(SCRIBBLE_MISSING_CHARACTER)] = __glyphsMap[? SCRIBBLE_UNICODE_ZWSP];
         }
     }
     
     static __Destroy = function()
     {
-        if (__SCRIBBLE_DEBUG) __scribble_trace("Destroying font \"", __name, "\"");
+        if (__SCRIBBLE_DEBUG) __ScribbleTrace("Destroying font \"", __name, "\"");
         
         ds_map_destroy(__glyphsMap);
         ds_grid_destroy(__glyphDataGrid);

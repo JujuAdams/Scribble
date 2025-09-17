@@ -6,9 +6,9 @@
 
 function scribble_flush_everything()
 {
-    if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing everything");
+    if (__SCRIBBLE_DEBUG) __ScribbleTrace("Flushing everything");
     
-    with(__scribble_system())
+    with(__ScribbleSystem())
     {
         var _array = __elementWeakArray;
         var _i = 0;

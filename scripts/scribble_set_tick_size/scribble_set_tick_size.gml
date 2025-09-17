@@ -13,7 +13,7 @@
 
 function scribble_set_tick_size(_value)
 {
-    static _system = __scribble_system();
+    static _system = __ScribbleSystem();
     with(_system)
     {
         if (is_numeric(_value))

@@ -21,7 +21,7 @@
 
 function scribble_glyph_set(_font, _character, _property, _value, _relative = false)
 {
-    var _font_data = __scribble_get_font_data(_font);
+    var _font_data = __ScribbleGetFontData(_font);
     
     var _grid = _font_data.__glyphDataGrid;
     var _map  = _font_data.__glyphsMap;
@@ -41,7 +41,7 @@ function scribble_glyph_set(_font, _character, _property, _value, _relative = fa
         var _glyph_index = _map[? 0x20];
         if (_glyph_index == undefined)
         {
-            __scribble_error("Space character not found for font \"", _font, "\"");
+            __ScribbleError("Space character not found for font \"", _font, "\"");
             exit;
         }
         
@@ -67,7 +67,7 @@ function scribble_glyph_set(_font, _character, _property, _value, _relative = fa
         
         if (_glyph_index == undefined)
         {
-            __scribble_error("Character \"", _character, "\" not found for font \"", _font, "\"");
+            __ScribbleError("Character \"", _character, "\" not found for font \"", _font, "\"");
             exit;
         }
         

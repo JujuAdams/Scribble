@@ -35,7 +35,7 @@
                                       \//If our glyph is missing, choose the missing character glyph instead!
                                       if (_data_index == undefined)\
                                       {\
-                                          __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_fontName) + "\"");\
+                                          __ScribbleTrace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_fontName) + "\"");\
                                           _data_index = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];\
                                       }\
                                       \//Add this glyph to our grid by copying from the font's own glyph data grid
@@ -55,7 +55,7 @@
 
 #macro __SCRIBBLE_PARSER_SET_FONT   __SCRIBBLE_PARSER_POP_ALIGNMENT_OFFSET\
                                     \
-                                    var _font_data = __scribble_get_font_data(_fontName);\
+                                    var _font_data = __ScribbleGetFontData(_fontName);\
                                     _font_data.__EnsureTexelData();\
                                     if (_font_data.__superfont) _font_data.__EnsureAdditionalCharacters();\
                                     if (_font_data.__is_krutidev) __hasDevanagari = true;\
@@ -73,7 +73,7 @@
                                     var _space_data_index = _font_glyphs_map[? SCRIBBLE_UNICODE_SPACE];\
                                     if (_space_data_index == undefined)\
                                     {\
-                                        __scribble_error("The space character is missing from font definition for \"", _fontName, "\"");\
+                                        __ScribbleError("The space character is missing from font definition for \"", _fontName, "\"");\
                                         return false;\
                                     }\
                                     \
@@ -162,7 +162,7 @@ function __scribble_gen_2_parser()
     
     #endregion
     
-    static _system                = __scribble_system();
+    static _system                = __ScribbleSystem();
     static _cycle_data_map        = _system.__cycle_data_map;
     static _tagDict               = _system.__tagDict;
     static _external_sprite_map   = _system.__external_sprite_map;
@@ -181,7 +181,7 @@ function __scribble_gen_2_parser()
         var _vbuff_pos_grid = __vbuff_pos_grid;
     }
     
-    static _glyph_data_struct = __scribble_system().__glyph_data;
+    static _glyph_data_struct = __ScribbleSystem().__glyph_data;
     static _global_glyph_bidi_map = _glyph_data_struct.__bidi_map;
     
     //Cache element properties locally
@@ -194,7 +194,7 @@ function __scribble_gen_2_parser()
     var _pre_scale        = __preScale;
     
     var _starting_font = __startingFont;
-    if (_starting_font == undefined) __scribble_error("The default font has not been set\nCheck that you've added fonts to Scribble (scribble_font_add() / scribble_font_add_from_sprite() etc.)");
+    if (_starting_font == undefined) __ScribbleError("The default font has not been set\nCheck that you've added fonts to Scribble (scribble_font_add() / scribble_font_add_from_sprite() etc.)");
     
     _starting_font = scribble_font_get_remap(_starting_font);
     var _fontName = _starting_font;
@@ -259,7 +259,7 @@ function __scribble_gen_2_parser()
     //Keep going until we hit a null
     while(true)
     {
-        // In-lined __scribble_buffer_read_unicode() for speed
+        // In-lined __ScribbleBufferReadUnicode() for speed
         var _glyph_ord  = buffer_read(_string_buffer, buffer_u8); //Assume 0xxxxxxx
         
         // Break out if we hit a null terminator
@@ -448,7 +448,7 @@ function __scribble_gen_2_parser()
                         case 7:
                             if (_tag_parameter_count <= 1)
                             {
-                                __scribble_trace("Not enough parameters for [scale] tag!");
+                                __ScribbleTrace("Not enough parameters for [scale] tag!");
                             }
                             else
                             {
@@ -461,7 +461,7 @@ function __scribble_gen_2_parser()
                         case 8:
                             if (_tag_parameter_count <= 1)
                             {
-                                __scribble_trace("Not enough parameters for [scaleStack] tag!");
+                                __ScribbleTrace("Not enough parameters for [scaleStack] tag!");
                             }
                             else
                             {
@@ -677,7 +677,7 @@ function __scribble_gen_2_parser()
                             {
                                 if (_tag_parameter_count < 2)
                                 {
-                                    __scribble_error("Must provide a cycle name");
+                                    __ScribbleError("Must provide a cycle name");
                                 }
                                 
                                 var _cycle_name  = _tag_parameters[1];
@@ -688,7 +688,7 @@ function __scribble_gen_2_parser()
                             var _cycle_data = _cycle_data_map[? _cycle_name];
                             if (not is_struct(_cycle_data))
                             {
-                                __scribble_error("Cycle \"", _cycle_name, "\" not recognised");
+                                __ScribbleError("Cycle \"", _cycle_name, "\" not recognised");
                             }
                             
                             _state_effect_flags = _state_effect_flags | (1 << __SCRIBBLE_FLAG_CYCLE);
@@ -733,11 +733,11 @@ function __scribble_gen_2_parser()
                             var _new_font = _font_data.__styleRegular;
                             if (_new_font == undefined)
                             {
-                                __scribble_trace("Regular style not set for font \"", _fontName, "\"");
+                                __ScribbleTrace("Regular style not set for font \"", _fontName, "\"");
                             }
                             else if (!ds_map_exists(_fontDataMap, _new_font))
                             {
-                                __scribble_trace("Font \"", _fontName, "\" not found (regular style for \"", _fontName, "\")");
+                                __ScribbleTrace("Font \"", _fontName, "\" not found (regular style for \"", _fontName, "\")");
                             }
                             else
                             {
@@ -753,11 +753,11 @@ function __scribble_gen_2_parser()
                             var _new_font = _font_data.__styleBold;
                             if (_new_font == undefined)
                             {
-                                __scribble_trace("Bold style not set for font \"", _fontName, "\"");
+                                __ScribbleTrace("Bold style not set for font \"", _fontName, "\"");
                             }
                             else if (!ds_map_exists(_fontDataMap, _new_font))
                             {
-                                __scribble_trace("Font \"", _fontName, "\" not found (bold style for \"", _fontName, "\")");
+                                __ScribbleTrace("Font \"", _fontName, "\" not found (bold style for \"", _fontName, "\")");
                             }
                             else
                             {
@@ -772,11 +772,11 @@ function __scribble_gen_2_parser()
                             var _new_font = _font_data.__styleItalic;
                             if (_new_font == undefined)
                             {
-                                __scribble_trace("Italic style not set for font \"", _fontName, "\"");
+                                __ScribbleTrace("Italic style not set for font \"", _fontName, "\"");
                             }
                             else if (!ds_map_exists(_fontDataMap, _new_font))
                             {
-                                __scribble_trace("Font \"", _fontName, "\" not found (italic style for \"", _fontName, "\")");
+                                __ScribbleTrace("Font \"", _fontName, "\" not found (italic style for \"", _fontName, "\")");
                             }
                             else
                             {
@@ -791,11 +791,11 @@ function __scribble_gen_2_parser()
                             var _new_font = _font_data.__styleBoldItalic;
                             if (_new_font == undefined)
                             {
-                                __scribble_trace("Bold-Italic style not set for font \"", _fontName, "\"");
+                                __ScribbleTrace("Bold-Italic style not set for font \"", _fontName, "\"");
                             }
                             else if (!ds_map_exists(_fontDataMap, _new_font))
                             {
-                                __scribble_trace("Font \"", _fontName, "\" not found (bold-italic style for \"", _fontName, "\")");
+                                __ScribbleTrace("Font \"", _fontName, "\" not found (bold-italic style for \"", _fontName, "\")");
                             }
                             else
                             {
@@ -859,7 +859,7 @@ function __scribble_gen_2_parser()
                     
                         // [region,]
                         case 29:
-                            if (array_length(_tag_parameters) != 2) __scribble_error("[region] tags must contain a name e.g. [region,This is a region]");
+                            if (array_length(_tag_parameters) != 2) __ScribbleError("[region] tags must contain a name e.g. [region,This is a region]");
                             
                             array_push(_controlArray, new __ScribbleClassControlRegion(_tag_parameters[1]));
                             ++_controlCount;
@@ -878,7 +878,7 @@ function __scribble_gen_2_parser()
                         case 32: // [typistSound]
                             if (array_length(_tag_parameters) != 5)
                             {
-                                __scribble_error("[typistSound] tags must use the same number of arguments as .sound()");
+                                __ScribbleError("[typistSound] tags must use the same number of arguments as .sound()");
                             }
                             else
                             {
@@ -890,7 +890,7 @@ function __scribble_gen_2_parser()
                         case 33: // [typistSoundPerChar]
                             if ((array_length(_tag_parameters) != 4) && (array_length(_tag_parameters) != 5))
                             {
-                                __scribble_error("[typistSoundPerChar] tags must use the same number of arguments as .sound_per_char()");
+                                __ScribbleError("[typistSoundPerChar] tags must use the same number of arguments as .sound_per_char()");
                             }
                             else
                             {
@@ -1116,7 +1116,7 @@ function __scribble_gen_2_parser()
                                         }
                                         
                                         //Apply IDE sprite speed
-                                        _image_speed *= __scribble_image_speed_get(_sprite_index);
+                                        _image_speed *= __ScribbleGetImageSpeed(_sprite_index);
                                 
                                         //Only report the model as animated if we're actually able to animate this sprite
                                         if ((_image_speed != 0) && (sprite_get_number(_sprite_index) > 1)) __hasAnimation = true;
@@ -1176,12 +1176,12 @@ function __scribble_gen_2_parser()
                                         try
                                         {
                                             var _decoded_colour = real("0x" + string_delete(_tag_command_name, 1, 1));
-                                            _decoded_colour = __scribble_rgb_to_bgr(_decoded_colour);
+                                            _decoded_colour = __ScribbleRGBToBGR(_decoded_colour);
                                         }
                                         catch(_error)
                                         {
-                                            __scribble_trace(_error);
-                                            __scribble_trace("Error! \"", string_delete(_tag_command_name, 1, 2), "\" could not be converted into a hexcode");
+                                            __ScribbleTrace(_error);
+                                            __ScribbleTrace("Error! \"", string_delete(_tag_command_name, 1, 2), "\" could not be converted into a hexcode");
                                             _decoded_colour = _starting_colour;
                                         }
                                 
@@ -1204,8 +1204,8 @@ function __scribble_gen_2_parser()
                                             }
                                             catch(_error)
                                             {
-                                                __scribble_trace(_error);
-                                                __scribble_trace("Error! \"", string_delete(_tag_command_name, 1, 2), "\" could not be converted into a decimal");
+                                                __ScribbleTrace(_error);
+                                                __ScribbleTrace("Error! \"", string_delete(_tag_command_name, 1, 2), "\" could not be converted into a decimal");
                                                 _decoded_colour = _starting_colour;
                                             }
                                     
@@ -1221,7 +1221,7 @@ function __scribble_gen_2_parser()
                                             var _command_string = string(_tag_command_name);
                                             var _j = 1;
                                             repeat(_tag_parameter_count-1) _command_string += "," + string(_tag_parameters[_j++]);
-                                            __scribble_trace("Warning! Unrecognised command tag [" + _command_string + "]" );
+                                            __ScribbleTrace("Warning! Unrecognised command tag [" + _command_string + "]" );
                                         }
                                     }
                                 }
@@ -1275,7 +1275,7 @@ function __scribble_gen_2_parser()
                         }
                         else if (__vAlign != _new_valign)
                         {
-                            __scribble_error("In-line vertical alignment cannot be set more than once");
+                            __ScribbleError("In-line vertical alignment cannot be set more than once");
                         }
                     
                         _new_valign = undefined;
@@ -1301,7 +1301,7 @@ function __scribble_gen_2_parser()
         }
         else
         {
-            if ((_glyph_ord == SCRIBBLE_COMMAND_TAG_OPEN) && !_ignore_commands && (_state_command_tag_flipflop || (__scribble_buffer_peek_unicode(_string_buffer, buffer_tell(_string_buffer)) != SCRIBBLE_COMMAND_TAG_OPEN)))
+            if ((_glyph_ord == SCRIBBLE_COMMAND_TAG_OPEN) && !_ignore_commands && (_state_command_tag_flipflop || (__ScribbleBufferPeekUnicode(_string_buffer, buffer_tell(_string_buffer)) != SCRIBBLE_COMMAND_TAG_OPEN)))
             {
                 if (_state_command_tag_flipflop)
                 {
@@ -1499,7 +1499,7 @@ function __scribble_gen_2_parser()
                     __hasArabic = true;
                     
                     var _buffer_offset = buffer_tell(_string_buffer);
-                    var _glyph_next = __scribble_buffer_peek_unicode(_string_buffer, _buffer_offset);
+                    var _glyph_next = __ScribbleBufferPeekUnicode(_string_buffer, _buffer_offset);
                     
                     // Lam with Alef ligatures
                     if (_glyph_write == 0x0644)
@@ -1522,7 +1522,7 @@ function __scribble_gen_2_parser()
                             // The size of an Alef, no matter what form, is only 2 bytes
                             buffer_seek(_string_buffer, buffer_seek_relative, 2);
                             
-                            _glyph_next = __scribble_buffer_peek_unicode(_string_buffer, _buffer_offset);
+                            _glyph_next = __ScribbleBufferPeekUnicode(_string_buffer, _buffer_offset);
                         }
                     }
                     
@@ -1530,7 +1530,7 @@ function __scribble_gen_2_parser()
                     while((_glyph_next >= 0x064B) && (_glyph_next <= 0x0652)) // Tashkil range
                     {
                         _buffer_offset += 2;
-                        _glyph_next = __scribble_buffer_peek_unicode(_string_buffer, _buffer_offset);
+                        _glyph_next = __ScribbleBufferPeekUnicode(_string_buffer, _buffer_offset);
                     }
                     
                     // Figure out what to replace this glyph with, depending on what glyphs around it join in which directions
@@ -1618,7 +1618,7 @@ function __scribble_gen_2_parser()
                             
                                 if (_thai_base_map[? _base])
                                 {
-                                    _glyph_next = __scribble_buffer_peek_unicode(_string_buffer, buffer_tell(_string_buffer));
+                                    _glyph_next = __ScribbleBufferPeekUnicode(_string_buffer, buffer_tell(_string_buffer));
                                 
                                     var _followingNikhahit = ((_glyph_next == 0x0e33) || (_glyph_next == 0x0e4d));
                                     if (_thai_base_ascender_map[? _base])
@@ -1682,7 +1682,7 @@ function __scribble_gen_2_parser()
                             }
                             else
                             {
-                                _glyph_next = __scribble_buffer_peek_unicode(_string_buffer, buffer_tell(_string_buffer));
+                                _glyph_next = __ScribbleBufferPeekUnicode(_string_buffer, buffer_tell(_string_buffer));
                             
                                 if ((_glyph_write == 0x0e0d) && _thai_lower_map[? _glyph_next])
                                 {

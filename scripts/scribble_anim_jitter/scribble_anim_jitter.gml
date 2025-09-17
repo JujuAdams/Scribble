@@ -5,7 +5,7 @@
 
 function scribble_anim_jitter(_min_scale, _max_scale, _speed)
 {
-    static _array = __scribble_system().__anim_properties;
+    static _array = __ScribbleSystem().__anim_properties;
     
     if ((_min_scale != _array[__SCRIBBLE_ANIM_JITTER_MINIMUM])
     ||  (_max_scale != _array[__SCRIBBLE_ANIM_JITTER_MAXIMUM])
@@ -15,8 +15,8 @@ function scribble_anim_jitter(_min_scale, _max_scale, _speed)
         _array[@ __SCRIBBLE_ANIM_JITTER_MAXIMUM] = _max_scale;
         _array[@ __SCRIBBLE_ANIM_JITTER_SPEED  ] = _speed;
         
-        static _scribble_state = __scribble_system().__state;
-        with(_scribble_state)
+        static _scribbleState = __ScribbleSystem().__state;
+        with(_scribbleState)
         {
             __shader_anim_desync            = (not __shader_anim_disabled); //Only re-set uniforms when the animations aren't disabled
             __shader_anim_desync_to_default = false;

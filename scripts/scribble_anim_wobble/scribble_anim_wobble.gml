@@ -4,7 +4,7 @@
 
 function scribble_anim_wobble(_angle, _frequency)
 {
-    static _array = __scribble_system().__anim_properties;
+    static _array = __ScribbleSystem().__anim_properties;
     
     if ((_angle     != _array[__SCRIBBLE_ANIM_WOBBLE_ANGLE])
     ||  (_frequency != _array[__SCRIBBLE_ANIM_WOBBLE_FREQ ]))
@@ -12,8 +12,8 @@ function scribble_anim_wobble(_angle, _frequency)
         _array[@ __SCRIBBLE_ANIM_WOBBLE_ANGLE] = _angle;
         _array[@ __SCRIBBLE_ANIM_WOBBLE_FREQ ] = _frequency;
         
-        static _scribble_state = __scribble_system().__state;
-        with(_scribble_state)
+        static _scribbleState = __ScribbleSystem().__state;
+        with(_scribbleState)
         {
             __shader_anim_desync            = (not __shader_anim_disabled); //Only re-set uniforms when the animations aren't disabled
             __shader_anim_desync_to_default = false;

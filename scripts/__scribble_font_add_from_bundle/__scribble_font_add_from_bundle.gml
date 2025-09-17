@@ -4,7 +4,7 @@
 
 function __scribble_font_add_from_bundle(_font)
 {
-    static _font_to_texture_group_map = __scribble_system().__font_to_texture_group_map;
+    static _font_to_texture_group_map = __ScribbleSystem().__font_to_texture_group_map;
     
     var _texture_group = _font_to_texture_group_map[? real(_font)];
     
@@ -12,7 +12,7 @@ function __scribble_font_add_from_bundle(_font)
     var _asset       = asset_get_index(_name);
     var _texture_uvs = font_get_uvs(_asset);
     var _font_info   = font_get_info(_font);
-    var _is_krutidev = __scribble_asset_is_krutidev(_font, asset_font);
+    var _is_krutidev = __ScribbleAssetIsKrutidev(_font, asset_font);
     
     var _old_font = draw_get_font();
     draw_set_font(_font);

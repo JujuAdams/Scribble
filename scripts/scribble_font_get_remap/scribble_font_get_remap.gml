@@ -7,5 +7,5 @@
 
 function scribble_font_get_remap(_original_font)
 {
-    return __scribble_get_font_data(_original_font).__remap ?? _original_font;
+    return __ScribbleGetFontData(_original_font).__remap ?? _original_font;
 }

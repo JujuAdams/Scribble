@@ -4,7 +4,7 @@
 
 function __scribble_remove_tag(_name)
 {
-    static _system  = __scribble_system();
+    static _system  = __ScribbleSystem();
     static _tagDict = _system.__tagDict;
     
     var _existingTag = _tagDict[$ _name];
@@ -12,7 +12,7 @@ function __scribble_remove_tag(_name)
     {
         if (_existingTag.__protected)
         {
-            __scribble_error("Tag [", _name, "] is protected and cannot be removed");
+            __ScribbleError("Tag [", _name, "] is protected and cannot be removed");
         }
         
         variable_struct_remove(_tagDict, _name);

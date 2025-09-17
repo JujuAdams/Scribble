@@ -12,5 +12,5 @@ function scribble_font_set_halign_offset(_font, _hAlign, _offset)
     if (_hAlign == "pin_right" ) _hAlign = __SCRIBBLE_PIN_RIGHT;
     if (_hAlign == "fa_justify") _hAlign = __SCRIBBLE_FA_JUSTIFY;
     
-    __scribble_get_font_data(_font).__halignOffsetArray[_hAlign] = _offset;
+    __ScribbleGetFontData(_font).__halignOffsetArray[_hAlign] = _offset;
 }

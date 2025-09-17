@@ -2,5 +2,5 @@
 
 function scribble_initialize()
 {
-    __scribble_system(true);
+    __ScribbleSystem(true);
 }

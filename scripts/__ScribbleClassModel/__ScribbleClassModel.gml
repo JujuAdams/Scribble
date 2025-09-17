@@ -4,11 +4,11 @@
 
 function __ScribbleClassModel(_element) constructor
 {
-    static _generatorState = __scribble_system().__generatorState;
+    static _generatorState = __ScribbleSystem().__generatorState;
     
     
     
-    if (__SCRIBBLE_DEBUG) __scribble_trace("Caching model \"", __cacheName, "\"");
+    if (__SCRIBBLE_DEBUG) __ScribbleTrace("Caching model \"", __cacheName, "\"");
     
     __frozen  = undefined;
     __flushed = false;
@@ -77,7 +77,7 @@ function __ScribbleClassModel(_element) constructor
         __padBboxR = false;
         __padBboxB = false;
         
-        var _result = __scribble_parse_line_spacing(__lineSpacing);
+        var _result = __ScribbleParseLineSpacing(__lineSpacing);
         __lineSpacingAdd      = _result.__add;
         __lineSpacingMultiply = _result.__multiply;
         
@@ -115,7 +115,7 @@ function __ScribbleClassModel(_element) constructor
         if (SCRIBBLE_VERBOSE)
         {
             var _elapsed = (get_timer() - _timer_total)/1000;
-            __scribble_trace("__ScribbleClassModel() took ", _elapsed, "ms");
+            __ScribbleTrace("__ScribbleClassModel() took ", _elapsed, "ms");
         }
     }
     
@@ -165,7 +165,7 @@ function __ScribbleClassModel(_element) constructor
             
             if (not _clip)
             {
-                __scribble_error("Somehow you've managed to enable serial display without clipping. Please report this bug!");
+                __ScribbleError("Somehow you've managed to enable serial display without clipping. Please report this bug!");
             }
             
             _usedClip = true;
@@ -215,7 +215,7 @@ function __ScribbleClassModel(_element) constructor
     static __Flush = function()
     {
         if (__flushed) return;
-        if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing model \"" + string(__cacheName) + "\"");
+        if (__SCRIBBLE_DEBUG) __ScribbleTrace("Flushing model \"" + string(__cacheName) + "\"");
         
         __Reset();
         __flushed = true;
@@ -223,7 +223,7 @@ function __ScribbleClassModel(_element) constructor
     
     static __Reset = function()
     {
-        if (__SCRIBBLE_DEBUG) __scribble_trace("Resetting model \"" + string(__cacheName) + "\"");
+        if (__SCRIBBLE_DEBUG) __ScribbleTrace("Resetting model \"" + string(__cacheName) + "\"");
         
         //Flush our pages
         var _i = 0;
@@ -251,8 +251,8 @@ function __ScribbleClassModel(_element) constructor
     {
         if (_page != undefined)
         {
-            if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-            if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
+            if (_page < 0) __ScribbleError("Page index ", _page, " doesn't exist. Minimum page index is 0");
+            if (_page >= __pages) __ScribbleError("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
             
             var _pageData = __pagesArray[_page];
             var _left   = _pageData.__minX;
@@ -288,7 +288,7 @@ function __ScribbleClassModel(_element) constructor
     {
         //TODO - Optimize by returning page bounds if the number of characters revealed is the same as the whole page
         
-        if (not __allowGlyphDataGetter) __scribble_error("Getting the revealed glyph bounding box requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
+        if (not __allowGlyphDataGetter) __ScribbleError("Getting the revealed glyph bounding box requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
         
         var _glyphGrid = __GetGlyphDataGrid(_page);
         
@@ -373,12 +373,12 @@ function __ScribbleClassModel(_element) constructor
     /// @param page
     static __GetText = function(_page)
     {
-        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
+        if (_page < 0) __ScribbleError("Page index ", _page, " doesn't exist. Minimum page index is 0");
+        if (_page >= __pages) __ScribbleError("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
         
         if (not __allowTextGetter)
         {
-            __scribble_error("Getting element text requires either:\n- Call `.allow_text_getter()` on the element\n- Set `SCRIBBLE_FORCE_TEXT_GETTER` to `true`");
+            __ScribbleError("Getting element text requires either:\n- Call `.allow_text_getter()` on the element\n- Set `SCRIBBLE_FORCE_TEXT_GETTER` to `true`");
         }
         
         return __pagesArray[_page].__text;
@@ -387,8 +387,8 @@ function __ScribbleClassModel(_element) constructor
     /// @param page
     static __GetLineData = function(_index, _page)
     {
-        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
+        if (_page < 0) __ScribbleError("Page index ", _page, " doesn't exist. Minimum page index is 0");
+        if (_page >= __pages) __ScribbleError("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
         
         return __pagesArray[_page].__GetLineData(_index);
     }
@@ -397,12 +397,12 @@ function __ScribbleClassModel(_element) constructor
     /// @param page
     static __GetGlyphData = function(_index, _page)
     {
-        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
+        if (_page < 0) __ScribbleError("Page index ", _page, " doesn't exist. Minimum page index is 0");
+        if (_page >= __pages) __ScribbleError("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
         
         if (not __allowGlyphDataGetter)
         {
-            __scribble_error("Getting glyph data requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
+            __ScribbleError("Getting glyph data requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
         }
         
         return __pagesArray[_page].__GetGlyphData(_index);
@@ -416,8 +416,8 @@ function __ScribbleClassModel(_element) constructor
     /// @param page
     static __GetLineCount = function(_page)
     {
-        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
+        if (_page < 0) __ScribbleError("Page index ", _page, " doesn't exist. Minimum page index is 0");
+        if (_page >= __pages) __ScribbleError("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
         
         return __pagesArray[_page].__lineCount;
     }
@@ -431,8 +431,8 @@ function __ScribbleClassModel(_element) constructor
     /// @param page
     static __GetGlyphCount = function(_page)
     {
-        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
+        if (_page < 0) __ScribbleError("Page index ", _page, " doesn't exist. Minimum page index is 0");
+        if (_page >= __pages) __ScribbleError("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
         
         //N.B. Off by one since we consider the terminating null as a glyph for the purposes of typists
         return __pagesArray[_page].__glyphCount-1;
@@ -440,17 +440,17 @@ function __ScribbleClassModel(_element) constructor
     
     static __GetGlyphDataGrid = function(_page)
     {
-        if (_page < 0) __scribble_error("Page index ", _page, " doesn't exist. Minimum page index is 0");
-        if (_page >= __pages) __scribble_error("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
+        if (_page < 0) __ScribbleError("Page index ", _page, " doesn't exist. Minimum page index is 0");
+        if (_page >= __pages) __ScribbleError("Page index ", _page, " doesn't exist. Maximum page index is ", __pages-1);
         
-        if (not __allowGlyphDataGetter) __scribble_error("Getting glyph data requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
+        if (not __allowGlyphDataGetter) __ScribbleError("Getting glyph data requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
         
         return __pagesArray[_page].__glyphGrid;
     }
     
     static __AddPage = function(_lineStart)
     {
-        static _generatorState = __scribble_system().__generatorState;
+        static _generatorState = __ScribbleSystem().__generatorState;
         
         var _pageData = new __ScribbleClassPage(self);
         _pageData.__lineStart  = _lineStart

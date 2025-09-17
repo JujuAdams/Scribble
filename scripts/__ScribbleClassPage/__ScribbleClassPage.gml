@@ -4,7 +4,7 @@
 
 function __ScribbleClassPage(_model) constructor
 {
-    static _system = __scribble_system();
+    static _system = __ScribbleSystem();
     
     __model = _model;
     
@@ -42,7 +42,7 @@ function __ScribbleClassPage(_model) constructor
     static __Finalize = function(_pageEndLine)
     {
         static _animationRandomizeArray = [];
-        static _generatorState = __scribble_system().__generatorState;
+        static _generatorState = __ScribbleSystem().__generatorState;
         
         with(_generatorState)
         {
@@ -267,7 +267,7 @@ function __ScribbleClassPage(_model) constructor
             
             if (SCRIBBLE_VERBOSE)
             {
-                __scribble_trace("Incrementally froze page vertex buffers, time taken = ", (get_timer() - _t)/1000, "ms");
+                __ScribbleTrace("Incrementally froze page vertex buffers, time taken = ", (get_timer() - _t)/1000, "ms");
             }
         }
     }
@@ -327,7 +327,7 @@ function __ScribbleClassPage(_model) constructor
             return _data.__vertexBuffer;
         }
         
-        //TODO - Move this to `__scribble_system()`
+        //TODO - Move this to `__ScribbleSystem()`
         static _vertexFormat = undefined;
         if (_vertexFormat == undefined)
         {

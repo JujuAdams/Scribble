@@ -9,7 +9,7 @@
 
 function __ScribbleGetMaterial(_fontName, _textureIndexOrPointer, _renderType, _sdfPxRange, _sdfThicknessOffset, _bilinear)
 {
-    static _material_map = __scribble_system().__material_map;
+    static _material_map = __ScribbleSystem().__material_map;
     
     var _key = __scribble_make_material_key(_textureIndexOrPointer, _renderType, _sdfPxRange, _sdfThicknessOffset, _bilinear);
     

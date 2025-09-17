@@ -2,7 +2,7 @@
 
 function __scribble_gen_7_build_pages()
 {
-    static _generatorState = __scribble_system().__generatorState;
+    static _generatorState = __ScribbleSystem().__generatorState;
     
     with(_generatorState)
     {

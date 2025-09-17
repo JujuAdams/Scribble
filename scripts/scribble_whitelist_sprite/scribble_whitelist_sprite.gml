@@ -4,7 +4,7 @@
 
 function scribble_whitelist_sprite(_sprite)
 {
-    static _scribble_state = __scribble_system().__state;
+    static _scribbleState = __ScribbleSystem().__state;
     
-    _scribble_state.__sprite_whitelist_map[? _sprite] = true;
+    _scribbleState.__sprite_whitelist_map[? _sprite] = true;
 }

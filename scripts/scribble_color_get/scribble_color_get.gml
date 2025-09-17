@@ -7,7 +7,7 @@
 
 function scribble_color_get(_name)
 {
-    static _tagDict = __scribble_system().__tagDict;
+    static _tagDict = __ScribbleSystem().__tagDict;
     
     var _tagStruct = _tagDict[$ _name];
     if (is_struct(_tagStruct) && (_tagStruct.__type == __SCRIBBLE_TAG_COLOR))

@@ -21,7 +21,7 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
         {
             if (__flushed) return;
             
-            if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing element \"" + string(__cacheName) + "\"");
+            if (__SCRIBBLE_DEBUG) __ScribbleTrace("Flushing element \"" + string(__cacheName) + "\"");
             
             //Get rid of our model
             if (is_struct(__model))
@@ -78,7 +78,7 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
         
         __AddToCache = function()
         {
-            static _elementCacheMap = __scribble_system().__elementCacheMap;
+            static _elementCacheMap = __ScribbleSystem().__elementCacheMap;
             
             if ((not __inCache) && (not __flushed) && (not ds_map_exists(_elementCacheMap, __cacheName)))
             {
@@ -89,7 +89,7 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
         
         __RemoveFromCache = function()
         {
-            static _elementCacheMap = __scribble_system().__elementCacheMap;
+            static _elementCacheMap = __ScribbleSystem().__elementCacheMap;
             
             if (weak_ref_alive(self) && (_elementCacheMap[? __cacheName] == ref))
             {
@@ -102,12 +102,12 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
         
         
         __AddToCache();
-        array_push(__scribble_system().__elementWeakArray, self);
+        array_push(__ScribbleSystem().__elementWeakArray, self);
         
-        __gcTimeSource = time_source_create(time_source_global, __scribble_random_range(__SCRIBBLE_ELEMENT_SELFCHECK_MIN, __SCRIBBLE_ELEMENT_SELFCHECK_MAX), time_source_units_seconds,
+        __gcTimeSource = time_source_create(time_source_global, __ScribbleRandomRange(__SCRIBBLE_ELEMENT_SELFCHECK_MIN, __SCRIBBLE_ELEMENT_SELFCHECK_MAX), time_source_units_seconds,
                                             function()
                                             {
-                                                static _system = __scribble_system();
+                                                static _system = __ScribbleSystem();
                                                 
                                                 if (not weak_ref_alive(self))
                                                 {
@@ -194,6 +194,6 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
     
     static in = function()
     {
-        __scribble_error("Cannot use typist functions on cached Scribble text elements\nPlease refer to documentation and use `scribble_unique()` instead");
+        __ScribbleError("Cannot use typist functions on cached Scribble text elements\nPlease refer to documentation and use `scribble_unique()` instead");
     }
 }

@@ -22,7 +22,7 @@
 
 function scribble_font_set_remap(_original_font, _remap_font)
 {
-    with(__scribble_get_font_data(_original_font))
+    with(__ScribbleGetFontData(_original_font))
     {
         if (__remap != _remap_font)
         {

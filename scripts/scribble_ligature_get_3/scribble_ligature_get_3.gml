@@ -12,7 +12,7 @@ function scribble_ligature_get_3(_font, _firstChar, _secondChar)
 {
     if (not SCRIBBLE_ALLOW_LIGATURES)
     {
-        __scribble_trace("Warning! Ligature will not be applied if `SCRIBBLE_ALLOW_LIGATURES` is set to `false`");
+        __ScribbleTrace("Warning! Ligature will not be applied if `SCRIBBLE_ALLOW_LIGATURES` is set to `false`");
     }
     
     var  _firstUnicode = is_numeric( _firstChar)?  _firstChar : ord( _firstChar);
@@ -21,24 +21,24 @@ function scribble_ligature_get_3(_font, _firstChar, _secondChar)
     
     if (_firstChar == 0)
     {
-        __scribble_error("Cannot use null character (U+0000) for the first character");
+        __ScribbleError("Cannot use null character (U+0000) for the first character");
     }
     
     if (_firstUnicode < 0)
     {
-        __scribble_error("Cannot use negative value for first character");
+        __ScribbleError("Cannot use negative value for first character");
     }
     
     if (_secondUnicode < 0)
     {
-        __scribble_error("Cannot use negative value for second character");
+        __ScribbleError("Cannot use negative value for second character");
     }
     
     if (_thirdUnicode < 0)
     {
-        __scribble_error("Cannot use negative value for second character");
+        __ScribbleError("Cannot use negative value for second character");
     }
     
-    var _ligatureMap = __scribble_get_font_data(_font).__ligatureMap;
+    var _ligatureMap = __ScribbleGetFontData(_font).__ligatureMap;
     return _ligatureMap[? ((_firstUnicode & 0xFFFF) << 32) | ((_secondUnicode & 0xFFFF) << 16) | (_thirdUnicode & 0xFFFF)];
 }

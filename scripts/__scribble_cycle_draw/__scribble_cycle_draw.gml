@@ -4,12 +4,12 @@
 
 function __scribble_cycle_draw(_name)
 {
-    static _data_map = __scribble_system().__cycle_data_map;
+    static _data_map = __ScribbleSystem().__cycle_data_map;
     
     var _data = _data_map[? _name];
     if (_data == undefined)
     {
-        __scribble_error("Cycle \"", _name, "\" doesn't exist");
+        __ScribbleError("Cycle \"", _name, "\" doesn't exist");
     }
     
     with(_data)

@@ -2,7 +2,7 @@
 
 function __scribble_gen_8_position_glyphs()
 {
-    static _generatorState = __scribble_system().__generatorState;
+    static _generatorState = __ScribbleSystem().__generatorState;
     static _stretch_array = array_create_ext(1000, function()
     {
         return {

@@ -5,6 +5,6 @@
 
 function scribble_get_tick_size()
 {
-    static _system = __scribble_system();
+    static _system = __ScribbleSystem();
     return _system.__userTickSize;
 }

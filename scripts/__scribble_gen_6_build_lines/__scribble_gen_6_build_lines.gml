@@ -45,11 +45,11 @@
 
 function __scribble_gen_6_build_lines()
 {
-    static _generatorState = __scribble_system().__generatorState;
+    static _generatorState = __ScribbleSystem().__generatorState;
     
     static _funcTrim = function(_lineArray, _simulated_model_max_width)
     {
-        static _generatorState = __scribble_system().__generatorState;
+        static _generatorState = __ScribbleSystem().__generatorState;
         var _word_grid  = _generatorState.__word_grid;
         var _glyphGrid = _generatorState.__glyphGrid;
         var _controlArray = _generatorState.__controlArray;
@@ -86,17 +86,17 @@ function __scribble_gen_6_build_lines()
                 
                 if (_fontName == undefined)
                 {
-                    __scribble_error("Could not find font during trim backtracking");
+                    __ScribbleError("Could not find font during trim backtracking");
                 }
                 
-                var _fontData          = __scribble_get_font_data(_fontName);
+                var _fontData          = __ScribbleGetFontData(_fontName);
                 var _fontGlyphDataGrid = _fontData.__glyphDataGrid;
                 var _fontGlyphsMap     = _fontData.__glyphsMap;
                 
                 var _dataIndex = _fontGlyphsMap[? ord(".")];
                 if (_dataIndex == undefined)
                 {
-                    __scribble_trace("Couldn't find glyph data for character code ", ord("."), " (.) in font \"", _fontName, "\"");
+                    __ScribbleTrace("Couldn't find glyph data for character code ", ord("."), " (.) in font \"", _fontName, "\"");
                     return;
                 }
                 

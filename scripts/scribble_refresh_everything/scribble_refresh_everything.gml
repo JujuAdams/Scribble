@@ -1,9 +1,9 @@
 // Feather disable all
 function scribble_refresh_everything()
 {
-    if (__SCRIBBLE_DEBUG) __scribble_trace("Refreshing everything");
+    if (__SCRIBBLE_DEBUG) __ScribbleTrace("Refreshing everything");
     
-    with(__scribble_system())
+    with(__ScribbleSystem())
     {
         var _array = __elementWeakArray;
         var _i = 0;

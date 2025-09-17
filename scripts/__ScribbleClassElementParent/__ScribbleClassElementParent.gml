@@ -4,7 +4,7 @@
 
 function __ScribbleClassElementParent(_text) constructor
 {
-    static _system = __scribble_system();
+    static _system = __ScribbleSystem();
     
     
     
@@ -25,7 +25,7 @@ function __ScribbleClassElementParent(_text) constructor
     __preprocessorFunc = undefined;
     
     __startingFont   = _system.__state.__default_font;
-    __startingColor = __scribble_process_colour(SCRIBBLE_DEFAULT_COLOR);
+    __startingColor = __ScribbleProcessColor(SCRIBBLE_DEFAULT_COLOR);
     __startingHAlign = SCRIBBLE_DEFAULT_HALIGN;
     __startingVAlign = SCRIBBLE_DEFAULT_VALIGN;
     __blend_colour    = c_white;
@@ -168,7 +168,7 @@ function __ScribbleClassElementParent(_text) constructor
             }
             else
             {
-                __scribble_error("You may only set a font using one of the following:\n- Font name as a string\n- Font handle\n- Sprite name as a string (if it has been used to create a spritefont)\n- Sprite handle (if it has been used to create a spritefont)");
+                __ScribbleError("You may only set a font using one of the following:\n- Font name as a string\n- Font handle\n- Sprite name as a string (if it has been used to create a spritefont)\n- Sprite handle (if it has been used to create a spritefont)");
             }
         }
         else if (_font == undefined)
@@ -177,7 +177,7 @@ function __ScribbleClassElementParent(_text) constructor
         }
         else
         {
-            __scribble_error("Fonts should be specified using their name as a string\nUse <undefined> to not set a new font");
+            __ScribbleError("Fonts should be specified using their name as a string\nUse <undefined> to not set a new font");
         }
         
         if (_fontName != __startingFont)
@@ -194,7 +194,7 @@ function __ScribbleClassElementParent(_text) constructor
     {
         if (_in_colour != undefined)
         {
-            var _colour = __scribble_process_colour(_in_colour);
+            var _colour = __ScribbleProcessColor(_in_colour);
             if ((_colour != undefined) && (_colour >= 0) && (_colour != __startingColor))
             {
                 __modelDirty = true;
@@ -244,7 +244,7 @@ function __ScribbleClassElementParent(_text) constructor
     /// @param alpha
     static blend = function(_colour, _alpha)
     {
-        _colour = __scribble_process_colour(_colour);
+        _colour = __ScribbleProcessColor(_colour);
         
         if (_colour != undefined) __blend_colour = _colour & 0xFFFFFF;
         if (_alpha  != undefined) __blend_alpha  = clamp(_alpha, 0, 1);
@@ -256,7 +256,7 @@ function __ScribbleClassElementParent(_text) constructor
     /// @param alpha
     static gradient = function(_colour, _alpha)
     {
-        _colour = __scribble_process_colour(_colour);
+        _colour = __ScribbleProcessColor(_colour);
         
         __gradient_colour = _colour & 0xFFFFFF;
         __gradient_alpha  = _alpha;
@@ -268,7 +268,7 @@ function __ScribbleClassElementParent(_text) constructor
     /// @param alpha
     static flash = function(_colour, _alpha)
     {
-        _colour = __scribble_process_colour(_colour);
+        _colour = __ScribbleProcessColor(_colour);
         
         __flash_colour = _colour & 0xFFFFFF;
         __flash_alpha  = _alpha;
@@ -506,7 +506,7 @@ function __ScribbleClassElementParent(_text) constructor
         
         if (not _model.__allowGlyphDataGetter)
         {
-            __scribble_error("Scrolling to a glyph's x position requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
+            __ScribbleError("Scrolling to a glyph's x position requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
         }
         
         var _glyphData = _model.__GetGlyphData(_index, __page);
@@ -772,7 +772,7 @@ function __ScribbleClassElementParent(_text) constructor
     {
         if (is_infinity(__layoutMaxHeight))
         {
-            __scribble_error("Cannot call `.serial_to_page()` without having called `.max_size()`");
+            __ScribbleError("Cannot call `.serial_to_page()` without having called `.max_size()`");
         }
         
         var _model = __EnsureModel();
@@ -936,7 +936,7 @@ function __ScribbleClassElementParent(_text) constructor
             ||  !is_numeric(_x3) || !is_numeric(_y3)
             ||  !is_numeric(_x4) || !is_numeric(_y4))
             {
-                __scribble_trace("Warning! One or more Bezier parameters were not numeric (", _x1, ", ", _y1, ", ", _x2, ", ", _y2, ", ", _x3, ", ", _y3, ", ", _x4, ", ", _y4, ")");
+                __ScribbleTrace("Warning! One or more Bezier parameters were not numeric (", _x1, ", ", _y1, ", ", _x2, ", ", _y2, ", ", _x3, ", ", _y3, ", ", _x4, ", ", _y4, ")");
                 
                 _x1 = 0;
                 _y1 = 0;
@@ -950,7 +950,7 @@ function __ScribbleClassElementParent(_text) constructor
         }
         else
         {
-            __scribble_error("Wrong number of arguments (", argument_count, ") provided\nExpecting 0 or 8");
+            __ScribbleError("Wrong number of arguments (", argument_count, ") provided\nExpecting 0 or 8");
         }
         
         var _bezier_array = [_x2 - _x1, _y2 - _y1,
@@ -1005,7 +1005,7 @@ function __ScribbleClassElementParent(_text) constructor
         
         if (__matrix_inverse == undefined)
         {
-            __matrix_inverse = __scribble_matrix_inverse(matrix_multiply(_matrix, matrix_get(matrix_world)));
+            __matrix_inverse = __ScribbleMatrixInverse(matrix_multiply(_matrix, matrix_get(matrix_world)));
         }
         
         var _vector = matrix_transform_vertex(__matrix_inverse, _pointer_x, _pointer_y, 0);
@@ -1074,7 +1074,7 @@ function __ScribbleClassElementParent(_text) constructor
             ++_i;
         }
         
-        __scribble_error("Region \"", _name, "\" not found");
+        __ScribbleError("Region \"", _name, "\" not found");
     }
     
     static region_get_active = function()
@@ -1417,13 +1417,13 @@ function __ScribbleClassElementParent(_text) constructor
         {
             if (_page < 0)
             {
-                __scribble_trace("Warning! Cannot set a text element's page to less than 0");
+                __ScribbleTrace("Warning! Cannot set a text element's page to less than 0");
                 __page = 0;
             }
             else if (_page > _model.__GetPageCount()-1)
             {
                 __page = _model.__GetPageCount()-1;
-                __scribble_trace("Warning! Page ", _page, " is too big. Valid pages are from 0 to ", __page, " (pages are 0-indexed)");
+                __ScribbleTrace("Warning! Page ", _page, " is too big. Valid pages are from 0 to ", __page, " (pages are 0-indexed)");
             }
             else
             {
@@ -1457,7 +1457,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     static get_pages = function()
     {
-        __scribble_error(".get_pages() has been replaced by .get_page_count()");
+        __ScribbleError(".get_pages() has been replaced by .get_page_count()");
     }
     
     static get_page_count = function()
@@ -1542,7 +1542,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     static animation_tick_speed = function()
     {
-        __scribble_error(".animation_tick_speed() has been replaced by .animation_speed()");
+        __ScribbleError(".animation_tick_speed() has been replaced by .animation_speed()");
     }
     
     static set_animation_time = function(_time)
@@ -1670,7 +1670,7 @@ function __ScribbleClassElementParent(_text) constructor
         {
             if ((_function != undefined) && (not script_exists(_function)))
             {
-                __scribble_error("Preprocessor functions must be stored in scripts in global scope");
+                __ScribbleError("Preprocessor functions must be stored in scripts in global scope");
             }
             
             __modelDirty = true;
@@ -1877,8 +1877,8 @@ function __ScribbleClassElementParent(_text) constructor
         static _u_vOutlineColour           = shader_get_uniform(__shd_scribble, "u_vOutlineColour"          );
         static _u_fOutlineThickness        = shader_get_uniform(__shd_scribble, "u_fOutlineThickness"       );
         
-        static _scribble_state        = __scribble_system().__state;
-        static _anim_properties_array = __scribble_system().__anim_properties;
+        static _scribbleState        = __ScribbleSystem().__state;
+        static _anim_properties_array = __ScribbleSystem().__anim_properties;
         
         static _shader_uniforms_dirty    = true;
         static _shader_set_to_use_bezier = false;
@@ -1942,9 +1942,9 @@ function __ScribbleClassElementParent(_text) constructor
         }
         
         //Update the animation properties for this shader if they've changed since the last time we drew an element
-        if (_scribble_state.__shader_anim_desync)
+        if (_scribbleState.__shader_anim_desync)
         {
-            with(_scribble_state)
+            with(_scribbleState)
             {
                 __shader_anim_desync  = false;
                 __shader_anim_default = __shader_anim_desync_to_default;

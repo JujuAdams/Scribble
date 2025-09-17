@@ -4,9 +4,9 @@
 
 function scribble_anim_disabled(_state)
 {
-    static _scribble_state = __scribble_system().__state;
+    static _scribbleState = __ScribbleSystem().__state;
     
-    with(_scribble_state)
+    with(_scribbleState)
     {
         if (__shader_anim_disabled != _state)
         {

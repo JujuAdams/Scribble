@@ -64,9 +64,9 @@
 
 function __scribble_gen_10_write_vbuffs()
 {
-    static _string_buffer   = __scribble_system().__buffer_a;
-    static _generatorState = __scribble_system().__generatorState;
-    static _tagDict         = __scribble_system().__tagDict;
+    static _string_buffer   = __ScribbleSystem().__buffer_a;
+    static _generatorState = __ScribbleSystem().__generatorState;
+    static _tagDict         = __ScribbleSystem().__tagDict;
     
     static _scribbleDotUVs = sprite_get_uvs(scribble_fallback_dot, 0);
     static _scribbleDotMaterial = __scribble_sprite_get_material(scribble_fallback_dot, 0);
@@ -131,7 +131,7 @@ function __scribble_gen_10_write_vbuffs()
     
     var _func_region_pop = function(_pageData, _region_name, _region_start, _region_end)
     {
-        static _generatorState = __scribble_system().__generatorState;
+        static _generatorState = __ScribbleSystem().__generatorState;
         
         if (_region_start > _region_end) return;
         
@@ -226,7 +226,7 @@ function __scribble_gen_10_write_vbuffs()
                     if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR)
                     {
                         _glyph_colour = _controlStruct.__color;
-                        var _write_colour = (__SCRIBBLE_FIX_ARGB? __scribble_rgb_to_bgr(_glyph_colour) : _glyph_colour); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
+                        var _write_colour = (__SCRIBBLE_FIX_ARGB? __ScribbleRGBToBGR(_glyph_colour) : _glyph_colour); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
                     }
                     else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT)
                     {
@@ -238,11 +238,11 @@ function __scribble_gen_10_write_vbuffs()
                         
                         if (_glyph_cycle == -1)
                         {
-                            _write_colour = (__SCRIBBLE_FIX_ARGB? __scribble_rgb_to_bgr(_glyph_colour) : _glyph_colour); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
+                            _write_colour = (__SCRIBBLE_FIX_ARGB? __ScribbleRGBToBGR(_glyph_colour) : _glyph_colour); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
                         }
                         else
                         {
-                            _write_colour = (__SCRIBBLE_FIX_ARGB? __scribble_rgb_to_bgr(_glyph_cycle) : _glyph_cycle); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
+                            _write_colour = (__SCRIBBLE_FIX_ARGB? __ScribbleRGBToBGR(_glyph_cycle) : _glyph_cycle); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
                         }
                     }
                     else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_EVENT)
@@ -274,7 +274,7 @@ function __scribble_gen_10_write_vbuffs()
                     }
                     else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_FONT)
                     {
-                        var _fontData = __scribble_get_font_data(_controlStruct.__fontName);
+                        var _fontData = __ScribbleGetFontData(_controlStruct.__fontName);
                         var _fontUnderlineY = floor(_fontData.__underlineY);
                         var _fontStrikeY    = floor(_fontData.__strikeY);
                     }
@@ -297,7 +297,7 @@ function __scribble_gen_10_write_vbuffs()
                 {
                     if (_text_getter)
                     {
-                        __scribble_buffer_write_unicode(_string_buffer, _glyph_ord);
+                        __ScribbleBufferWriteUnicode(_string_buffer, _glyph_ord);
                     }
                     
                     if ((_glyph_ord > SCRIBBLE_UNICODE_SPACE) && (_glyph_ord != SCRIBBLE_UNICODE_NBSP) && (_glyph_ord != SCRIBBLE_UNICODE_ZWSP))
@@ -356,13 +356,13 @@ function __scribble_gen_10_write_vbuffs()
                         var _sprite_number = sprite_get_number(_sprite_index);
                         if (_sprite_number > 127)
                         {
-                            __scribble_trace("Animated sprites cannot have more than 127 frames (", sprite_get_name(_sprite_index), ")");
+                            __ScribbleTrace("Animated sprites cannot have more than 127 frames (", sprite_get_name(_sprite_index), ")");
                             _sprite_number = 127;
                         }
                         
                         if (_image_speed >= 2)
                         {
-                            __scribble_trace("Image speed cannot be more than 2.0 (" + string(_image_speed) + ")");
+                            __ScribbleTrace("Image speed cannot be more than 2.0 (" + string(_image_speed) + ")");
                             _image_speed = 2;
                         }
                         
@@ -384,7 +384,7 @@ function __scribble_gen_10_write_vbuffs()
                     {
                         if (_image_speed < 0)
                         {
-                            __scribble_trace("Image speed cannot be less than 0.0 (" + string(_image_speed) + ")");
+                            __ScribbleTrace("Image speed cannot be less than 0.0 (" + string(_image_speed) + ")");
                         }
                         
                         var _increment = 0;

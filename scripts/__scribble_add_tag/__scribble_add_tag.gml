@@ -8,7 +8,7 @@
 
 function __scribble_add_tag(_name, _type, _data, _protected, _debugText = "")
 {
-    static _system  = __scribble_system();
+    static _system  = __ScribbleSystem();
     static _tagDict = _system.__tagDict;
     
     var _existingTag = _tagDict[$ _name];
@@ -16,18 +16,18 @@ function __scribble_add_tag(_name, _type, _data, _protected, _debugText = "")
     {
         if (_existingTag.__protected)
         {
-            __scribble_error("Tag [", _name, "] is protected and cannot be replaced");
+            __ScribbleError("Tag [", _name, "] is protected and cannot be replaced");
         }
         else
         {
-            __scribble_trace("Warning! Overwriting tag [", _name, "]");
+            __ScribbleTrace("Warning! Overwriting tag [", _name, "]");
         }
     }
     
     var _tag = new __ScribbleClassTag(_name, _type, _data, _protected);
     _tagDict[$ _name] = _tag;
     
-    if (SCRIBBLE_VERBOSE) __scribble_trace("Added ", _protected? "protected " : "", "tag type ", _type, " [" + _name + "] ", _debugText);
+    if (SCRIBBLE_VERBOSE) __ScribbleTrace("Added ", _protected? "protected " : "", "tag type ", _type, " [" + _name + "] ", _debugText);
     
     if (is_struct(_existingTag))
     {

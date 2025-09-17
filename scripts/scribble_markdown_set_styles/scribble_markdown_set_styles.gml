@@ -4,7 +4,7 @@
 
 function scribble_markdown_set_styles(_root_struct, _fast_mode = false)
 {
-    static _scribble_state = __scribble_system().__state;
+    static _scribbleState = __ScribbleSystem().__state;
     
     if (!_fast_mode)
     {
@@ -38,7 +38,7 @@ function scribble_markdown_set_styles(_root_struct, _fast_mode = false)
         //<prefix> and <suffix> must be a string
         //<bullet_sprite> must be a sprite index or the name of a sprite
         
-        if (!is_struct(_root_struct)) __scribble_error("Input was not a struct (datatype=", typeof(_root_struct), ")");
+        if (!is_struct(_root_struct)) __ScribbleError("Input was not a struct (datatype=", typeof(_root_struct), ")");
         
         var _root_names_array = variable_struct_get_names(_root_struct);
         var _i = 0;
@@ -57,7 +57,7 @@ function scribble_markdown_set_styles(_root_struct, _fast_mode = false)
             &&  (_root_name != "bullet_sprite")
             &&  (_root_name != "link"))
             {
-                __scribble_error("Root struct name \"", _root_name, "\" not permitted");
+                __ScribbleError("Root struct name \"", _root_name, "\" not permitted");
             }
             else
             {
@@ -73,7 +73,7 @@ function scribble_markdown_set_styles(_root_struct, _fast_mode = false)
                     {
                         if (!sprite_exists(_value))
                         {
-                            __scribble_error("<bullet_sprite> sprite", _value, " does not exist");
+                            __ScribbleError("<bullet_sprite> sprite", _value, " does not exist");
                             return false;
                         }
                     }
@@ -81,13 +81,13 @@ function scribble_markdown_set_styles(_root_struct, _fast_mode = false)
                     {
                         if (asset_get_type(_value) != asset_sprite)
                         {
-                            __scribble_error("<bullet_sprite> sprite \"", _value, "\" is not a sprite");
+                            __ScribbleError("<bullet_sprite> sprite \"", _value, "\" is not a sprite");
                             return false;
                         }
                     }
                     else
                     {
-                        __scribble_error("<bullet_sprite> is the wrong datatype. It must be a sprite index or the name of a sprite (datatype=", typeof(_value), ")");
+                        __ScribbleError("<bullet_sprite> is the wrong datatype. It must be a sprite index or the name of a sprite (datatype=", typeof(_value), ")");
                         return false;
                     }
                 }
@@ -100,7 +100,7 @@ function scribble_markdown_set_styles(_root_struct, _fast_mode = false)
                     }
                     else if (!is_struct(_child_struct))
                     {
-                        __scribble_error("Child struct <", _root_name, "> must be a struct (datatype=", typeof(_value), ")");
+                        __ScribbleError("Child struct <", _root_name, "> must be a struct (datatype=", typeof(_value), ")");
                         return false;
                     }
                     else
@@ -122,13 +122,13 @@ function scribble_markdown_set_styles(_root_struct, _fast_mode = false)
                                 {
                                     if (!scribble_font_exists(_child_value))
                                     {
-                                        __scribble_error("\"font\" property \"", _child_value, "\" is not a font (style=\"", _root_name, "\")");
+                                        __ScribbleError("\"font\" property \"", _child_value, "\" is not a font (style=\"", _root_name, "\")");
                                         return false;
                                     }
                                 }
                                 else
                                 {
-                                    __scribble_error("Child struct property \"font\" must be the name of a font as a string (datatype=", typeof(_child_value), ", style=\"", _root_name, "\")");
+                                    __ScribbleError("Child struct property \"font\" must be the name of a font as a string (datatype=", typeof(_child_value), ", style=\"", _root_name, "\")");
                                     return false;
                                 }
                             }
@@ -136,7 +136,7 @@ function scribble_markdown_set_styles(_root_struct, _fast_mode = false)
                             {
                                 if (!is_numeric(_child_value) && !is_undefined(_child_value))
                                 {
-                                    __scribble_error("Child struct property \"", _child_name, "\" must be a number (datatype=", typeof(_child_value), ", style=\"", _root_name, "\")");
+                                    __ScribbleError("Child struct property \"", _child_name, "\" must be a number (datatype=", typeof(_child_value), ", style=\"", _root_name, "\")");
                                     return false;
                                 }
                             }
@@ -144,7 +144,7 @@ function scribble_markdown_set_styles(_root_struct, _fast_mode = false)
                             {
                                 if (!is_bool(_child_value) && !is_undefined(_child_value))
                                 {
-                                    __scribble_error("Child struct property \"bold\" must be <true> or <false> (datatype=", typeof(_child_value), ", style=\"", _root_name, "\")");
+                                    __ScribbleError("Child struct property \"bold\" must be <true> or <false> (datatype=", typeof(_child_value), ", style=\"", _root_name, "\")");
                                     return false;
                                 }
                             }
@@ -152,13 +152,13 @@ function scribble_markdown_set_styles(_root_struct, _fast_mode = false)
                             {
                                 if (!is_string(_child_value) && !is_undefined(_child_value))
                                 {
-                                    __scribble_error("Child struct property \"", _child_name, "\" must be a string (datatype=", typeof(_child_value), ", style=\"", _root_name, "\")");
+                                    __ScribbleError("Child struct property \"", _child_name, "\" must be a string (datatype=", typeof(_child_value), ", style=\"", _root_name, "\")");
                                     return false;
                                 }
                             }
                             else
                             {
-                                __scribble_error("Child struct property <", _root_name, "> not permitted (style=", _root_name, ")");
+                                __ScribbleError("Child struct property <", _root_name, "> not permitted (style=", _root_name, ")");
                                 return false;
                             }
                             
@@ -172,6 +172,6 @@ function scribble_markdown_set_styles(_root_struct, _fast_mode = false)
         }
     }
     
-    _scribble_state.__markdown_styles_struct = _root_struct;
+    _scribbleState.__markdown_styles_struct = _root_struct;
     return true;
 }

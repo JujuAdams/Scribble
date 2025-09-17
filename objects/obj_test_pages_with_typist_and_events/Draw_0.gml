@@ -7,7 +7,7 @@ draw_line(0, room_height/2, room_width, room_height/2);
 if (keyboard_check_pressed(ord("1"))) _element.page(0);
 if (keyboard_check_pressed(ord("2")))
 {
-    __scribble_trace("changed page");
+    __ScribbleTrace("changed page");
     _element.page(1);
 }
 

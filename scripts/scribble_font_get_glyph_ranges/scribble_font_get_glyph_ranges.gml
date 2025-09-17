@@ -4,7 +4,7 @@
 
 function scribble_font_get_glyph_ranges(_name, _hex = false)
 {
-    var _font_data = __scribble_get_font_data(_name);
+    var _font_data = __ScribbleGetFontData(_name);
     
     var _keys_array = ds_map_keys_to_array(_font_data.__glyphsMap);
     array_sort(_keys_array, true);

@@ -2,7 +2,7 @@
 
 function scribble_default_preprocessor_get()
 {
-    static _system = __scribble_system();
+    static _system = __ScribbleSystem();
     
     return _system.__defaultPreprocessorFunc;
 }

@@ -16,7 +16,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         {
             if (__flushed) return;
             
-            if (__SCRIBBLE_DEBUG) __scribble_trace("Flushing element \"" + string(__cacheName) + "\"");
+            if (__SCRIBBLE_DEBUG) __ScribbleTrace("Flushing element \"" + string(__cacheName) + "\"");
             
             //Get rid of our model
             if (is_struct(__model))
@@ -48,9 +48,9 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         
         
-        array_push(__scribble_system().__elementWeakArray, self);
+        array_push(__ScribbleSystem().__elementWeakArray, self);
         
-        __gcTimeSource = time_source_create(time_source_global, __scribble_random_range(__SCRIBBLE_ELEMENT_SELFCHECK_MIN, __SCRIBBLE_ELEMENT_SELFCHECK_MAX), time_source_units_seconds,
+        __gcTimeSource = time_source_create(time_source_global, __ScribbleRandomRange(__SCRIBBLE_ELEMENT_SELFCHECK_MIN, __SCRIBBLE_ELEMENT_SELFCHECK_MAX), time_source_units_seconds,
                                             function()
                                             {
                                                 if (not weak_ref_alive(self))
@@ -448,7 +448,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     {
         if (not __allowGlyphDataGetter)
         {
-            __scribble_trace("Warning! `.character_delay_add()` automatically calling `.allow_glyph_data_getter()`");
+            __ScribbleTrace("Warning! `.character_delay_add()` automatically calling `.allow_glyph_data_getter()`");
             allow_glyph_data_getter();
         }
         
@@ -597,12 +597,12 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     {
         if (_instance < 400000)
         {
-            __scribble_error("Cannot synchronise to a sound asset. Please provide a sound instance (as returned by audio_play_sound())");
+            __ScribbleError("Cannot synchronise to a sound asset. Please provide a sound instance (as returned by audio_play_sound())");
         }
         
         if (not audio_is_playing(_instance))
         {
-            __scribble_error("Sound instance ", _instance, " is not playing\nCannot sync to a stopped sound instance");
+            __ScribbleError("Sound instance ", _instance, " is not playing\nCannot sync to a stopped sound instance");
         }
         
         __typistManualPause = false;
@@ -659,7 +659,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     static __ProcessEventStack = function(_functionScope)
     {
-        static _tagDict = __scribble_system().__tagDict;
+        static _tagDict = __ScribbleSystem().__tagDict;
         
         //This method processes events on the stack (which is filled by copying data from the target element in .__tick())
         //We return <true> if there have been no pausing behaviours called i.e. [pause] and [delay]
@@ -681,7 +681,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                     {
                         if (SCRIBBLE_IGNORE_PAUSE_BEFORE_PAGEBREAK && (__typistEventRevealIndex >= __typistHeadLimitArray[0]) && (array_length(__eventStack) <= 0))
                         {
-                            __scribble_trace("Warning! Ignoring [pause] command before the end of a page");
+                            __ScribbleTrace("Warning! Ignoring [pause] command before the end of a page");
                         }
                         else
                         {
@@ -770,12 +770,12 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                         }
                         else
                         {
-                            __scribble_trace("Warning! Event [", _eventName, "] does not have a callable function attached");
+                            __ScribbleTrace("Warning! Event [", _eventName, "] does not have a callable function attached");
                         }
                     }
                     else
                     {
-                        __scribble_trace("Warning! Event [", _eventName, "] not recognised");
+                        __ScribbleTrace("Warning! Event [", _eventName, "] not recognised");
                     }
 
                     if (__typistManualPause)
@@ -824,7 +824,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             {
                 __prevAudioReveal = _headPos;
                 
-                __soundVoice = __scribble_play_sound(_soundArray[floor(__scribble_random()*array_length(_soundArray))], __soundGain, lerp(__soundPitchMin, __soundPitchMax, __scribble_random()));
+                __soundVoice = __scribble_play_sound(_soundArray[floor(__ScribbleRandom()*array_length(_soundArray))], __soundGain, lerp(__soundPitchMin, __soundPitchMax, __ScribbleRandom()));
                 if (__soundVoice >= 0)
                 {
                     __soundFinishTime = current_time + 1000*audio_sound_length(__soundVoice) - __soundOverlap;
@@ -1214,7 +1214,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 {
                     if (__revealType != SCRIBBLE_REVEAL_PER_CHAR)
                     {
-                        __scribble_error("Must use `SCRIBBLE_REVEAL_PER_CHAR` with dynamic positioning");
+                        __ScribbleError("Must use `SCRIBBLE_REVEAL_PER_CHAR` with dynamic positioning");
                     }
                     
                     var _lineDataArray = _pageData.__lineDataArray;

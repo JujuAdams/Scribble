@@ -7,8 +7,8 @@
 
 function scribble_super_glyph_copy(_target, _source, _overwrite)
 {
-    var _target_font_data = __scribble_get_font_data(_target);
-    var _source_font_data = __scribble_get_font_data(_source);
+    var _target_font_data = __ScribbleGetFontData(_target);
+    var _source_font_data = __ScribbleGetFontData(_source);
     
     var _target_glyphs_map       = _target_font_data.__glyphsMap;
     var _target_glyph_data_grid  = _target_font_data.__glyphDataGrid;
@@ -95,7 +95,7 @@ function __scribble_glyph_duplicate(_source_map, _source_grid, _target_map, _tar
     var _source_x = _source_map[? _glyph];
     if (_source_x == undefined)
     {
-        __scribble_trace("Warning! Glyph ", _glyph, " (", chr(_glyph), ") not found in source font");
+        __ScribbleTrace("Warning! Glyph ", _glyph, " (", chr(_glyph), ") not found in source font");
         return;
     }
     

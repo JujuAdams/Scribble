@@ -23,21 +23,21 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _font_info = font_get_info(_spritefont);
     var _sprite_name = sprite_get_name(_sprite);
     
-    static _fontDataMap = __scribble_system().__fontDataMap;
+    static _fontDataMap = __ScribbleSystem().__fontDataMap;
     if (ds_map_exists(_fontDataMap, _sprite_name))
     {
-        __scribble_trace("Warning! A spritefont for \"", _sprite_name, "\" has already been added. Destroying the old spritefont and creating a new one");
+        __ScribbleTrace("Warning! A spritefont for \"", _sprite_name, "\" has already been added. Destroying the old spritefont and creating a new one");
         _fontDataMap[? _sprite_name].__Destroy();
     }
     
-    var _is_krutidev = __scribble_asset_is_krutidev(_sprite, asset_sprite);
-    var _global_glyph_bidi_map = __scribble_system().__glyph_data.__bidi_map;
+    var _is_krutidev = __ScribbleAssetIsKrutidev(_sprite, asset_sprite);
+    var _global_glyph_bidi_map = __ScribbleSystem().__glyph_data.__bidi_map;
     
-    var _scribble_state = __scribble_system().__state;
-    if (_scribble_state.__default_font == undefined)
+    var _scribbleState = __ScribbleSystem().__state;
+    if (_scribbleState.__default_font == undefined)
     {
-        if (SCRIBBLE_VERBOSE) __scribble_trace("Setting default font to \"" + string(_sprite_name) + "\"");
-        _scribble_state.__default_font = _sprite_name;
+        if (SCRIBBLE_VERBOSE) __ScribbleTrace("Setting default font to \"" + string(_sprite_name) + "\"");
+        _scribbleState.__default_font = _sprite_name;
     }
     
     var _sprite_width  = sprite_get_width(_sprite);
@@ -57,7 +57,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     
     var _info_glyphs_dict = _font_info.glyphs;
     var _info_glyph_names = variable_struct_get_names(_info_glyphs_dict);
-    if (SCRIBBLE_VERBOSE) __scribble_trace("  \"", _sprite_name, "\" has ", array_length(_info_glyph_names), " characters");
+    if (SCRIBBLE_VERBOSE) __ScribbleTrace("  \"", _sprite_name, "\" has ", array_length(_info_glyph_names), " characters");
     
     var _size = array_length(_info_glyph_names);
     
@@ -216,7 +216,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     _font_data.__height = _font_glyph_data_grid[# _space_index, __SCRIBBLE_GLYPH_PROPR_HEIGHT];
     _font_data.__EnsureAdditionalCharacters();
     
-    if (SCRIBBLE_VERBOSE) __scribble_trace("Added \"", _sprite_name, "\" as a spritefont");
+    if (SCRIBBLE_VERBOSE) __ScribbleTrace("Added \"", _sprite_name, "\" as a spritefont");
     
     return _spritefont;
 }

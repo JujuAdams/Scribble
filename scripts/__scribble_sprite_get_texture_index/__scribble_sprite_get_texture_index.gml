@@ -5,13 +5,13 @@
 
 function __scribble_sprite_get_texture_index(_sprite, _image)
 {
-    static _sprite_texture_index_map = __scribble_system().__sprite_texture_index_map;
+    static _sprite_texture_index_map = __ScribbleSystem().__sprite_texture_index_map;
     
     if (not sprite_exists(_sprite))
     {
         if (GM_build_type == "run")
         {
-            __scribble_error($"Sprite \"{_sprite}\" does not exist");
+            __ScribbleError($"Sprite \"{_sprite}\" does not exist");
         }
         
         return -1;

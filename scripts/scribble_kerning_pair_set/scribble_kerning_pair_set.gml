@@ -15,20 +15,20 @@ function scribble_kerning_pair_set(_font, _first_char, _second_char, _value, _re
     
     if (_first_char == 0)
     {
-        __scribble_error("Cannot use null character (U+0000) for the first character");
+        __ScribbleError("Cannot use null character (U+0000) for the first character");
     }
     
     if (_first_char < 0)
     {
-        __scribble_error("Cannot use negative value for first character");
+        __ScribbleError("Cannot use negative value for first character");
     }
     
     if (_second_char < 0)
     {
-        __scribble_error("Cannot use negative value for second character");
+        __ScribbleError("Cannot use negative value for second character");
     }
     
-    var _font_data = __scribble_get_font_data(_font);
+    var _font_data = __ScribbleGetFontData(_font);
     var _kerning_map = _font_data.__kerningMap;
     
     var _lookup = ((_second_unicode & 0xFFFF) << 16) | (_first_unicode & 0xFFFF);

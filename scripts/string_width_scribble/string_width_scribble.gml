@@ -7,10 +7,10 @@
 
 function string_width_scribble(_string)
 {
-    static _scribble_state = __scribble_system().__state;
+    static _scribbleState = __ScribbleSystem().__state;
     
     var _font = draw_get_font();
-    _font = !font_exists(_font)? _scribble_state.__default_font : font_get_name(_font);
+    _font = !font_exists(_font)? _scribbleState.__default_font : font_get_name(_font);
     
     return scribble(_string, "__draw_text_scribble__").font(_font).get_width();
 }

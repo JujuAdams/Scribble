@@ -3,7 +3,7 @@ function __scribble_gen_5_finalize_bidi()
 {
     if (!__hasR2L) exit;
     
-    static _generatorState = __scribble_system().__generatorState;
+    static _generatorState = __ScribbleSystem().__generatorState;
     with(_generatorState)
     {
         var _word_grid    = __word_grid;

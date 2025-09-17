@@ -2,8 +2,8 @@
 
 function __scribble_gen_2b_post_parse()
 {
-    static _generatorState       = __scribble_system().__generatorState;
-    static _global_glyph_bidi_map = __scribble_system().__glyph_data.__bidi_map;
+    static _generatorState       = __ScribbleSystem().__generatorState;
+    static _global_glyph_bidi_map = __ScribbleSystem().__glyph_data.__bidi_map;
     
     with(_generatorState)
     {

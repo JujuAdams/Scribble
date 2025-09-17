@@ -27,39 +27,39 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     
     if (!is_string(_source_font_name))
     {
-        __scribble_error("Fonts should be specified using their name as a string.\n(Input was an invalid datatype)");
+        __ScribbleError("Fonts should be specified using their name as a string.\n(Input was an invalid datatype)");
         exit;
     }
     
     if (!is_string(_new_font_name))
     {
-        __scribble_error("Fonts should be specified using their name as a string.\n(Input was an invalid datatype)");
+        __ScribbleError("Fonts should be specified using their name as a string.\n(Input was an invalid datatype)");
         exit;
     }
     
     if (_source_font_name == _new_font_name)
     {
-        __scribble_error("Source font and new font cannot share the same name");
+        __ScribbleError("Source font and new font cannot share the same name");
         return undefined;
     }
 
-    static _fontDataMap = __scribble_system().__fontDataMap;
+    static _fontDataMap = __ScribbleSystem().__fontDataMap;
     var _src_font_data = _fontDataMap[? _source_font_name];
     if (!is_struct(_src_font_data))
     {
-        __scribble_error("Source font \"", _source_font_name, "\" not found\n\"", _new_font_name, "\" will not be available");
+        __ScribbleError("Source font \"", _source_font_name, "\" not found\n\"", _new_font_name, "\" will not be available");
         return undefined;
     }
     
     if (_src_font_data.__renderType == __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS)
     {
-        __scribble_error("Source font cannot already have effects baked into it");
+        __ScribbleError("Source font cannot already have effects baked into it");
         return undefined;
     }
     
     if (_src_font_data.__renderType == __SCRIBBLE_RENDER_SDF)
     {
-        __scribble_error("Source font cannot be an SDF font");
+        __ScribbleError("Source font cannot be an SDF font");
         return undefined;
     }
     
@@ -101,7 +101,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         
         if (not texture_is_ready(_texture))
         {
-            __scribble_error($"Font \"{_source_font_name}\" texture {string(_texture)} not ready.\nIs the source graphic in an unloaded or unfetched dynamic texture group?\nMaterial debug name:\"{_material.__debugFontName}\"\nMaterial key:\"{_material.__key}\"");
+            __ScribbleError($"Font \"{_source_font_name}\" texture {string(_texture)} not ready.\nIs the source graphic in an unloaded or unfetched dynamic texture group?\nMaterial debug name:\"{_material.__debugFontName}\"\nMaterial key:\"{_material.__key}\"");
         }
         
         //Ignore any glyphs with invalid textures
@@ -124,7 +124,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         //Check to see if we have space on this texture page
         if (_line_y + _height_ext >= _texture_size)
         {
-            __scribble_error("No space left on ", _texture_size, "x", _texture_size, " texture page\nPlease increase the size of the texture page");
+            __ScribbleError("No space left on ", _texture_size, "x", _texture_size, " texture page\nPlease increase the size of the texture page");
             vertex_end(_vbuff);
             vertex_delete_buffer(_vbuff);
             return;

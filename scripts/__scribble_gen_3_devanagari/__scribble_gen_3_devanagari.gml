@@ -14,10 +14,10 @@ function __scribble_gen_3_devanagari()
     //Avoid this mess if we can
     if (not __hasDevanagari) exit;
     
-    static _krutidev_lookup_map       = __scribble_system().__krutidev_lookup_map;
-    static _krutidev_matra_lookup_map = __scribble_system().__krutidev_matra_lookup_map;
+    static _krutidev_lookup_map       = __ScribbleSystem().__krutidev_lookup_map;
+    static _krutidev_matra_lookup_map = __ScribbleSystem().__krutidev_matra_lookup_map;
     
-    static _generatorState = __scribble_system().__generatorState;
+    static _generatorState = __ScribbleSystem().__generatorState;
     with(_generatorState)
     {
         var _glyphGrid   = __glyphGrid;
@@ -307,7 +307,7 @@ function __scribble_gen_3_devanagari()
                     }
                     else
                     {
-                        __scribble_error("Devanagari substring insertion length > 2. Please report this error");
+                        __ScribbleError("Devanagari substring insertion length > 2. Please report this error");
                     }
                 }
                 
@@ -343,7 +343,7 @@ function __scribble_gen_3_devanagari()
             if (_controlArray[_control_index].__type == __SCRIBBLE_GEN_CONTROL_TYPE_FONT)
             {
                 var _fontName            = _controlArray[_control_index].__fontName;
-                var _font_data            = __scribble_get_font_data(_fontName);
+                var _font_data            = __ScribbleGetFontData(_fontName);
                 var _font_glyph_data_grid = _font_data.__glyphDataGrid;
                 var _font_glyphs_map      = _font_data.__glyphsMap;
             }
@@ -354,7 +354,7 @@ function __scribble_gen_3_devanagari()
         var _found_glyph = _glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE];
         if (_found_glyph == 0xFFFF)
         {
-            __scribble_trace("Warning! Devanagari parser extended beyond the end of the available characters");
+            __ScribbleTrace("Warning! Devanagari parser extended beyond the end of the available characters");
         }
         else if (_found_glyph >= 32) //Don't transform sprite, surfaces, or stuff that's non-printable
         {
@@ -365,7 +365,7 @@ function __scribble_gen_3_devanagari()
             //If our glyph is missing, choose the missing character glyph instead!
             if (_data_index == undefined)
             {
-                __scribble_trace("Couldn't find glyph data for character code " + string(_found_glyph) + " (" + chr(_found_glyph) + ") in font \"" + string(_fontName) + "\"");
+                __ScribbleTrace("Couldn't find glyph data for character code " + string(_found_glyph) + " (" + chr(_found_glyph) + ") in font \"" + string(_fontName) + "\"");
                 _glyph_write = ord(SCRIBBLE_MISSING_CHARACTER);
                 _data_index = _font_glyphs_map[? _glyph_write];
             }
@@ -373,7 +373,7 @@ function __scribble_gen_3_devanagari()
             if (_data_index == undefined)
             {
                 //This should only happen if SCRIBBLE_MISSING_CHARACTER is missing for a font
-                __scribble_trace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_fontName) + "\"");
+                __ScribbleTrace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_fontName) + "\"");
             }
             else if (_font_glyph_data_grid[# _data_index, __SCRIBBLE_GLYPH_PROPR_BIDI] != __SCRIBBLE_BIDI_WHITESPACE) //Don't transform whitespace
             {

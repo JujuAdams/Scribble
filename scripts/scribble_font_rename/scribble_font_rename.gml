@@ -5,12 +5,12 @@
 
 function scribble_font_rename(_old, _new)
 {
-    var _data = __scribble_get_font_data(_old);
+    var _data = __ScribbleGetFontData(_old);
     
-    static _fontDataMap = __scribble_system().__fontDataMap;
+    static _fontDataMap = __ScribbleSystem().__fontDataMap;
     _fontDataMap[? _new] = _data;
     ds_map_delete(_fontDataMap, _old);
     
-    var _scribble_state = __scribble_system().__state;
-    if (_scribble_state.__default_font == _old) _scribble_state.__default_font = _new;
+    var _scribbleState = __ScribbleSystem().__state;
+    if (_scribbleState.__default_font == _old) _scribbleState.__default_font = _new;
 }

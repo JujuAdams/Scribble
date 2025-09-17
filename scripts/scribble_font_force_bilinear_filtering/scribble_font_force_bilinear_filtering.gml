@@ -5,7 +5,7 @@
 
 function scribble_font_force_bilinear_filtering(_font, _state)
 {
-    with(__scribble_get_font_data(_font))
+    with(__ScribbleGetFontData(_font))
     {
         if (__bilinear == _state) return;
         __bilinear = _state;

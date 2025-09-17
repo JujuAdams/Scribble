@@ -2,7 +2,7 @@
 
 function __scribble_ensure_cycle_surface()
 {
-    static _system = __scribble_system();
+    static _system = __ScribbleSystem();
     
     with(_system)
     {

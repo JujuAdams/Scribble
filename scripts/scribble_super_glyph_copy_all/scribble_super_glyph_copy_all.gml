@@ -5,8 +5,8 @@
 
 function scribble_super_glyph_copy_all(_target, _source, _overwrite)
 {
-    var _target_font_data = __scribble_get_font_data(_target);
-    var _source_font_data = __scribble_get_font_data(_source);
+    var _target_font_data = __ScribbleGetFontData(_target);
+    var _source_font_data = __ScribbleGetFontData(_source);
     
     var _source_glyphs_map       = _source_font_data.__glyphsMap;
     var _source_glyphs_data_grid = _source_font_data.__glyphDataGrid;

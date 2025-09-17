@@ -14,7 +14,7 @@ _t = get_timer() - _t;
 
 smoothed_time = lerp(smoothed_time, _t, 0.01);
 
-var _system = __scribble_system();
+var _system = __ScribbleSystem();
 
 draw_set_font(scribble_fallback_font);
 draw_text(10,  30, "cache array = " + string(array_length(_system.__elementWeakArray)));

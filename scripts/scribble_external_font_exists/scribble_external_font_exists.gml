@@ -8,7 +8,7 @@
 
 function scribble_external_font_exists(_fontName)
 {
-    static _fontDataMap = __scribble_system().__fontDataMap;
+    static _fontDataMap = __ScribbleSystem().__fontDataMap;
     
     if (not ds_map_exists(_fontDataMap, _fontName))
     {

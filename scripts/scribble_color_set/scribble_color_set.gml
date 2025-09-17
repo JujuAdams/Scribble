@@ -25,7 +25,7 @@ function scribble_color_set(_name, _colour)
     
     if (not is_numeric(_colour))
     {
-        __scribble_error("Colour values should be 24-bit BGR values");
+        __ScribbleError("Colour values should be 24-bit BGR values");
     }
     
     __scribble_add_tag(_name, __SCRIBBLE_TAG_COLOR, _colour, false);

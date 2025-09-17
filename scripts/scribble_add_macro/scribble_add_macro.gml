@@ -6,12 +6,12 @@
 
 function scribble_add_macro(_name, _function, _dynamic = false)
 {
-    static _system  = __scribble_system();
+    static _system  = __ScribbleSystem();
     static _tagDict = _system.__tagDict;
     
     if (not is_string(_name))
     {
-        __scribble_error("Macro names should be strings.\n(Input to script was \"", _name, "\")");
+        __ScribbleError("Macro names should be strings.\n(Input to script was \"", _name, "\")");
         return;
     }
     
@@ -19,7 +19,7 @@ function scribble_add_macro(_name, _function, _dynamic = false)
     
     if (not is_callable(_function))
     {
-        __scribble_error("Invalid function provided\n(Input datatype was \"", typeof(_function), "\")");
+        __ScribbleError("Invalid function provided\n(Input datatype was \"", typeof(_function), "\")");
         return;
     }
     

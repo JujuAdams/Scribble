@@ -2,7 +2,7 @@
 
 function __scribble_parse_sound_array_string(_string)
 {
-    static _system  = __scribble_system();
+    static _system  = __ScribbleSystem();
     static _external_sound_map = _system.__external_sound_map;
     
     var _sound_array_string = string_trim_start(_string);
@@ -15,8 +15,8 @@ function __scribble_parse_sound_array_string(_string)
         }
         catch(_error)
         {
-            __scribble_trace(_string);
-            __scribble_error("Could not parse sound array string (please check the debug log)");
+            __ScribbleTrace(_string);
+            __ScribbleError("Could not parse sound array string (please check the debug log)");
         }
         
         var _i = array_length(_sound_array)-1;

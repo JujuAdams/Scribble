@@ -2,6 +2,6 @@
 
 function scribble_get_frame()
 {
-    static _system = __scribble_system();
+    static _system = __ScribbleSystem();
     return _system.__frames;
 }

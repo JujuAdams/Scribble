@@ -12,7 +12,7 @@
 
 function scribble_glyph_get(_font, _character, _property)
 {
-    var _font_data = __scribble_get_font_data(_font);
+    var _font_data = __ScribbleGetFontData(_font);
 
     var _grid = _font_data.__glyphDataGrid;
     var _map  = _font_data.__glyphsMap;
@@ -21,7 +21,7 @@ function scribble_glyph_get(_font, _character, _property)
     
     if (_glyph_index == undefined)
     {
-        __scribble_error("Character \"", _character, "\" not found for font \"", _font, "\"");
+        __ScribbleError("Character \"", _character, "\" not found for font \"", _font, "\"");
         return undefined;
     }
 

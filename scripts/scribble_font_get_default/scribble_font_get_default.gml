@@ -3,6 +3,6 @@
 
 function scribble_font_get_default()
 {
-    static _scribble_state = __scribble_system().__state;
-    return _scribble_state.__default_font;
+    static _scribbleState = __ScribbleSystem().__state;
+    return _scribbleState.__default_font;
 }

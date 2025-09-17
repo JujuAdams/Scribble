@@ -6,5 +6,5 @@
 
 function scribble_font_get_underline_y(_font)
 {
-    __scribble_get_font_data(_font).__underlineY;
+    __ScribbleGetFontData(_font).__underlineY;
 }

@@ -9,7 +9,7 @@ function scribble_typists_add_event(_name, _function)
 {
     if (not is_string(_name))
     {
-        __scribble_error("Event names should be strings\n(Input to script was \"", _name, "\")");
+        __ScribbleError("Event names should be strings\n(Input to script was \"", _name, "\")");
         return;
     }
     
@@ -17,7 +17,7 @@ function scribble_typists_add_event(_name, _function)
     
     if (not is_callable(_function))
     {
-        __scribble_error("Invalid function provided\n(Input datatype was \"", typeof(_function), "\")");
+        __ScribbleError("Invalid function provided\n(Input datatype was \"", typeof(_function), "\")");
         return;
     }
     

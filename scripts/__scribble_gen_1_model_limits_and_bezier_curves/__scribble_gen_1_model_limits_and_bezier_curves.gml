@@ -1,7 +1,7 @@
 // Feather disable all
 function __scribble_gen_1_model_limits_and_bezier_curves()
 {
-    static _generatorState = __scribble_system().__generatorState;
+    static _generatorState = __ScribbleSystem().__generatorState;
     
     var _modelMaxWidth = __layoutMaxWidth - (__paddingL + __paddingR);
     if (_modelMaxWidth < 0) _modelMaxWidth = infinity;
@@ -55,7 +55,7 @@ function __scribble_gen_1_model_limits_and_bezier_curves()
             ++_i;
         }
         
-        if ((_modelMaxWidth >= 0) && !is_infinity(_modelMaxWidth)) __scribble_trace("Warning! Maximum width (" + string(_modelMaxWidth) + ") has been replaced with Bezier curve length (" + string(_dist) + "). Use -1 as the maximum width to turn off this warning");
+        if ((_modelMaxWidth >= 0) && !is_infinity(_modelMaxWidth)) __ScribbleTrace("Warning! Maximum width (" + string(_modelMaxWidth) + ") has been replaced with Bezier curve length (" + string(_dist) + "). Use -1 as the maximum width to turn off this warning");
         _modelMaxWidth = _dist;
         
         _generatorState.__bezier_lengths_array = _bezier_lengths;
