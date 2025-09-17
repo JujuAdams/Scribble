@@ -45,14 +45,14 @@
 
 function __scribble_gen_6_build_lines()
 {
-    static _generator_state = __scribble_system().__generator_state;
+    static _generatorState = __scribble_system().__generatorState;
     
     static _funcTrim = function(_line_array, _simulated_model_max_width)
     {
-        static _generator_state = __scribble_system().__generator_state;
-        var _word_grid  = _generator_state.__word_grid;
-        var _glyph_grid = _generator_state.__glyph_grid;
-        var _controlArray = _generator_state.__controlArray;
+        static _generatorState = __scribble_system().__generatorState;
+        var _word_grid  = _generatorState.__word_grid;
+        var _glyph_grid = _generatorState.__glyph_grid;
+        var _controlArray = _generatorState.__controlArray;
         
         var _lineStruct = array_last(_line_array);
         var _wordStart = _lineStruct.wordStart;
@@ -170,7 +170,7 @@ function __scribble_gen_6_build_lines()
     var _fitScale       = 1;
     var _layoutMaxScale = __layoutMaxScale;
     
-    with(_generator_state)
+    with(_generatorState)
     {
         var _glyph_grid            = __glyph_grid;
         var _word_grid             = __word_grid;
@@ -186,9 +186,9 @@ function __scribble_gen_6_build_lines()
         __line_array = _line_array;
     }
     
-    var _line_height           = __line_height;
-    var _line_spacing_add      = __line_spacing_add;
-    var _line_spacing_multiply = __line_spacing_multiply;
+    var _line_height           = __lineHeight;
+    var _line_spacing_add      = __lineSpacingAdd;
+    var _line_spacing_multiply = __lineSpacingMultiply;
     
     var _line_reveal = (__revealType == SCRIBBLE_REVEAL_PER_LINE) && (_sectionCount <= 0);
     
@@ -265,9 +265,9 @@ function __scribble_gen_6_build_lines()
                 //This ensures we don't mark alignments as used if no text is rendered for that alignment
                 switch(_state_halign)
                 {
-                    case fa_left:   _generator_state.__uses_halign_left   = true; break;
-                    case fa_center: _generator_state.__uses_halign_center = true; break;
-                    case fa_right:  _generator_state.__uses_halign_right  = true; break;
+                    case fa_left:   _generatorState.__uses_halign_left   = true; break;
+                    case fa_center: _generatorState.__uses_halign_center = true; break;
+                    case fa_right:  _generatorState.__uses_halign_right  = true; break;
                 }
                 
                 if (_word_x + _word_width > _simulated_model_max_width)
@@ -577,7 +577,7 @@ function __scribble_gen_6_build_lines()
         }
     }
     
-    if (__newline_delay > 0)
+    if (__newlineDelay > 0)
     {
         var _i = 0;
         repeat(array_length(_line_array)-1)
@@ -585,7 +585,7 @@ function __scribble_gen_6_build_lines()
             var _line_end_glyph      = _word_grid[# _line_array[_i].wordEnd, __SCRIBBLE_GEN_WORD_GLYPH_END];
             var _lineEndControlCount = _glyph_grid[# _line_end_glyph, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT];
             
-            array_insert(_controlArray, _lineEndControlCount+1, new __scribble_class_control_event(__SCRIBBLE_DELAY_COMMAND_TAG, [__newline_delay]));
+            array_insert(_controlArray, _lineEndControlCount+1, new __scribble_class_control_event(__SCRIBBLE_DELAY_COMMAND_TAG, [__newlineDelay]));
             
             var _line_start_glyph = _word_grid[# _line_array[_i+1].wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START];
             ds_grid_add_region(_glyph_grid, _line_start_glyph, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT, _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT, 1);
@@ -594,7 +594,7 @@ function __scribble_gen_6_build_lines()
         }
     }
     
-    with(_generator_state)
+    with(_generatorState)
     {
         __word_count = _word_count;
         __line_count = array_length(_line_array);

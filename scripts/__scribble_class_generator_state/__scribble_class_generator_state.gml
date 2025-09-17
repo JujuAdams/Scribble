@@ -24,7 +24,7 @@ function __scribble_class_generator_state() constructor
         __line_count     = 0;
         __modelMaxWidth  = 0;
         __modelMaxHeight = 0;
-        __overall_bidi   = undefined;
+        __overallBidi   = undefined;
         
         __uses_halign_left   = false;
         __uses_halign_center = false;

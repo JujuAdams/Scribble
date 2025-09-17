@@ -64,7 +64,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _underlineY = sprite_get_bbox_bottom(_sprite) + 1;
     var _strikeY    = floor(0.5*(sprite_get_bbox_bottom(_sprite) - sprite_get_bbox_top(_sprite)));
     
-    var _font_data = new __scribble_class_font(_sprite_name, _size, __SCRIBBLE_RENDER_RASTER, undefined, true, _underlineY, _strikeY);
+    var _font_data = new __ScribbleClassFont(_sprite_name, _size, __SCRIBBLE_RENDER_RASTER, undefined, true, _underlineY, _strikeY);
     var _font_glyphs_map      = _font_data.__glyphsMap;
     var _font_glyph_data_grid = _font_data.__glyphDataGrid;
     if (_is_krutidev) _font_data.__is_krutidev = true;

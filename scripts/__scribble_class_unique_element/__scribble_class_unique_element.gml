@@ -42,7 +42,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
                 __model.__Flush();
             }
             
-            __model = new __scribble_class_model(ref);
+            __model = new __ScribbleClassModel(ref);
             return __model;
         }
         
@@ -446,7 +446,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
     
     static character_delay_add = function(_character, _delay)
     {
-        if (not __allow_glyph_data_getter)
+        if (not __allowGlyphDataGetter)
         {
             __scribble_trace("Warning! `.character_delay_add()` automatically calling `.allow_glyph_data_getter()`");
             allow_glyph_data_getter();
@@ -495,7 +495,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
     
     static newline_delay = function(_delay)
     {
-        __newline_delay = max(0, _delay);
+        __newlineDelay = max(0, _delay);
         return self;
     }
     
@@ -530,7 +530,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         var _model = __EnsureModel();
         if (not is_struct(_model)) return 0;
         
-        var _pages_array = _model.__get_page_array();
+        var _pages_array = _model.__pagesArray;
         if (array_length(_pages_array) <= __page) return 0;
         var _pageData = _pages_array[__page];
         
@@ -584,7 +584,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
     
     static get_newline_delay = function()
     {
-        return __newline_delay;
+        return __newlineDelay;
     }
     
     #endregion
@@ -873,7 +873,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         if (not is_struct(_model)) return;
         
         //Get page data
-        var _pages_array = _model.__get_page_array();
+        var _pages_array = _model.__pagesArray;
         if (array_length(_pages_array) == 0) return;
         var _pageData = _pages_array[__page];
         var _pageRevealCount = _pageData.__reveal_count;
@@ -894,7 +894,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
             }
         }
         
-        var _glyphDataGetter = _model.__allow_glyph_data_getter;
+        var _glyphDataGetter = _model.__allowGlyphDataGetter;
         var _perCharacter = (__revealType == SCRIBBLE_REVEAL_PER_CHAR);
         
         __typistHeadLimitArray[@ 0] = _pageRevealCount; //TODO - Can we move this elsewhere?
@@ -1189,7 +1189,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
             var _model = __EnsureModel();
             if (not is_struct(_model)) return;
             
-            var _pages_array = _model.__get_page_array();
+            var _pages_array = _model.__pagesArray;
             if (__page >= array_length(_pages_array))
             {
                 shader_set_uniform_f(_u_vTypewriterOffsetRange, 0, 0, 0);

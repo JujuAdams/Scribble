@@ -191,7 +191,7 @@ function __scribble_system(_calledFromInitialize = false)
         __elementWeakArray = [];
         __elementCacheMap  = ds_map_create(); //Contains strong references
         
-        __generator_state = new __scribble_class_generator_state();
+        __generatorState = new __scribble_class_generator_state();
         
         //Contains Unicode data, necessary for extended language support
         __glyph_data                = __scribble_glyph_data_initialize();

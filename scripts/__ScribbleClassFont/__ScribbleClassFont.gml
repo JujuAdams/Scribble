@@ -8,7 +8,7 @@
 /// @param underlineY
 /// @param strikeY
 
-function __scribble_class_font(_name, _glyphCount, _renderType, _fromBundle, _texelsValid, _underlineY, _strikeY) constructor
+function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texelsValid, _underlineY, _strikeY) constructor
 {
     //The name of the font. This is the alias used to reference the font elsewhere
     __name = _name;

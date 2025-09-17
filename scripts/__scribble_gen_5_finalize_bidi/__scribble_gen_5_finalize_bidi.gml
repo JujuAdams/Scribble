@@ -1,14 +1,14 @@
 // Feather disable all
 function __scribble_gen_5_finalize_bidi()
 {
-    if (!__has_r2l) exit;
+    if (!__hasR2L) exit;
     
-    static _generator_state = __scribble_system().__generator_state;
-    with(_generator_state)
+    static _generatorState = __scribble_system().__generatorState;
+    with(_generatorState)
     {
         var _word_grid    = __word_grid;
         var _word_count   = __word_count;
-        var _overall_bidi = __overall_bidi;
+        var _overall_bidi = __overallBidi;
     }
     
     //TODO - Optimise this by storing where symbolic bidi words are

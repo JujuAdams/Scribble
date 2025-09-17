@@ -46,14 +46,14 @@
 function __scribble_gen_4_build_words()
 {
     //Unpack generator state
-    static _generator_state = __scribble_system().__generator_state;
-    with(_generator_state)
+    static _generatorState = __scribble_system().__generatorState;
+    with(_generatorState)
     {
         var _glyph_grid   = __glyph_grid;
         var _word_grid    = __word_grid;
         var _glyphCount  = __glyph_count;
         var _sectionCount = __sectionCount;
-        var _overall_bidi = __overall_bidi;
+        var _overall_bidi = __overallBidi;
     }
     
     var _char_reveal  = (__revealType == SCRIBBLE_REVEAL_PER_CHAR) && (_sectionCount <= 0);
@@ -224,7 +224,7 @@ function __scribble_gen_4_build_words()
     _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_BIDI_RAW   ] = __SCRIBBLE_BIDI_SYMBOL;
     _word_grid[# _word_count, __SCRIBBLE_GEN_WORD_BIDI       ] = __SCRIBBLE_BIDI_SYMBOL;
     
-    with(_generator_state)
+    with(_generatorState)
     {
         __word_count = _word_count;
     }

@@ -1,8 +1,8 @@
 // Feather disable all
 function __scribble_gen_11_set_padding_flags()
 {
-    static _generator_state = __scribble_system().__generator_state;
-    with(_generator_state)
+    static _generatorState = __scribble_system().__generatorState;
+    with(_generatorState)
     {
         var _uses_halign_left   = __uses_halign_left;
         var _uses_halign_center = __uses_halign_center;
@@ -10,45 +10,45 @@ function __scribble_gen_11_set_padding_flags()
     }
     
     //Figure out how to pad the bounding box based on what alignments have been used
-    __pad_bbox_t = false;
-    __pad_bbox_b = true;
+    __padBboxT = false;
+    __padBboxB = true;
     
-    if (__valign == fa_top)
+    if (__vAlign == fa_top)
     {
-        __pad_bbox_t = false;
+        __padBboxT = false;
     }
     
-    if (__valign == fa_bottom)
+    if (__vAlign == fa_bottom)
     {
-        __pad_bbox_b = false;
+        __padBboxB = false;
     }
     
     if (_uses_halign_center)
     {
-        __pad_bbox_l = true;
-        __pad_bbox_r = true;
+        __padBboxL = true;
+        __padBboxR = true;
     }
     else if (_uses_halign_left)
     {
         if (_uses_halign_right)
         {
-            __pad_bbox_l = true;
-            __pad_bbox_r = true;
+            __padBboxL = true;
+            __padBboxR = true;
         }
         else
         {
-            __pad_bbox_l = false;
-            __pad_bbox_r = true;
+            __padBboxL = false;
+            __padBboxR = true;
         }
     }
     else if (_uses_halign_right)
     {
-        __pad_bbox_l = true;
-        __pad_bbox_r = false;
+        __padBboxL = true;
+        __padBboxR = false;
     }
     else
     {
-        __pad_bbox_l = false;
-        __pad_bbox_r = true;
+        __padBboxL = false;
+        __padBboxR = true;
     }
 }

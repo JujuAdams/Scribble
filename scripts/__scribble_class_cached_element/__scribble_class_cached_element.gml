@@ -47,7 +47,7 @@ function __scribble_class_cached_element(_text, _uniqueID) : __scribble_class_el
                 __model.__Flush();
             }
             
-            __model = new __scribble_class_model(ref);
+            __model = new __ScribbleClassModel(ref);
             return __model;
         }
         

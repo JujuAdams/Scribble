@@ -2,9 +2,9 @@
 
 function __scribble_gen_9_build_vbuff_grids()
 {
-    static _generator_state = __scribble_system().__generator_state;
+    static _generatorState = __scribble_system().__generatorState;
     
-    with(_generator_state)
+    with(_generatorState)
     {
         var _glyph_grid     = __glyph_grid;
         var _vbuff_pos_grid = __vbuff_pos_grid;
@@ -24,7 +24,7 @@ function __scribble_gen_9_build_vbuff_grids()
     
     
     
-    if (__visual_bboxes)
+    if (__visualBboxes)
     {
         var _model_min_x =  infinity;
         var _model_min_y =  infinity;
@@ -34,32 +34,32 @@ function __scribble_gen_9_build_vbuff_grids()
         var _p = 0;
         repeat(__pages)
         {
-            var _page_data = __pages_array[_p];
-            with(_page_data)
+            var _pageData = __pagesArray[_p];
+            with(_pageData)
             {
-                var _page_glyph_start = __glyph_start;
+                var _page_glyph_start = __glyphStart;
                 var _page_glyph_end   = __glyph_count-1 + _page_glyph_start;
                 
-                __min_x = ds_grid_get_min(_vbuff_pos_grid, _page_glyph_start, __SCRIBBLE_GEN_VBUFF_POS_QUAD_L, _page_glyph_end, __SCRIBBLE_GEN_VBUFF_POS_QUAD_L);
-                __min_y = ds_grid_get_min(_vbuff_pos_grid, _page_glyph_start, __SCRIBBLE_GEN_VBUFF_POS_QUAD_T, _page_glyph_end, __SCRIBBLE_GEN_VBUFF_POS_QUAD_T);
-                __max_x = ds_grid_get_max(_vbuff_pos_grid, _page_glyph_start, __SCRIBBLE_GEN_VBUFF_POS_QUAD_R, _page_glyph_end, __SCRIBBLE_GEN_VBUFF_POS_QUAD_R);
-                __max_y = ds_grid_get_max(_vbuff_pos_grid, _page_glyph_start, __SCRIBBLE_GEN_VBUFF_POS_QUAD_B, _page_glyph_end, __SCRIBBLE_GEN_VBUFF_POS_QUAD_B);
+                __minX = ds_grid_get_min(_vbuff_pos_grid, _page_glyph_start, __SCRIBBLE_GEN_VBUFF_POS_QUAD_L, _page_glyph_end, __SCRIBBLE_GEN_VBUFF_POS_QUAD_L);
+                __minY = ds_grid_get_min(_vbuff_pos_grid, _page_glyph_start, __SCRIBBLE_GEN_VBUFF_POS_QUAD_T, _page_glyph_end, __SCRIBBLE_GEN_VBUFF_POS_QUAD_T);
+                __maxX = ds_grid_get_max(_vbuff_pos_grid, _page_glyph_start, __SCRIBBLE_GEN_VBUFF_POS_QUAD_R, _page_glyph_end, __SCRIBBLE_GEN_VBUFF_POS_QUAD_R);
+                __maxY = ds_grid_get_max(_vbuff_pos_grid, _page_glyph_start, __SCRIBBLE_GEN_VBUFF_POS_QUAD_B, _page_glyph_end, __SCRIBBLE_GEN_VBUFF_POS_QUAD_B);
                 
-                var _model_min_x = min(_model_min_x, __min_x);
-                var _model_min_y = min(_model_min_y, __min_y);
-                var _model_max_x = max(_model_max_x, __max_x);
-                var _model_max_y = max(_model_max_y, __max_y);
+                var _model_min_x = min(_model_min_x, __minX);
+                var _model_min_y = min(_model_min_y, __minY);
+                var _model_max_x = max(_model_max_x, __maxX);
+                var _model_max_y = max(_model_max_y, __maxY);
             }
             
             ++_p;
         }
         
-        __min_x = is_infinity(_model_min_x)? 0 : _model_min_x;
-        __min_y = is_infinity(_model_min_y)? 0 : _model_min_y;
-        __max_x = is_infinity(_model_max_x)? 0 : _model_max_x;
-        __max_y = is_infinity(_model_max_y)? 0 : _model_max_y;
+        __minX = is_infinity(_model_min_x)? 0 : _model_min_x;
+        __minY = is_infinity(_model_min_y)? 0 : _model_min_y;
+        __maxX = is_infinity(_model_max_x)? 0 : _model_max_x;
+        __maxY = is_infinity(_model_max_y)? 0 : _model_max_y;
         
-        __width  = 1 + __max_x - __min_x;
-        __height = 1 + __max_y - __min_y;
+        __width  = 1 + __maxX - __minX;
+        __height = 1 + __maxY - __minY;
     }
 }

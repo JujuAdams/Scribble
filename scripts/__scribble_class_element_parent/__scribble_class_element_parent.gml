@@ -24,10 +24,10 @@ function __scribble_class_element_parent(_text) constructor
     
     __preprocessorFunc = undefined;
     
-    __starting_font   = _system.__state.__default_font;
-    __starting_colour = __scribble_process_colour(SCRIBBLE_DEFAULT_COLOR);
-    __starting_halign = SCRIBBLE_DEFAULT_HALIGN;
-    __starting_valign = SCRIBBLE_DEFAULT_VALIGN;
+    __startingFont   = _system.__state.__default_font;
+    __startingColor = __scribble_process_colour(SCRIBBLE_DEFAULT_COLOR);
+    __startingHAlign = SCRIBBLE_DEFAULT_HALIGN;
+    __startingVAlign = SCRIBBLE_DEFAULT_VALIGN;
     __blend_colour    = c_white;
     __blend_alpha     = 1.0;
     __skew_x          = 0;
@@ -37,16 +37,16 @@ function __scribble_class_element_parent(_text) constructor
     __flash_colour    = c_white;
     __flash_alpha     = 0.0;
     
-    __randomize_animation = false;
-    __newline_delay       = 0; //Only relevant for unique text elements but needs to be available regardless
+    __randomizeAnimation = false;
+    __newlineDelay       = 0; //Only relevant for unique text elements but needs to be available regardless
     
-    __allow_text_getter       = SCRIBBLE_FORCE_TEXT_GETTER;
-    __allow_glyph_data_getter = SCRIBBLE_FORCE_GLYPH_DATA_GETTER;
+    __allowTextGetter       = SCRIBBLE_FORCE_TEXT_GETTER;
+    __allowGlyphDataGetter = SCRIBBLE_FORCE_GLYPH_DATA_GETTER;
     
     __origin_x    = 0.0;
     __origin_y    = 0.0;
     
-    __pre_scale   = 1.0;
+    __preScale   = 1.0;
     
     __post_xscale = 1.0;
     __post_yscale = 1.0;
@@ -62,7 +62,7 @@ function __scribble_class_element_parent(_text) constructor
     __layoutMaxWidth     = infinity;
     __layoutMaxHeight    = infinity;
     __layoutForcePerChar = false;
-    __wrap_no_pages      = false;
+    __wrapNoPages      = false;
     __layoutMaxScale     = 1;
     
     __clip = false;
@@ -85,13 +85,13 @@ function __scribble_class_element_parent(_text) constructor
     __scale_to_box_maximise = false;
     __scale_to_box_scale    = undefined;
     
-    __line_height  = -1;
-    __line_spacing = "100%";
+    __lineHeight  = -1;
+    __lineSpacing = "100%";
     
-    __visual_bboxes = SCRIBBLE_DEFAULT_VISUAL_BBOXES;
+    __visualBboxes = SCRIBBLE_DEFAULT_VISUAL_BBOXES;
     
     __page = 0;
-    __ignore_command_tags = false;
+    __ignoreCommandTags = false;
     __template = undefined;
     
     __bezier_array = array_create(6, 0.0);
@@ -100,10 +100,10 @@ function __scribble_class_element_parent(_text) constructor
     __animation_time  = 0;
     __animation_speed = 1;
     
-    __padding_l = 0;
-    __padding_t = 0;
-    __padding_r = 0;
-    __padding_b = 0;
+    __paddingL = 0;
+    __paddingT = 0;
+    __paddingR = 0;
+    __paddingB = 0;
     
     __sdf_shadow_colour   = c_black;
     __sdf_shadow_alpha    = 0.0;
@@ -114,7 +114,7 @@ function __scribble_class_element_parent(_text) constructor
     __sdf_outline_colour    = c_black;
     __sdf_outline_thickness = 0.0;
     
-    __bidi_hint = undefined;
+    __bidiHint = undefined;
     
     __z = SCRIBBLE_DEFAULT_Z;
     
@@ -180,10 +180,10 @@ function __scribble_class_element_parent(_text) constructor
             __scribble_error("Fonts should be specified using their name as a string\nUse <undefined> to not set a new font");
         }
         
-        if (_font_name != __starting_font)
+        if (_font_name != __startingFont)
         {
             __modelDirty = true;
-            __starting_font = _font_name;
+            __startingFont = _font_name;
         }
         
         return self;
@@ -195,10 +195,10 @@ function __scribble_class_element_parent(_text) constructor
         if (_in_colour != undefined)
         {
             var _colour = __scribble_process_colour(_in_colour);
-            if ((_colour != undefined) && (_colour >= 0) && (_colour != __starting_colour))
+            if ((_colour != undefined) && (_colour >= 0) && (_colour != __startingColor))
             {
                 __modelDirty = true;
-                __starting_colour = _colour & 0xFFFFFF;
+                __startingColor = _colour & 0xFFFFFF;
             }
         }
         
@@ -210,7 +210,7 @@ function __scribble_class_element_parent(_text) constructor
     
     /// @param halign
     /// @param valign
-    static align = function(_halign = __starting_halign, _valign = __starting_valign)
+    static align = function(_halign = __startingHAlign, _valign = __startingVAlign)
     {
         if (_halign == "pin_left"  ) _halign = __SCRIBBLE_PIN_LEFT;
         if (_halign == "pin_centre") _halign = __SCRIBBLE_PIN_CENTRE;
@@ -221,20 +221,20 @@ function __scribble_class_element_parent(_text) constructor
         if (_valign == "pin_bottom") _valign = __SCRIBBLE_PIN_BOTTOM;
         if (_halign == "fa_justify") _halign = __SCRIBBLE_FA_JUSTIFY;
         
-        if (_halign != __starting_halign)
+        if (_halign != __startingHAlign)
         {
             __modelDirty = true;
             __bbox_dirty             = true;
             
-            __starting_halign = _halign;
+            __startingHAlign = _halign;
         }
         
-        if (_valign != __starting_valign)
+        if (_valign != __startingVAlign)
         {
             __modelDirty = true;
             __bbox_dirty             = true;
             
-            __starting_valign = _valign;
+            __startingVAlign = _valign;
         }
         
         return self;
@@ -504,12 +504,12 @@ function __scribble_class_element_parent(_text) constructor
         var _model = __EnsureModel();
         if (not is_struct(_model)) return undefined;
         
-        if (not _model.__allow_glyph_data_getter)
+        if (not _model.__allowGlyphDataGetter)
         {
             __scribble_error("Scrolling to a glyph's x position requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
         }
         
-        var _glyphData = _model.__get_glyph_data(_index, __page);
+        var _glyphData = _model.__GetGlyphData(_index, __page);
         return scroll_to_x(_glyphData.left, _glyphData.right);
     }
     
@@ -518,14 +518,14 @@ function __scribble_class_element_parent(_text) constructor
         var _model = __EnsureModel();
         if (not is_struct(_model)) return self;
         
-        if (_model.__allow_glyph_data_getter)
+        if (_model.__allowGlyphDataGetter)
         {
-            var _glyphData = _model.__get_glyph_data(_index, __page);
+            var _glyphData = _model.__GetGlyphData(_index, __page);
             return scroll_to_y(_glyphData.top, _glyphData.bottom);
         }
         else
         {
-            var _lineArray = _model.__pages_array[__page].__line_data_array;
+            var _lineArray = _model.__pagesArray[__page].__line_data_array;
             var _i = 0;
             repeat(array_length(_lineArray))
             {
@@ -545,7 +545,7 @@ function __scribble_class_element_parent(_text) constructor
     {
         var _model = __EnsureModel();
         if (not is_struct(_model)) return self;
-        var _line_data = _model.__get_line_data(_index, __page);
+        var _line_data = _model.__GetLineData(_index, __page);
         return scroll_to_y(_line_data.y, _line_data.y + _line_data.height-1);
     }
     
@@ -832,13 +832,13 @@ function __scribble_class_element_parent(_text) constructor
     /// @param [spritesDontScale=false]
     static scale = function(_scale, _spritesDontScale = false)
     {
-        if ((__pre_scale != _scale)
+        if ((__preScale != _scale)
         ||  (__spritesDontScale != _spritesDontScale))
         {
             __modelDirty = true;
             __bbox_dirty             = true;
             
-            __pre_scale = _scale;
+            __preScale = _scale;
             __spritesDontScale = _spritesDontScale;
         }
         
@@ -856,10 +856,10 @@ function __scribble_class_element_parent(_text) constructor
     /// @param height
     static line_height = function(_height)
     {
-        if (_height != __line_height)
+        if (_height != __lineHeight)
         {
             __modelDirty = true;
-            __line_height = _height;
+            __lineHeight = _height;
         }
         
         return self;
@@ -868,10 +868,10 @@ function __scribble_class_element_parent(_text) constructor
     /// @param spacing
     static line_spacing = function(_spacing)
     {
-        if (_spacing != __line_spacing)
+        if (_spacing != __lineSpacing)
         {
             __modelDirty = true;
-            __line_spacing = _spacing;
+            __lineSpacing = _spacing;
         }
         
         return self;
@@ -883,17 +883,17 @@ function __scribble_class_element_parent(_text) constructor
     /// @param bottom
     static padding = function(_l, _t, _r, _b)
     {
-        if ((_l != __padding_l) || (_t != __padding_t) || (_r != __padding_r) || (_b != __padding_b))
+        if ((_l != __paddingL) || (_t != __paddingT) || (_r != __paddingR) || (_b != __paddingB))
         {
             __modelDirty = true;
             __matrix_dirty           = true;
             __bbox_dirty             = true;
             __scale_to_box_dirty     = true;
             
-            __padding_l = _l;
-            __padding_t = _t;
-            __padding_r = _r;
-            __padding_b = _b;
+            __paddingL = _l;
+            __paddingT = _t;
+            __paddingR = _r;
+            __paddingB = _b;
         }
         
         return self;
@@ -902,14 +902,14 @@ function __scribble_class_element_parent(_text) constructor
     /// @param state
     static visual_bboxes = function(_state)
     {
-        if (__visual_bboxes != _state)
+        if (__visualBboxes != _state)
         {
             __modelDirty = true;
             __matrix_dirty           = true;
             __bbox_dirty             = true;
             __scale_to_box_dirty     = true;
             
-            __visual_bboxes = _state;
+            __visualBboxes = _state;
         }
         
         return self;
@@ -978,10 +978,10 @@ function __scribble_class_element_parent(_text) constructor
             var _new_bidi_hint = _state? __SCRIBBLE_BIDI_R2L : __SCRIBBLE_BIDI_L2R;
         }
         
-        if (__bidi_hint != _new_bidi_hint)
+        if (__bidiHint != _new_bidi_hint)
         {
             __modelDirty = true;
-            __bidi_hint = _new_bidi_hint;
+            __bidiHint = _new_bidi_hint;
         }
         
         return self;
@@ -998,7 +998,7 @@ function __scribble_class_element_parent(_text) constructor
         var _model = __EnsureModel();
         if (!is_struct(_model)) return undefined;
         
-        var _page         = _model.__pages_array[__page];
+        var _page         = _model.__pagesArray[__page];
         var _region_array = _page.__region_array;
         
         var _matrix = __update_matrix(_model, _element_x, _element_y);
@@ -1054,7 +1054,7 @@ function __scribble_class_element_parent(_text) constructor
         var _model = __EnsureModel();
         if (!is_struct(_model)) return undefined;
         
-        var _page         = _model.__pages_array[__page];
+        var _page         = _model.__pagesArray[__page];
         var _region_array = _page.__region_array;
         
         var _i = 0;
@@ -1095,7 +1095,7 @@ function __scribble_class_element_parent(_text) constructor
         var _model = __EnsureModel();
         if (!is_struct(_model)) return _emptyArray;
         
-        return _model.__pages_array[__page].__region_array;
+        return _model.__pagesArray[__page].__region_array;
     }
     
     static region_draw = function(_elementX, _elementY, _name, _padding = 0, _sprite = scribble_fallback_dot, _image = 0, _color = c_white, _alpha = 1)
@@ -1103,7 +1103,7 @@ function __scribble_class_element_parent(_text) constructor
         var _model = __EnsureModel();
         if (!is_struct(_model)) return undefined;
         
-        var _page         = _model.__pages_array[__page];
+        var _page         = _model.__pagesArray[__page];
         var _region_array = _page.__region_array;
         
         var _i = 0;
@@ -1187,7 +1187,7 @@ function __scribble_class_element_parent(_text) constructor
             var _yscale = __scale_to_box_scale*_model.__fitScale*__post_yscale;
             
             //Left/top padding is baked into the model
-            var _bbox = _model.__get_bbox(SCRIBBLE_BOUNDING_BOX_USES_PAGE? __page : undefined, __padding_l, __padding_t, __padding_r, __padding_b);
+            var _bbox = _model.__GetBbox(SCRIBBLE_BOUNDING_BOX_USES_PAGE? __page : undefined, __paddingL, __paddingT, __paddingR, __paddingB);
             
             __bbox_raw_width  = 1 + _bbox.right - _bbox.left;
             __bbox_raw_height = 1 + _bbox.bottom - _bbox.top;
@@ -1343,11 +1343,11 @@ function __scribble_class_element_parent(_text) constructor
         
         if (_typist != undefined)
         {
-            var _bbox = _model.__get_bbox_revealed(__page, 0, _revealIndex ?? __typistHeadArray[0], __padding_l, __padding_t, __padding_r, __padding_b);
+            var _bbox = _model.__GetBboxRevealed(__page, 0, _revealIndex ?? __typistHeadArray[0], __paddingL, __paddingT, __paddingR, __paddingB);
         }
         else if (__tw_reveal != undefined)
         {
-            var _bbox = _model.__get_bbox_revealed(__page, 0, __tw_reveal, __padding_l, __padding_t, __padding_r, __padding_b);
+            var _bbox = _model.__GetBboxRevealed(__page, 0, __tw_reveal, __paddingL, __paddingT, __paddingR, __paddingB);
         }
         
         __update_bbox_matrix();
@@ -1420,9 +1420,9 @@ function __scribble_class_element_parent(_text) constructor
                 __scribble_trace("Warning! Cannot set a text element's page to less than 0");
                 __page = 0;
             }
-            else if (_page > _model.__get_page_count()-1)
+            else if (_page > _model.__GetPageCount()-1)
             {
-                __page = _model.__get_page_count()-1;
+                __page = _model.__GetPageCount()-1;
                 __scribble_trace("Warning! Page ", _page, " is too big. Valid pages are from 0 to ", __page, " (pages are 0-indexed)");
             }
             else
@@ -1464,7 +1464,7 @@ function __scribble_class_element_parent(_text) constructor
     {
         var _model = __EnsureModel();
         if (!is_struct(_model)) return 0;
-        return _model.__get_page_count();
+        return _model.__GetPageCount();
     }
     
     static on_last_page = function()
@@ -1482,7 +1482,7 @@ function __scribble_class_element_parent(_text) constructor
     {
         var _model = __EnsureModel();
         if (!is_struct(_model)) return false;
-        return _model.__get_wrapped();
+        return _model.__GetWrapped();
     }
     
     /// @param [page]
@@ -1490,7 +1490,7 @@ function __scribble_class_element_parent(_text) constructor
     {
         var _model = __EnsureModel();
         if (!is_struct(_model)) return "";
-        return _model.__get_text(_page);
+        return _model.__GetText(_page);
     }
     
     /// @param [page]
@@ -1498,7 +1498,7 @@ function __scribble_class_element_parent(_text) constructor
     {
         var _model = __EnsureModel();
         if (!is_struct(_model)) return undefined;
-        return _model.__get_line_data(_index, _page);
+        return _model.__GetLineData(_index, _page);
     }
     
     /// @param index
@@ -1507,7 +1507,7 @@ function __scribble_class_element_parent(_text) constructor
     {
         var _model = __EnsureModel();
         if (!is_struct(_model)) return undefined;
-        return _model.__get_glyph_data(_index, _page);
+        return _model.__GetGlyphData(_index, _page);
     }
     
     /// @param [page]
@@ -1515,7 +1515,7 @@ function __scribble_class_element_parent(_text) constructor
     {
         var _model = __EnsureModel();
         if (!is_struct(_model)) return 0;
-        return _model.__get_glyph_count(_page);
+        return _model.__GetGlyphCount(_page);
     }
     
     /// @param [page]
@@ -1523,7 +1523,7 @@ function __scribble_class_element_parent(_text) constructor
     {
         var _model = __EnsureModel();
         if (!is_struct(_model)) return 0;
-        return _model.__get_line_count(_page);
+        return _model.__GetLineCount(_page);
     }
     
     /// @param [page]
@@ -1531,7 +1531,7 @@ function __scribble_class_element_parent(_text) constructor
     {
         var _model = __EnsureModel();
         if (not is_struct(_model)) return 0;
-        return _model.__get_lines_visible(_integer);
+        return _model.__GetLinesVisible(_integer);
     }
     
     #endregion
@@ -1572,7 +1572,7 @@ function __scribble_class_element_parent(_text) constructor
         var _model = __EnsureModel();
         if (!is_struct(_model)) return false;
         
-        return _model.__has_animation;
+        return _model.__hasAnimation;
     }
     
     #endregion
@@ -1687,7 +1687,7 @@ function __scribble_class_element_parent(_text) constructor
         var _model = __EnsureModel();
         if (not is_struct(_model)) return _empty_array;
         
-        var _page = _model.__pages_array[_page_index];
+        var _page = _model.__pagesArray[_page_index];
         var _event_struct = _page.__events_dict;
         
         var _events = _event_struct[$ _position];
@@ -1738,10 +1738,10 @@ function __scribble_class_element_parent(_text) constructor
     /// @param state
     static ignore_command_tags = function(_state)
     {
-        if (__ignore_command_tags != _state)
+        if (__ignoreCommandTags != _state)
         {
             __modelDirty = true;
-            __ignore_command_tags = _state;
+            __ignoreCommandTags = _state;
         }
         
         return self;
@@ -1749,10 +1749,10 @@ function __scribble_class_element_parent(_text) constructor
     
     static randomize_animation = function(_state)
     {
-        if (__randomize_animation != _state)
+        if (__randomizeAnimation != _state)
         {
             __modelDirty = true;
-            __randomize_animation = _state;
+            __randomizeAnimation = _state;
         }
         
         return self;
@@ -1760,10 +1760,10 @@ function __scribble_class_element_parent(_text) constructor
     
     static allow_text_getter = function()
     {
-        if (not __allow_text_getter)
+        if (not __allowTextGetter)
         {
             __modelDirty = true;
-            __allow_text_getter = true;
+            __allowTextGetter = true;
         }
         
         return self;
@@ -1771,10 +1771,10 @@ function __scribble_class_element_parent(_text) constructor
     
     static allow_glyph_data_getter = function()
     {
-        if (not __allow_glyph_data_getter)
+        if (not __allowGlyphDataGetter)
         {
             __modelDirty = true;
-            __allow_glyph_data_getter = true;
+            __allowGlyphDataGetter = true;
         }
         
         return self;
@@ -1805,14 +1805,14 @@ function __scribble_class_element_parent(_text) constructor
         var _oldColour = draw_get_colour();
         draw_set_colour(c_red);
         
-        switch(__starting_halign)
+        switch(__startingHAlign)
         {
             case fa_left:                             break;
             case fa_center: _x -= __layoutMaxWidth/2; break;
             case fa_right:  _x -= __layoutMaxWidth;   break;
         }
         
-        switch(__starting_valign)
+        switch(__startingVAlign)
         {
             case fa_top:                               break;
             case fa_middle: _y -= __layoutMaxHeight/2; break;
@@ -1890,7 +1890,7 @@ function __scribble_class_element_parent(_text) constructor
             return _array;
         })();
         
-        if (__EnsureModel().__has_cycle)
+        if (__EnsureModel().__hasCycle)
         {
             var _texture = surface_get_texture(__scribble_ensure_cycle_surface());
             texture_set_stage(_u_sCycle, _texture);
@@ -2025,8 +2025,8 @@ function __scribble_class_element_parent(_text) constructor
         
         var _xscale = 1.0;
         var _yscale = 1.0;
-        if (__scale_to_box_width  > 0) _xscale = __scale_to_box_width  / (_model.__get_width()  + __padding_l + __padding_r);
-        if (__scale_to_box_height > 0) _yscale = __scale_to_box_height / (_model.__get_height() + __padding_t + __padding_b);
+        if (__scale_to_box_width  > 0) _xscale = __scale_to_box_width  / (_model.__GetWidth()  + __paddingL + __paddingR);
+        if (__scale_to_box_height > 0) _yscale = __scale_to_box_height / (_model.__GetHeight() + __paddingT + __paddingB);
         
         var _previous_scale_to_box_scale = __scale_to_box_scale;
         __scale_to_box_scale = min(_xscale, _yscale);
@@ -2056,10 +2056,10 @@ function __scribble_class_element_parent(_text) constructor
             var _yscale   = __scale_to_box_scale*_model.__fitScale*__post_yscale;
             var _angle    = __post_angle;
             
-            if (!_model.__pad_bbox_l) _x_offset += __padding_l;
-            if (!_model.__pad_bbox_t) _y_offset += __padding_t;
-            if (!_model.__pad_bbox_r) _x_offset -= __padding_r;
-            if (!_model.__pad_bbox_b) _y_offset -= __padding_b;
+            if (!_model.__padBboxL) _x_offset += __paddingL;
+            if (!_model.__padBboxT) _y_offset += __paddingT;
+            if (!_model.__padBboxR) _x_offset -= __paddingR;
+            if (!_model.__padBboxB) _y_offset -= __paddingB;
             
             //Build a matrix to transform the text...
             var _matrix = __matrix;

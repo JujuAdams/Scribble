@@ -12,18 +12,18 @@
 function __scribble_gen_3_devanagari()
 {
     //Avoid this mess if we can
-    if (!__has_devanagari) exit;
+    if (not __hasDevanagari) exit;
     
     static _krutidev_lookup_map       = __scribble_system().__krutidev_lookup_map;
     static _krutidev_matra_lookup_map = __scribble_system().__krutidev_matra_lookup_map;
     
-    static _generator_state = __scribble_system().__generator_state;
-    with(_generator_state)
+    static _generatorState = __scribble_system().__generatorState;
+    with(_generatorState)
     {
         var _glyph_grid   = __glyph_grid;
         var _controlArray = __controlArray;
         var _temp_grid    = __temp2_grid;
-        var _glyphCount  = _generator_state.__glyph_count;
+        var _glyphCount  = _generatorState.__glyph_count;
     }
     
     //Glyph count includes the terminating null. We don't need that for Krutidev conversion
@@ -396,7 +396,7 @@ function __scribble_gen_3_devanagari()
     _glyph_grid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
     _glyph_grid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = (_glyphCount > 0)? _glyph_grid[# _glyphCount-1, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] : 0; //Make sure we collect controls at the end of a string
     
-    _generator_state.__glyph_count = _glyphCount+1;
+    _generatorState.__glyph_count = _glyphCount+1;
     
     #endregion
 }

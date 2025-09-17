@@ -2,7 +2,7 @@
 
 function __scribble_gen_8_position_glyphs()
 {
-    static _generator_state = __scribble_system().__generator_state;
+    static _generatorState = __scribble_system().__generatorState;
     static _stretch_array = array_create_ext(1000, function()
     {
         return {
@@ -12,17 +12,17 @@ function __scribble_gen_8_position_glyphs()
         };
     });
     
-    with(_generator_state)
+    with(_generatorState)
     {
         var _glyph_grid    = __glyph_grid;
         var _word_grid     = __word_grid;
         var _line_array    = __line_array;
         var _temp_grid     = __temp_grid;
-        var _overall_bidi  = __overall_bidi;
+        var _overall_bidi  = __overallBidi;
         var _modelMaxWidth = __modelMaxWidth;
     }
     
-    var _line_height = __line_height;
+    var _line_height = __lineHeight;
     
     ds_grid_clear(_temp_grid, 0); //FIXME - Works around a bug in ds_grid_add_grid_region() (runtime 2.3.7.474  2021-12-03)
     
@@ -35,12 +35,12 @@ function __scribble_gen_8_position_glyphs()
     var _i = 0;
     repeat(__pages)
     {
-        var _page_data = __pages_array[_i];
+        var _pageData = __pagesArray[_i];
         
         if (SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE)
         {
-            var _alignment_width     = _page_data.__width;
-            var _pin_alignment_width = _page_data.__width;
+            var _alignment_width     = _pageData.__width;
+            var _pin_alignment_width = _pageData.__width;
         }
         else
         {
@@ -55,8 +55,8 @@ function __scribble_gen_8_position_glyphs()
         var _page_min_x =  infinity;
         var _page_max_x = -infinity; 
         
-        var _page_start_line = _page_data.__line_start;
-        var _page_end_line   = _page_data.__line_end;
+        var _page_start_line = _pageData.__lineStart;
+        var _page_end_line   = _pageData.__line_end;
         
         var _j = _page_start_line;
         repeat(1 + _page_end_line - _page_start_line)
@@ -237,22 +237,22 @@ function __scribble_gen_8_position_glyphs()
         
         
         if (_page_min_x == infinity) _page_min_x = 0;
-        _page_data.__min_x  = _page_min_x;
-        _page_data.__max_x  = max(_page_min_x, _page_max_x);
+        _pageData.__minX  = _page_min_x;
+        _pageData.__maxX  = max(_page_min_x, _page_max_x);
         
-        _model_min_y = min(_model_min_y, _page_data.__min_y);
-        _model_max_y = max(_model_max_y, _page_data.__max_y);
+        _model_min_y = min(_model_min_y, _pageData.__minY);
+        _model_max_y = max(_model_max_y, _pageData.__maxY);
         
         ++_i;
     }
     
     if (_model_min_x == infinity) _model_min_x = 0;
     
-   __min_x = _model_min_x;
-   __min_y = _model_min_y;
-   __max_x = max(_model_min_x, _model_max_x);
-   __max_y = _model_max_y;
+   __minX = _model_min_x;
+   __minY = _model_min_y;
+   __maxX = max(_model_min_x, _model_max_x);
+   __maxY = _model_max_y;
     
-    __width  = 1 + __max_x - __min_x;
-    __height = 1 + __max_y - __min_y;
+    __width  = 1 + __maxX - __minX;
+    __height = 1 + __maxY - __minY;
 }

@@ -2,18 +2,18 @@
 
 function __scribble_gen_7_build_pages()
 {
-    static _generator_state = __scribble_system().__generator_state;
+    static _generatorState = __scribble_system().__generatorState;
     
-    with(_generator_state)
+    with(_generatorState)
     {
         var _modelMaxHeight  = __modelMaxHeight;
         var _line_array      = __line_array;
     }
     
     var _layoutMaxHeight       = __layoutMaxHeight;
-    var _line_height           = __line_height;
-    var _line_spacing_add      = __line_spacing_add;
-    var _line_spacing_multiply = __line_spacing_multiply;
+    var _line_height           = __lineHeight;
+    var _line_spacing_add      = __lineSpacingAdd;
+    var _line_spacing_multiply = __lineSpacingMultiply;
     
     if (is_infinity(_layoutMaxHeight))
     {
@@ -26,7 +26,7 @@ function __scribble_gen_7_build_pages()
     
     var _simulated_model_height = (__layoutType == SCRIBBLE_LAYOUT_FIT)? infinity : (_modelMaxHeight / __fitScale);
     
-    var _page_data = __AddPage(0);
+    var _pageData = __AddPage(0);
     var _firstLine = true;
     var _line_y = 0;
     var _width = 0;
@@ -48,7 +48,7 @@ function __scribble_gen_7_build_pages()
         {
             if (not _skippingLines)
             {
-                _page_data.__Finalize(_line-1);
+                _pageData.__Finalize(_line-1);
             }
             
             _firstLine = true;
@@ -66,7 +66,7 @@ function __scribble_gen_7_build_pages()
             
             if (not _skippingLines)
             {
-                _page_data = __AddPage(_line);
+                _pageData = __AddPage(_line);
             }
         }
         else
@@ -81,7 +81,7 @@ function __scribble_gen_7_build_pages()
     
     if (not _skippingLines)
     {
-        _page_data.__Finalize(_line-1);
+        _pageData.__Finalize(_line-1);
     }
     
     //We refine this in the next phase

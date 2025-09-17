@@ -16,11 +16,11 @@ function __scribble_class_page(_model) constructor
     
     __reveal_count = 0;
     
-    __glyph_start = undefined;
+    __glyphStart = undefined;
     __glyph_end   = undefined;
     __glyph_count = 0;
     
-    __line_start = undefined;
+    __lineStart = undefined;
     __line_end   = undefined;
     __line_count = 0;
     
@@ -28,10 +28,10 @@ function __scribble_class_page(_model) constructor
     
     __width  = 0;
     __height = 0;
-    __min_x  = 0;
-    __min_y  = 0;
-    __max_x  = 0;
-    __max_y  = 0;
+    __minX  = 0;
+    __minY  = 0;
+    __maxX  = 0;
+    __maxY  = 0;
     
     __vertex_buffer_array = [];
     __texture_to_vertex_buffer_dict = {};
@@ -42,9 +42,9 @@ function __scribble_class_page(_model) constructor
     static __Finalize = function(_page_end_line)
     {
         static _animation_randomize_array = [];
-        static _generator_state = __scribble_system().__generator_state;
+        static _generatorState = __scribble_system().__generatorState;
         
-        with(_generator_state)
+        with(_generatorState)
         {
             var _glyph_grid     = __glyph_grid;
             var _word_grid      = __word_grid;
@@ -53,12 +53,12 @@ function __scribble_class_page(_model) constructor
         }
         
         __line_end    = _page_end_line;
-        __line_count  = 1 + __line_end - __line_start;
+        __line_count  = 1 + __line_end - __lineStart;
         __glyph_end   = _word_grid[# _line_array[__line_end].wordEnd, __SCRIBBLE_GEN_WORD_GLYPH_END];
-        __glyph_count = 1 + __glyph_end - __glyph_start;
+        __glyph_count = 1 + __glyph_end - __glyphStart;
         
         var _pageWidth = 0;
-        var _i = __line_start;
+        var _i = __lineStart;
         repeat(__line_count)
         {
             _pageWidth = max(_pageWidth, _line_array[_i].width);
@@ -71,78 +71,78 @@ function __scribble_class_page(_model) constructor
         __height = _line_max_y;
             
         //Correct page position for vertical alignment
-        var _valign = __model.__valign;
+        var _valign = __model.__vAlign;
         if (_valign == fa_middle)
         {
-            __min_y = -(_line_max_y div 2);
-            __max_y =  (_line_max_y div 2);
+            __minY = -(_line_max_y div 2);
+            __maxY =  (_line_max_y div 2);
         }
         else if (_valign == fa_bottom)
         {
-            __min_y = -_line_max_y;
-            __max_y = 0;
+            __minY = -_line_max_y;
+            __maxY = 0;
         }
         else if (_valign == __SCRIBBLE_PIN_MIDDLE)
         {
             if (SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE || (_modelMaxHeight == infinity))
             {
-                __min_y = -(_line_max_y div 2);
-                __max_y =  (_line_max_y div 2);
+                __minY = -(_line_max_y div 2);
+                __maxY =  (_line_max_y div 2);
             }
             else
             {
                 var _delta = _modelMaxHeight - _line_max_y;
-                __min_y = 0.5*_delta;
-                __max_y = _modelMaxHeight - 0.5*_delta;
+                __minY = 0.5*_delta;
+                __maxY = _modelMaxHeight - 0.5*_delta;
             }
         }
         else if (_valign == __SCRIBBLE_PIN_BOTTOM)
         {
             if (SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE || (_modelMaxHeight == infinity))
             {
-                __min_y = -_line_max_y;
-                __max_y = 0;
+                __minY = -_line_max_y;
+                __maxY = 0;
             }
             else
             {
-                __min_y = _modelMaxHeight - _line_max_y;
-                __max_y = _modelMaxHeight;
+                __minY = _modelMaxHeight - _line_max_y;
+                __maxY = _modelMaxHeight;
             }
         }
         else //fa_top or pin_top
         {
-            __min_y = 0;
-            __max_y = _line_max_y;
+            __minY = 0;
+            __maxY = _line_max_y;
         }
             
         //Correct line positions for vertical alignment
-        if (__min_y != 0)
+        if (__minY != 0)
         {
-            var _i = __line_start;
+            var _i = __lineStart;
             repeat(__line_count)
             {
-                _line_array[_i].y += __min_y;
+                _line_array[_i].y += __minY;
                 ++_i;
             }
         }
             
         // Set up the character indexes for the page, relative to the character index of the first glyph on the page
-        var _page_reveal_start = _glyph_grid[# __glyph_start, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX];
+        var _page_reveal_start = _glyph_grid[# __glyphStart, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX];
         var _page_reveal_end   = _glyph_grid[# __glyph_end,   __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX];
         __reveal_count = 1 + _page_reveal_end - _page_reveal_start;
             
         //Set up reveal indexes relative to the page
-        ds_grid_add_region(_glyph_grid, __glyph_start, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, __glyph_end, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, -_page_reveal_start);
+        ds_grid_add_region(_glyph_grid, __glyphStart, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, __glyph_end, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, -_page_reveal_start);
             
         __line_data_array = [];
         
-        var _line = __line_start;
+        var _line = __lineStart;
         repeat(__line_count)
         {
             var _lineStruct = _line_array[_line];
             
-            var _glyph_start = _word_grid[# _lineStruct.wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START] - __glyph_start;
-            var _glyph_end   = _word_grid[# _lineStruct.wordEnd,   __SCRIBBLE_GEN_WORD_GLYPH_END  ] - __glyph_start;
+            var _glyph_start = _word_grid[# _lineStruct.wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START] - __glyphStart;
+            var _glyph_end   = _word_grid[# _lineStruct.wordEnd,   __SCRIBBLE_GEN_WORD_GLYPH_END  ] - __glyphStart;
             
             _lineStruct.glyphStart = _glyph_start;
             _lineStruct.glyphEnd   = _glyph_end;
@@ -153,7 +153,7 @@ function __scribble_class_page(_model) constructor
             ++_line;
         }
             
-        if (__model.__randomize_animation)
+        if (__model.__randomizeAnimation)
         {
             array_resize(_animation_randomize_array, __reveal_count);
             
@@ -166,7 +166,7 @@ function __scribble_class_page(_model) constructor
             
             array_sort(_animation_randomize_array, function() { return choose(-1, 1); }); //FIXME - Swap this out for a PRNG
             
-            var _glyph_start = __glyph_start;
+            var _glyph_start = __glyphStart;
             var _line = 0;
             repeat(__reveal_count)
             {
@@ -272,12 +272,12 @@ function __scribble_class_page(_model) constructor
         }
     }
     
-    static __get_line_data = function(_index)
+    static __GetLineData = function(_index)
     {
         return __line_data_array[clamp(_index, 0, __line_count-1)];
     }
     
-    static __get_glyph_data = function(_index)
+    static __GetGlyphData = function(_index)
     {
         //TODO - Static struct return needed here?
         
@@ -366,7 +366,7 @@ function __scribble_class_page(_model) constructor
         return __glyph_grid;
     }
     
-    static __finalize_vertex_buffers = function()
+    static __FinalizeVertexBuffers = function()
     {
         var _i = 0;
         repeat(array_length(__vertex_buffer_array))

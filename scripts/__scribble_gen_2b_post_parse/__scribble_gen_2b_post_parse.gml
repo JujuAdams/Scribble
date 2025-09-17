@@ -2,16 +2,16 @@
 
 function __scribble_gen_2b_post_parse()
 {
-    static _generator_state       = __scribble_system().__generator_state;
+    static _generatorState       = __scribble_system().__generatorState;
     static _global_glyph_bidi_map = __scribble_system().__glyph_data.__bidi_map;
     
-    with(_generator_state)
+    with(_generatorState)
     {
         ///////
         // Determine the overall bidi direction
         ///////
         
-        var _overall_bidi = _generator_state.__overall_bidi;
+        var _overall_bidi = _generatorState.__overallBidi;
         if ((_overall_bidi != __SCRIBBLE_BIDI_L2R) && (_overall_bidi != __SCRIBBLE_BIDI_R2L))
         {
             //Searching until we find a glyph with a well-defined direction
@@ -45,7 +45,7 @@ function __scribble_gen_2b_post_parse()
                 _overall_bidi = __SCRIBBLE_BIDI_L2R;
             }
             
-            _generator_state.__overall_bidi = _overall_bidi;
+            _generatorState.__overallBidi = _overall_bidi;
             
             //Make sure the null terminator uses the overall bidi for the algorithm to function properly
             __glyph_grid[# __glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI] = _overall_bidi;
@@ -58,7 +58,7 @@ function __scribble_gen_2b_post_parse()
         ///////
         
         //If the line height has not been manually set using `.line_height()` then we need to deduce it
-        if (other.__line_height < 0)
+        if (other.__lineHeight < 0)
         {
             //Find the first text character and use its font height
             var _line_height = undefined;
@@ -81,7 +81,7 @@ function __scribble_gen_2b_post_parse()
             }
             
             //Always fall back on something valid
-            other.__line_height = _line_height ?? 1;
+            other.__lineHeight = _line_height ?? 1;
         }
     }
 }

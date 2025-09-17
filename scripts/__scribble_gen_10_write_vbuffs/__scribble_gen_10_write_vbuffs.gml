@@ -18,7 +18,7 @@
 #macro __SCRIBBLE_VBUFF_WRITE_GLYPH  if (_material != _material_prev)\ //Swap vertex buffer if the material has changed
                                      {\
                                          _material_prev = _material;\
-                                         _vbuff = _page_data.__get_vertex_buffer(_material);\
+                                         _vbuff = _pageData.__get_vertex_buffer(_material);\
                                      }\
                                      if (_bezier_do)\
                                      {\
@@ -65,13 +65,13 @@
 function __scribble_gen_10_write_vbuffs()
 {
     static _string_buffer   = __scribble_system().__buffer_a;
-    static _generator_state = __scribble_system().__generator_state;
+    static _generatorState = __scribble_system().__generatorState;
     static _tagDict         = __scribble_system().__tagDict;
     
     static _scribbleDotUVs = sprite_get_uvs(scribble_fallback_dot, 0);
     static _scribbleDotMaterial = __scribble_sprite_get_material(scribble_fallback_dot, 0);
     
-    with(_generator_state)
+    with(_generatorState)
     {
         var _vbuff_pos_grid = __vbuff_pos_grid;
         var _controlArray   = __controlArray;
@@ -81,8 +81,8 @@ function __scribble_gen_10_write_vbuffs()
         var _glyphCount    = __glyph_count;
     }
     
-    var _text_getter       = __allow_text_getter;
-    var _glyph_data_getter = __allow_glyph_data_getter;
+    var _text_getter       = __allowTextGetter;
+    var _glyph_data_getter = __allowGlyphDataGetter;
     
     
     
@@ -97,11 +97,11 @@ function __scribble_gen_10_write_vbuffs()
     
     
     
-    if (is_array(_generator_state.__bezier_lengths_array))
+    if (is_array(_generatorState.__bezier_lengths_array))
     {
         //Prep for Bezier curve shenanigans if necessary
         var _bezier_do              = true;
-        var _bezier_lengths         = _generator_state.__bezier_lengths_array;
+        var _bezier_lengths         = _generatorState.__bezier_lengths_array;
         var _bezier_search_index    = 0;
         var _bezier_search_d0       = 0;
         var _bezier_search_d1       = _bezier_lengths[1];
@@ -129,17 +129,17 @@ function __scribble_gen_10_write_vbuffs()
     var _fontUnderlineY = 0;
     var _fontStrikeY    = 0;
     
-    var _func_region_pop = function(_page_data, _region_name, _region_start, _region_end)
+    var _func_region_pop = function(_pageData, _region_name, _region_start, _region_end)
     {
-        static _generator_state = __scribble_system().__generator_state;
+        static _generatorState = __scribble_system().__generatorState;
         
         if (_region_start > _region_end) return;
         
         var _region_bbox_array = [];
         
-        var _vbuff_pos_grid = _generator_state.__vbuff_pos_grid;
-        var _line_array     = _generator_state.__line_array;
-        var _word_grid      = _generator_state.__word_grid;
+        var _vbuff_pos_grid = _generatorState.__vbuff_pos_grid;
+        var _line_array     = _generatorState.__line_array;
+        var _word_grid      = _generatorState.__word_grid;
         
         var _line = 0;
         var _region_bbox_start = _region_start;
@@ -167,19 +167,19 @@ function __scribble_gen_10_write_vbuffs()
         }
         
         //N.B. This array is exposed to the end-user via .region_get_bboxes()
-        array_push(_page_data.__region_array, {
+        array_push(_pageData.__region_array, {
             name        : _region_name,
             bbox_array  : _region_bbox_array,
-            start_glyph : _region_start - _page_data.__glyph_start,
-            end_glyph   : _region_end - _page_data.__glyph_start,
+            start_glyph : _region_start - _pageData.__glyphStart,
+            end_glyph   : _region_end - _pageData.__glyphStart,
         });
     }
     
     var _pageIndex = 0;
     repeat(__pages)
     {
-        var _page_data        = __pages_array[_pageIndex];
-        var _page_events_dict = _page_data.__events_dict;
+        var _pageData        = __pagesArray[_pageIndex];
+        var _page_events_dict = _pageData.__events_dict;
         var _vbuff            = undefined;
         var _material_prev    = undefined;
         var _animation_index  = 0;
@@ -187,12 +187,12 @@ function __scribble_gen_10_write_vbuffs()
         
         if (_glyph_data_getter)
         {
-            with(_page_data)
+            with(_pageData)
             {
                 __ensure_glyph_grid();
-                ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyph_start, __SCRIBBLE_GEN_GLYPH_UNICODE, __glyph_end, __SCRIBBLE_GEN_GLYPH_UNICODE, 0, __SCRIBBLE_GLYPH_LAYOUT_UNICODE);
-                ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyph_start, __SCRIBBLE_GEN_GLYPH_Y, __glyph_end, __SCRIBBLE_GEN_GLYPH_Y, 0, __SCRIBBLE_GLYPH_LAYOUT_Y_OFFSET);
-                ds_grid_set_grid_region(__glyph_grid, _vbuff_pos_grid, __glyph_start, 0, __glyph_end, __SCRIBBLE_GEN_VBUFF_POS_SIZE-1, 0, __SCRIBBLE_GLYPH_LAYOUT_LEFT);
+                ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyphStart, __SCRIBBLE_GEN_GLYPH_UNICODE, __glyph_end, __SCRIBBLE_GEN_GLYPH_UNICODE, 0, __SCRIBBLE_GLYPH_LAYOUT_UNICODE);
+                ds_grid_set_grid_region(__glyph_grid, _glyph_grid, __glyphStart, __SCRIBBLE_GEN_GLYPH_Y, __glyph_end, __SCRIBBLE_GEN_GLYPH_Y, 0, __SCRIBBLE_GLYPH_LAYOUT_Y_OFFSET);
+                ds_grid_set_grid_region(__glyph_grid, _vbuff_pos_grid, __glyphStart, 0, __glyph_end, __SCRIBBLE_GEN_VBUFF_POS_SIZE-1, 0, __SCRIBBLE_GLYPH_LAYOUT_LEFT);
             }
         }
         
@@ -201,8 +201,8 @@ function __scribble_gen_10_write_vbuffs()
             buffer_seek(_string_buffer, buffer_seek_start, 0);
         }
         
-        var _lineIndex = _page_data.__line_start;
-        repeat(_page_data.__line_count)
+        var _lineIndex = _pageData.__lineStart;
+        repeat(_pageData.__line_count)
         {
             var _lineStruct = _line_array[_lineIndex];
             var _lineY = _lineStruct.y;
@@ -265,7 +265,7 @@ function __scribble_gen_10_write_vbuffs()
                     {
                         if (_region_name != undefined)
                         {
-                            _func_region_pop(_page_data, _region_name, _region_start, _glyphIndex-1);
+                            _func_region_pop(_pageData, _region_name, _region_start, _glyphIndex-1);
                         }
                         
                         // [/region] just sets the .DATA field to undefined
@@ -511,7 +511,7 @@ function __scribble_gen_10_write_vbuffs()
         //If we have a hanging glyph in an open region then ensure we pop it onto the page we're leaving
         if (_region_name != undefined)
         {
-            _func_region_pop(_page_data, _region_name, _region_start, _glyphIndex-1);
+            _func_region_pop(_pageData, _region_name, _region_start, _glyphIndex-1);
             
             //Set up so that we still have a region open on the next page
             _region_start = _glyphIndex;
@@ -522,7 +522,7 @@ function __scribble_gen_10_write_vbuffs()
             //Write a null terminator to finish off the string
             buffer_write(_string_buffer, buffer_u8, 0);
             buffer_seek(_string_buffer, buffer_seek_start, 0);
-            _page_data.__text = buffer_read(_string_buffer, buffer_string);
+            _pageData.__text = buffer_read(_string_buffer, buffer_string);
         }
         
         ++_pageIndex;
@@ -556,5 +556,5 @@ function __scribble_gen_10_write_vbuffs()
     }
     
     //Ensure we've ended the vertex buffers we created
-    __finalize_vertex_buffers();
+    __FinalizeVertexBuffers();
 }

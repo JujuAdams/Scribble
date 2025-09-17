@@ -70,7 +70,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     var _glyphCount = ds_grid_width(_src_glyph_grid);
     
     //Create a new font
-    var _new_font_data = new __scribble_class_font(_new_font_name, _glyphCount, undefined, false, true,
+    var _new_font_data = new __ScribbleClassFont(_new_font_name, _glyphCount, undefined, false, true,
                                                    _src_font_data.__underlineY + _t_pad + _b_pad,
                                                    _src_font_data.__strikeY    + _t_pad + _b_pad);
     _new_font_data.__bilinear = _smooth;

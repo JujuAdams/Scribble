@@ -58,7 +58,7 @@
                                     var _font_data = __scribble_get_font_data(_font_name);\
                                     _font_data.__EnsureTexelData();\
                                     if (_font_data.__superfont) _font_data.__EnsureAdditionalCharacters();\
-                                    if (_font_data.__is_krutidev) __has_devanagari = true;\
+                                    if (_font_data.__is_krutidev) __hasDevanagari = true;\
                                     \
                                     var _font_glyph_data_grid     = _font_data.__glyphDataGrid;\
                                     var _font_glyphs_map          = _font_data.__glyphsMap;\
@@ -68,7 +68,7 @@
                                     var _fontLigatureMap          = _font_data.__ligatureMap;\
                                     \
                                     var _stateHAlignOffset = _font_halign_offset_array[_state_halign];\
-                                    var _stateVAlignOffset = _font_valign_offset_array[__valign ?? _starting_valign];\
+                                    var _stateVAlignOffset = _font_valign_offset_array[__vAlign ?? _starting_valign];\
                                     \
                                     var _space_data_index = _font_glyphs_map[? SCRIBBLE_UNICODE_SPACE];\
                                     if (_space_data_index == undefined)\
@@ -170,10 +170,10 @@ function __scribble_gen_2_parser()
     static _string_buffer         = _system.__buffer_a;
     static _other_string_buffer   = _system.__buffer_b;
     static _fontDataMap         = _system.__fontDataMap;
-    static _generator_state       = _system.__generator_state;
+    static _generatorState       = _system.__generatorState;
     static _sprite_whitelist_map  = _system.__state.__sprite_whitelist_map;
     
-    with(_generator_state)
+    with(_generatorState)
     {
         var _glyph_grid     = __glyph_grid;
         var _word_grid      = __word_grid;
@@ -187,13 +187,13 @@ function __scribble_gen_2_parser()
     //Cache element properties locally
     var _spritesDontScale = __spritesDontScale;
     var _element_text     = __text;
-    var _starting_colour  = __starting_colour;
-    var _starting_halign  = __starting_halign;
-    var _starting_valign  = __starting_valign;
-    var _ignore_commands  = __ignore_command_tags;
-    var _pre_scale        = __pre_scale;
+    var _starting_colour  = __startingColor;
+    var _starting_halign  = __startingHAlign;
+    var _starting_valign  = __startingVAlign;
+    var _ignore_commands  = __ignoreCommandTags;
+    var _pre_scale        = __preScale;
     
-    var _starting_font = __starting_font;
+    var _starting_font = __startingFont;
     if (_starting_font == undefined) __scribble_error("The default font has not been set\nCheck that you've added fonts to Scribble (scribble_font_add() / scribble_font_add_from_sprite() etc.)");
     
     _starting_font = scribble_font_get_remap(_starting_font);
@@ -704,8 +704,8 @@ function __scribble_gen_2_parser()
                             array_push(_controlArray, new __scribble_class_control_cycle(_cycleIndex | (_cycleSpeed << 8) | (_cycleFreq << 16) | 0xFF000000));
                             ++_controlCount;
                             
-                            __has_animation = true;
-                            __has_cycle = true;
+                            __hasAnimation = true;
+                            __hasCycle = true;
                         break;
                         
                         // [/rainbow]
@@ -1001,7 +1001,7 @@ function __scribble_gen_2_parser()
                                     array_push(_controlArray, new __scribble_class_control_effect(_state_effect_flags));
                                     ++_controlCount;
                                     
-                                    __has_animation = true;
+                                    __hasAnimation = true;
                                 }
                                 else if (_tagType == __SCRIBBLE_TAG_EFFECT_UNSET)
                                 {
@@ -1119,7 +1119,7 @@ function __scribble_gen_2_parser()
                                         _image_speed *= __scribble_image_speed_get(_sprite_index);
                                 
                                         //Only report the model as animated if we're actually able to animate this sprite
-                                        if ((_image_speed != 0) && (sprite_get_number(_sprite_index) > 1)) __has_animation = true;
+                                        if ((_image_speed != 0) && (sprite_get_number(_sprite_index) > 1)) __hasAnimation = true;
                                 
                                         //Add this glyph to our grid
                                         _glyph_grid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = __SCRIBBLE_GLYPH_REPL_SPRITE;
@@ -1269,17 +1269,17 @@ function __scribble_gen_2_parser()
                     //Handle vertical alignment changes
                     if (_new_valign != undefined)
                     {
-                        if (__valign == undefined)
+                        if (__vAlign == undefined)
                         {
-                            __valign = _new_valign;
+                            __vAlign = _new_valign;
                         }
-                        else if (__valign != _new_valign)
+                        else if (__vAlign != _new_valign)
                         {
                             __scribble_error("In-line vertical alignment cannot be set more than once");
                         }
                     
                         _new_valign = undefined;
-                        _stateVAlignOffset = _font_valign_offset_array[__valign];
+                        _stateVAlignOffset = _font_valign_offset_array[__vAlign];
                     }
                 }
             }
@@ -1405,7 +1405,7 @@ function __scribble_gen_2_parser()
                 
                 #endregion
             }
-            else if ((_glyph_ord == SCRIBBLE_UNICODE_ZWSP) || (SCRIBBLE_THAI_GRAVE_ACCENTS_ARE_ZWSP && __has_thai && (_glyph_ord == 0x60))) //Zero-width space, or a Thai grave accent
+            else if ((_glyph_ord == SCRIBBLE_UNICODE_ZWSP) || (SCRIBBLE_THAI_GRAVE_ACCENTS_ARE_ZWSP && __hasThai && (_glyph_ord == 0x60))) //Zero-width space, or a Thai grave accent
             {
                 #region Add a zero-width space glyph to our grid
                 
@@ -1496,7 +1496,7 @@ function __scribble_gen_2_parser()
                     static _arabic_medial_map    = _glyph_data_struct.__arabic_medial_map;
                     static _arabic_final_map     = _glyph_data_struct.__arabic_final_map;
                     
-                    __has_arabic = true;
+                    __hasArabic = true;
                     
                     var _buffer_offset = buffer_tell(_string_buffer);
                     var _glyph_next = __scribble_buffer_peek_unicode(_string_buffer, _buffer_offset);
@@ -1587,7 +1587,7 @@ function __scribble_gen_2_parser()
                     if (SCRIBBLE_ALLOW_DEVANAGARI && (_glyph_write >= 0x0900) && (_glyph_write <= 0x097F))
                     {
                         //Devanagari is so complex it gets its own function
-                        __has_devanagari = true;
+                        __hasDevanagari = true;
                         
                         //Create a placeholder glyph entry
                         _glyph_grid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = _glyph_write;
@@ -1609,7 +1609,7 @@ function __scribble_gen_2_parser()
                             static _thai_lower_map          = _glyph_data_struct.__thai_lower_map;
                             static _thai_upper_map          = _glyph_data_struct.__thai_upper_map;
                             
-                            __has_thai = true;
+                            __hasThai = true;
                         
                             if (_thai_top_map[? _glyph_write] && (_glyphCount >= 1))
                             {
@@ -1699,7 +1699,7 @@ function __scribble_gen_2_parser()
                         else if (SCRIBBLE_ALLOW_HEBREW && (_glyph_write >= 0x0590) && (_glyph_write <= 0x05FF))
                         {
                             //Hebrew handling is, mercifully, straight-forward beyond R2L directionality
-                            __has_hebrew = true;
+                            __hasHebrew = true;
                         }
                         
                         if (SCRIBBLE_ALLOW_LIGATURES)
@@ -1754,10 +1754,10 @@ function __scribble_gen_2_parser()
         ds_grid_set_region(_glyph_grid, _sectionStart, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _glyphCount-1, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, _sectionCount);
     }
     
-    if (__has_arabic || __has_hebrew) __has_r2l = true;
+    if (__hasArabic || __hasHebrew) __hasR2L = true;
     
     //Set our vertical alignment if it hasn't been overrided
-    if (__valign == undefined) __valign = _starting_valign;
+    if (__vAlign == undefined) __vAlign = _starting_valign;
     
     ///////
     // Tidy up loose ends
@@ -1777,7 +1777,7 @@ function __scribble_gen_2_parser()
     _glyph_grid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount; //Make sure we collect controls at the end of a string
     _glyph_grid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX ] = _sectionCount;
     
-    with(_generator_state)
+    with(_generatorState)
     {
         __glyph_count   = _glyphCount+1;
         __sectionCount  = _sectionCount;
