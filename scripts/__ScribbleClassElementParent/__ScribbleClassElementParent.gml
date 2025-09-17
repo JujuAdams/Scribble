@@ -70,14 +70,15 @@ function __ScribbleClassElementParent(_text) constructor
     __scrollXArray = [];
     __scrollYArray = [];
     __scrollState = 0;
-    __scrollSpeed = 0;
-    __scrollPause = 0;
+    __scrollSpeed = SCRIBBLE_DEFAULT_SCROLL_SPEED;
+    __scrollPause = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME;
     __scrollAuto  = 0; //0 = off, 1 = x-axis, 2 = y-axis
     __scrollWasClamped = true;
     __scrollPauseCounter = 0;
     
-    __serial = false;
-    __serialY = 0;
+    __nextPage       = 0;
+    __nextPageSpeed  = SCRIBBLE_DEFAULT_SERIAL_SPEED;
+    __nextPageOffset = 0;
     
     __scaleToBoxDirty    = true;
     __scaleToBoxWidth    = 0;
@@ -436,14 +437,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     static clip = function(_state = true)
     {
-        if (__serial && (not _state))
-        {
-            show_debug_message("Warning! Cannot disable clipping when using serial display");
-        }
-        else
-        {
-            __clip = _state;
-        }
+        __clip = _state;
         
         return self;
     }
@@ -744,60 +738,6 @@ function __ScribbleClassElementParent(_text) constructor
                 }
             }
         }
-    }
-    
-    #endregion
-    
-    
-    
-    #region Serial
-    
-    static serial = function(_state = true)
-    {
-        if (_state)
-        {
-            clip(true); //Forcing clipping on
-        }
-        
-        __serial = _state;
-        
-        return self;
-    }
-    
-    static get_serial = function()
-    {
-        return __serial;
-    }
-    
-    static serial_y = function(_value, _clamp = true)
-    {
-        __serialY = _clamp? clamp(_value, 0, get_serial_max()) : _value;
-        return self;
-    }
-    
-    static get_serial_y = function()
-    {
-        return __serialY;
-    }
-    
-    static serial_to_page = function(_page)
-    {
-        if (is_infinity(__layoutMaxHeight))
-        {
-            __ScribbleError("Cannot call `.serial_to_page()` without having called `.max_size()`");
-        }
-        
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return self;
-        
-        return serial_y(_model.__GetSerialY(_page));
-    }
-    
-    static get_serial_max = function()
-    {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return 0;
-        return _model.__GetSerialMax();
     }
     
     #endregion
@@ -1422,7 +1362,7 @@ function __ScribbleClassElementParent(_text) constructor
     /// @param page
     static __SetPage = function(_page)
     {
-        var _old_page = __page;
+        var _oldPage = __page;
         
         var _model = __EnsureModel();
         if (is_struct(_model))
@@ -1447,12 +1387,59 @@ function __ScribbleClassElementParent(_text) constructor
             __page = 0;
         }
         
-        if (_old_page != __page)
+        if (_oldPage != __page)
         {
             __bboxDirty = true;
         }
         
+        __nextPage       = 0;
+        __nextPageOffset = 0;
+        
         return self;
+    }
+    
+    static __NextPage = function()
+    {
+        if (__nextPage > 0)
+        {
+            __nextPageOffset += __nextPageSpeed;
+            
+            if (__nextPageOffset >= __layoutMaxHeight)
+            {
+                page(__page+1);
+            }
+        }
+        else if (__nextPage < 0)
+        {
+            __nextPageOffset -= __nextPageSpeed;
+            
+            if (__nextPageOffset <= -__layoutMaxHeight)
+            {
+                page(__page-1);
+            }
+        }
+    }
+    
+    static previous_page = function(_speed = SCRIBBLE_DEFAULT_SERIAL_SPEED)
+    {
+        if ((not __nextPage) && (__page > 0))
+        {
+            __nextPage       = -1;
+            __nextPageOffset = 0;
+        }
+        
+        __nextPageSpeed = abs(_speed);
+    }
+    
+    static next_page = function(_speed = SCRIBBLE_DEFAULT_SERIAL_SPEED)
+    {
+        if ((not __nextPage) && (not on_last_page()))
+        {
+            __nextPage       = 1;
+            __nextPageOffset = 0;
+        }
+        
+        __nextPageSpeed = abs(_speed);
     }
     
     static get_page = function()
@@ -1475,6 +1462,11 @@ function __ScribbleClassElementParent(_text) constructor
     static on_last_page = function()
     {
         return (get_page() >= get_page_count() - 1);
+    }
+    
+    static get_page_speed = function()
+    {
+        return __nextPageSpeed;
     }
     
     #endregion

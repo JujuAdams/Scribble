@@ -2,7 +2,8 @@
 
 if (mouse_check_button(mb_left))
 {
-    scrollY += mouse_y - mousePrevY;
+    var _element = scribble(text);
+    _element.scroll(_element.get_scroll_y() + mouse_y - mousePrevY, false);
 }
 
 if (mouse_check_button(mb_middle))
@@ -11,14 +12,14 @@ if (mouse_check_button(mb_middle))
     maxHeight += mouse_y - mousePrevY;
 }
 
-if (mouse_wheel_up())
+if (keyboard_check_pressed(vk_left))
 {
-    --serialPage;
+    scribble(text).previous_page();
 }
 
-if (mouse_wheel_down())
+if (keyboard_check_pressed(vk_right))
 {
-    ++serialPage;
+    scribble(text).next_page();
 }
 
 mousePrevX = mouse_x;
