@@ -1,7 +1,7 @@
 {
   "$GMShader":"",
-  "%Name":"__shd_scribble",
-  "name":"__shd_scribble",
+  "%Name":"__shdScribbleBakeEffectNoOutline",
+  "name":"__shdScribbleBakeEffectNoOutline",
   "parent":{
     "name":"Shaders",
     "path":"folders/Scribble/(System)/Don't call these functions!/Shaders.yy",

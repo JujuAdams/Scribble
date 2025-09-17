@@ -18,7 +18,7 @@
                                  break;\
                              }\
                              \
-                             _lineStruct = new __ScribbleClassLine(_indent_x, _line_height, _line_word_start, _state_halign, _forced_break);\
+                             _lineStruct = new __ScribbleClassLine(_indent_x, _lineHeight, _line_word_start, _state_halign, _forced_break);\
                              array_push(_lineArray, _lineStruct);\
                              \
                              \ //Adjust the first word's width to account for visual tweaks
@@ -186,7 +186,7 @@ function __scribble_gen_6_build_lines()
         __line_array = _lineArray;
     }
     
-    var _line_height           = __lineHeight;
+    var _lineHeight           = __lineHeight;
     var _line_spacing_add      = __lineSpacingAdd;
     var _line_spacing_multiply = __lineSpacingMultiply;
     
@@ -206,7 +206,7 @@ function __scribble_gen_6_build_lines()
         
         var _simulated_model_max_width  = _modelMaxWidth  / _fitScale;
         var _simulated_model_max_height = _modelMaxHeight / _fitScale;
-        var _maxLineCount = floor((_simulated_model_max_height + _line_spacing_add) / (_line_height*_line_spacing_multiply + _line_spacing_add));
+        var _maxLineCount = floor((_simulated_model_max_height + _line_spacing_add) / (_lineHeight*_line_spacing_multiply + _line_spacing_add));
         
         if (_word_count > 0)
         {

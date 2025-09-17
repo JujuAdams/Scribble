@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"__scribble_krutidev_matra_lookup_map_initialize",
+  "%Name":"__ScribbleKrutidevMatraLookupMapInitialize",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"__scribble_krutidev_matra_lookup_map_initialize",
+  "name":"__ScribbleKrutidevMatraLookupMapInitialize",
   "parent":{
     "name":"Initialization",
     "path":"folders/Scribble/(System)/Don't call these functions!/Initialization.yy",

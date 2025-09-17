@@ -1,6 +1,6 @@
 // Feather disable all
 
-function __scribble_glyph_data_initialize()
+function __ScribbleGlyphDataInitialize()
 {
     var _data_struct = {
         __bidi_map   : ds_map_create(),

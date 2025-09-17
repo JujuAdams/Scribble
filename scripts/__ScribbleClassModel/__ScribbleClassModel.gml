@@ -127,8 +127,8 @@ function __ScribbleClassModel(_element) constructor
     
     static __Draw = function(_page, _scrollX, _scrollY, _serial, _serialOffset, _clip, _doubleDraw)
     {
-        static _u_vClip   = shader_get_uniform(__shd_scribble, "u_vClip");
-        static _u_vScroll = shader_get_uniform(__shd_scribble, "u_vScroll");
+        static _u_vClip   = shader_get_uniform(__shdScribble, "u_vClip");
+        static _u_vScroll = shader_get_uniform(__shdScribble, "u_vScroll");
         
         static _usedClip = true;
         

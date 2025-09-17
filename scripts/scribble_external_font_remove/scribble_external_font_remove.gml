@@ -17,14 +17,14 @@ function scribble_external_font_remove(_fontName)
         return;
     }
     
-    var _font_data = _fontDataMap[? _fontName];
+    var _fontData = _fontDataMap[? _fontName];
     
-    if (_font_data.__fromBundle)
+    if (_fontData.__fromBundle)
     {
         __ScribbleError($"Cannot remove font \"{_fontName}\"\nIt was not added using `scribble_external_font_add()`");
         return;
     }
     
-    _font_data.__Destroy();
+    _fontData.__Destroy();
     scribble_refresh_everything();
 }

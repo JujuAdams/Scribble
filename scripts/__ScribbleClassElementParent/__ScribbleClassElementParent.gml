@@ -1860,22 +1860,22 @@ function __ScribbleClassElementParent(_text) constructor
     
     static __SetStandardUniforms = function()
     {
-        static _u_sCycle = shader_get_sampler_index(__shd_scribble, "u_sCycle");
+        static _u_sCycle = shader_get_sampler_index(__shdScribble, "u_sCycle");
         
-        static _u_fTime         = shader_get_uniform(__shd_scribble, "u_fTime"        );
-        static _u_vColourBlend  = shader_get_uniform(__shd_scribble, "u_vColourBlend" );
-        static _u_vGradient     = shader_get_uniform(__shd_scribble, "u_vGradient"    );
-        static _u_vSkew         = shader_get_uniform(__shd_scribble, "u_vSkew"        );
-        static _u_vFlash        = shader_get_uniform(__shd_scribble, "u_vFlash"       );
-        static _u_vRegionActive = shader_get_uniform(__shd_scribble, "u_vRegionActive");
-        static _u_vRegionColour = shader_get_uniform(__shd_scribble, "u_vRegionColour");
-        static _u_aDataFields   = shader_get_uniform(__shd_scribble, "u_aDataFields"  );
-        static _u_aBezier       = shader_get_uniform(__shd_scribble, "u_aBezier"      );
+        static _u_fTime         = shader_get_uniform(__shdScribble, "u_fTime"        );
+        static _u_vColourBlend  = shader_get_uniform(__shdScribble, "u_vColourBlend" );
+        static _u_vGradient     = shader_get_uniform(__shdScribble, "u_vGradient"    );
+        static _u_vSkew         = shader_get_uniform(__shdScribble, "u_vSkew"        );
+        static _u_vFlash        = shader_get_uniform(__shdScribble, "u_vFlash"       );
+        static _u_vRegionActive = shader_get_uniform(__shdScribble, "u_vRegionActive");
+        static _u_vRegionColour = shader_get_uniform(__shdScribble, "u_vRegionColour");
+        static _u_aDataFields   = shader_get_uniform(__shdScribble, "u_aDataFields"  );
+        static _u_aBezier       = shader_get_uniform(__shdScribble, "u_aBezier"      );
         
-        static _u_vShadowOffsetAndSoftness = shader_get_uniform(__shd_scribble, "u_vShadowOffsetAndSoftness");
-        static _u_vShadowColour            = shader_get_uniform(__shd_scribble, "u_vShadowColour"           );
-        static _u_vOutlineColour           = shader_get_uniform(__shd_scribble, "u_vOutlineColour"          );
-        static _u_fOutlineThickness        = shader_get_uniform(__shd_scribble, "u_fOutlineThickness"       );
+        static _u_vShadowOffsetAndSoftness = shader_get_uniform(__shdScribble, "u_vShadowOffsetAndSoftness");
+        static _u_vShadowColour            = shader_get_uniform(__shdScribble, "u_vShadowColour"           );
+        static _u_vOutlineColour           = shader_get_uniform(__shdScribble, "u_vOutlineColour"          );
+        static _u_fOutlineThickness        = shader_get_uniform(__shdScribble, "u_fOutlineThickness"       );
         
         static _scribbleState        = __ScribbleSystem().__state;
         static _anim_properties_array = __ScribbleSystem().__anim_properties;
@@ -1983,15 +1983,15 @@ function __ScribbleClassElementParent(_text) constructor
     
     static __SetRevealUniforms = function(_revealIndex)
     {
-        static _u_iTypewriterMethod         = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"        );
-        static _u_fTypewriterHeadArray      = shader_get_uniform(__shd_scribble, "u_fTypewriterHeadArray"     );
-        static _u_fTypewriterHeadLimitArray = shader_get_uniform(__shd_scribble, "u_fTypewriterHeadLimitArray");
-        static _u_fTypewriterSmoothness     = shader_get_uniform(__shd_scribble, "u_fTypewriterSmoothness"    );
-        static _u_vTypewriterStartPos       = shader_get_uniform(__shd_scribble, "u_vTypewriterStartPos"      );
-        static _u_vTypewriterStartScale     = shader_get_uniform(__shd_scribble, "u_vTypewriterStartScale"    );
-        static _u_fTypewriterStartRotation  = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation" );
-        static _u_fTypewriterAlphaDuration  = shader_get_uniform(__shd_scribble, "u_fTypewriterAlphaDuration" );
-        static _u_vTypewriterOffsetRange    = shader_get_uniform(__shd_scribble, "u_vTypewriterOffsetRange"   );
+        static _u_iTypewriterMethod         = shader_get_uniform(__shdScribble, "u_iTypewriterMethod"        );
+        static _u_fTypewriterHeadArray      = shader_get_uniform(__shdScribble, "u_fTypewriterHeadArray"     );
+        static _u_fTypewriterHeadLimitArray = shader_get_uniform(__shdScribble, "u_fTypewriterHeadLimitArray");
+        static _u_fTypewriterSmoothness     = shader_get_uniform(__shdScribble, "u_fTypewriterSmoothness"    );
+        static _u_vTypewriterStartPos       = shader_get_uniform(__shdScribble, "u_vTypewriterStartPos"      );
+        static _u_vTypewriterStartScale     = shader_get_uniform(__shdScribble, "u_vTypewriterStartScale"    );
+        static _u_fTypewriterStartRotation  = shader_get_uniform(__shdScribble, "u_fTypewriterStartRotation" );
+        static _u_fTypewriterAlphaDuration  = shader_get_uniform(__shdScribble, "u_fTypewriterAlphaDuration" );
+        static _u_vTypewriterOffsetRange    = shader_get_uniform(__shdScribble, "u_vTypewriterOffsetRange"   );
         
         static _revealHeadArray = array_create(3, 0);
         

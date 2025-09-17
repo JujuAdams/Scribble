@@ -16,22 +16,22 @@
 function scribble_font_bake_outline_and_shadow(_sourceFontName, _newFontName, _dX, _dY, _outlineMode, _separation, _smooth, _textureSize = undefined)
 {
     var _outlineSize = 0;
-    var _shader = __shd_scribble_bake_effect_no_outline;
+    var _shader = __shdScribbleBakeEffectNoOutline;
     
     if (_outlineMode == SCRIBBLE_OUTLINE_FOUR_DIR)
     {
         _outlineSize = 1;
-        _shader = __shd_scribble_bake_effect_4dir;
+        _shader = __shdScribbleBakeEffect4Dir;
     }
     else if (_outlineMode == SCRIBBLE_OUTLINE_EIGHT_DIR)
     {
         _outlineSize = 1;
-        _shader = __shd_scribble_bake_effect_8dir;
+        _shader = __shdScribbleBakeEffect8Dir;
     }
     else if (_outlineMode == SCRIBBLE_OUTLINE_EIGHT_DIR_THICK)
     {
         _outlineSize = 2;
-        _shader = __shd_scribble_bake_effect_8dir_2px;
+        _shader = __shdScribbleBakeEffect8Dir2px;
     }
     
     //Set our shader uniforms before use

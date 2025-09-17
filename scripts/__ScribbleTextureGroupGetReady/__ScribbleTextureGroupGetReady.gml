@@ -2,9 +2,9 @@
 
 /// @param textureGroup
 
-function __ScribbleTextureGroupGetReady(_texture_group)
+function __ScribbleTextureGroupGetReady(_textureGroup)
 {
-    return ((_texture_group == undefined)
-         || (texturegroup_get_status(_texture_group) == texturegroup_status_loaded)
-         || (texturegroup_get_status(_texture_group) == texturegroup_status_fetched));
+    return ((_textureGroup == undefined)
+         || (texturegroup_get_status(_textureGroup) == texturegroup_status_loaded)
+         || (texturegroup_get_status(_textureGroup) == texturegroup_status_fetched));
 }

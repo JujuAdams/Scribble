@@ -7,13 +7,13 @@
 
 function scribble_font_scale(_font, _scale)
 {
-    var _font_data = __ScribbleGetFontData(_font);
+    var _fontData = __ScribbleGetFontData(_font);
     
-    var _grid = _font_data.__glyphDataGrid;
+    var _grid = _fontData.__glyphDataGrid;
     ds_grid_multiply_region(_grid, 0, __SCRIBBLE_GLYPH_PROPR_X_OFFSET, ds_grid_width(_grid)-1, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE, _scale);
     
-    _font_data.__scale      *= _scale;
-    _font_data.__height     *= _scale;
-    _font_data.__underlineY *= _scale;
-    _font_data.__strikeY    *= _scale;
+    _fontData.__scale      *= _scale;
+    _fontData.__height     *= _scale;
+    _fontData.__underlineY *= _scale;
+    _fontData.__strikeY    *= _scale;
 }

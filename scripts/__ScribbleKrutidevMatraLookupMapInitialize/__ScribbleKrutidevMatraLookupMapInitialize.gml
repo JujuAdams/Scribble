@@ -1,6 +1,6 @@
 // Feather disable all
 
-function __scribble_krutidev_matra_lookup_map_initialize()
+function __ScribbleKrutidevMatraLookupMapInitialize()
 {
     //TODO - Convert these to hex and add comments
     var _map = ds_map_create();

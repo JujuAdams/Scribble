@@ -12,10 +12,10 @@
 
 function scribble_glyph_get(_font, _character, _property)
 {
-    var _font_data = __ScribbleGetFontData(_font);
+    var _fontData = __ScribbleGetFontData(_font);
 
-    var _grid = _font_data.__glyphDataGrid;
-    var _map  = _font_data.__glyphsMap;
+    var _grid = _fontData.__glyphDataGrid;
+    var _map  = _fontData.__glyphsMap;
     var _unicode = is_real(_character)? _character : ord(_character);
     var _glyph_index = _map[? _unicode];
     

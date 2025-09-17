@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"__scribble_glyph_data_initialize",
+  "%Name":"__ScribbleKrutidevLookupMapInitialize",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"__scribble_glyph_data_initialize",
+  "name":"__ScribbleKrutidevLookupMapInitialize",
   "parent":{
     "name":"Initialization",
     "path":"folders/Scribble/(System)/Don't call these functions!/Initialization.yy",

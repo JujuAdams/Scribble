@@ -15,9 +15,9 @@ function scribble_external_font_exists(_fontName)
         return false;
     }
     
-    var _font_data = _fontDataMap[? _fontName];
+    var _fontData = _fontDataMap[? _fontName];
     
-    if (_font_data.__fromBundle)
+    if (_fontData.__fromBundle)
     {
         return false;
     }

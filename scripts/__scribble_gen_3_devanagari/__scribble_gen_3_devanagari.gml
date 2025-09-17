@@ -332,7 +332,7 @@ function __scribble_gen_3_devanagari()
     
     var _fontName            = undefined;
     var _font_glyphs_map      = undefined;
-    var _font_glyph_data_grid = undefined;
+    var _fontGlyphDataGrid = undefined;
     
     var _i = 0;
     repeat(_glyphCount)
@@ -343,9 +343,9 @@ function __scribble_gen_3_devanagari()
             if (_controlArray[_control_index].__type == __SCRIBBLE_GEN_CONTROL_TYPE_FONT)
             {
                 var _fontName            = _controlArray[_control_index].__fontName;
-                var _font_data            = __ScribbleGetFontData(_fontName);
-                var _font_glyph_data_grid = _font_data.__glyphDataGrid;
-                var _font_glyphs_map      = _font_data.__glyphsMap;
+                var _fontData            = __ScribbleGetFontData(_fontName);
+                var _fontGlyphDataGrid = _fontData.__glyphDataGrid;
+                var _font_glyphs_map      = _fontData.__glyphsMap;
             }
             
             _control_index++;
@@ -375,10 +375,10 @@ function __scribble_gen_3_devanagari()
                 //This should only happen if SCRIBBLE_MISSING_CHARACTER is missing for a font
                 __ScribbleTrace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_fontName) + "\"");
             }
-            else if (_font_glyph_data_grid[# _data_index, __SCRIBBLE_GLYPH_PROPR_BIDI] != __SCRIBBLE_BIDI_WHITESPACE) //Don't transform whitespace
+            else if (_fontGlyphDataGrid[# _data_index, __SCRIBBLE_GLYPH_PROPR_BIDI] != __SCRIBBLE_BIDI_WHITESPACE) //Don't transform whitespace
             {
                 //Add this glyph to our grid by copying from the font's own glyph data grid
-                ds_grid_set_grid_region(_glyphGrid, _font_glyph_data_grid, _data_index, __SCRIBBLE_GLYPH_PROPR_UNICODE, _data_index, __SCRIBBLE_GLYPH_PROPR_V1, _i, __SCRIBBLE_GEN_GLYPH_UNICODE);
+                ds_grid_set_grid_region(_glyphGrid, _fontGlyphDataGrid, _data_index, __SCRIBBLE_GLYPH_PROPR_UNICODE, _data_index, __SCRIBBLE_GLYPH_PROPR_V1, _i, __SCRIBBLE_GEN_GLYPH_UNICODE);
             }
         }
         

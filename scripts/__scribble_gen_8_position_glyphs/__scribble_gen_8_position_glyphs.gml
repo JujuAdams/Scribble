@@ -22,7 +22,7 @@ function __scribble_gen_8_position_glyphs()
         var _modelMaxWidth = __modelMaxWidth;
     }
     
-    var _line_height = __lineHeight;
+    var _lineHeight = __lineHeight;
     
     ds_grid_clear(_temp_grid, 0); //FIXME - Works around a bug in ds_grid_add_grid_region() (runtime 2.3.7.474  2021-12-03)
     
@@ -83,10 +83,10 @@ function __scribble_gen_8_position_glyphs()
             
             
             
-            // _glyphGrid[# _j, __SCRIBBLE_GEN_GLYPH_Y] = _line_y + (_line_height - _glyphGrid[# _j, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT]) div 2;
+            // _glyphGrid[# _j, __SCRIBBLE_GEN_GLYPH_Y] = _line_y + (_lineHeight - _glyphGrid[# _j, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT]) div 2;
             ds_grid_set_grid_region(_temp_grid, _glyphGrid, _line_glyph_start, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT, _line_glyph_end, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT, 0, 0);
             ds_grid_multiply_region(_temp_grid, 0, 0, _line_glyph_count-1, 0, -0.5);
-            ds_grid_add_region(_temp_grid, 0, 0, _line_glyph_count-1, 0, 0.5*_line_height + _line_y);
+            ds_grid_add_region(_temp_grid, 0, 0, _line_glyph_count-1, 0, 0.5*_lineHeight + _line_y);
             ds_grid_add_grid_region(_glyphGrid, _temp_grid, 0, 0, _line_glyph_count-1, 0, _line_glyph_start, __SCRIBBLE_GEN_GLYPH_Y);
             
             ///////

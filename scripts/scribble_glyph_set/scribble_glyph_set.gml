@@ -21,10 +21,10 @@
 
 function scribble_glyph_set(_font, _character, _property, _value, _relative = false)
 {
-    var _font_data = __ScribbleGetFontData(_font);
+    var _fontData = __ScribbleGetFontData(_font);
     
-    var _grid = _font_data.__glyphDataGrid;
-    var _map  = _font_data.__glyphsMap;
+    var _grid = _fontData.__glyphDataGrid;
+    var _map  = _fontData.__glyphsMap;
     
     if ((_character == all) || (_character == "all"))
     {
@@ -57,7 +57,7 @@ function scribble_glyph_set(_font, _character, _property, _value, _relative = fa
         if ((_property == __SCRIBBLE_GLYPH_PROPR_HEIGHT) || (_property == __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT))
         {
             ds_grid_set_region(_grid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, ds_grid_width(_grid)-1, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, _grid[# _glyph_index, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT]);
-            _font_data.__height = _grid[# _glyph_index, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT];
+            _fontData.__height = _grid[# _glyph_index, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT];
         }
     }
     else
@@ -88,7 +88,7 @@ function scribble_glyph_set(_font, _character, _property, _value, _relative = fa
             if ((_property == __SCRIBBLE_GLYPH_PROPR_HEIGHT) || (_property == __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT))
             {
                 ds_grid_set_region(_grid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, ds_grid_width(_grid)-1, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, _new_value);
-                _font_data.__height = _new_value;
+                _fontData.__height = _new_value;
             }
         }
         

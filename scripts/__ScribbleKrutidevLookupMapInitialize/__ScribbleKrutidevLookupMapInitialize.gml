@@ -1,11 +1,11 @@
 // Feather disable all
 
-function __scribble_krutidev_lookup_map_initialize()
+function __ScribbleKrutidevLookupMapInitialize()
 {
     var _lookup_map = ds_map_create();
     
     //TODO - Precalculate the lookup table
-    //TODO - Move this to __scribble_glyph_data_initialize()
+    //TODO - Move this to __ScribbleGlyphDataInitialize()
     var _unicode_source_array = [
         "‘",   "’",   "“",   "”",   "(",    ")",   "{",    "}",   "=", "।",  "?",  "-",  "µ", "॰", ",", ".",
         "०",  "१",  "२",  "३",     "४",   "५",  "६",   "७",   "८",   "९", "x", 

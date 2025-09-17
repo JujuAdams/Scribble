@@ -178,11 +178,11 @@ function __ScribbleClassPage(_model) constructor
     
     static __Submit = function(_doubleDraw)
     {
-        static _u_vTexel              = shader_get_uniform(__shd_scribble, "u_vTexel"             );
-        static _u_fSDFRange           = shader_get_uniform(__shd_scribble, "u_fSDFRange"          );
-        static _u_fSDFThicknessOffset = shader_get_uniform(__shd_scribble, "u_fSDFThicknessOffset");
-        static _u_fSecondDraw         = shader_get_uniform(__shd_scribble, "u_fSecondDraw"        );
-        static _u_fRenderType         = shader_get_uniform(__shd_scribble, "u_fRenderType"        );
+        static _u_vTexel              = shader_get_uniform(__shdScribble, "u_vTexel"             );
+        static _u_fSDFRange           = shader_get_uniform(__shdScribble, "u_fSDFRange"          );
+        static _u_fSDFThicknessOffset = shader_get_uniform(__shdScribble, "u_fSDFThicknessOffset");
+        static _u_fSecondDraw         = shader_get_uniform(__shdScribble, "u_fSecondDraw"        );
+        static _u_fRenderType         = shader_get_uniform(__shdScribble, "u_fRenderType"        );
         
         if (SCRIBBLE_INCREMENTAL_FREEZE && (not __frozen) && (__createdFrame < _system.__frames))
         {

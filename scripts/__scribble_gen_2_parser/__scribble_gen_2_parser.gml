@@ -39,7 +39,7 @@
                                           _data_index = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];\
                                       }\
                                       \//Add this glyph to our grid by copying from the font's own glyph data grid
-                                      ds_grid_set_grid_region(_glyphGrid, _font_glyph_data_grid, _data_index, __SCRIBBLE_GLYPH_PROPR_UNICODE, _data_index, __SCRIBBLE_GLYPH_PROPR_V1, _glyphCount, __SCRIBBLE_GEN_GLYPH_UNICODE);\
+                                      ds_grid_set_grid_region(_glyphGrid, _fontGlyphDataGrid, _data_index, __SCRIBBLE_GLYPH_PROPR_UNICODE, _data_index, __SCRIBBLE_GLYPH_PROPR_V1, _glyphCount, __SCRIBBLE_GEN_GLYPH_UNICODE);\
                                       _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;\ //FIXME - Use region function and control pop to make this more efficient
                                       \
                                       if (SCRIBBLE_USE_KERNING)\
@@ -55,17 +55,17 @@
 
 #macro __SCRIBBLE_PARSER_SET_FONT   __SCRIBBLE_PARSER_POP_ALIGNMENT_OFFSET\
                                     \
-                                    var _font_data = __ScribbleGetFontData(_fontName);\
-                                    _font_data.__EnsureTexelData();\
-                                    if (_font_data.__superfont) _font_data.__EnsureAdditionalCharacters();\
-                                    if (_font_data.__is_krutidev) __hasDevanagari = true;\
+                                    var _fontData = __ScribbleGetFontData(_fontName);\
+                                    _fontData.__EnsureTexelData();\
+                                    if (_fontData.__superfont) _fontData.__EnsureAdditionalCharacters();\
+                                    if (_fontData.__is_krutidev) __hasDevanagari = true;\
                                     \
-                                    var _font_glyph_data_grid     = _font_data.__glyphDataGrid;\
-                                    var _font_glyphs_map          = _font_data.__glyphsMap;\
-                                    var _font_kerning_map         = _font_data.__kerningMap;\
-                                    var _font_halign_offset_array = _font_data.__halignOffsetArray;\
-                                    var _font_valign_offset_array = _font_data.__valignOffsetArray;\
-                                    var _fontLigatureMap          = _font_data.__ligatureMap;\
+                                    var _fontGlyphDataGrid     = _fontData.__glyphDataGrid;\
+                                    var _font_glyphs_map          = _fontData.__glyphsMap;\
+                                    var _font_kerning_map         = _fontData.__kerningMap;\
+                                    var _font_halign_offset_array = _fontData.__halignOffsetArray;\
+                                    var _font_valign_offset_array = _fontData.__valignOffsetArray;\
+                                    var _fontLigatureMap          = _fontData.__ligatureMap;\
                                     \
                                     var _stateHAlignOffset = _font_halign_offset_array[_state_halign];\
                                     var _stateVAlignOffset = _font_valign_offset_array[__vAlign ?? _starting_valign];\
@@ -77,8 +77,8 @@
                                         return false;\
                                     }\
                                     \
-                                    var _font_space_width = _font_glyph_data_grid[# _space_data_index, __SCRIBBLE_GLYPH_PROPR_SEPARATION];\
-                                    var _font_line_height = _font_data.__height;\
+                                    var _font_space_width = _fontGlyphDataGrid[# _space_data_index, __SCRIBBLE_GLYPH_PROPR_SEPARATION];\
+                                    var _font_line_height = _fontData.__height;\
                                     \
                                     array_push(_controlArray, new __ScribbleClassControlFont(_fontName));\
                                     ++_controlCount;
@@ -730,7 +730,7 @@ function __scribble_gen_2_parser()
                         // [/bi]
                         case 24:
                             //Get the required font from the font family
-                            var _new_font = _font_data.__styleRegular;
+                            var _new_font = _fontData.__styleRegular;
                             if (_new_font == undefined)
                             {
                                 __ScribbleTrace("Regular style not set for font \"", _fontName, "\"");
@@ -750,7 +750,7 @@ function __scribble_gen_2_parser()
                         // [b]
                         case 25:
                             //Get the required font from the font family
-                            var _new_font = _font_data.__styleBold;
+                            var _new_font = _fontData.__styleBold;
                             if (_new_font == undefined)
                             {
                                 __ScribbleTrace("Bold style not set for font \"", _fontName, "\"");
@@ -769,7 +769,7 @@ function __scribble_gen_2_parser()
                         // [i]
                         case 26:
                             //Get the required font from the font family
-                            var _new_font = _font_data.__styleItalic;
+                            var _new_font = _fontData.__styleItalic;
                             if (_new_font == undefined)
                             {
                                 __ScribbleTrace("Italic style not set for font \"", _fontName, "\"");
@@ -788,7 +788,7 @@ function __scribble_gen_2_parser()
                         // [bi]
                         case 27:
                             //Get the required font from the font family
-                            var _new_font = _font_data.__styleBoldItalic;
+                            var _new_font = _fontData.__styleBoldItalic;
                             if (_new_font == undefined)
                             {
                                 __ScribbleTrace("Bold-Italic style not set for font \"", _fontName, "\"");
@@ -922,13 +922,13 @@ function __scribble_gen_2_parser()
                             var _tex_w     = real(_tag_parameters[4]);
                             var _tex_h     = real(_tag_parameters[5]);
                             
-                            var _texture_tw = texture_get_texel_width(_tex_index);
-                            var _texture_th = texture_get_texel_height(_tex_index);
+                            var _textureTexelW = texture_get_texel_width(_tex_index);
+                            var _textureTexelH = texture_get_texel_height(_tex_index);
                             
-                            var _u0 = _tex_x*_texture_tw;
-                            var _v0 = _tex_y*_texture_th;
-                            var _u1 = (_tex_x+_tex_w)*_texture_tw;
-                            var _v1 = (_tex_y+_tex_h)*_texture_th;
+                            var _u0 = _tex_x*_textureTexelW;
+                            var _v0 = _tex_y*_textureTexelH;
+                            var _u1 = (_tex_x+_tex_w)*_textureTexelW;
+                            var _v1 = (_tex_y+_tex_h)*_textureTexelH;
                             
                             if (SCRIBBLE_SHRINK_INLINE_TEXTURES)
                             {

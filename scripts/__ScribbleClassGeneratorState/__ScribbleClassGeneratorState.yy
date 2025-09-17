@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"__scribble_krutidev_lookup_map_initialize",
+  "%Name":"__ScribbleClassGeneratorState",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"__scribble_krutidev_lookup_map_initialize",
+  "name":"__ScribbleClassGeneratorState",
   "parent":{
     "name":"Initialization",
     "path":"folders/Scribble/(System)/Don't call these functions!/Initialization.yy",

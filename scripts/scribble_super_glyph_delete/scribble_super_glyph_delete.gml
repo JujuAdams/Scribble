@@ -2,10 +2,10 @@
 function scribble_super_glyph_delete(_target)
 {
     static _fontDataMap = __ScribbleSystem().__fontDataMap;
-    var _font_data = _fontDataMap[? _target];
-    if (_font_data == undefined) __ScribbleError("Font \"", _font_data, "\" not found");
+    var _fontData = _fontDataMap[? _target];
+    if (_fontData == undefined) __ScribbleError("Font \"", _fontData, "\" not found");
     
-    var _glyphs_map = _font_data.__glyphsMap;
+    var _glyphs_map = _fontData.__glyphsMap;
     
     //Copy arguments into an array
     var _glyphs_array = array_create(argument_count - 1);

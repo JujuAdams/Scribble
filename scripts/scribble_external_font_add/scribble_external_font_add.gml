@@ -14,7 +14,7 @@
 /// @param [fontName]
 /// @param [isKrutidev=false]
 
-function scribble_external_font_add(_sprite, _image, _json, _fontName = undefined, _is_krutidev = false)
+function scribble_external_font_add(_sprite, _image, _json, _fontName = undefined, _isKrutidev = false)
 {
     //Get source image data for the sprite/image that is being used as the glyph stlas for the font
     var _source_font_info = sprite_get_info(_sprite);
@@ -29,7 +29,7 @@ function scribble_external_font_add(_sprite, _image, _json, _fontName = undefine
     var _texture_height = texture_get_height(_textureIndex);
     
     
-    var _texture_uvs = [
+    var _textureUVs = [
         _frame_info.x / _texture_width,
         _frame_info.y / _texture_height,
         _frame_info.w / _texture_width,
@@ -42,7 +42,7 @@ function scribble_external_font_add(_sprite, _image, _json, _fontName = undefine
     }
     
     //Convert the .yy JSON format into the key parts of the `font_get_info()` format that we need
-    var _font_info = {
+    var _fontInfo = {
         texture:        _textureIndex,
         glyphs:         {},
         ascenderOffset: _json.ascenderOffset,
@@ -54,7 +54,7 @@ function scribble_external_font_add(_sprite, _image, _json, _fontName = undefine
     
     //Most of the work is duplicating out the glyph data
     var _json_glyphs_dict = _json.glyphs;
-    var _output_glyphs_dict = _font_info.glyphs;
+    var _output_glyphs_dict = _fontInfo.glyphs;
     var _key_array = variable_struct_get_names(_json_glyphs_dict);
     var _i = 0;
     repeat(array_length(_key_array))
@@ -77,7 +77,7 @@ function scribble_external_font_add(_sprite, _image, _json, _fontName = undefine
         ++_i;
     }
     
-    __ScribbleFontAddFromInfo(_fontName, undefined, _texture_uvs, _font_info, _json.lineHeight, _is_krutidev, false);
+    __ScribbleFontAddFromInfo(_fontName, undefined, _textureUVs, _fontInfo, _json.lineHeight, _isKrutidev, false);
     
     return _fontName;
 }

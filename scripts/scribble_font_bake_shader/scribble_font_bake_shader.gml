@@ -91,7 +91,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     
     var _line_x      = 0;
     var _line_y      = 0;
-    var _line_height = 0;
+    var _lineHeight = 0;
     
     var _i = 0;
     repeat(_glyphCount)
@@ -134,8 +134,8 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         if (_line_x + _width_ext >= _texture_size)
         {
             _line_x       = 0;
-            _line_y      += _line_height;
-            _line_height  = 0;
+            _line_y      += _lineHeight;
+            _lineHeight  = 0;
         }
         
         //Find a vertex buffer for this particular glyph's texture
@@ -175,7 +175,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V1] = _line_y + _height + _t_pad + _b_pad;;
         
         _line_x += _width_ext;
-        _line_height = max(_line_height, _height_ext);
+        _lineHeight = max(_lineHeight, _height_ext);
         
         ++_i;
     }

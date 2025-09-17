@@ -1,6 +1,6 @@
 // Feather disable all
 
-function __scribble_class_generator_state() constructor
+function __ScribbleClassGeneratorState() constructor
 {
     __glyphGrid     = ds_grid_create(1000, __SCRIBBLE_GEN_GLYPH_SIZE);
     __controlArray   = [];

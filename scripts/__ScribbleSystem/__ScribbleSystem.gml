@@ -47,7 +47,7 @@ function __ScribbleSystem(_calledFromInitialize = false)
             }
         }
         
-        if (not shader_is_compiled(__shd_scribble))
+        if (not shader_is_compiled(__shdScribble))
         {
             __ScribbleError("Shader failed to compile. Please check your version of GameMaker is compatible\nPlease report this error if it persists");
         }
@@ -191,12 +191,12 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __elementWeakArray = [];
         __elementCacheMap  = ds_map_create(); //Contains strong references
         
-        __generatorState = new __scribble_class_generator_state();
+        __generatorState = new __ScribbleClassGeneratorState();
         
         //Contains Unicode data, necessary for extended language support
-        __glyph_data                = __scribble_glyph_data_initialize();
-        __krutidev_lookup_map       = __scribble_krutidev_lookup_map_initialize();
-        __krutidev_matra_lookup_map = __scribble_krutidev_matra_lookup_map_initialize();
+        __glyph_data                = __ScribbleGlyphDataInitialize();
+        __krutidev_lookup_map       = __ScribbleKrutidevLookupMapInitialize();
+        __krutidev_matra_lookup_map = __ScribbleKrutidevMatraLookupMapInitialize();
         
         //External sound reference storage
         __external_sprite_map = ds_map_create();
@@ -265,7 +265,7 @@ function __ScribbleSystem(_calledFromInitialize = false)
         //Unpack texture group data into an easy-to-use dictionary. This should, of course, just be a native
         //feature of GameMaker. I, in fact, suggested such a feature (including sprites (and backgrounds!))
         //back in 2018 when working on The Swords Of Ditto in GameMaker Studio 1.4.
-        __font_to_texture_group_map = ds_map_create();
+        __fontToTextureGroupMap = ds_map_create();
         
         var _tg_name_array = texturegroup_get_names();
         var _i = 0;
@@ -277,7 +277,7 @@ function __ScribbleSystem(_calledFromInitialize = false)
             var _j = 0;
             repeat(array_length(_font_index_array))
             {
-                __font_to_texture_group_map[? _font_index_array[_j]] = _tg_name;
+                __fontToTextureGroupMap[? _font_index_array[_j]] = _tg_name;
                 ++_j;
             }
             

@@ -20,7 +20,7 @@ function __scribble_font_add_sprite_ext(_sprite, _mapstring, _proportional, _sep
 
 function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, _separation)
 {
-    var _font_info = font_get_info(_spritefont);
+    var _fontInfo = font_get_info(_spritefont);
     var _sprite_name = sprite_get_name(_sprite);
     
     static _fontDataMap = __ScribbleSystem().__fontDataMap;
@@ -30,7 +30,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
         _fontDataMap[? _sprite_name].__Destroy();
     }
     
-    var _is_krutidev = __ScribbleAssetIsKrutidev(_sprite, asset_sprite);
+    var _isKrutidev = __ScribbleAssetIsKrutidev(_sprite, asset_sprite);
     var _global_glyph_bidi_map = __ScribbleSystem().__glyph_data.__bidi_map;
     
     var _scribbleState = __ScribbleSystem().__state;
@@ -55,33 +55,33 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
         _sprite_y_offset += sprite_get_yoffset(_sprite);
     }
     
-    var _info_glyphs_dict = _font_info.glyphs;
-    var _info_glyph_names = variable_struct_get_names(_info_glyphs_dict);
-    if (SCRIBBLE_VERBOSE) __ScribbleTrace("  \"", _sprite_name, "\" has ", array_length(_info_glyph_names), " characters");
+    var _infoGlyphsDict = _fontInfo.glyphs;
+    var _infoGlyphNames = variable_struct_get_names(_infoGlyphsDict);
+    if (SCRIBBLE_VERBOSE) __ScribbleTrace("  \"", _sprite_name, "\" has ", array_length(_infoGlyphNames), " characters");
     
-    var _size = array_length(_info_glyph_names);
+    var _size = array_length(_infoGlyphNames);
     
     var _underlineY = sprite_get_bbox_bottom(_sprite) + 1;
     var _strikeY    = floor(0.5*(sprite_get_bbox_bottom(_sprite) - sprite_get_bbox_top(_sprite)));
     
-    var _font_data = new __ScribbleClassFont(_sprite_name, _size, __SCRIBBLE_RENDER_RASTER, undefined, true, _underlineY, _strikeY);
-    var _font_glyphs_map      = _font_data.__glyphsMap;
-    var _font_glyph_data_grid = _font_data.__glyphDataGrid;
-    if (_is_krutidev) _font_data.__is_krutidev = true;
+    var _fontData = new __ScribbleClassFont(_sprite_name, _size, __SCRIBBLE_RENDER_RASTER, undefined, true, _underlineY, _strikeY);
+    var _font_glyphs_map      = _fontData.__glyphsMap;
+    var _fontGlyphDataGrid = _fontData.__glyphDataGrid;
+    if (_isKrutidev) _fontData.__is_krutidev = true;
     
     //Set some basic repeated values in bulk for a little speed boost
-    ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE,   _size-1, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE,   1);
-    ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, _size-1, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, true);
+    ds_grid_set_region(_fontGlyphDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE,   _size-1, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE,   1);
+    ds_grid_set_region(_fontGlyphDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, _size-1, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, true);
     
     //Also create a duplicate entry so that we can find this spritefont in draw_text_scribble()
-    _fontDataMap[? font_get_name(_spritefont)] = _font_data;
+    _fontDataMap[? font_get_name(_spritefont)] = _fontData;
     
     var _i = 0;
     repeat(_size)
     {
-        var _glyph   = _info_glyph_names[_i];
+        var _glyph   = _infoGlyphNames[_i];
         var _unicode = ord(_glyph);
-        var _image   = _info_glyphs_dict[$ _glyph].char;
+        var _image   = _infoGlyphsDict[$ _glyph].char;
         
         var _uvs = sprite_get_uvs(_sprite, _image);
         
@@ -103,26 +103,26 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
                 var _space_width = _sprite_width + _separation;
             }
             
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_CHARACTER   ] = _glyph;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_CHARACTER   ] = _glyph;
                                                                    
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_UNICODE     ] = _unicode;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_BIDI        ] = __SCRIBBLE_BIDI_WHITESPACE;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_UNICODE     ] = _unicode;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_BIDI        ] = __SCRIBBLE_BIDI_WHITESPACE;
                                                                    
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_X_OFFSET    ] = -_sprite_x_offset;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET    ] = -_sprite_y_offset;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_WIDTH       ] = _space_width;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_HEIGHT      ] = _sprite_height;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT ] = _sprite_height;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_SEPARATION  ] = _space_width;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_LEFT_OFFSET ] = 0;
-            //_font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE  ] = 1; //Set above in bulk
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_X_OFFSET    ] = -_sprite_x_offset;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET    ] = -_sprite_y_offset;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_WIDTH       ] = _space_width;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_HEIGHT      ] = _sprite_height;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT ] = _sprite_height;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_SEPARATION  ] = _space_width;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_LEFT_OFFSET ] = 0;
+            //_fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE  ] = 1; //Set above in bulk
                                                                    
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL    ] = __ScribbleSpriteGetMaterial(_sprite, 0); //Use the material for the first image from the sprite
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U0          ] = 0;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V0          ] = 0;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U1          ] = 0;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V1          ] = 0;
-            //_font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = _texelsValid; //Set above in bulk
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL    ] = __ScribbleSpriteGetMaterial(_sprite, 0); //Use the material for the first image from the sprite
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_U0          ] = 0;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_V0          ] = 0;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_U1          ] = 0;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_V1          ] = 0;
+            //_fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = _texelsValid; //Set above in bulk
             
             _font_glyphs_map[? _unicode] = _i;
         }
@@ -172,7 +172,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
                 if (_bidi == undefined) _bidi = __SCRIBBLE_BIDI_L2R;
             }
             
-            if (_is_krutidev)
+            if (_isKrutidev)
             {
                 if (_bidi != __SCRIBBLE_BIDI_WHITESPACE)
                 {
@@ -185,26 +185,26 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             var _h = _image_info.crop_height;
             
             //Build an array to store this glyph's properties
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_CHARACTER   ] = _glyph;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_CHARACTER   ] = _glyph;
                                                                    
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_UNICODE     ] = _unicode;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_BIDI        ] = _bidi;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_UNICODE     ] = _unicode;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_BIDI        ] = _bidi;
                                                                    
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_X_OFFSET    ] = _x_offset - _sprite_x_offset;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET    ] = _image_info.y_offset - _sprite_y_offset;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_WIDTH       ] = _w;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_HEIGHT      ] = _h;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT ] = _sprite_height;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_SEPARATION  ] = _glyph_separation;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_LEFT_OFFSET ] = -_x_offset;
-            //_font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE  ] = 1; //Set above in bulk
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_X_OFFSET    ] = _x_offset - _sprite_x_offset;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET    ] = _image_info.y_offset - _sprite_y_offset;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_WIDTH       ] = _w;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_HEIGHT      ] = _h;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT ] = _sprite_height;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_SEPARATION  ] = _glyph_separation;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_LEFT_OFFSET ] = -_x_offset;
+            //_fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE  ] = 1; //Set above in bulk
                                                                    
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL    ] = _material;
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U0          ] = _uvs[0];
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V0          ] = _uvs[1];
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U1          ] = _uvs[2];
-            _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V1          ] = _uvs[3];
-            //_font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = _texelsValid; //Set above in bulk
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL    ] = _material;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_U0          ] = _uvs[0];
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_V0          ] = _uvs[1];
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_U1          ] = _uvs[2];
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_V1          ] = _uvs[3];
+            //_fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = _texelsValid; //Set above in bulk
             
             _font_glyphs_map[? _unicode] = _i;
         }
@@ -212,9 +212,9 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
         ++_i;
     }
     
-    var _space_index = _font_glyphs_map[? SCRIBBLE_UNICODE_SPACE];
-    _font_data.__height = _font_glyph_data_grid[# _space_index, __SCRIBBLE_GLYPH_PROPR_HEIGHT];
-    _font_data.__EnsureAdditionalCharacters();
+    var _spaceIndex = _font_glyphs_map[? SCRIBBLE_UNICODE_SPACE];
+    _fontData.__height = _fontGlyphDataGrid[# _spaceIndex, __SCRIBBLE_GLYPH_PROPR_HEIGHT];
+    _fontData.__EnsureAdditionalCharacters();
     
     if (SCRIBBLE_VERBOSE) __ScribbleTrace("Added \"", _sprite_name, "\" as a spritefont");
     

@@ -61,13 +61,13 @@ function __scribble_gen_2b_post_parse()
         if (other.__lineHeight < 0)
         {
             //Find the first text character and use its font height
-            var _line_height = undefined;
+            var _lineHeight = undefined;
             var _i = 0;
             repeat(__glyphCount)
             {
                 if (__glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE] > 0)
                 {
-                    _line_height = __glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT];
+                    _lineHeight = __glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT];
                     break;
                 }
                 
@@ -75,13 +75,13 @@ function __scribble_gen_2b_post_parse()
             }
             
             //If we can't find a text character, use the first glyph
-            if ((_line_height == undefined) && (__glyphCount > 0))
+            if ((_lineHeight == undefined) && (__glyphCount > 0))
             {
-                _line_height = __glyphGrid[# 0, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT];
+                _lineHeight = __glyphGrid[# 0, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT];
             }
             
             //Always fall back on something valid
-            other.__lineHeight = _line_height ?? 1;
+            other.__lineHeight = _lineHeight ?? 1;
         }
     }
 }

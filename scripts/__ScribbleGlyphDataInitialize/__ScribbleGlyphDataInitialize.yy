@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"__scribble_class_generator_state",
+  "%Name":"__ScribbleGlyphDataInitialize",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"__scribble_class_generator_state",
+  "name":"__ScribbleGlyphDataInitialize",
   "parent":{
     "name":"Initialization",
     "path":"folders/Scribble/(System)/Don't call these functions!/Initialization.yy",

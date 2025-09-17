@@ -155,7 +155,7 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
         
         __AutoScroll();
         
-        shader_set(__shd_scribble);
+        shader_set(__shdScribble);
         __SetStandardUniforms();
         __SetRevealUniforms(_revealIndex);
         

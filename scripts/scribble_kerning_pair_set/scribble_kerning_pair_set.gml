@@ -28,8 +28,8 @@ function scribble_kerning_pair_set(_font, _first_char, _second_char, _value, _re
         __ScribbleError("Cannot use negative value for second character");
     }
     
-    var _font_data = __ScribbleGetFontData(_font);
-    var _kerning_map = _font_data.__kerningMap;
+    var _fontData = __ScribbleGetFontData(_font);
+    var _kerning_map = _fontData.__kerningMap;
     
     var _lookup = ((_second_unicode & 0xFFFF) << 16) | (_first_unicode & 0xFFFF);
     var _new_value = _relative? ((_kerning_map[? _lookup] ?? 0) + _value) : _value;

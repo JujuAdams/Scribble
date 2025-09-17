@@ -88,7 +88,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         __AutoScroll();
         
-        shader_set(__shd_scribble);
+        shader_set(__shdScribble);
         __SetStandardUniforms();
         
         __TypistUpdateFromDraw(other);
@@ -1150,15 +1150,15 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     static __SetTypistShaderUniforms = function()
     {
-        static _u_iTypewriterMethod         = shader_get_uniform(__shd_scribble, "u_iTypewriterMethod"        );
-        static _u_fTypewriterHeadArray      = shader_get_uniform(__shd_scribble, "u_fTypewriterHeadArray"     );
-        static _u_fTypewriterHeadLimitArray = shader_get_uniform(__shd_scribble, "u_fTypewriterHeadLimitArray");
-        static _u_fTypewriterSmoothness     = shader_get_uniform(__shd_scribble, "u_fTypewriterSmoothness"    );
-        static _u_vTypewriterStartPos       = shader_get_uniform(__shd_scribble, "u_vTypewriterStartPos"      );
-        static _u_vTypewriterStartScale     = shader_get_uniform(__shd_scribble, "u_vTypewriterStartScale"    );
-        static _u_fTypewriterStartRotation  = shader_get_uniform(__shd_scribble, "u_fTypewriterStartRotation" );
-        static _u_fTypewriterAlphaDuration  = shader_get_uniform(__shd_scribble, "u_fTypewriterAlphaDuration" );
-        static _u_vTypewriterOffsetRange    = shader_get_uniform(__shd_scribble, "u_vTypewriterOffsetRange"   );
+        static _u_iTypewriterMethod         = shader_get_uniform(__shdScribble, "u_iTypewriterMethod"        );
+        static _u_fTypewriterHeadArray      = shader_get_uniform(__shdScribble, "u_fTypewriterHeadArray"     );
+        static _u_fTypewriterHeadLimitArray = shader_get_uniform(__shdScribble, "u_fTypewriterHeadLimitArray");
+        static _u_fTypewriterSmoothness     = shader_get_uniform(__shdScribble, "u_fTypewriterSmoothness"    );
+        static _u_vTypewriterStartPos       = shader_get_uniform(__shdScribble, "u_vTypewriterStartPos"      );
+        static _u_vTypewriterStartScale     = shader_get_uniform(__shdScribble, "u_vTypewriterStartScale"    );
+        static _u_fTypewriterStartRotation  = shader_get_uniform(__shdScribble, "u_fTypewriterStartRotation" );
+        static _u_fTypewriterAlphaDuration  = shader_get_uniform(__shdScribble, "u_fTypewriterAlphaDuration" );
+        static _u_vTypewriterOffsetRange    = shader_get_uniform(__shdScribble, "u_vTypewriterOffsetRange"   );
         
         //If __typistAnim hasn't been set yet (.in() / .out() haven't been set) then just nope out
         if (__typistAnim == SCRIBBLE_TYPIST_ANIM_NONE)
