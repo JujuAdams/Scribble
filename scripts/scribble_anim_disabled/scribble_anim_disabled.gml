@@ -8,10 +8,10 @@ function scribble_anim_disabled(_state)
     
     with(_scribbleState)
     {
-        if (__shader_anim_disabled != _state)
+        if (__shaderAnimDisabled != _state)
         {
-            __shader_anim_disabled = _state;
-            __shader_anim_desync = true;
+            __shaderAnimDisabled = _state;
+            __shaderAnimDesync = true;
         }
     }
 }

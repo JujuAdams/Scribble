@@ -4,7 +4,7 @@
 
 function scribble_anim_pulse(_scale, _speed)
 {
-    static _array = __ScribbleSystem().__anim_properties;
+    static _array = __ScribbleSystem().__animPropertiesArray;
     
     if ((_scale != _array[__SCRIBBLE_ANIM_PULSE_SCALE])
     ||  (_speed != _array[__SCRIBBLE_ANIM_PULSE_SPEED]))
@@ -15,8 +15,8 @@ function scribble_anim_pulse(_scale, _speed)
         static _scribbleState = __ScribbleSystem().__state;
         with(_scribbleState)
         {
-            __shader_anim_desync            = (not __shader_anim_disabled); //Only re-set uniforms when the animations aren't disabled
-            __shader_anim_desync_to_default = false;
+            __shaderAnimDesync          = (not __shaderAnimDisabled); //Only re-set uniforms when the animations aren't disabled
+            __shaderAnimDesyncToDefault = false;
         }
     }
 }

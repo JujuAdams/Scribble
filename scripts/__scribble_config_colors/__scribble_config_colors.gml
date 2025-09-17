@@ -6,7 +6,7 @@
 /// 
 /// N.B. That this function is executed on boot. You should never execute this function yourself!
 
-function __scribble_config_colours()
+function __scribble_config_colors()
 {
     return {
         //Duplicate GM's native colour constants

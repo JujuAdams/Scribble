@@ -104,8 +104,8 @@ function __ScribbleSystem(_calledFromInitialize = false)
                     
                     with(__state)
                     {
-                        __shader_anim_desync            = true;
-                        __shader_anim_desync_to_default = true;
+                        __shaderAnimDesync          = true;
+                        __shaderAnimDesyncToDefault = true;
                     }
                 }
             }, [], -1));
@@ -165,7 +165,7 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __bufferB = buffer_create(1024, buffer_grow, 1);
         
         //Contains animation parameters. See scribble_anim_reset()
-        __anim_properties = array_create(__SCRIBBLE_ANIM_SIZE, undefined);
+        __animPropertiesArray = array_create(__SCRIBBLE_ANIM_SIZE, undefined);
         
         __frames = 0;
         __userTickSize = undefined;
@@ -175,10 +175,10 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __state = {
             __defaultFont: "fntScribbleFallback",
             
-            __shader_anim_desync:            false,
-            __shader_anim_desync_to_default: false,
-            __shader_anim_default:           false,
-            __shader_anim_disabled:          false,
+            __shaderAnimDesync:            false,
+            __shaderAnimDesyncToDefault: false,
+            __shaderAnimDefault:           false,
+            __shaderAnimDisabled:          false,
             
             __sdfThicknessOffset: 0,
             
@@ -247,7 +247,7 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __ScribbleAddTag("/JITTER", __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_JITTER, true);
         __ScribbleAddTag("/SLANT",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_SLANT,  true);
         
-        var _colorStruct = __scribble_config_colours();
+        var _colorStruct = __scribble_config_colors();
         var _namesArray = variable_struct_get_names(_colorStruct);
         var _i = 0;
         repeat(array_length(_namesArray))
@@ -258,7 +258,7 @@ function __ScribbleSystem(_calledFromInitialize = false)
         }
         
         __cycleSurface = -1;
-        __cycle_data_open_array = [];
+        __cycleDataOpenArray = [];
         __cycleDataMap = ds_map_create();
         scribble_cycle_add_from_array(SCRIBBLE_RAINBOW_CYCLE, [c_red, c_yellow, c_lime, c_aqua, c_blue, c_fuchsia], true, false);
         

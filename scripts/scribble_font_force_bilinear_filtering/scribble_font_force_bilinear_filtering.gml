@@ -15,8 +15,8 @@ function scribble_font_force_bilinear_filtering(_font, _state)
         repeat(ds_grid_width(_grid))
         {
             var _material = _grid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL];
-            var _new_material = _material.__duplicate_material_with_new_bilinear(_state);
-            _grid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL] = _new_material;
+            var _newMaterial = _material.__DuplicateMaterialWithNewBilinear(_state);
+            _grid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL] = _newMaterial;
             
             ++_i;
         }

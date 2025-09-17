@@ -7,8 +7,8 @@
 
 function scribble_cycle_add_from_sprite(_name, _sprite, _image, _smooth)
 {
-    static _data_open_array = __ScribbleSystem().__cycle_data_open_array;
-    static _dataMap        = __ScribbleSystem().__cycleDataMap;
+    static _dataOpenArray = __ScribbleSystem().__cycleDataOpenArray;
+    static _dataMap       = __ScribbleSystem().__cycleDataMap;
     
     if (ds_map_exists(_dataMap, _name))
     {
@@ -17,7 +17,7 @@ function scribble_cycle_add_from_sprite(_name, _sprite, _image, _smooth)
     }
     else
     {
-        var _index = array_pop(_data_open_array);
+        var _index = array_pop(_dataOpenArray);
         if (_index == undefined)
         {
             _index = ds_map_size(_dataMap);

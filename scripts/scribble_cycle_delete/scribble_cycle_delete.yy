@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"scribble_cycle_delete",
   "parent":{
-    "name":"Colours",
-    "path":"folders/Scribble/Colours.yy",
+    "name":"Colors",
+    "path":"folders/Scribble/Colors.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

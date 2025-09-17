@@ -49,46 +49,46 @@
                                           \
                                           var _insert_string = _old_style_struct[$ "suffix"] ?? "";\
                                           \
-                                          var _old_value = _old_style_struct[$ "font"];\
-                                          var _new_value = _new_style_struct[$ "font"];\
-                                          if (_old_value != _new_value) _insert_string += (_new_value == undefined)? "[/font]" : ("[" + _new_value + "]");\
+                                          var _oldValue = _old_style_struct[$ "font"];\
+                                          var _newValue = _new_style_struct[$ "font"];\
+                                          if (_oldValue != _newValue) _insert_string += (_newValue == undefined)? "[/font]" : ("[" + _newValue + "]");\
                                           \
-                                          _old_value = _old_style_struct[$ "scale"] ?? 1;\
-                                          _new_value = _new_style_struct[$ "scale"] ?? 1;\
-                                          if (_old_value != _new_value) _insert_string += (_new_value == 1)? "[/scale]" : ("[scale," + string(_new_value) + "]");\
+                                          _oldValue = _old_style_struct[$ "scale"] ?? 1;\
+                                          _newValue = _new_style_struct[$ "scale"] ?? 1;\
+                                          if (_oldValue != _newValue) _insert_string += (_newValue == 1)? "[/scale]" : ("[scale," + string(_newValue) + "]");\
                                           \
-                                          _old_value = _old_style_struct[$ "color"];\
-                                          _new_value = _new_style_struct[$ "color"];\
-                                          if (_old_value != _new_value) _insert_string += (_new_value == undefined)? "[/color]" : ("[d#" + string(_new_value) + "]");\
+                                          _oldValue = _old_style_struct[$ "color"];\
+                                          _newValue = _new_style_struct[$ "color"];\
+                                          if (_oldValue != _newValue) _insert_string += (_newValue == undefined)? "[/color]" : ("[d#" + string(_newValue) + "]");\
                                           \
-                                          _old_value = (_old_style_struct[$ "italic"] ?? 0) | (2*(_old_style_struct[$ "bold"] ?? 0));\
-                                          _new_value = (_new_style_struct[$ "italic"] ?? 0) | (2*(_new_style_struct[$ "bold"] ?? 0));\
-                                          if (_old_value != _new_value)\
+                                          _oldValue = (_old_style_struct[$ "italic"] ?? 0) | (2*(_old_style_struct[$ "bold"] ?? 0));\
+                                          _newValue = (_new_style_struct[$ "italic"] ?? 0) | (2*(_new_style_struct[$ "bold"] ?? 0));\
+                                          if (_oldValue != _newValue)\
                                           {\
-                                              if (_new_value == 0)\
+                                              if (_newValue == 0)\
                                               {\
-                                                  if (_old_value == 1)\
+                                                  if (_oldValue == 1)\
                                                   {\
                                                       _insert_string += "[/i]";\
                                                   }\
-                                                  else if (_old_value == 2)\
+                                                  else if (_oldValue == 2)\
                                                   {\
                                                       _insert_string += "[/b]";\
                                                   }\
-                                                  else if (_old_value == 3)\
+                                                  else if (_oldValue == 3)\
                                                   {\
                                                       _insert_string += "[/bi]";\
                                                   }\
                                               }\
-                                              else if (_new_value == 1)\
+                                              else if (_newValue == 1)\
                                               {\
                                                   _insert_string += "[i]";\
                                               }\
-                                              else if (_new_value == 2)\
+                                              else if (_newValue == 2)\
                                               {\
                                                   _insert_string += "[b]";\
                                               }\
-                                              else if (_new_value == 3)\
+                                              else if (_newValue == 3)\
                                               {\
                                                   _insert_string += "[bi]";\
                                               }\

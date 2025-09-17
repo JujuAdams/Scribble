@@ -14,7 +14,7 @@
 /// @param [surfaceSize=2048]          Size of the surface to use. Defaults to 2048x2048
 /// @param [markAsRasterEffect=false]
 
-function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _outline, _l_pad, _t_pad, _r_pad, _b_pad, _separation, _smooth, _texture_size = 2048, _markAsRasterEffect = false)
+function scribble_font_bake_shader(_sourceFontName, _newFontName, _shader, _outline, _padL, _padT, _padR, _padB, _separation, _smooth, _textureSize = 2048, _markAsRasterEffect = false)
 {
     static _vertexFormat = (function()
     {
@@ -25,69 +25,69 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
             return vertex_format_end();
     })();
     
-    if (!is_string(_source_font_name))
+    if (!is_string(_sourceFontName))
     {
         __ScribbleError("Fonts should be specified using their name as a string.\n(Input was an invalid datatype)");
         exit;
     }
     
-    if (!is_string(_new_font_name))
+    if (!is_string(_newFontName))
     {
         __ScribbleError("Fonts should be specified using their name as a string.\n(Input was an invalid datatype)");
         exit;
     }
     
-    if (_source_font_name == _new_font_name)
+    if (_sourceFontName == _newFontName)
     {
         __ScribbleError("Source font and new font cannot share the same name");
         return undefined;
     }
 
     static _fontDataMap = __ScribbleSystem().__fontDataMap;
-    var _src_font_data = _fontDataMap[? _source_font_name];
-    if (!is_struct(_src_font_data))
+    var _srcFontData = _fontDataMap[? _sourceFontName];
+    if (!is_struct(_srcFontData))
     {
-        __ScribbleError("Source font \"", _source_font_name, "\" not found\n\"", _new_font_name, "\" will not be available");
+        __ScribbleError("Source font \"", _sourceFontName, "\" not found\n\"", _newFontName, "\" will not be available");
         return undefined;
     }
     
-    if (_src_font_data.__renderType == __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS)
+    if (_srcFontData.__renderType == __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS)
     {
         __ScribbleError("Source font cannot already have effects baked into it");
         return undefined;
     }
     
-    if (_src_font_data.__renderType == __SCRIBBLE_RENDER_SDF)
+    if (_srcFontData.__renderType == __SCRIBBLE_RENDER_SDF)
     {
         __ScribbleError("Source font cannot be an SDF font");
         return undefined;
     }
     
-    _src_font_data.__EnsureMaterialTexturesFetched();
-    _src_font_data.__EnsureTexelData();
+    _srcFontData.__EnsureMaterialTexturesFetched();
+    _srcFontData.__EnsureTexelData();
     
-    var _src_glyph_grid = _src_font_data.__glyphDataGrid;
-    var _glyphCount = ds_grid_width(_src_glyph_grid);
+    var _srcGlyphGrid = _srcFontData.__glyphDataGrid;
+    var _glyphCount = ds_grid_width(_srcGlyphGrid);
     
     //Create a new font
-    var _new_font_data = new __ScribbleClassFont(_new_font_name, _glyphCount, undefined, false, true,
-                                                   _src_font_data.__underlineY + _t_pad + _b_pad,
-                                                   _src_font_data.__strikeY    + _t_pad + _b_pad);
-    _new_font_data.__bilinear = _smooth;
-    _new_font_data.__runtime  = true;
-    _new_font_data.__height   = _src_font_data.__height + _t_pad + _b_pad;
+    var _newFontData = new __ScribbleClassFont(_newFontName, _glyphCount, undefined, false, true,
+                                                 _srcFontData.__underlineY + _padT + _padB,
+                                                 _srcFontData.__strikeY    + _padT + _padB);
+    _newFontData.__bilinear = _smooth;
+    _newFontData.__runtime  = true;
+    _newFontData.__height   = _srcFontData.__height + _padT + _padB;
     
-    var _new_glyphs_grid = _new_font_data.__glyphDataGrid;
+    var _newGlyphsGrid = _newFontData.__glyphDataGrid;
     
     //Copy the raw data over from the source font (this include the glyph map, glyph grid, and other assorted properties)
-    _src_font_data.__CopyTo(_new_font_data, false);
+    _srcFontData.__CopyTo(_newFontData, false);
     
-    if (_markAsRasterEffect) _new_font_data.__renderType = __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS;
+    if (_markAsRasterEffect) _newFontData.__renderType = __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS;
     
     
     
     //We spin up vertex buffers on demand based on what textures are being used
-    var _vbuff_data_map = ds_map_create();
+    var _vbuffDataMap = ds_map_create();
     
     var _lineX      = 0;
     var _lineY      = 0;
@@ -96,12 +96,12 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     var _i = 0;
     repeat(_glyphCount)
     {
-        var _material = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL];
+        var _material = _srcGlyphGrid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL];
         var _texture = _material.__texture;
         
         if (not texture_is_ready(_texture))
         {
-            __ScribbleError($"Font \"{_source_font_name}\" texture {string(_texture)} not ready.\nIs the source graphic in an unloaded or unfetched dynamic texture group?\nMaterial debug name:\"{_material.__debugFontName}\"\nMaterial key:\"{_material.__key}\"");
+            __ScribbleError($"Font \"{_sourceFontName}\" texture {string(_texture)} not ready.\nIs the source graphic in an unloaded or unfetched dynamic texture group?\nMaterial debug name:\"{_material.__debugFontName}\"\nMaterial key:\"{_material.__key}\"");
         }
         
         //Ignore any glyphs with invalid textures
@@ -111,27 +111,27 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
             continue;
         }
         
-        var _width  = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_WIDTH ];
-        var _height = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_HEIGHT];
-        var _u0     = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U0    ];
-        var _v0     = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V0    ];
-        var _u1     = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U1    ];
-        var _v1     = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V1    ];
+        var _width  = _srcGlyphGrid[# _i, __SCRIBBLE_GLYPH_PROPR_WIDTH ];
+        var _height = _srcGlyphGrid[# _i, __SCRIBBLE_GLYPH_PROPR_HEIGHT];
+        var _u0     = _srcGlyphGrid[# _i, __SCRIBBLE_GLYPH_PROPR_U0    ];
+        var _v0     = _srcGlyphGrid[# _i, __SCRIBBLE_GLYPH_PROPR_V0    ];
+        var _u1     = _srcGlyphGrid[# _i, __SCRIBBLE_GLYPH_PROPR_U1    ];
+        var _v1     = _srcGlyphGrid[# _i, __SCRIBBLE_GLYPH_PROPR_V1    ];
         
-        var _width_ext  = _width  + _outline + _l_pad + _r_pad;
-        var _height_ext = _height + _outline + _t_pad + _b_pad;
+        var _widthExt  = _width  + _outline + _padL + _padR;
+        var _heightExt = _height + _outline + _padT + _padB;
         
         //Check to see if we have space on this texture page
-        if (_lineY + _height_ext >= _texture_size)
+        if (_lineY + _heightExt >= _textureSize)
         {
-            __ScribbleError("No space left on ", _texture_size, "x", _texture_size, " texture page\nPlease increase the size of the texture page");
+            __ScribbleError("No space left on ", _textureSize, "x", _textureSize, " texture page\nPlease increase the size of the texture page");
             vertex_end(_vbuff);
             vertex_delete_buffer(_vbuff);
             return;
         }
         
         //Line wrap glyphs
-        if (_lineX + _width_ext >= _texture_size)
+        if (_lineX + _widthExt >= _textureSize)
         {
             _lineX       = 0;
             _lineY      += _lineHeight;
@@ -139,25 +139,25 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         }
         
         //Find a vertex buffer for this particular glyph's texture
-        var _vbuff_data = _vbuff_data_map[? string(_texture)];
-        if (_vbuff_data == undefined)
+        var _vbuffData = _vbuffDataMap[? string(_texture)];
+        if (_vbuffData == undefined)
         {
             //If we don't have a vertex buffer for this texture, create a new one and store a reference to it
             var _vbuff = vertex_create_buffer();
             vertex_begin(_vbuff, _vertexFormat);
             
-            _vbuff_data_map[? string(_texture)] = {
+            _vbuffDataMap[? string(_texture)] = {
                 __vertexBuffer: _vbuff,
                 __texture: _texture,
             };
         }
         else
         {
-            var _vbuff = _vbuff_data.__vertexBuffer;
+            var _vbuff = _vbuffData.__vertexBuffer;
         }
         
-        var _l = _l_pad + _lineX;
-        var _t = _t_pad + _lineY;
+        var _l = _padL + _lineX;
+        var _t = _padT + _lineY;
         var _r = _l + _width;
         var _b = _t + _height;
         
@@ -169,99 +169,99 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         vertex_position(_vbuff, _r, _b); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
         vertex_position(_vbuff, _l, _b); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
             
-        _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U0] = _lineX;
-        _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V0] = _lineY;
-        _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U1] = _lineX + _width  + _l_pad + _r_pad;;
-        _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V1] = _lineY + _height + _t_pad + _b_pad;;
+        _newGlyphsGrid[# _i, __SCRIBBLE_GLYPH_PROPR_U0] = _lineX;
+        _newGlyphsGrid[# _i, __SCRIBBLE_GLYPH_PROPR_V0] = _lineY;
+        _newGlyphsGrid[# _i, __SCRIBBLE_GLYPH_PROPR_U1] = _lineX + _width  + _padL + _padR;
+        _newGlyphsGrid[# _i, __SCRIBBLE_GLYPH_PROPR_V1] = _lineY + _height + _padT + _padB;
         
-        _lineX += _width_ext;
-        _lineHeight = max(_lineHeight, _height_ext);
+        _lineX += _widthExt;
+        _lineHeight = max(_lineHeight, _heightExt);
         
         ++_i;
     }
     
     //Draw the vertex buffers to a surface, then bake that surface into a sprite
-    var _surface_0 = surface_create(_texture_size, _texture_size);
+    var _surface0 = surface_create(_textureSize, _textureSize);
     
     //Draw the source glyphs to a surface
-    surface_set_target(_surface_0);
+    surface_set_target(_surface0);
     draw_clear_alpha(c_white, 0.0);
     gpu_set_blendenable(false);
     
     //Iterate over all vertex buffers we created and draw those vertex buffers to the first surface
-    var _vbuff_data_array = ds_map_values_to_array(_vbuff_data_map);
+    var _vbuff_data_array = ds_map_values_to_array(_vbuffDataMap);
     var _i = 0;
     repeat(array_length(_vbuff_data_array))
     {
-        var _vbuff_data = _vbuff_data_array[_i];
-        var _vbuff = _vbuff_data.__vertexBuffer;
+        var _vbuffData = _vbuff_data_array[_i];
+        var _vbuff = _vbuffData.__vertexBuffer;
         
         vertex_end(_vbuff);
-        vertex_submit(_vbuff, pr_trianglelist, _vbuff_data.__texture);
+        vertex_submit(_vbuff, pr_trianglelist, _vbuffData.__texture);
         vertex_delete_buffer(_vbuff);
         
         ++_i;
     }
     
-    ds_map_destroy(_vbuff_data_map);
-    var _surface_1 = surface_create(_texture_size, _texture_size);
+    ds_map_destroy(_vbuffDataMap);
+    var _surface1 = surface_create(_textureSize, _textureSize);
     
     gpu_set_blendenable(true);
     surface_reset_target();
     
-    var _texture = surface_get_texture(_surface_0);
+    var _texture = surface_get_texture(_surface0);
     
     //Draw one surface to another using the shader
-    surface_set_target(_surface_1);
+    surface_set_target(_surface1);
     draw_clear_alpha(c_white, 0.0);
     
-    var _old_filter = gpu_get_tex_filter();
+    var _oldFilter = gpu_get_tex_filter();
     gpu_set_tex_filter(_smooth);
     gpu_set_blendenable(false);
     
     shader_set(_shader);
     shader_set_uniform_f(shader_get_uniform(_shader, "u_vTexel"), texture_get_texel_width(_texture), texture_get_texel_height(_texture));
-    draw_surface(_surface_0, 0, 0);
+    draw_surface(_surface0, 0, 0);
     shader_reset();
     
-    gpu_set_tex_filter(_old_filter);
+    gpu_set_tex_filter(_oldFilter);
     gpu_set_blendenable(true);
     surface_reset_target();
     
-    surface_free(_surface_0);
+    surface_free(_surface0);
     
     //Make a sprite from the effect surface to make the texture stick
-    var _sprite = sprite_create_from_surface(_surface_1, 0, 0, _texture_size, _texture_size, false, false, 0, 0);
-    _new_font_data.__sourceSprite = _sprite;
-    surface_free(_surface_1);
+    var _sprite = sprite_create_from_surface(_surface1, 0, 0, _textureSize, _textureSize, false, false, 0, 0);
+    _newFontData.__sourceSprite = _sprite;
+    surface_free(_surface1);
     
     //Create a new material for this font
-    var _new_material = __ScribbleGetMaterial(_new_font_name, __ScribbleSpriteGetTextureIndex(_sprite, 0), _new_font_data.__renderType, undefined, undefined, _new_font_data.__bilinear);
+    var _newMaterial = __ScribbleGetMaterial(_newFontName, __ScribbleSpriteGetTextureIndex(_sprite, 0), _newFontData.__renderType, undefined, undefined, _newFontData.__bilinear);
     
     //Make bulk corrections to various glyph properties based on the input parameters
-    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_X_OFFSET,    _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_X_OFFSET,    -_l_pad);
-    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET,    _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET,    -_t_pad);
-    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_WIDTH,       _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_WIDTH,       _l_pad + _r_pad);
-    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_HEIGHT,      _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_HEIGHT,      _t_pad + _b_pad);
-    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, _t_pad + _b_pad);
-    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_SEPARATION,  _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_SEPARATION,  _separation);
-    ds_grid_set_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_MATERIAL,    _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_MATERIAL,    _new_material);
+    ds_grid_add_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_X_OFFSET,    _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_X_OFFSET,    -_padL);
+    ds_grid_add_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET,    _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET,    -_padT);
+    ds_grid_add_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_WIDTH,       _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_WIDTH,       _padL + _padR);
+    ds_grid_add_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_HEIGHT,      _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_HEIGHT,      _padT + _padB);
+    ds_grid_add_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, _padT + _padB);
+    ds_grid_add_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_SEPARATION,  _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_SEPARATION,  _separation);
+    ds_grid_set_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_MATERIAL,    _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_MATERIAL,    _newMaterial);
     
     //Figure out the new UVs using some bulk commands
-    var _sprite_uvs = sprite_get_uvs(_sprite, 0);
-    var _sprite_u0 = _sprite_uvs[0];
-    var _sprite_v0 = _sprite_uvs[1];
-    var _sprite_u1 = _sprite_uvs[2];
-    var _sprite_v1 = _sprite_uvs[3];
+    var _spriteUVs = sprite_get_uvs(_sprite, 0);
+    var _spriteU0 = _spriteUVs[0];
+    var _spriteV0 = _spriteUVs[1];
+    var _spriteU1 = _spriteUVs[2];
+    var _spriteV1 = _spriteUVs[3];
     
-    ds_grid_multiply_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_U0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_V1, 1/_texture_size);
-    ds_grid_multiply_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_U0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_U1, _sprite_u1 - _sprite_u0); //Note we're adjusting U0 and U1 in the same pass
-    ds_grid_multiply_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_V0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_V1, _sprite_v1 - _sprite_v0); //Note we're adjusting V0 and V1 in the same pass
-    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_U0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_U1, _sprite_u0); //Note we're adjusting U0 and U1 in the same pass
-    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_V0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_V1, _sprite_v0); //Note we're adjusting V0 and V1 in the same pass
+    ds_grid_multiply_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_U0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_V1, 1/_textureSize);
+    ds_grid_multiply_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_U0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_U1, _spriteU1 - _spriteU0); //Note we're adjusting U0 and U1 in the same pass
+    ds_grid_multiply_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_V0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_V1, _spriteV1 - _spriteV0); //Note we're adjusting V0 and V1 in the same pass
+    ds_grid_add_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_U0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_U1, _spriteU0); //Note we're adjusting U0 and U1 in the same pass
+    ds_grid_add_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_V0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_V1, _spriteV0); //Note we're adjusting V0 and V1 in the same pass
     
     //All texels are automatically valid
-    ds_grid_set_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, true);
+    ds_grid_set_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, true);
     
-    _new_font_data.__EnsureAdditionalCharacters();
+    _newFontData.__EnsureAdditionalCharacters();
 }

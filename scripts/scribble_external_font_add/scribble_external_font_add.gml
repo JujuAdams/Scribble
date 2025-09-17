@@ -17,23 +17,23 @@
 function scribble_external_font_add(_sprite, _image, _json, _fontName = undefined, _isKrutidev = false)
 {
     //Get source image data for the sprite/image that is being used as the glyph stlas for the font
-    var _source_font_info = sprite_get_info(_sprite);
-    var _frame_info = _source_font_info.frames[_image]
+    var _sourceFontInfo = sprite_get_info(_sprite);
+    var _frameInfo = _sourceFontInfo.frames[_image]
     
-    var _textureIndex  = _frame_info.texture;
+    var _textureIndex  = _frameInfo.texture;
     
     //Ensure this texture has been fetched so we get valid texture dimensions
     texture_prefetch(_textureIndex);
     
-    var _texture_width  = texture_get_width(_textureIndex);
-    var _texture_height = texture_get_height(_textureIndex);
+    var _textureWidth  = texture_get_width(_textureIndex);
+    var _textureHeight = texture_get_height(_textureIndex);
     
     
     var _textureUVs = [
-        _frame_info.x / _texture_width,
-        _frame_info.y / _texture_height,
-        _frame_info.w / _texture_width,
-        _frame_info.h / _texture_height,
+        _frameInfo.x / _textureWidth,
+        _frameInfo.y / _textureHeight,
+        _frameInfo.w / _textureWidth,
+        _frameInfo.h / _textureHeight,
     ];
     
     if (_fontName == undefined)
@@ -53,26 +53,26 @@ function scribble_external_font_add(_sprite, _image, _json, _fontName = undefine
     };
     
     //Most of the work is duplicating out the glyph data
-    var _json_glyphs_dict = _json.glyphs;
-    var _output_glyphs_dict = _fontInfo.glyphs;
-    var _key_array = variable_struct_get_names(_json_glyphs_dict);
+    var _jsonGlyphsDict = _json.glyphs;
+    var _outputGlyphsDict = _fontInfo.glyphs;
+    var _keyArray = variable_struct_get_names(_jsonGlyphsDict);
     var _i = 0;
-    repeat(array_length(_key_array))
+    repeat(array_length(_keyArray))
     {
-        var _key = _key_array[_i];
-        var _json_glyph = _json_glyphs_dict[$ _key];
+        var _key = _keyArray[_i];
+        var _jsonGlyph = _jsonGlyphsDict[$ _key];
         
         //`font_get_info()` glyphs are largely copies of values in JSON
-        var _output_glyph = variable_clone(_json_glyph);
+        var _outputGlyph = variable_clone(_jsonGlyph);
         
         // ... but the JSON `character` property is `char`
-        var _character = _output_glyph.character;
-        variable_struct_remove(_output_glyph, "character");
-        _output_glyph.char = _character;
+        var _character = _outputGlyph.character;
+        variable_struct_remove(_outputGlyph, "character");
+        _outputGlyph.char = _character;
         
         //In the JSON, glyph keys are stringified Unicode code points but in `font_get_info()` the keys
         //are the characters themselves
-        _output_glyphs_dict[$ chr(_character)] = _output_glyph;
+        _outputGlyphsDict[$ chr(_character)] = _outputGlyph;
         
         ++_i;
     }

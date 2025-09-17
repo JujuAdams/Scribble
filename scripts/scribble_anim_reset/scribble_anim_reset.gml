@@ -1,4 +1,5 @@
 // Feather disable all
+
 /// Resets animation effects to their default values
 
 function scribble_anim_reset()
@@ -6,9 +7,9 @@ function scribble_anim_reset()
     static _scribbleState = __ScribbleSystem().__state;
     with(_scribbleState)
     {
-        if (!__shader_anim_default)
+        if (not __shaderAnimDefault)
         {
-            static _array = __ScribbleSystem().__anim_properties;
+            static _array = __ScribbleSystem().__animPropertiesArray;
             _array[@ __SCRIBBLE_ANIM_WAVE_SIZE     ] = SCRIBBLE_DEFAULT_WAVE_SIZE;
             _array[@ __SCRIBBLE_ANIM_WAVE_FREQ     ] = SCRIBBLE_DEFAULT_WAVE_FREQUENCY;
             _array[@ __SCRIBBLE_ANIM_WAVE_SPEED    ] = SCRIBBLE_DEFAULT_WAVE_SPEED;
@@ -27,10 +28,10 @@ function scribble_anim_reset()
             _array[@ __SCRIBBLE_ANIM_SLANT_GRADIENT] = SCRIBBLE_SLANT_GRADIENT;
         }
         
-        if (!__shader_anim_desync)
+        if (not __shaderAnimDesync)
         {
-            __shader_anim_desync            = (not __shader_anim_disabled); //Only re-set uniforms when the animations aren't disabled
-            __shader_anim_desync_to_default = true;
+            __shaderAnimDesync          = (not __shaderAnimDisabled); //Only re-set uniforms when the animations aren't disabled
+            __shaderAnimDesyncToDefault = true;
         }
     }
 }

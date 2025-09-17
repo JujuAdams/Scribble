@@ -15,18 +15,18 @@
 /// @param name
 /// @param colour
 
-function scribble_color_set(_name, _colour)
+function scribble_color_set(_name, _color)
 {
-    if (_colour == undefined)
+    if (_color == undefined)
     {
         __ScribbleRemoveTag(_name);
         return;
     }
     
-    if (not is_numeric(_colour))
+    if (not is_numeric(_color))
     {
         __ScribbleError("Colour values should be 24-bit BGR values");
     }
     
-    __ScribbleAddTag(_name, __SCRIBBLE_TAG_COLOR, _colour, false);
+    __ScribbleAddTag(_name, __SCRIBBLE_TAG_COLOR, _color, false);
 }

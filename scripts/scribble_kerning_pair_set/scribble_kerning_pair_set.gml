@@ -10,7 +10,7 @@
 
 function scribble_kerning_pair_set(_font, _firstChar, _secondChar, _value, _relative = false)
 {
-    var  _first_unicode = is_real( _firstChar)?  _firstChar : ord( _firstChar);
+    var  _firstUnicode = is_real( _firstChar)?  _firstChar : ord( _firstChar);
     var _secondUnicode = is_real(_secondChar)? _secondChar : ord(_secondChar);
     
     if (_firstChar == 0)
@@ -29,11 +29,11 @@ function scribble_kerning_pair_set(_font, _firstChar, _secondChar, _value, _rela
     }
     
     var _fontData = __ScribbleGetFontData(_font);
-    var _kerning_map = _fontData.__kerningMap;
+    var _kerningMap = _fontData.__kerningMap;
     
-    var _lookup = ((_secondUnicode & 0xFFFF) << 16) | (_first_unicode & 0xFFFF);
-    var _new_value = _relative? ((_kerning_map[? _lookup] ?? 0) + _value) : _value;
-    _kerning_map[? _lookup] = _new_value;
+    var _lookup = ((_secondUnicode & 0xFFFF) << 16) | (_firstUnicode & 0xFFFF);
+    var _newValue = _relative? ((_kerningMap[? _lookup] ?? 0) + _value) : _value;
+    _kerningMap[? _lookup] = _newValue;
     
-    return _new_value;
+    return _newValue;
 }

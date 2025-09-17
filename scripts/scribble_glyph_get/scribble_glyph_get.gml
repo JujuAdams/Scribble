@@ -17,13 +17,13 @@ function scribble_glyph_get(_font, _character, _property)
     var _grid = _fontData.__glyphDataGrid;
     var _map  = _fontData.__glyphsMap;
     var _unicode = is_real(_character)? _character : ord(_character);
-    var _glyph_index = _map[? _unicode];
+    var _glyphIndex = _map[? _unicode];
     
-    if (_glyph_index == undefined)
+    if (_glyphIndex == undefined)
     {
         __ScribbleError("Character \"", _character, "\" not found for font \"", _font, "\"");
         return undefined;
     }
 
-    return _grid[# _glyph_index, _property];
+    return _grid[# _glyphIndex, _property];
 }

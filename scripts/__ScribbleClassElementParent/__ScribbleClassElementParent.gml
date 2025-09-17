@@ -194,11 +194,11 @@ function __ScribbleClassElementParent(_text) constructor
     {
         if (_in_colour != undefined)
         {
-            var _colour = __ScribbleProcessColor(_in_colour);
-            if ((_colour != undefined) && (_colour >= 0) && (_colour != __startingColor))
+            var _color = __ScribbleProcessColor(_in_colour);
+            if ((_color != undefined) && (_color >= 0) && (_color != __startingColor))
             {
                 __modelDirty = true;
-                __startingColor = _colour & 0xFFFFFF;
+                __startingColor = _color & 0xFFFFFF;
             }
         }
         
@@ -242,11 +242,11 @@ function __ScribbleClassElementParent(_text) constructor
     
     /// @param colour
     /// @param alpha
-    static blend = function(_colour, _alpha)
+    static blend = function(_color, _alpha)
     {
-        _colour = __ScribbleProcessColor(_colour);
+        _color = __ScribbleProcessColor(_color);
         
-        if (_colour != undefined) __blend_colour = _colour & 0xFFFFFF;
+        if (_color != undefined) __blend_colour = _color & 0xFFFFFF;
         if (_alpha  != undefined) __blend_alpha  = clamp(_alpha, 0, 1);
         
         return self;
@@ -254,11 +254,11 @@ function __ScribbleClassElementParent(_text) constructor
     
     /// @param colour
     /// @param alpha
-    static gradient = function(_colour, _alpha)
+    static gradient = function(_color, _alpha)
     {
-        _colour = __ScribbleProcessColor(_colour);
+        _color = __ScribbleProcessColor(_color);
         
-        __gradient_colour = _colour & 0xFFFFFF;
+        __gradient_colour = _color & 0xFFFFFF;
         __gradient_alpha  = _alpha;
         
         return self;
@@ -266,11 +266,11 @@ function __ScribbleClassElementParent(_text) constructor
     
     /// @param colour
     /// @param alpha
-    static flash = function(_colour, _alpha)
+    static flash = function(_color, _alpha)
     {
-        _colour = __ScribbleProcessColor(_colour);
+        _color = __ScribbleProcessColor(_color);
         
-        __flash_colour = _colour & 0xFFFFFF;
+        __flash_colour = _color & 0xFFFFFF;
         __flash_alpha  = _alpha;
         
         return self;
@@ -1039,7 +1039,7 @@ function __ScribbleClassElementParent(_text) constructor
         return _found;
     }
     
-    static region_set_active = function(_name, _colour, _blend_amount)
+    static region_set_active = function(_name, _color, _blend_amount)
     {
         if (!is_string(_name))
         {
@@ -1066,7 +1066,7 @@ function __ScribbleClassElementParent(_text) constructor
                 __region_active      = _name;
                 __region_glyph_start = _region.startGlyph;
                 __region_glyph_end   = _region.endGlyph;
-                __region_colour      = _colour;
+                __region_colour      = _color;
                 __region_blend       = _blend_amount;
                 return self;
             }
@@ -1581,9 +1581,9 @@ function __ScribbleClassElementParent(_text) constructor
     
     #region Outline & Shadow
     
-    static shadow = function(_colour, _alpha)
+    static shadow = function(_color, _alpha)
     {
-        __sdf_shadow_colour   = _colour;
+        __sdf_shadow_colour   = _color;
         __sdf_shadow_alpha    = _alpha;
         __sdf_shadow_xoffset  = 0;
         __sdf_shadow_yoffset  = 0;
@@ -1592,9 +1592,9 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static outline = function(_colour)
+    static outline = function(_color)
     {
-        __sdf_outline_colour    = _colour;
+        __sdf_outline_colour    = _color;
         __sdf_outline_thickness = 0;
         
         return self;
@@ -1606,9 +1606,9 @@ function __ScribbleClassElementParent(_text) constructor
     
     #region SDF
     
-    static sdf_shadow = function(_colour, _alpha, _xOffset, _y_offset, _softness = 0.25)
+    static sdf_shadow = function(_color, _alpha, _xOffset, _y_offset, _softness = 0.25)
     {
-        __sdf_shadow_colour   = _colour;
+        __sdf_shadow_colour   = _color;
         __sdf_shadow_alpha    = _alpha;
         __sdf_shadow_xoffset  = _xOffset;
         __sdf_shadow_yoffset  = _y_offset;
@@ -1617,9 +1617,9 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static sdf_outline = function(_colour, _thickness)
+    static sdf_outline = function(_color, _thickness)
     {
-        __sdf_outline_colour    = _colour;
+        __sdf_outline_colour    = _color;
         __sdf_outline_thickness = _thickness;
         
         return self;
@@ -1878,7 +1878,7 @@ function __ScribbleClassElementParent(_text) constructor
         static _u_fOutlineThickness        = shader_get_uniform(__shdScribble, "u_fOutlineThickness"       );
         
         static _scribbleState        = __ScribbleSystem().__state;
-        static _anim_properties_array = __ScribbleSystem().__anim_properties;
+        static _anim_properties_array = __ScribbleSystem().__animPropertiesArray;
         
         static _shader_uniforms_dirty    = true;
         static _shader_set_to_use_bezier = false;
@@ -1942,13 +1942,13 @@ function __ScribbleClassElementParent(_text) constructor
         }
         
         //Update the animation properties for this shader if they've changed since the last time we drew an element
-        if (_scribbleState.__shader_anim_desync)
+        if (_scribbleState.__shaderAnimDesync)
         {
             with(_scribbleState)
             {
-                __shader_anim_desync  = false;
-                __shader_anim_default = __shader_anim_desync_to_default;
-                shader_set_uniform_f_array(_u_aDataFields, __shader_anim_disabled? _shader_uniforms_disabled : _anim_properties_array);
+                __shaderAnimDesync  = false;
+                __shaderAnimDefault = __shaderAnimDesyncToDefault;
+                shader_set_uniform_f_array(_u_aDataFields, __shaderAnimDisabled? _shader_uniforms_disabled : _anim_properties_array);
             }
         }
         

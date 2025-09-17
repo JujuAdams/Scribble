@@ -20,7 +20,7 @@ function __ScribbleClassMaterial(_key, _fontName, _textureIndexOrPointer, _rende
     __sdfThicknessOffset = _sdfThicknessOffset;
     __bilinear           = _bilinear; //Can be `true`, `false`, or `undefined`
     
-    static __duplicate_material_with_new_bilinear = function(_bilinear)
+    static __DuplicateMaterialWithNewBilinear = function(_bilinear)
     {
         if (__bilinear == _bilinear) return self;
         return __ScribbleGetMaterial(__debugFontName, __texture, __renderType, __sdfPxRange, __sdfThicknessOffset, _bilinear);

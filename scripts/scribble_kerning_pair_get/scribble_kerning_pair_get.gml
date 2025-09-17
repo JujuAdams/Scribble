@@ -10,10 +10,10 @@ function scribble_kerning_pair_get(_font, _firstChar, _secondChar)
 {
     var _fontData = __ScribbleGetFontData(_font);
     
-    var  _first_unicode = is_real( _firstChar)?  _firstChar : ord( _firstChar);
+    var  _firstUnicode = is_real( _firstChar)?  _firstChar : ord( _firstChar);
     var _secondUnicode = is_real(_secondChar)? _secondChar : ord(_secondChar);
     
-    var _kerning_map = _fontData.__kerningMap;
+    var _kerningMap = _fontData.__kerningMap;
     
-    return (_kerning_map[? ((_secondUnicode & 0xFFFF) << 16) | (_first_unicode & 0xFFFF)] ?? 0);
+    return (_kerningMap[? ((_secondUnicode & 0xFFFF) << 16) | (_firstUnicode & 0xFFFF)] ?? 0);
 }
