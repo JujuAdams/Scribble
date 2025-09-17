@@ -161,7 +161,7 @@ function __scribble_class_cached_element(_text, _uniqueID) : __scribble_class_el
         
         matrix_stack_push(__update_matrix(_model, _x, _y));
         matrix_set(matrix_world, matrix_stack_top());
-        _model.__submit(__page, (__sdf_outline_thickness > 0) || (__sdf_shadow_alpha > 0));
+        _model.__Draw(__page, __scrollX, __scrollY, __serial, __serialOffset, __clip, (__sdf_outline_thickness > 0) || (__sdf_shadow_alpha > 0));
         
         shader_reset();
         matrix_stack_pop();

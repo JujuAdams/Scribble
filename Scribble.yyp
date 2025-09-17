@@ -244,6 +244,7 @@
     {"id":{"name":"obj_test_sdf_soft_drop_shadow","path":"objects/obj_test_sdf_soft_drop_shadow/obj_test_sdf_soft_drop_shadow.yy",},},
     {"id":{"name":"obj_test_sdf_superfont","path":"objects/obj_test_sdf_superfont/obj_test_sdf_superfont.yy",},},
     {"id":{"name":"obj_test_sdf","path":"objects/obj_test_sdf/obj_test_sdf.yy",},},
+    {"id":{"name":"obj_test_serial","path":"objects/obj_test_serial/obj_test_serial.yy",},},
     {"id":{"name":"obj_test_skew","path":"objects/obj_test_skew/obj_test_skew.yy",},},
     {"id":{"name":"obj_test_slant","path":"objects/obj_test_slant/obj_test_slant.yy",},},
     {"id":{"name":"obj_test_sound_tag","path":"objects/obj_test_sound_tag/obj_test_sound_tag.yy",},},

@@ -125,9 +125,76 @@ function __scribble_class_model(_element) constructor
         __build();
     }
     
-    static __submit = function(_page, _double_draw)
+    static __Draw = function(_page, _scrollX, _scrollY, _serial, _serialOffset, _clip, _doubleDraw)
     {
-        __pages_array[_page].__submit(_double_draw && (SCRIBBLE_ALWAYS_DOUBLE_DRAW || __has_arabic || __has_thai));
+        static _u_vClip   = shader_get_uniform(__shd_scribble, "u_vClip");
+        static _u_vScroll = shader_get_uniform(__shd_scribble, "u_vScroll");
+        
+        static _usedClip = true;
+        
+        if (SCRIBBLE_ALWAYS_DOUBLE_DRAW || __has_arabic || __has_thai)
+        {
+            _doubleDraw = true;
+        }
+        
+        if (not _serial)
+        {
+            //If we're not in serial mode then we can only draw one page at a time
+            
+            if (_clip)
+            {
+                //FIXME - Implement offsets for different h/v alignments
+                _usedClip = true;
+                shader_set_uniform_f(_u_vClip, 0, 0, __layoutMaxWidth, __layoutMaxHeight);
+            }
+            else
+            {
+                if (_usedClip)
+                {
+                    _usedClip = false;
+                    shader_set_uniform_f(_u_vClip, -999999, -999999, 999999, 999999);
+                }
+            }
+            
+            shader_set_uniform_f(_u_vScroll, _scrollX, _scrollY);
+            __pages_array[_page].__Submit(_doubleDraw);
+        }
+        else
+        {
+            //Otherwise, draw the two pages that are visible
+            
+            if (not _clip)
+            {
+                __scribble_error("Somehow you've managed to enable serial display without clipping. Please report this bug!");
+            }
+            
+            _usedClip = true;
+            
+            _page = clamp(_serialOffset / __layoutMaxHeight, 0, array_length(__pages_array)-1);
+            if ((_page == floor(_page)) || (_page == array_length(__pages_array)-1))
+            {
+                //FIXME - Implement offsets for different h/v alignments
+                shader_set_uniform_f(_u_vClip, 0, 0, __layoutMaxWidth, __layoutMaxHeight - _scrollY);
+                shader_set_uniform_f(_u_vScroll, _scrollX, _scrollY);
+                __pages_array[_page].__Submit(_doubleDraw);
+            }
+            else
+            {
+                _page = floor(_page);
+                
+                //FIXME - Implement offsets for different h/v alignments
+                var _serialScroll = (_serialOffset - _page*__layoutMaxHeight);
+                shader_set_uniform_f(_u_vClip, 0, 0, __layoutMaxWidth, max(0, __layoutMaxHeight - _serialScroll));
+                shader_set_uniform_f(_u_vScroll, _scrollX, _scrollY + _serialScroll);
+                __pages_array[_page].__Submit(_doubleDraw);
+                
+                //FIXME - Implement offsets for different h/v alignments
+                var _serialScroll = (_serialOffset - (_page+1)*__layoutMaxHeight);
+                shader_set_uniform_f(_u_vClip, 0, _serialScroll, __layoutMaxWidth, __layoutMaxHeight);
+                shader_set_uniform_f(_u_vScroll, _scrollX, _serialScroll);
+                __pages_array[_page+1].__Submit(_doubleDraw);
+            }
+        }
     }
     
     static __Freeze = function()
@@ -296,6 +363,11 @@ function __scribble_class_model(_element) constructor
         }
         
         return max(0, __pages_array[_page].__max_y - __layoutMaxHeight);
+    }
+    
+    static __GetSerialMax = function()
+    {
+        return __layoutMaxHeight*max(0, array_length(__pages_array)-1);
     }
     
     /// @param page

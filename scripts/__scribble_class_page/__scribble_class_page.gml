@@ -176,7 +176,7 @@ function __scribble_class_page(_model) constructor
         }
     }
     
-    static __submit = function(_double_draw)
+    static __Submit = function(_double_draw)
     {
         static _u_vTexel              = shader_get_uniform(__shd_scribble, "u_vTexel"             );
         static _u_fSDFRange           = shader_get_uniform(__shd_scribble, "u_fSDFRange"          );

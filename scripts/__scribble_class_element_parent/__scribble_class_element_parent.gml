@@ -76,6 +76,9 @@ function __scribble_class_element_parent(_text) constructor
     __scrollState = 0;
     __scrollPauseCounter = 0;
     
+    __serial = false;
+    __serialOffset = 0;
+    
     __scale_to_box_dirty    = true;
     __scale_to_box_width    = 0;
     __scale_to_box_height   = 0;
@@ -382,7 +385,7 @@ function __scribble_class_element_parent(_text) constructor
         return self;
     }
     
-    static layout_page = function(_forcePerChar = false)
+    static layout_paginate = function(_forcePerChar = false)
     {
         if ((__layoutType != SCRIBBLE_LAYOUT_PAGINATE) || (_forcePerChar != __layoutForcePerChar))
         {
@@ -429,11 +432,19 @@ function __scribble_class_element_parent(_text) constructor
     
     
     
-    #region Clip & Scroll
+    #region Clip & Scroll & Serial
     
     static clip = function(_state = true)
     {
-        __clip = _state;
+        if (__serial && (not _state))
+        {
+            show_debug_message("Warning! Cannot disable clipping when using serial display");
+        }
+        else
+        {
+            __clip = _state;
+        }
+        
         return self;
     }
     
@@ -721,6 +732,36 @@ function __scribble_class_element_parent(_text) constructor
                 }
             }
         }
+    }
+    
+    static serial = function(_state = true)
+    {
+        clip(true); //Forcing clipping on
+        __serial = _state;
+        return self;
+    }
+    
+    static get_serial = function()
+    {
+        return __serial;
+    }
+    
+    static serial_position = function(_value, _clamp = true)
+    {
+        __serialOffset = _clamp? clamp(_value, 0, get_serial_max()) : _value;
+        return self;
+    }
+    
+    static get_serial_position = function()
+    {
+        return __serialOffset;
+    }
+    
+    static get_serial_max = function()
+    {
+        var _model = __EnsureModel();
+        if (not is_struct(_model)) return 0;
+        return _model.__GetSerialMax();
     }
     
     #endregion
@@ -1806,8 +1847,6 @@ function __scribble_class_element_parent(_text) constructor
         static _u_vRegionColour = shader_get_uniform(__shd_scribble, "u_vRegionColour");
         static _u_aDataFields   = shader_get_uniform(__shd_scribble, "u_aDataFields"  );
         static _u_aBezier       = shader_get_uniform(__shd_scribble, "u_aBezier"      );
-        static _u_vClip         = shader_get_uniform(__shd_scribble, "u_vClip"        );
-        static _u_vScroll       = shader_get_uniform(__shd_scribble, "u_vScroll"      );
         
         static _u_vShadowOffsetAndSoftness = shader_get_uniform(__shd_scribble, "u_vShadowOffsetAndSoftness");
         static _u_vShadowColour            = shader_get_uniform(__shd_scribble, "u_vShadowColour"           );
@@ -1888,18 +1927,6 @@ function __scribble_class_element_parent(_text) constructor
                 shader_set_uniform_f_array(_u_aDataFields, __shader_anim_disabled? _shader_uniforms_disabled : _anim_properties_array);
             }
         }
-        
-        if (__clip)
-        {
-            //FIXME - Implement offsets for different h/v alignments
-            shader_set_uniform_f(_u_vClip, 0, 0, __layoutMaxWidth, __layoutMaxHeight);
-        }
-        else
-        {
-            shader_set_uniform_f(_u_vClip, -999999, -999999, 999999, 999999);
-        }
-        
-        shader_set_uniform_f(_u_vScroll, __scrollX, __scrollY);
         
         if (__bezier_using)
         {

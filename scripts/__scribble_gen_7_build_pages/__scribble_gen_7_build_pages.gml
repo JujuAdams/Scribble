@@ -6,13 +6,19 @@ function __scribble_gen_7_build_pages()
     
     with(_generator_state)
     {
-        var _modelMaxHeight = __modelMaxHeight;
-        var _line_array     = __line_array;
+        var _modelMaxHeight  = __modelMaxHeight;
+        var _line_array      = __line_array;
     }
     
+    var _layoutMaxHeight       = __layoutMaxHeight;
     var _line_height           = __line_height;
     var _line_spacing_add      = __line_spacing_add;
     var _line_spacing_multiply = __line_spacing_multiply;
+    
+    if (is_infinity(_layoutMaxHeight))
+    {
+        _layoutMaxHeight = 0;
+    }
     
     var _paginate = (__layoutType == SCRIBBLE_LAYOUT_PAGINATE);
     var _trimText = (__layoutType == SCRIBBLE_LAYOUT_TRIM);
