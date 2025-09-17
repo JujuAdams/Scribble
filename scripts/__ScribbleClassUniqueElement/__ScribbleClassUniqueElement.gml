@@ -75,13 +75,13 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         //Get our model, and create one if needed
         var _model = __EnsureModel();
-        if (!is_struct(_model)) return undefined;
+        if (not is_struct(_model)) return undefined;
         
         //If enough time has elapsed since we drew this element then update our animation time
         if (__lastDrawn < _system.__frames)
         {
-            __animation_time += __animation_speed*_system.__tickSize;
-            if (SCRIBBLE_SAFELY_WRAP_TIME) __animation_time = __animation_time mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
+            __animationTime += __animationSpeed*_system.__tickSize;
+            if (SCRIBBLE_SAFELY_WRAP_TIME) __animationTime = __animationTime mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
         }
         
         __lastDrawn = _system.__frames;
@@ -95,15 +95,15 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         __SetTypistShaderUniforms();
         
         //...aaaand set the matrix
-        var _old_matrix = matrix_get(matrix_world);
-        var _matrix = matrix_multiply(__update_matrix(_model, _x, _y), _old_matrix);
+        var _oldMatrix = matrix_get(matrix_world);
+        var _matrix = matrix_multiply(__UpdateMatrix(_model, _x, _y), _oldMatrix);
         matrix_set(matrix_world, _matrix);
         
         //Submit the model
-        _model.__Draw(__page, __scrollX, __scrollY, __serial, __serialY, __clip, (__sdf_outline_thickness > 0) || (__sdf_shadow_alpha > 0));
+        _model.__Draw(__page, __scrollX, __scrollY, __serial, __serialY, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
         
         //Make sure we reset the world matrix
-        matrix_set(matrix_world, _old_matrix);
+        matrix_set(matrix_world, _oldMatrix);
         shader_reset();
         
         if (SCRIBBLE_SHOW_WRAP_BOUNDARY) debug_draw_bbox(_x, _y);
@@ -134,7 +134,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         //FIXME - Set typist head here
         
-        return __set_page(_page);
+        return __SetPage(_page);
     }
     
     static reveal_type = function(_state)
@@ -431,13 +431,13 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     /// @param yscale
     /// @param rotation
     /// @param alphaDuration
-    static ease = function(_ease_method, _dx, _dy, _xscale, _yscale, _rotation, _alpha_duration)
+    static ease = function(_ease_method, _dx, _dy, _xScale, _yScale, _rotation, _alpha_duration)
     {
         __easeMethod         = _ease_method;
         __easeDX             = _dx;
         __easeDY             = _dy;
-        __easeXScale         = _xscale;
-        __easeYScale         = _yscale;
+        __easeXScale         = _xScale;
+        __easeYScale         = _yScale;
         __easeRotation       = _rotation;
         __easeAlphaDuration = _alpha_duration;
         

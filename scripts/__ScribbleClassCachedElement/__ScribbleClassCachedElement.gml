@@ -146,8 +146,8 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
         //If enough time has elapsed since we drew this element then update our animation time
         if (__lastDrawn < _system.__frames)
         {
-            __animation_time += __animation_speed*_system.__tickSize;
-            if (SCRIBBLE_SAFELY_WRAP_TIME) __animation_time = __animation_time mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
+            __animationTime += __animationSpeed*_system.__tickSize;
+            if (SCRIBBLE_SAFELY_WRAP_TIME) __animationTime = __animationTime mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
         }
         
         __lastDrawn = _system.__frames;
@@ -159,9 +159,9 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
         __SetStandardUniforms();
         __SetRevealUniforms(_revealIndex);
         
-        matrix_stack_push(__update_matrix(_model, _x, _y));
+        matrix_stack_push(__UpdateMatrix(_model, _x, _y));
         matrix_set(matrix_world, matrix_stack_top());
-        _model.__Draw(__page, __scrollX, __scrollY, __serial, __serialY, __clip, (__sdf_outline_thickness > 0) || (__sdf_shadow_alpha > 0));
+        _model.__Draw(__page, __scrollX, __scrollY, __serial, __serialY, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
         
         shader_reset();
         matrix_stack_pop();
@@ -189,7 +189,7 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
     
     static page = function(_page)
     {
-        return __set_page(_page);
+        return __SetPage(_page);
     }
     
     static in = function()

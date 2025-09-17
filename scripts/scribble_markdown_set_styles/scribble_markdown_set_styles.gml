@@ -38,7 +38,7 @@ function scribble_markdown_set_styles(_rootStruct, _fastMode = false)
         //<prefix> and <suffix> must be a string
         //<bulletSprite> must be a sprite index or the name of a sprite
         
-        if (!is_struct(_rootStruct)) __ScribbleError("Input was not a struct (datatype=", typeof(_rootStruct), ")");
+        if (not is_struct(_rootStruct)) __ScribbleError("Input was not a struct (datatype=", typeof(_rootStruct), ")");
         
         var _rootNamesArray = variable_struct_get_names(_rootStruct);
         var _i = 0;
@@ -98,7 +98,7 @@ function scribble_markdown_set_styles(_rootStruct, _fastMode = false)
                     {
                         //Allowed
                     }
-                    else if (!is_struct(_childStruct))
+                    else if (not is_struct(_childStruct))
                     {
                         __ScribbleError("Child struct <", _rootName, "> must be a struct (datatype=", typeof(_value), ")");
                         return false;

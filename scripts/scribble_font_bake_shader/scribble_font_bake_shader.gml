@@ -45,7 +45,7 @@ function scribble_font_bake_shader(_sourceFontName, _newFontName, _shader, _outl
 
     static _fontDataMap = __ScribbleSystem().__fontDataMap;
     var _srcFontData = _fontDataMap[? _sourceFontName];
-    if (!is_struct(_srcFontData))
+    if (not is_struct(_srcFontData))
     {
         __ScribbleError("Source font \"", _sourceFontName, "\" not found\n\"", _newFontName, "\" will not be available");
         return undefined;

@@ -25,17 +25,17 @@ function __ScribbleClassElementParent(_text) constructor
     __preprocessorFunc = undefined;
     
     __startingFont   = _system.__state.__defaultFont;
-    __startingColor = __ScribbleProcessColor(SCRIBBLE_DEFAULT_COLOR);
+    __startingColor  = __ScribbleProcessColor(SCRIBBLE_DEFAULT_COLOR);
     __startingHAlign = SCRIBBLE_DEFAULT_HALIGN;
     __startingVAlign = SCRIBBLE_DEFAULT_VALIGN;
-    __blend_colour    = c_white;
-    __blend_alpha     = 1.0;
-    __skew_x          = 0;
-    __skew_y          = 0;
-    __gradient_colour = c_black;
-    __gradient_alpha  = 0.0;
-    __flash_colour    = c_white;
-    __flash_alpha     = 0.0;
+    __blendColor     = c_white;
+    __blendAlpha     = 1.0;
+    __skewX          = 0;
+    __skewY          = 0;
+    __gradientColor  = c_black;
+    __gradientAlpha  = 0.0;
+    __flashColor     = c_white;
+    __flashAlpha     = 0.0;
     
     __randomizeAnimation = false;
     __newlineDelay       = 0; //Only relevant for unique text elements but needs to be available regardless
@@ -43,26 +43,26 @@ function __ScribbleClassElementParent(_text) constructor
     __allowTextGetter       = SCRIBBLE_FORCE_TEXT_GETTER;
     __allowGlyphDataGetter = SCRIBBLE_FORCE_GLYPH_DATA_GETTER;
     
-    __origin_x    = 0.0;
-    __origin_y    = 0.0;
+    __originX = 0.0;
+    __originY = 0.0;
     
-    __preScale   = 1.0;
+    __preScale = 1.0;
     
-    __post_xscale = 1.0;
-    __post_yscale = 1.0;
-    __post_angle  = 0.0;
+    __postXScale = 1.0;
+    __postYScale = 1.0;
+    __postAngle  = 0.0;
     
-    __matrix_dirty   = true;
-    __matrix         = matrix_build_identity();
-    __matrix_inverse = undefined;
-    __matrix_x       = undefined;
-    __matrix_y       = undefined;
+    __matrixDirty   = true;
+    __matrix        = matrix_build_identity();
+    __matrixInverse = undefined;
+    __matrixX       = undefined;
+    __matrixY       = undefined;
     
     __layoutType         = SCRIBBLE_LAYOUT_NONE;
     __layoutMaxWidth     = infinity;
     __layoutMaxHeight    = infinity;
     __layoutForcePerChar = false;
-    __wrapNoPages      = false;
+    __wrapNoPages        = false;
     __layoutMaxScale     = 1;
     
     __clip = false;
@@ -79,11 +79,11 @@ function __ScribbleClassElementParent(_text) constructor
     __serial = false;
     __serialY = 0;
     
-    __scale_to_box_dirty    = true;
-    __scale_to_box_width    = 0;
-    __scale_to_box_height   = 0;
-    __scale_to_box_maximise = false;
-    __scale_to_box_scale    = undefined;
+    __scaleToBoxDirty    = true;
+    __scaleToBoxWidth    = 0;
+    __scaleToBoxHeight   = 0;
+    __scaleToBoxMaximize = false;
+    __scaleToBoxScale    = undefined;
     
     __lineHeight  = -1;
     __lineSpacing = "100%";
@@ -95,55 +95,55 @@ function __ScribbleClassElementParent(_text) constructor
     __template = undefined;
     
     __bezierArray = array_create(6, 0.0);
-    __bezier_using = false;
+    __bezierUsing = false;
     
-    __animation_time  = 0;
-    __animation_speed = 1;
+    __animationTime  = 0;
+    __animationSpeed = 1;
     
     __paddingL = 0;
     __paddingT = 0;
     __paddingR = 0;
     __paddingB = 0;
     
-    __sdf_shadow_colour   = c_black;
-    __sdf_shadow_alpha    = 0.0;
-    __sdf_shadow_xoffset  = 0;
-    __sdf_shadow_yoffset  = 0;
-    __sdf_shadow_softness = 0;
+    __sdfShadowColor    = c_black;
+    __sdfShadowAlpha    = 0.0;
+    __sdfShadowXOffset  = 0;
+    __sdfShadowYOffset  = 0;
+    __sdfShadowSoftness = 0;
     
-    __sdf_outline_colour    = c_black;
-    __sdf_outline_thickness = 0.0;
+    __sdfOutlineColor     = c_black;
+    __sdfOutlineThickness = 0.0;
     
     __bidiHint = undefined;
     
     __z = SCRIBBLE_DEFAULT_Z;
     
-    __region_active      = undefined;
-    __region_glyph_start = 0;
-    __region_glyph_end   = 0;
-    __region_colour      = c_black;
-    __region_blend       = 0.0;
+    __regionActive     = undefined;
+    __regionGlyphStart = 0;
+    __regionGlyphEnd   = 0;
+    __regionColor      = c_black;
+    __regionBlend      = 0.0;
     
     
     
-    __bbox_dirty       = true;
-    __bbox_matrix      = matrix_build_identity();
-    __bbox_raw_width   = 1;
-    __bbox_raw_height  = 1;
-    __bbox_aabb_left   = 0;
-    __bbox_aabb_top    = 0;
-    __bbox_aabb_right  = 0;
-    __bbox_aabb_bottom = 0;
-    __bbox_aabb_width  = 1;
-    __bbox_aabb_height = 1;
-    __bbox_obb_x0      = 0;
-    __bbox_obb_y0      = 0;
-    __bbox_obb_x1      = 0;
-    __bbox_obb_y1      = 0;
-    __bbox_obb_x2      = 0;
-    __bbox_obb_y2      = 0;
-    __bbox_obb_x3      = 0;
-    __bbox_obb_y3      = 0;
+    __bboxDirty      = true;
+    __bboxMatrix     = matrix_build_identity();
+    __bboxRawWidth   = 1;
+    __bboxRawHeight  = 1;
+    __bboxAABBLeft   = 0;
+    __bboxAABBTop    = 0;
+    __bboxAABBRight  = 0;
+    __bboxAABBBottom = 0;
+    __bboxAABBWidth  = 1;
+    __bboxAABBHeight = 1;
+    __bboxOOBx0      = 0;
+    __bboxOOBy0      = 0;
+    __bboxOOBx1      = 0;
+    __bboxOOBy1      = 0;
+    __bboxOOBx2      = 0;
+    __bboxOOBy2      = 0;
+    __bboxOOBx3      = 0;
+    __bboxOOBy3      = 0;
     
     
     
@@ -224,7 +224,7 @@ function __ScribbleClassElementParent(_text) constructor
         if (_hAlign != __startingHAlign)
         {
             __modelDirty = true;
-            __bbox_dirty             = true;
+            __bboxDirty  = true;
             
             __startingHAlign = _hAlign;
         }
@@ -232,7 +232,7 @@ function __ScribbleClassElementParent(_text) constructor
         if (_vAlign != __startingVAlign)
         {
             __modelDirty = true;
-            __bbox_dirty             = true;
+            __bboxDirty  = true;
             
             __startingVAlign = _vAlign;
         }
@@ -246,8 +246,8 @@ function __ScribbleClassElementParent(_text) constructor
     {
         _color = __ScribbleProcessColor(_color);
         
-        if (_color != undefined) __blend_colour = _color & 0xFFFFFF;
-        if (_alpha  != undefined) __blend_alpha  = clamp(_alpha, 0, 1);
+        if (_color != undefined) __blendColor = _color & 0xFFFFFF;
+        if (_alpha != undefined) __blendAlpha = clamp(_alpha, 0, 1);
         
         return self;
     }
@@ -258,8 +258,8 @@ function __ScribbleClassElementParent(_text) constructor
     {
         _color = __ScribbleProcessColor(_color);
         
-        __gradient_colour = _color & 0xFFFFFF;
-        __gradient_alpha  = _alpha;
+        __gradientColor = _color & 0xFFFFFF;
+        __gradientAlpha = _alpha;
         
         return self;
     }
@@ -270,8 +270,8 @@ function __ScribbleClassElementParent(_text) constructor
     {
         _color = __ScribbleProcessColor(_color);
         
-        __flash_colour = _color & 0xFFFFFF;
-        __flash_alpha  = _alpha;
+        __flashColor = _color & 0xFFFFFF;
+        __flashAlpha = _alpha;
         
         return self;
     }
@@ -294,7 +294,7 @@ function __ScribbleClassElementParent(_text) constructor
             
             if (__layoutType == SCRIBBLE_LAYOUT_SCALE)
             {
-                __scale_to_box_dirty = true;
+                __scaleToBoxDirty = true;
             }
             else
             {
@@ -355,7 +355,7 @@ function __ScribbleClassElementParent(_text) constructor
         {
             __layoutType         = SCRIBBLE_LAYOUT_WRAP;
             __layoutForcePerChar = _forcePerChar;
-            __modelDirty        = true;
+            __modelDirty         = true;
         }
         
         return self;
@@ -798,13 +798,13 @@ function __ScribbleClassElementParent(_text) constructor
     /// @param yOffset
     static origin = function(_x, _y)
     {
-        if ((__origin_x != _x) || (__origin_y != _y))
+        if ((__originX != _x) || (__originY != _y))
         {
-            __matrix_dirty = true;
-            __bbox_dirty   = true;
+            __matrixDirty = true;
+            __bboxDirty   = true;
             
-            __origin_x = _x;
-            __origin_y = _y;
+            __originX = _x;
+            __originY = _y;
         }
         
         return self;
@@ -813,16 +813,16 @@ function __ScribbleClassElementParent(_text) constructor
     /// @param xScale
     /// @param [yScale=xScale]
     /// @param [angle=0]
-    static transform = function(_xscale, _yscale = _xscale, _angle = 0)
+    static transform = function(_xScale, _yScale = _xScale, _angle = 0)
     {
-        if ((__post_xscale != _xscale) || (__post_yscale != _yscale) || (__post_angle != _angle))
+        if ((__postXScale != _xScale) || (__postYScale != _yScale) || (__postAngle != _angle))
         {
-            __matrix_dirty = true;
-            __bbox_dirty   = true;
+            __matrixDirty = true;
+            __bboxDirty   = true;
             
-            __post_xscale = _xscale;
-            __post_yscale = _yscale;
-            __post_angle  = _angle;
+            __postXScale = _xScale;
+            __postYScale = _yScale;
+            __postAngle  = _angle;
         }
         
         return self;
@@ -836,7 +836,7 @@ function __ScribbleClassElementParent(_text) constructor
         ||  (__spritesDontScale != _spritesDontScale))
         {
             __modelDirty = true;
-            __bbox_dirty             = true;
+            __bboxDirty  = true;
             
             __preScale = _scale;
             __spritesDontScale = _spritesDontScale;
@@ -847,8 +847,8 @@ function __ScribbleClassElementParent(_text) constructor
     
     static skew = function(_skew_x, _skew_y)
     {
-        __skew_x = _skew_x;
-        __skew_y = _skew_y;
+        __skewX = _skew_x;
+        __skewY = _skew_y;
         
         return self;
     }
@@ -885,10 +885,10 @@ function __ScribbleClassElementParent(_text) constructor
     {
         if ((_l != __paddingL) || (_t != __paddingT) || (_r != __paddingR) || (_b != __paddingB))
         {
-            __modelDirty = true;
-            __matrix_dirty           = true;
-            __bbox_dirty             = true;
-            __scale_to_box_dirty     = true;
+            __modelDirty      = true;
+            __matrixDirty     = true;
+            __bboxDirty       = true;
+            __scaleToBoxDirty = true;
             
             __paddingL = _l;
             __paddingT = _t;
@@ -904,10 +904,10 @@ function __ScribbleClassElementParent(_text) constructor
     {
         if (__visualBboxes != _state)
         {
-            __modelDirty = true;
-            __matrix_dirty           = true;
-            __bbox_dirty             = true;
-            __scale_to_box_dirty     = true;
+            __modelDirty      = true;
+            __matrixDirty     = true;
+            __bboxDirty       = true;
+            __scaleToBoxDirty = true;
             
             __visualBboxes = _state;
         }
@@ -959,9 +959,9 @@ function __ScribbleClassElementParent(_text) constructor
         
         if (!array_equals(__bezierArray, _bezierArray))
         {
-            __modelDirty = true;
+            __modelDirty  = true;
             __bezierArray = _bezierArray;
-            __bezier_using = true;
+            __bezierUsing = true;
         }
         
         return self;
@@ -971,17 +971,17 @@ function __ScribbleClassElementParent(_text) constructor
     {
         if (_state == undefined)
         {
-            var _new_bidi_hint = undefined;
+            var _newBidiHint = undefined;
         }
         else
         {
-            var _new_bidi_hint = _state? __SCRIBBLE_BIDI_R2L : __SCRIBBLE_BIDI_L2R;
+            var _newBidiHint = _state? __SCRIBBLE_BIDI_R2L : __SCRIBBLE_BIDI_L2R;
         }
         
-        if (__bidiHint != _new_bidi_hint)
+        if (__bidiHint != _newBidiHint)
         {
             __modelDirty = true;
-            __bidiHint = _new_bidi_hint;
+            __bidiHint = _newBidiHint;
         }
         
         return self;
@@ -993,36 +993,36 @@ function __ScribbleClassElementParent(_text) constructor
     
     #region Regions
     
-    static region_detect = function(_element_x, _element_y, _pointer_x, _pointer_y)
+    static region_detect = function(_elementX, _elementY, _pointerX, _pointerY)
     {
         var _model = __EnsureModel();
-        if (!is_struct(_model)) return undefined;
+        if (not is_struct(_model)) return undefined;
         
-        var _page         = _model.__pagesArray[__page];
-        var _region_array = _page.__regionArray;
+        var _page        = _model.__pagesArray[__page];
+        var _regionArray = _page.__regionArray;
         
-        var _matrix = __update_matrix(_model, _element_x, _element_y);
+        var _matrix = __UpdateMatrix(_model, _elementX, _elementY);
         
-        if (__matrix_inverse == undefined)
+        if (__matrixInverse == undefined)
         {
-            __matrix_inverse = __ScribbleMatrixInverse(matrix_multiply(_matrix, matrix_get(matrix_world)));
+            __matrixInverse = __ScribbleMatrixInverse(matrix_multiply(_matrix, matrix_get(matrix_world)));
         }
         
-        var _vector = matrix_transform_vertex(__matrix_inverse, _pointer_x, _pointer_y, 0);
+        var _vector = matrix_transform_vertex(__matrixInverse, _pointerX, _pointerY, 0);
         var _x = _vector[0];
         var _y = _vector[1];
         
         var _found = undefined;
-        var _i = array_length(_region_array)-1;
+        var _i = array_length(_regionArray)-1;
         repeat(_i+1)
         {
-            var _region = _region_array[_i];
-            var _bbox_array = _region.bboxArray;
+            var _region = _regionArray[_i];
+            var _bboxArray = _region.bboxArray;
             
             var _j = 0;
-            repeat(array_length(_bbox_array))
+            repeat(array_length(_bboxArray))
             {
-                var _bbox = _bbox_array[_j];
+                var _bbox = _bboxArray[_j];
                 if ((_x >= _bbox.x1) && (_y >= _bbox.y1) && (_x <= _bbox.x2) && (_y <= _bbox.y2))
                 {
                     _found = _region.name;
@@ -1043,31 +1043,31 @@ function __ScribbleClassElementParent(_text) constructor
     {
         if (!is_string(_name))
         {
-            __region_active      = undefined;
-            __region_glyph_start = 0;
-            __region_glyph_end   = 0;
-            __region_colour      = c_black;
-            __region_blend       = 0.0;
+            __regionActive     = undefined;
+            __regionGlyphStart = 0;
+            __regionGlyphEnd   = 0;
+            __regionColor      = c_black;
+            __regionBlend      = 0.0;
             return;
         }
         
         var _model = __EnsureModel();
-        if (!is_struct(_model)) return undefined;
+        if (not is_struct(_model)) return undefined;
         
-        var _page         = _model.__pagesArray[__page];
-        var _region_array = _page.__regionArray;
+        var _page        = _model.__pagesArray[__page];
+        var _regionArray = _page.__regionArray;
         
         var _i = 0;
-        repeat(array_length(_region_array))
+        repeat(array_length(_regionArray))
         {
-            var _region = _region_array[_i];
+            var _region = _regionArray[_i];
             if (_region.name == _name)
             {
-                __region_active      = _name;
-                __region_glyph_start = _region.startGlyph;
-                __region_glyph_end   = _region.endGlyph;
-                __region_colour      = _color;
-                __region_blend       = _blend_amount;
+                __regionActive     = _name;
+                __regionGlyphStart = _region.startGlyph;
+                __regionGlyphEnd   = _region.endGlyph;
+                __regionColor      = _color;
+                __regionBlend      = _blend_amount;
                 return self;
             }
             
@@ -1079,7 +1079,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     static region_get_active = function()
     {
-        return __region_active;
+        return __regionActive;
     }
     
     static region_clear = function()
@@ -1093,7 +1093,7 @@ function __ScribbleClassElementParent(_text) constructor
         static _emptyArray = [];
         
         var _model = __EnsureModel();
-        if (!is_struct(_model)) return _emptyArray;
+        if (not is_struct(_model)) return _emptyArray;
         
         return _model.__pagesArray[__page].__regionArray;
     }
@@ -1101,28 +1101,28 @@ function __ScribbleClassElementParent(_text) constructor
     static region_draw = function(_elementX, _elementY, _name, _padding = 0, _sprite = sprScribbleFallbackDot, _image = 0, _color = c_white, _alpha = 1)
     {
         var _model = __EnsureModel();
-        if (!is_struct(_model)) return undefined;
+        if (not is_struct(_model)) return undefined;
         
-        var _page         = _model.__pagesArray[__page];
-        var _region_array = _page.__regionArray;
+        var _page        = _model.__pagesArray[__page];
+        var _regionArray = _page.__regionArray;
         
         var _i = 0;
-        repeat(array_length(_region_array))
+        repeat(array_length(_regionArray))
         {
-            var _region = _region_array[_i];
+            var _region = _regionArray[_i];
             if (_region.name == _name)
             {
-                var _old_matrix = matrix_get(matrix_world);
-                var _matrix = matrix_multiply(__update_matrix(_model, _elementX, _elementY), _old_matrix);
+                var _oldMatrix = matrix_get(matrix_world); //FIXME - Use a stack here
+                var _matrix = matrix_multiply(__UpdateMatrix(_model, _elementX, _elementY), _oldMatrix);
                 matrix_set(matrix_world, _matrix);
                 
                 //TODO - Make regions a class and move this code to a method?
                 
-                var _bbox_array = _region.bboxArray;
+                var _bboxArray = _region.bboxArray;
                 var _j = 0;
-                repeat(array_length(_bbox_array))
+                repeat(array_length(_bboxArray))
                 {
-                    var _bbox = _bbox_array[_j];
+                    var _bbox = _bboxArray[_j];
                     draw_sprite_stretched_ext(_sprite, _image,
                                               _bbox.x1 - _padding, _bbox.y1 - _padding,
                                               1 + _bbox.x2 - _bbox.x1 + 2*_padding, 1 + _bbox.y2 - _bbox.y1 + 2*_padding,
@@ -1131,7 +1131,7 @@ function __ScribbleClassElementParent(_text) constructor
                 }
                 
                 //Make sure we reset the world matrix
-                matrix_set(matrix_world, _old_matrix);
+                matrix_set(matrix_world, _oldMatrix);
                 shader_reset();
                 
                 return self;
@@ -1149,164 +1149,164 @@ function __ScribbleClassElementParent(_text) constructor
     
     #region Dimensions
     
-    static __update_bbox_matrix = function()
+    static __UpdateBboxMatrix = function()
     {
-        __update_scale_to_box_scale();
+        __UpdateScaleToBoxScale();
         
-        if (__bbox_dirty)
+        if (__bboxDirty)
         {
-            __bbox_dirty = false;
-            var _bbox_matrix = __bbox_matrix;
+            __bboxDirty = false;
+            var _bboxMatrix = __bboxMatrix;
             
             var _model = __EnsureModel();
-            if (!is_struct(_model))
+            if (not is_struct(_model))
             {
-                _bbox_matrix[@  0] = 1;
-                _bbox_matrix[@  1] = 0;
-                _bbox_matrix[@  4] = 0;
-                _bbox_matrix[@  5] = 1;
-                _bbox_matrix[@ 12] = -__origin_x;
-                _bbox_matrix[@ 13] = -__origin_y;
+                _bboxMatrix[@  0] = 1;
+                _bboxMatrix[@  1] = 0;
+                _bboxMatrix[@  4] = 0;
+                _bboxMatrix[@  5] = 1;
+                _bboxMatrix[@ 12] = -__originX;
+                _bboxMatrix[@ 13] = -__originY;
                 
-                __bbox_aabb_left   = 0;
-                __bbox_aabb_top    = 0;
-                __bbox_aabb_right  = 0;
-                __bbox_aabb_bottom = 0;
-                __bbox_obb_x0      = 0;
-                __bbox_obb_y0      = 0;
-                __bbox_obb_x1      = 0;
-                __bbox_obb_y1      = 0;
-                __bbox_obb_x2      = 0;
-                __bbox_obb_y2      = 0;
-                __bbox_obb_x3      = 0;
-                __bbox_obb_y3      = 0;
+                __bboxAABBLeft   = 0;
+                __bboxAABBTop    = 0;
+                __bboxAABBRight  = 0;
+                __bboxAABBBottom = 0;
+                __bboxOOBx0      = 0;
+                __bboxOOBy0      = 0;
+                __bboxOOBx1      = 0;
+                __bboxOOBy1      = 0;
+                __bboxOOBx2      = 0;
+                __bboxOOBy2      = 0;
+                __bboxOOBx3      = 0;
+                __bboxOOBy3      = 0;
                 return;
             }
             
-            var _xscale = __scale_to_box_scale*_model.__fitScale*__post_xscale;
-            var _yscale = __scale_to_box_scale*_model.__fitScale*__post_yscale;
+            var _xScale = __scaleToBoxScale*_model.__fitScale*__postXScale;
+            var _yScale = __scaleToBoxScale*_model.__fitScale*__postYScale;
             
             //Left/top padding is baked into the model
             var _bbox = _model.__GetBbox(SCRIBBLE_BOUNDING_BOX_USES_PAGE? __page : undefined, __paddingL, __paddingT, __paddingR, __paddingB);
             
-            __bbox_raw_width  = 1 + _bbox.right - _bbox.left;
-            __bbox_raw_height = 1 + _bbox.bottom - _bbox.top;
+            __bboxRawWidth  = 1 + _bbox.right - _bbox.left;
+            __bboxRawHeight = 1 + _bbox.bottom - _bbox.top;
             
-            if ((_xscale == 1) && (_yscale == 1) && (__post_angle == 0))
+            if ((_xScale == 1) && (_yScale == 1) && (__postAngle == 0))
             {
-                _bbox_matrix[@  0] = 1;
-                _bbox_matrix[@  1] = 0;
-                _bbox_matrix[@  4] = 0;
-                _bbox_matrix[@  5] = 1;
-                _bbox_matrix[@ 12] = -__origin_x;
-                _bbox_matrix[@ 13] = -__origin_y;
+                _bboxMatrix[@  0] = 1;
+                _bboxMatrix[@  1] = 0;
+                _bboxMatrix[@  4] = 0;
+                _bboxMatrix[@  5] = 1;
+                _bboxMatrix[@ 12] = -__originX;
+                _bboxMatrix[@ 13] = -__originY;
                 
                 //Avoid using matrices if we can
-                __bbox_aabb_left   = -__origin_x + _bbox.left;
-                __bbox_aabb_top    = -__origin_y + _bbox.top;
-                __bbox_aabb_right  = -__origin_x + _bbox.right;
-                __bbox_aabb_bottom = -__origin_y + _bbox.bottom;
+                __bboxAABBLeft   = -__originX + _bbox.left;
+                __bboxAABBTop    = -__originY + _bbox.top;
+                __bboxAABBRight  = -__originX + _bbox.right;
+                __bboxAABBBottom = -__originY + _bbox.bottom;
                 
-                __bbox_obb_x0 = __bbox_aabb_left;   __bbox_obb_y0 = __bbox_aabb_top;
-                __bbox_obb_x1 = __bbox_aabb_right;  __bbox_obb_y1 = __bbox_aabb_top;
-                __bbox_obb_x2 = __bbox_aabb_left;   __bbox_obb_y2 = __bbox_aabb_bottom;
-                __bbox_obb_x3 = __bbox_aabb_right;  __bbox_obb_y3 = __bbox_aabb_bottom;
+                __bboxOOBx0 = __bboxAABBLeft;   __bboxOOBy0 = __bboxAABBTop;
+                __bboxOOBx1 = __bboxAABBRight;  __bboxOOBy1 = __bboxAABBTop;
+                __bboxOOBx2 = __bboxAABBLeft;   __bboxOOBy2 = __bboxAABBBottom;
+                __bboxOOBx3 = __bboxAABBRight;  __bboxOOBy3 = __bboxAABBBottom;
             }
             else
             {
-                var  _sin = dsin(-__post_angle);
-                var  _cos = dcos(-__post_angle);
-                var _xSin = _xscale*_sin;
-                var _xCos = _xscale*_cos;
-                var _ySin = _yscale*_sin;
-                var _yCos = _yscale*_cos;
+                var  _sin = dsin(-__postAngle);
+                var  _cos = dcos(-__postAngle);
+                var _xSin = _xScale*_sin;
+                var _xCos = _xScale*_cos;
+                var _ySin = _yScale*_sin;
+                var _yCos = _yScale*_cos;
                 
-                _bbox_matrix[@  0] =  _xCos;
-                _bbox_matrix[@  1] =  _xSin;
-                _bbox_matrix[@  4] = -_ySin;
-                _bbox_matrix[@  5] =  _yCos;
-                _bbox_matrix[@ 12] = -(__origin_x*_xCos - __origin_y*_ySin);
-                _bbox_matrix[@ 13] = -(__origin_x*_xSin + __origin_y*_yCos);
+                _bboxMatrix[@  0] =  _xCos;
+                _bboxMatrix[@  1] =  _xSin;
+                _bboxMatrix[@  4] = -_ySin;
+                _bboxMatrix[@  5] =  _yCos;
+                _bboxMatrix[@ 12] = -(__originX*_xCos - __originY*_ySin);
+                _bboxMatrix[@ 13] = -(__originX*_xSin + __originY*_yCos);
                 
                 var _l = _bbox.left;
                 var _t = _bbox.top;
                 var _r = _bbox.right;
                 var _b = _bbox.bottom;
                 
-                var _vertex = matrix_transform_vertex(__bbox_matrix, _l, _t, 0); __bbox_obb_x0 = _vertex[0]; __bbox_obb_y0 = _vertex[1];
-                var _vertex = matrix_transform_vertex(__bbox_matrix, _r, _t, 0); __bbox_obb_x1 = _vertex[0]; __bbox_obb_y1 = _vertex[1];
-                var _vertex = matrix_transform_vertex(__bbox_matrix, _l, _b, 0); __bbox_obb_x2 = _vertex[0]; __bbox_obb_y2 = _vertex[1];
-                var _vertex = matrix_transform_vertex(__bbox_matrix, _r, _b, 0); __bbox_obb_x3 = _vertex[0]; __bbox_obb_y3 = _vertex[1];
+                var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _t, 0); __bboxOOBx0 = _vertex[0]; __bboxOOBy0 = _vertex[1];
+                var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _t, 0); __bboxOOBx1 = _vertex[0]; __bboxOOBy1 = _vertex[1];
+                var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _b, 0); __bboxOOBx2 = _vertex[0]; __bboxOOBy2 = _vertex[1];
+                var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _b, 0); __bboxOOBx3 = _vertex[0]; __bboxOOBy3 = _vertex[1];
                 
-                __bbox_aabb_left   = min(__bbox_obb_x0, __bbox_obb_x1, __bbox_obb_x2, __bbox_obb_x3);
-                __bbox_aabb_top    = min(__bbox_obb_y0, __bbox_obb_y1, __bbox_obb_y2, __bbox_obb_y3);
-                __bbox_aabb_right  = max(__bbox_obb_x0, __bbox_obb_x1, __bbox_obb_x2, __bbox_obb_x3);
-                __bbox_aabb_bottom = max(__bbox_obb_y0, __bbox_obb_y1, __bbox_obb_y2, __bbox_obb_y3);
+                __bboxAABBLeft   = min(__bboxOOBx0, __bboxOOBx1, __bboxOOBx2, __bboxOOBx3);
+                __bboxAABBTop    = min(__bboxOOBy0, __bboxOOBy1, __bboxOOBy2, __bboxOOBy3);
+                __bboxAABBRight  = max(__bboxOOBx0, __bboxOOBx1, __bboxOOBx2, __bboxOOBx3);
+                __bboxAABBBottom = max(__bboxOOBy0, __bboxOOBy1, __bboxOOBy2, __bboxOOBy3);
             }
             
-            __bbox_aabb_width  = 1 + __bbox_aabb_right - __bbox_aabb_left;
-            __bbox_aabb_height = 1 + __bbox_aabb_bottom - __bbox_aabb_top;
+            __bboxAABBWidth  = 1 + __bboxAABBRight - __bboxAABBLeft;
+            __bboxAABBHeight = 1 + __bboxAABBBottom - __bboxAABBTop;
         }
     }
     
     static get_left = function(_x = 0)
     {
-        __update_bbox_matrix();
-        return __bbox_aabb_left + _x;
+        __UpdateBboxMatrix();
+        return __bboxAABBLeft + _x;
     }
     
     static get_top = function(_y = 0)
     {
-        __update_bbox_matrix();
-        return __bbox_aabb_top + _y;
+        __UpdateBboxMatrix();
+        return __bboxAABBTop + _y;
     }
     
     static get_right = function(_x = 0)
     {
-        __update_bbox_matrix();
-        return __bbox_aabb_right + _x;
+        __UpdateBboxMatrix();
+        return __bboxAABBRight + _x;
     }
     
     static get_bottom = function(_y = 0)
     {
-        __update_bbox_matrix();
-        return __bbox_aabb_bottom + _y;
+        __UpdateBboxMatrix();
+        return __bboxAABBBottom + _y;
     }
     
     static get_width = function()
     {
-        __update_bbox_matrix();
-        return __bbox_raw_width;
+        __UpdateBboxMatrix();
+        return __bboxRawWidth;
     }
     
     static get_height = function()
     {
-        __update_bbox_matrix();
-        return __bbox_raw_height;
+        __UpdateBboxMatrix();
+        return __bboxRawHeight;
     }
     
     /// @param x
     /// @param y
     static get_bbox = function(_x = 0, _y = 0)
     {
-        __update_bbox_matrix();
+        __UpdateBboxMatrix();
         
         return {
             x: _x,
             y: _y,
             
-            left:   _x + __bbox_aabb_left,
-            top:    _y + __bbox_aabb_top,
-            right:  _x + __bbox_aabb_right,
-            bottom: _y + __bbox_aabb_bottom,
+            left:   _x + __bboxAABBLeft,
+            top:    _y + __bboxAABBTop,
+            right:  _x + __bboxAABBRight,
+            bottom: _y + __bboxAABBBottom,
             
-            width:  __bbox_aabb_width,
-            height: __bbox_aabb_height,
+            width:  __bboxAABBWidth,
+            height: __bboxAABBHeight,
             
-            x0: _x + __bbox_obb_x0,  y0: _y + __bbox_obb_y0,
-            x1: _x + __bbox_obb_x1,  y1: _y + __bbox_obb_y1,
-            x2: _x + __bbox_obb_x2,  y2: _y + __bbox_obb_y2,
-            x3: _x + __bbox_obb_x3,  y3: _y + __bbox_obb_y3
+            x0: _x + __bboxOOBx0,  y0: _y + __bboxOOBy0,
+            x1: _x + __bboxOOBx1,  y1: _y + __bboxOOBy1,
+            x2: _x + __bboxOOBx2,  y2: _y + __bboxOOBy2,
+            x3: _x + __bboxOOBx3,  y3: _y + __bboxOOBy3
         };
     }
     
@@ -1350,17 +1350,17 @@ function __ScribbleClassElementParent(_text) constructor
             var _bbox = _model.__GetBboxRevealed(__page, 0, __tw_reveal, __paddingL, __paddingT, __paddingR, __paddingB);
         }
         
-        __update_bbox_matrix();
-        var _xscale = __scale_to_box_scale*_model.__fitScale*__post_xscale;
-        var _yscale = __scale_to_box_scale*_model.__fitScale*__post_yscale;
+        __UpdateBboxMatrix();
+        var _xScale = __scaleToBoxScale*_model.__fitScale*__postXScale;
+        var _yScale = __scaleToBoxScale*_model.__fitScale*__postYScale;
         
-        if ((_xscale == 1) && (_yscale == 1) && (__post_angle == 0))
+        if ((_xScale == 1) && (_yScale == 1) && (__postAngle == 0))
         {
             //Avoid using matrices if we can
-            var _l = _x - __origin_x + _bbox.left;
-            var _t = _y - __origin_y + _bbox.top;
-            var _r = _x - __origin_x + _bbox.right;
-            var _b = _y - __origin_y + _bbox.bottom;
+            var _l = _x - __originX + _bbox.left;
+            var _t = _y - __originY + _bbox.top;
+            var _r = _x - __originX + _bbox.right;
+            var _b = _y - __originY + _bbox.bottom;
                 
             var _x0 = _l;   var _y0 = _t;
             var _x1 = _r;   var _y1 = _t;
@@ -1374,10 +1374,10 @@ function __ScribbleClassElementParent(_text) constructor
             var _r = _bbox.right;
             var _b = _bbox.bottom;
                 
-            var _vertex = matrix_transform_vertex(__bbox_matrix, _l, _t, 0); var _x0 = _x + _vertex[0]; var _y0 = _y + _vertex[1];
-            var _vertex = matrix_transform_vertex(__bbox_matrix, _r, _t, 0); var _x1 = _x + _vertex[0]; var _y1 = _y + _vertex[1];
-            var _vertex = matrix_transform_vertex(__bbox_matrix, _l, _b, 0); var _x2 = _x + _vertex[0]; var _y2 = _y + _vertex[1];
-            var _vertex = matrix_transform_vertex(__bbox_matrix, _r, _b, 0); var _x3 = _x + _vertex[0]; var _y3 = _y + _vertex[1];
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _t, 0); var _x0 = _x + _vertex[0]; var _y0 = _y + _vertex[1];
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _t, 0); var _x1 = _x + _vertex[0]; var _y1 = _y + _vertex[1];
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _b, 0); var _x2 = _x + _vertex[0]; var _y2 = _y + _vertex[1];
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _b, 0); var _x3 = _x + _vertex[0]; var _y3 = _y + _vertex[1];
                 
             var _l = min(_x0, _x1, _x2, _x3);
             var _t = min(_y0, _y1, _y2, _y3);
@@ -1408,7 +1408,7 @@ function __ScribbleClassElementParent(_text) constructor
     #region Pages
     
     /// @param page
-    static __set_page = function(_page)
+    static __SetPage = function(_page)
     {
         var _old_page = __page;
         
@@ -1437,7 +1437,7 @@ function __ScribbleClassElementParent(_text) constructor
         
         if (_old_page != __page)
         {
-            __bbox_dirty = true;
+            __bboxDirty = true;
             
             //Update our scroll limits if the user wants to clamp position
             if (__scrollWasClamped)
@@ -1463,7 +1463,7 @@ function __ScribbleClassElementParent(_text) constructor
     static get_page_count = function()
     {
         var _model = __EnsureModel();
-        if (!is_struct(_model)) return 0;
+        if (not is_struct(_model)) return 0;
         return _model.__GetPageCount();
     }
     
@@ -1481,7 +1481,7 @@ function __ScribbleClassElementParent(_text) constructor
     static get_wrapped = function()
     {
         var _model = __EnsureModel();
-        if (!is_struct(_model)) return false;
+        if (not is_struct(_model)) return false;
         return _model.__GetWrapped();
     }
     
@@ -1489,7 +1489,7 @@ function __ScribbleClassElementParent(_text) constructor
     static get_text = function(_page = __page)
     {
         var _model = __EnsureModel();
-        if (!is_struct(_model)) return "";
+        if (not is_struct(_model)) return "";
         return _model.__GetText(_page);
     }
     
@@ -1497,7 +1497,7 @@ function __ScribbleClassElementParent(_text) constructor
     static get_line_data = function(_index, _page = __page)
     {
         var _model = __EnsureModel();
-        if (!is_struct(_model)) return undefined;
+        if (not is_struct(_model)) return undefined;
         return _model.__GetLineData(_index, _page);
     }
     
@@ -1506,7 +1506,7 @@ function __ScribbleClassElementParent(_text) constructor
     static get_glyph_data = function(_index, _page = __page)
     {
         var _model = __EnsureModel();
-        if (!is_struct(_model)) return undefined;
+        if (not is_struct(_model)) return undefined;
         return _model.__GetGlyphData(_index, _page);
     }
     
@@ -1514,7 +1514,7 @@ function __ScribbleClassElementParent(_text) constructor
     static get_glyph_count = function(_page = __page)
     {
         var _model = __EnsureModel();
-        if (!is_struct(_model)) return 0;
+        if (not is_struct(_model)) return 0;
         return _model.__GetGlyphCount(_page);
     }
     
@@ -1522,7 +1522,7 @@ function __ScribbleClassElementParent(_text) constructor
     static get_line_count = function(_page = __page)
     {
         var _model = __EnsureModel();
-        if (!is_struct(_model)) return 0;
+        if (not is_struct(_model)) return 0;
         return _model.__GetLineCount(_page);
     }
     
@@ -1547,30 +1547,30 @@ function __ScribbleClassElementParent(_text) constructor
     
     static set_animation_time = function(_time)
     {
-        __animation_time = _time;
+        __animationTime = _time;
         return self;
     }
     
     static get_animation_time = function()
     {
-        return __animation_time;
+        return __animationTime;
     }
     
     static animation_speed = function(_speed)
     {
-        __animation_speed = _speed;
+        __animationSpeed = _speed;
         return self;
     }
     
     static get_animation_speed = function()
     {
-        return __animation_speed;
+        return __animationSpeed;
     }
     
     static is_animated = function()
     {
         var _model = __EnsureModel();
-        if (!is_struct(_model)) return false;
+        if (not is_struct(_model)) return false;
         
         return _model.__hasAnimation;
     }
@@ -1583,19 +1583,19 @@ function __ScribbleClassElementParent(_text) constructor
     
     static shadow = function(_color, _alpha)
     {
-        __sdf_shadow_colour   = _color;
-        __sdf_shadow_alpha    = _alpha;
-        __sdf_shadow_xoffset  = 0;
-        __sdf_shadow_yoffset  = 0;
-        __sdf_shadow_softness = 0;
+        __sdfShadowColor    = _color;
+        __sdfShadowAlpha    = _alpha;
+        __sdfShadowXOffset  = 0;
+        __sdfShadowYOffset  = 0;
+        __sdfShadowSoftness = 0;
         
         return self;
     }
     
     static outline = function(_color)
     {
-        __sdf_outline_colour    = _color;
-        __sdf_outline_thickness = 0;
+        __sdfOutlineColor     = _color;
+        __sdfOutlineThickness = 0;
         
         return self;
     }
@@ -1606,21 +1606,21 @@ function __ScribbleClassElementParent(_text) constructor
     
     #region SDF
     
-    static sdf_shadow = function(_color, _alpha, _xOffset, _y_offset, _softness = 0.25)
+    static sdf_shadow = function(_color, _alpha, _xOffset, _yOffset, _softness = 0.25)
     {
-        __sdf_shadow_colour   = _color;
-        __sdf_shadow_alpha    = _alpha;
-        __sdf_shadow_xoffset  = _xOffset;
-        __sdf_shadow_yoffset  = _y_offset;
-        __sdf_shadow_softness = max(0, _softness);
+        __sdfShadowColor    = _color;
+        __sdfShadowAlpha    = _alpha;
+        __sdfShadowXOffset  = _xOffset;
+        __sdfShadowYOffset  = _yOffset;
+        __sdfShadowSoftness = max(0, _softness);
         
         return self;
     }
     
     static sdf_outline = function(_color, _thickness)
     {
-        __sdf_outline_colour    = _color;
-        __sdf_outline_thickness = _thickness;
+        __sdfOutlineColor     = _color;
+        __sdfOutlineThickness = _thickness;
         
         return self;
     }
@@ -1643,10 +1643,10 @@ function __ScribbleClassElementParent(_text) constructor
     
     static refresh = function()
     {
-        __modelDirty         = true;
-        __matrix_dirty       = true;
-        __bbox_dirty         = true;
-        __scale_to_box_dirty = true;
+        __modelDirty      = true;
+        __matrixDirty     = true;
+        __bboxDirty       = true;
+        __scaleToBoxDirty = true;
         
         __EnsureModel();
         
@@ -1837,9 +1837,9 @@ function __ScribbleClassElementParent(_text) constructor
     {
         if (__modelDirty)
         {
-            __modelDirty         = false;
-            __bbox_dirty         = true;
-            __scale_to_box_dirty = true; //The dimensions of the text element might change as a result of a model change
+            __modelDirty      = false;
+            __bboxDirty       = true;
+            __scaleToBoxDirty = true; //The dimensions of the text element might change as a result of a model change
             
             var _model = __weakRef.__Refresh();
             
@@ -1877,12 +1877,12 @@ function __ScribbleClassElementParent(_text) constructor
         static _u_vOutlineColour           = shader_get_uniform(__shdScribble, "u_vOutlineColour"          );
         static _u_fOutlineThickness        = shader_get_uniform(__shdScribble, "u_fOutlineThickness"       );
         
-        static _scribbleState        = __ScribbleSystem().__state;
-        static _anim_properties_array = __ScribbleSystem().__animPropertiesArray;
+        static _scribbleState       = __ScribbleSystem().__state;
+        static _animPropertiesArray = __ScribbleSystem().__animPropertiesArray;
         
-        static _shader_uniforms_dirty    = true;
-        static _shader_set_to_use_bezier = false;
-        static _shader_uniforms_disabled = (function()
+        static _shaderUniformsDirty    = true;
+        static _shaderSetToUseBezier   = false;
+        static _shaderUniformsDisabled = (function()
         {
             var _array = array_create(__SCRIBBLE_ANIM_SIZE, 0);
             _array[__SCRIBBLE_ANIM_JITTER_MINIMUM] = 1;
@@ -1898,41 +1898,41 @@ function __ScribbleClassElementParent(_text) constructor
             gpu_set_tex_repeat_ext(_u_sCycle, true);
         }
         
-        shader_set_uniform_f(_u_fTime, __animation_time);
+        shader_set_uniform_f(_u_fTime, __animationTime);
         
         //TODO - Optimise
-        shader_set_uniform_f(_u_vColourBlend, colour_get_red(  __blend_colour)/255,
-                                              colour_get_green(__blend_colour)/255,
-                                              colour_get_blue( __blend_colour)/255,
-                                              __blend_alpha);
+        shader_set_uniform_f(_u_vColourBlend, colour_get_red(  __blendColor)/255,
+                                              colour_get_green(__blendColor)/255,
+                                              colour_get_blue( __blendColor)/255,
+                                              __blendAlpha);
         
-        if ((__gradient_alpha != 0) || (__skew_x != 0) || (__skew_y != 0) || (__flash_alpha != 0) || (__region_blend != 0))
+        if ((__gradientAlpha != 0) || (__skewX != 0) || (__skewY != 0) || (__flashAlpha != 0) || (__regionBlend != 0))
         {
-            _shader_uniforms_dirty = true;
+            _shaderUniformsDirty = true;
             
-            shader_set_uniform_f(_u_vGradient, colour_get_red(  __gradient_colour)/255,
-                                               colour_get_green(__gradient_colour)/255,
-                                               colour_get_blue( __gradient_colour)/255,
-                                               __gradient_alpha);
+            shader_set_uniform_f(_u_vGradient, colour_get_red(  __gradientColor)/255,
+                                               colour_get_green(__gradientColor)/255,
+                                               colour_get_blue( __gradientColor)/255,
+                                               __gradientAlpha);
             
-            shader_set_uniform_f(_u_vSkew, __skew_x, __skew_y);
+            shader_set_uniform_f(_u_vSkew, __skewX, __skewY);
             
-            shader_set_uniform_f(_u_vFlash, colour_get_red(  __flash_colour)/255,
-                                            colour_get_green(__flash_colour)/255,
-                                            colour_get_blue( __flash_colour)/255,
-                                            __flash_alpha);
+            shader_set_uniform_f(_u_vFlash, colour_get_red(  __flashColor)/255,
+                                            colour_get_green(__flashColor)/255,
+                                            colour_get_blue( __flashColor)/255,
+                                            __flashAlpha);
             
             //FIXME - Regions use reveal index
-            shader_set_uniform_f(_u_vRegionActive, __region_glyph_start, __region_glyph_end);
+            shader_set_uniform_f(_u_vRegionActive, __regionGlyphStart, __regionGlyphEnd);
             
-            shader_set_uniform_f(_u_vRegionColour, colour_get_red(  __region_colour)/255,
-                                                   colour_get_green(__region_colour)/255,
-                                                   colour_get_blue( __region_colour)/255,
-                                                   __region_blend);
+            shader_set_uniform_f(_u_vRegionColour, colour_get_red(  __regionColor)/255,
+                                                   colour_get_green(__regionColor)/255,
+                                                   colour_get_blue( __regionColor)/255,
+                                                   __regionBlend);
         }
-        else if (_shader_uniforms_dirty)
+        else if (_shaderUniformsDirty)
         {
-            _shader_uniforms_dirty = false;
+            _shaderUniformsDirty = false;
             
             shader_set_uniform_f(_u_vGradient, 0, 0, 0, 0);
             shader_set_uniform_f(_u_vSkew, 0, 0);
@@ -1948,37 +1948,37 @@ function __ScribbleClassElementParent(_text) constructor
             {
                 __shaderAnimDesync  = false;
                 __shaderAnimDefault = __shaderAnimDesyncToDefault;
-                shader_set_uniform_f_array(_u_aDataFields, __shaderAnimDisabled? _shader_uniforms_disabled : _anim_properties_array);
+                shader_set_uniform_f_array(_u_aDataFields, __shaderAnimDisabled? _shaderUniformsDisabled : _animPropertiesArray);
             }
         }
         
-        if (__bezier_using)
+        if (__bezierUsing)
         {
             //If we're using a Bezier curve for this element, push that value into the shader
-            _shader_set_to_use_bezier = true;
+            _shaderSetToUseBezier = true;
             shader_set_uniform_f_array(_u_aBezier, __bezierArray);
         }
-        else if (_shader_set_to_use_bezier)
+        else if (_shaderSetToUseBezier)
         {
             //If we're *not* using a Bezier curve but we have a previous Bezier curve cached, reset the curve in the shader
-            _shader_set_to_use_bezier = false;
+            _shaderSetToUseBezier = false;
             
             static _null_array = array_create(6, 0);
             shader_set_uniform_f_array(_u_aBezier, _null_array);
         }
         
-        shader_set_uniform_f(_u_vShadowOffsetAndSoftness, __sdf_shadow_xoffset, __sdf_shadow_yoffset, __sdf_shadow_softness);
+        shader_set_uniform_f(_u_vShadowOffsetAndSoftness, __sdfShadowXOffset, __sdfShadowYOffset, __sdfShadowSoftness);
         
-        shader_set_uniform_f(_u_vShadowColour, colour_get_red(  __sdf_shadow_colour)/255,
-                                               colour_get_green(__sdf_shadow_colour)/255,
-                                               colour_get_blue( __sdf_shadow_colour)/255,
-                                               __sdf_shadow_alpha);
+        shader_set_uniform_f(_u_vShadowColour, colour_get_red(  __sdfShadowColor)/255,
+                                               colour_get_green(__sdfShadowColor)/255,
+                                               colour_get_blue( __sdfShadowColor)/255,
+                                               __sdfShadowAlpha);
         
-        shader_set_uniform_f(_u_vOutlineColour,colour_get_red(  __sdf_outline_colour)/255,
-                                               colour_get_green(__sdf_outline_colour)/255,
-                                               colour_get_blue( __sdf_outline_colour)/255);
+        shader_set_uniform_f(_u_vOutlineColour,colour_get_red(  __sdfOutlineColor)/255,
+                                               colour_get_green(__sdfOutlineColor)/255,
+                                               colour_get_blue( __sdfOutlineColor)/255);
         
-        shader_set_uniform_f(_u_fOutlineThickness, __sdf_outline_thickness);
+        shader_set_uniform_f(_u_fOutlineThickness, __sdfOutlineThickness);
     }
     
     static __SetRevealUniforms = function(_revealIndex)
@@ -2015,80 +2015,80 @@ function __ScribbleClassElementParent(_text) constructor
         }
     }
     
-    static __update_scale_to_box_scale = function()
+    static __UpdateScaleToBoxScale = function()
     {
-        if (!__scale_to_box_dirty) return;
-        __scale_to_box_dirty = false;
+        if (!__scaleToBoxDirty) return;
+        __scaleToBoxDirty = false;
         
         var _model = __EnsureModel();
-        if (!is_struct(_model)) return undefined;
+        if (not is_struct(_model)) return undefined;
         
-        var _xscale = 1.0;
-        var _yscale = 1.0;
-        if (__scale_to_box_width  > 0) _xscale = __scale_to_box_width  / (_model.__GetWidth()  + __paddingL + __paddingR);
-        if (__scale_to_box_height > 0) _yscale = __scale_to_box_height / (_model.__GetHeight() + __paddingT + __paddingB);
+        var _xScale = 1.0;
+        var _yScale = 1.0;
+        if (__scaleToBoxWidth  > 0) _xScale = __scaleToBoxWidth  / (_model.__GetWidth()  + __paddingL + __paddingR);
+        if (__scaleToBoxHeight > 0) _yScale = __scaleToBoxHeight / (_model.__GetHeight() + __paddingT + __paddingB);
         
-        var _previous_scale_to_box_scale = __scale_to_box_scale;
-        __scale_to_box_scale = min(_xscale, _yscale);
-        if (!__scale_to_box_maximise) __scale_to_box_scale = min(1, __scale_to_box_scale);
+        var _prevScaleToBoxScale = __scaleToBoxScale;
+        __scaleToBoxScale = min(_xScale, _yScale);
+        if (!__scaleToBoxMaximize) __scaleToBoxScale = min(1, __scaleToBoxScale);
         
-        if (__scale_to_box_scale != _previous_scale_to_box_scale)
+        if (__scaleToBoxScale != _prevScaleToBoxScale)
         {
-            __matrix_dirty = true;
-            __bbox_dirty   = true;
+            __matrixDirty = true;
+            __bboxDirty   = true;
         }
     }
     
-    static __update_matrix = function(_model, _x, _y)
+    static __UpdateMatrix = function(_model, _x, _y)
     {
-        __update_scale_to_box_scale();
+        __UpdateScaleToBoxScale();
         
-        if (__matrix_dirty || (__matrix_x != _x) || (__matrix_y != _y))
+        if (__matrixDirty || (__matrixX != _x) || (__matrixY != _y))
         {
-            __matrix_dirty   = false;
-            __matrix_inverse = undefined;
-            __matrix_x       = _x;
-            __matrix_y       = _y;
+            __matrixDirty   = false;
+            __matrixInverse = undefined;
+            __matrixX       = _x;
+            __matrixY       = _y;
             
-            var _xOffset = -__origin_x;
-            var _y_offset = -__origin_y;
-            var _xscale   = __scale_to_box_scale*_model.__fitScale*__post_xscale;
-            var _yscale   = __scale_to_box_scale*_model.__fitScale*__post_yscale;
-            var _angle    = __post_angle;
+            var _xOffset = -__originX;
+            var _yOffset = -__originY;
+            var _xScale  = __scaleToBoxScale*_model.__fitScale*__postXScale;
+            var _yScale  = __scaleToBoxScale*_model.__fitScale*__postYScale;
+            var _angle   = __postAngle;
             
             if (!_model.__padBboxL) _xOffset += __paddingL;
-            if (!_model.__padBboxT) _y_offset += __paddingT;
+            if (!_model.__padBboxT) _yOffset += __paddingT;
             if (!_model.__padBboxR) _xOffset -= __paddingR;
-            if (!_model.__padBboxB) _y_offset -= __paddingB;
+            if (!_model.__padBboxB) _yOffset -= __paddingB;
             
             //Build a matrix to transform the text...
             var _matrix = __matrix;
             
-            if ((_xscale == 1) && (_yscale == 1) && (_angle == 0))
+            if ((_xScale == 1) && (_yScale == 1) && (_angle == 0))
             {
                 _matrix[@  0] = 1;
                 _matrix[@  1] = 0;
                 _matrix[@  4] = 0;
                 _matrix[@  5] = 1;
                 _matrix[@ 12] = _xOffset + _x;
-                _matrix[@ 13] = _y_offset + _y;
+                _matrix[@ 13] = _yOffset + _y;
                 _matrix[@ 14] = __z;
             }
             else
             {
-                var  _sin = dsin(-__post_angle);
-                var  _cos = dcos(-__post_angle);
-                var _xSin = _xscale*_sin;
-                var _xCos = _xscale*_cos;
-                var _ySin = _yscale*_sin;
-                var _yCos = _yscale*_cos;
+                var  _sin = dsin(-__postAngle);
+                var  _cos = dcos(-__postAngle);
+                var _xSin = _xScale*_sin;
+                var _xCos = _xScale*_cos;
+                var _ySin = _yScale*_sin;
+                var _yCos = _yScale*_cos;
                 
                 _matrix[@  0] =  _xCos;
                 _matrix[@  1] =  _xSin;
                 _matrix[@  4] = -_ySin;
                 _matrix[@  5] =  _yCos;
-                _matrix[@ 12] =  _x + (_xOffset*_xCos - _y_offset*_ySin);
-                _matrix[@ 13] =  _y + (_xOffset*_xSin + _y_offset*_yCos);
+                _matrix[@ 12] =  _x + (_xOffset*_xCos - _yOffset*_ySin);
+                _matrix[@ 13] =  _y + (_xOffset*_xSin + _yOffset*_yCos);
                 _matrix[@ 14] =  __z;
             }
         }
