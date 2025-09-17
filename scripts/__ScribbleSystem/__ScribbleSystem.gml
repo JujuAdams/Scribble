@@ -182,7 +182,7 @@ function __ScribbleSystem(_calledFromInitialize = false)
             
             __sdfThicknessOffset: 0,
             
-            __markdown_styles_struct: {},
+            __markdownStylesStruct: {},
             
             __spriteWhitelistMap: ds_map_create(),
             __soundWhitelistMap:  ds_map_create(),

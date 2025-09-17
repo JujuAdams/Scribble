@@ -7,36 +7,36 @@
 
 function scribble_super_glyph_copy(_target, _source, _overwrite)
 {
-    var _target_font_data = __ScribbleGetFontData(_target);
-    var _source_font_data = __ScribbleGetFontData(_source);
+    var _targetFontData = __ScribbleGetFontData(_target);
+    var _sourceFontData = __ScribbleGetFontData(_source);
     
-    var _target_glyphs_map       = _target_font_data.__glyphsMap;
-    var _target_glyph_data_grid  = _target_font_data.__glyphDataGrid;
-    var _source_glyphs_map       = _source_font_data.__glyphsMap;
-    var _source_glyphs_data_grid = _source_font_data.__glyphDataGrid;
+    var _targetGlyphsMap      = _targetFontData.__glyphsMap;
+    var _targetGlyphsDataGrid = _targetFontData.__glyphDataGrid;
+    var _sourceGlyphsMap      = _sourceFontData.__glyphsMap;
+    var _sourceGlyphsDataGrid = _sourceFontData.__glyphDataGrid;
     
     //Copy arguments into an array
-    var _glyphs_array = array_create(argument_count - 3);
+    var _glyphsArray = array_create(argument_count - 3);
     var _i = 0;
     repeat(argument_count - 3)
     {
-        _glyphs_array[@ _i] = argument[_i+3];
+        _glyphsArray[@ _i] = argument[_i+3];
         ++_i;
     }
     
     //Pass the argument array into our preparation function
     //This turns the argument array in a series of ranges to operate on
-    var _work_array = __scribble_prepare_super_work_array(_glyphs_array);
+    var _workArray = __ScribblePrepareSuperWorkArray(_glyphsArray);
     
     var _i = 0;
-    repeat(array_length(_work_array))
+    repeat(array_length(_workArray))
     {
-        var _glyph_range_array = _work_array[_i];
+        var _glyphRangeArray = _workArray[_i];
         
-        var _unicode = _glyph_range_array[0];
-        repeat(1 + _glyph_range_array[1] - _unicode)
+        var _unicode = _glyphRangeArray[0];
+        repeat(1 + _glyphRangeArray[1] - _unicode)
         {
-            __scribble_glyph_duplicate(_source_glyphs_map, _source_glyphs_data_grid, _target_glyphs_map, _target_glyph_data_grid, _unicode, _overwrite);
+            __ScribbleGlyphDuplicate(_sourceGlyphsMap, _sourceGlyphsDataGrid, _targetGlyphsMap, _targetGlyphsDataGrid, _unicode, _overwrite);
             ++_unicode;
         }
         
@@ -44,68 +44,68 @@ function scribble_super_glyph_copy(_target, _source, _overwrite)
     }
     
     //Choose maximal values
-    _target_font_data.__height     = max(_target_font_data.__height,     _source_font_data.__height);
-    _target_font_data.__underlineY = max(_target_font_data.__underlineY, _source_font_data.__underlineY);
-    _target_font_data.__strikeY    = max(_target_font_data.__strikeY,    _source_font_data.__strikeY);
+    _targetFontData.__height     = max(_targetFontData.__height,     _sourceFontData.__height);
+    _targetFontData.__underlineY = max(_targetFontData.__underlineY, _sourceFontData.__underlineY);
+    _targetFontData.__strikeY    = max(_targetFontData.__strikeY,    _sourceFontData.__strikeY);
     
-    ds_grid_set_region(_target_glyph_data_grid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, ds_grid_width(_target_glyph_data_grid), __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, _target_font_data.__height);
+    ds_grid_set_region(_targetGlyphsDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, ds_grid_width(_targetGlyphsDataGrid), __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, _targetFontData.__height);
 }
 
-function __scribble_prepare_super_work_array(_input_array)
+function __ScribblePrepareSuperWorkArray(_input_array)
 {
-    var _output_array = [];
+    var _outputArray = [];
     
     var _i = 0;
     repeat(array_length(_input_array))
     {
-        var _glyph_to_copy = _input_array[_i];
+        var _glyphToCopy = _input_array[_i];
         
-        if (is_string(_glyph_to_copy))
+        if (is_string(_glyphToCopy))
         {
             var _j = 1;
-            repeat(string_length(_glyph_to_copy))
+            repeat(string_length(_glyphToCopy))
             {
                 //TODO - Make this more efficient by grouping contiguous glyphs together
-                var _unicode = ord(string_char_at(_glyph_to_copy, _j));
-                array_push(_output_array, [_unicode, _unicode]);
+                var _unicode = ord(string_char_at(_glyphToCopy, _j));
+                array_push(_outputArray, [_unicode, _unicode]);
                 ++_j;
             }
             
-            _glyph_to_copy = undefined;
+            _glyphToCopy = undefined;
         }
         
-        if (is_numeric(_glyph_to_copy))
+        if (is_numeric(_glyphToCopy))
         {
-            _glyph_to_copy = [_glyph_to_copy, _glyph_to_copy];
+            _glyphToCopy = [_glyphToCopy, _glyphToCopy];
         }
         
-        if (is_array(_glyph_to_copy))
+        if (is_array(_glyphToCopy))
         {
-            array_push(_output_array, _glyph_to_copy);
+            array_push(_outputArray, _glyphToCopy);
         }
         
         ++_i;
     }
     
-    return _output_array;
+    return _outputArray;
 }
 
-function __scribble_glyph_duplicate(_source_map, _source_grid, _target_map, _target_grid, _glyph, _overwrite)
+function __ScribbleGlyphDuplicate(_sourceMap, _sourceGrid, _targetMap, _targetGrid, _glyph, _overwrite)
 {
-    var _source_x = _source_map[? _glyph];
-    if (_source_x == undefined)
+    var _sourceX = _sourceMap[? _glyph];
+    if (_sourceX == undefined)
     {
         __ScribbleTrace("Warning! Glyph ", _glyph, " (", chr(_glyph), ") not found in source font");
         return;
     }
     
-    var _target_x = _target_map[? _glyph];
-    if (_target_x == undefined)
+    var _targetX = _targetMap[? _glyph];
+    if (_targetX == undefined)
     {
         //Create a new column in the grid to store this glyph's data
-        var _target_x = ds_grid_width(_target_grid);
-        _target_map[? _glyph] = _target_x;
-        ds_grid_resize(_target_grid, _target_x+1, __SCRIBBLE_GLYPH_PROPR_COUNT);
+        var _targetX = ds_grid_width(_targetGrid);
+        _targetMap[? _glyph] = _targetX;
+        ds_grid_resize(_targetGrid, _targetX+1, __SCRIBBLE_GLYPH_PROPR_COUNT);
     }
     else
     {
@@ -119,5 +119,5 @@ function __scribble_glyph_duplicate(_source_map, _source_grid, _target_map, _tar
     }
     
     //Do the actual copying
-    ds_grid_set_grid_region(_target_grid, _source_grid, _source_x, 0, _source_x, __SCRIBBLE_GLYPH_PROPR_COUNT, _target_x, 0);
+    ds_grid_set_grid_region(_targetGrid, _sourceGrid, _sourceX, 0, _sourceX, __SCRIBBLE_GLYPH_PROPR_COUNT, _targetX, 0);
 }

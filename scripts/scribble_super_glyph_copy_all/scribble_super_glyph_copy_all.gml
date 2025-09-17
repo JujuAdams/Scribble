@@ -5,26 +5,26 @@
 
 function scribble_super_glyph_copy_all(_target, _source, _overwrite)
 {
-    var _target_font_data = __ScribbleGetFontData(_target);
-    var _source_font_data = __ScribbleGetFontData(_source);
+    var _targetFontData = __ScribbleGetFontData(_target);
+    var _sourceFontData = __ScribbleGetFontData(_source);
     
-    var _source_glyphs_map       = _source_font_data.__glyphsMap;
-    var _source_glyphs_data_grid = _source_font_data.__glyphDataGrid;
-    var _target_glyphs_map       = _target_font_data.__glyphsMap;
-    var _target_glyph_data_grid  = _target_font_data.__glyphDataGrid;
+    var _sourceGlyphsMap      = _sourceFontData.__glyphsMap;
+    var _sourceGlyphsDataGrid = _sourceFontData.__glyphDataGrid;
+    var _targetGlyphsMap      = _targetFontData.__glyphsMap;
+    var _targetGlyphsDataGrid = _targetFontData.__glyphDataGrid;
     
-    var _keys_array = ds_map_keys_to_array(_source_glyphs_map);
+    var _keysArray = ds_map_keys_to_array(_sourceGlyphsMap);
     var _i = 0;
-    repeat(array_length(_keys_array))
+    repeat(array_length(_keysArray))
     {
-        __scribble_glyph_duplicate(_source_glyphs_map, _source_glyphs_data_grid, _target_glyphs_map, _target_glyph_data_grid, _keys_array[_i], _overwrite);
+        __ScribbleGlyphDuplicate(_sourceGlyphsMap, _sourceGlyphsDataGrid, _targetGlyphsMap, _targetGlyphsDataGrid, _keysArray[_i], _overwrite);
         ++_i;
     }
     
     //Choose maximal values
-    _target_font_data.__height     = max(_target_font_data.__height,     _source_font_data.__height);
-    _target_font_data.__underlineY = max(_target_font_data.__underlineY, _source_font_data.__underlineY);
-    _target_font_data.__strikeY    = max(_target_font_data.__strikeY,    _source_font_data.__strikeY);
+    _targetFontData.__height     = max(_targetFontData.__height,     _sourceFontData.__height);
+    _targetFontData.__underlineY = max(_targetFontData.__underlineY, _sourceFontData.__underlineY);
+    _targetFontData.__strikeY    = max(_targetFontData.__strikeY,    _sourceFontData.__strikeY);
     
-    ds_grid_set_region(_target_glyph_data_grid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, ds_grid_width(_target_glyph_data_grid), __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, _target_font_data.__height);
+    ds_grid_set_region(_targetGlyphsDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, ds_grid_width(_targetGlyphsDataGrid), __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, _targetFontData.__height);
 }

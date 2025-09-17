@@ -20,13 +20,13 @@
 /// @param originalFont
 /// @param remapFont
 
-function scribble_font_set_remap(_original_font, _remap_font)
+function scribble_font_set_remap(_originalFont, _remapFont)
 {
-    with(__ScribbleGetFontData(_original_font))
+    with(__ScribbleGetFontData(_originalFont))
     {
-        if (__remap != _remap_font)
+        if (__remap != _remapFont)
         {
-            __remap = _remap_font;
+            __remap = _remapFont;
             scribble_flush_everything();
         }
     }

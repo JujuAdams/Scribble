@@ -11,7 +11,7 @@ text += "2. [![spr_white_coin] An unknown printer](url) took a galley of type an
 text += "> It has survived not only five centuries, but also the leap into electronic typesetting, remaining [spr_coin] [rainbow]essentially unchanged[/rainbow] ![spr_coin].\n";
 
 scribble_markdown_set_styles({
-    bullet_sprite: spr_coin,
+    bulletSprite: spr_coin,
 });
 
 text = scribble_markdown_format(text);

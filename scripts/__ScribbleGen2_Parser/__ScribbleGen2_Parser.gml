@@ -1032,15 +1032,15 @@ function __ScribbleGen2_Parser()
                                     }
                                     
                                     //Figure out how much we need to copy and if we need to resize the target buffer
-                                    var _copy_size = _bufferLength - buffer_tell(_stringBuffer);
+                                    var _copySize = _bufferLength - buffer_tell(_stringBuffer);
                                     
-                                    _bufferLength = string_byte_length(_macro_result) + _copy_size;
+                                    _bufferLength = string_byte_length(_macro_result) + _copySize;
                                     if (_bufferLength > buffer_get_size(_otherStringBuffer)) buffer_resize(_otherStringBuffer, _bufferLength);
                                     
                                     //Write the new string to the other buffer, and then copy the remainder of the data in the old buffer
                                     buffer_seek(_otherStringBuffer, buffer_seek_start, 0);
                                     buffer_write(_otherStringBuffer, buffer_text, _macro_result);
-                                    buffer_copy(_stringBuffer, buffer_tell(_stringBuffer), _copy_size, _otherStringBuffer, buffer_tell(_otherStringBuffer));
+                                    buffer_copy(_stringBuffer, buffer_tell(_stringBuffer), _copySize, _otherStringBuffer, buffer_tell(_otherStringBuffer));
                                     buffer_seek(_otherStringBuffer, buffer_seek_start, 0);
                                     
                                     //Swap the two buffers over
@@ -1431,15 +1431,15 @@ function __ScribbleGen2_Parser()
             else if (SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS && (_glyphOrd == SCRIBBLE_UNICODE_ELLIPSIS))
             {
                 //Figure out how much we need to copy and if we need to resize the target buffer
-                var _copy_size = _bufferLength - buffer_tell(_stringBuffer);
+                var _copySize = _bufferLength - buffer_tell(_stringBuffer);
                 
-                _bufferLength = 3 + _copy_size;
+                _bufferLength = 3 + _copySize;
                 if (_bufferLength > buffer_get_size(_otherStringBuffer)) buffer_resize(_otherStringBuffer, _bufferLength);
                 
                 //Write the new string to the other buffer, and then copy the remainder of the data in the old buffer
                 buffer_seek(_otherStringBuffer, buffer_seek_start, 0);
                 buffer_write(_otherStringBuffer, buffer_text, "...");
-                buffer_copy(_stringBuffer, buffer_tell(_stringBuffer), _copy_size, _otherStringBuffer, 3);
+                buffer_copy(_stringBuffer, buffer_tell(_stringBuffer), _copySize, _otherStringBuffer, 3);
                 buffer_seek(_otherStringBuffer, buffer_seek_start, 0);
                 
                 //Swap the two buffers over

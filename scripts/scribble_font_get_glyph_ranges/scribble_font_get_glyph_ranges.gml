@@ -6,28 +6,28 @@ function scribble_font_get_glyph_ranges(_name, _hex = false)
 {
     var _fontData = __ScribbleGetFontData(_name);
     
-    var _keys_array = ds_map_keys_to_array(_fontData.__glyphsMap);
-    array_sort(_keys_array, true);
+    var _keysArray = ds_map_keys_to_array(_fontData.__glyphsMap);
+    array_sort(_keysArray, true);
     
-    var _out_array = [];
+    var _outArray = [];
     
-    var _min = _keys_array[0];
-    var _max = _keys_array[0];
+    var _min = _keysArray[0];
+    var _max = _keysArray[0];
     
     var _i = 1;
-    repeat(array_length(_keys_array)-1)
+    repeat(array_length(_keysArray)-1)
     {
-        var _key = _keys_array[_i];
+        var _key = _keysArray[_i];
         
         if (_key > _max+1)
         {
             if (_hex)
             {
-                array_push(_out_array, [string(ptr(_min)), string(ptr(_max))]);
+                array_push(_outArray, [string(ptr(_min)), string(ptr(_max))]);
             }
             else
             {
-                array_push(_out_array, [_min, _max]);
+                array_push(_outArray, [_min, _max]);
             }
             
             var _min = _key;
@@ -41,7 +41,7 @@ function scribble_font_get_glyph_ranges(_name, _hex = false)
         ++_i;
     }
     
-    array_push(_out_array, [string(ptr(_min)), string(ptr(_max))]);
+    array_push(_outArray, [string(ptr(_min)), string(ptr(_max))]);
     
-    return _out_array;
+    return _outArray;
 }
