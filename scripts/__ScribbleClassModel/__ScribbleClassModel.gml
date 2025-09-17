@@ -125,7 +125,7 @@ function __ScribbleClassModel(_element) constructor
         __build();
     }
     
-    static __Draw = function(_page, _scrollX, _scrollY, _serial, _serialOffset, _clip, _doubleDraw)
+    static __Draw = function(_page, _scrollXArray, _scrollYArray, _serial, _serialOffset, _clip, _doubleDraw)
     {
         static _u_vClip   = shader_get_uniform(__shdScribble, "u_vClip");
         static _u_vScroll = shader_get_uniform(__shdScribble, "u_vScroll");
@@ -156,7 +156,7 @@ function __ScribbleClassModel(_element) constructor
                 }
             }
             
-            shader_set_uniform_f(_u_vScroll, _scrollX, _scrollY);
+            shader_set_uniform_f(_u_vScroll, _scrollXArray[_page], _scrollYArray[_page]);
             __pagesArray[_page].__Submit(_doubleDraw);
         }
         else
@@ -174,8 +174,8 @@ function __ScribbleClassModel(_element) constructor
             if ((_page == floor(_page)) || (_page == array_length(__pagesArray)-1))
             {
                 //FIXME - Implement offsets for different h/v alignments
-                shader_set_uniform_f(_u_vClip, 0, 0, __layoutMaxWidth, __layoutMaxHeight - _scrollY);
-                shader_set_uniform_f(_u_vScroll, _scrollX, _scrollY);
+                shader_set_uniform_f(_u_vClip, 0, 0, __layoutMaxWidth, __layoutMaxHeight - _scrollYArray[_page]);
+                shader_set_uniform_f(_u_vScroll, _scrollXArray[_page], _scrollYArray[_page]);
                 __pagesArray[_page].__Submit(_doubleDraw);
             }
             else
@@ -185,13 +185,13 @@ function __ScribbleClassModel(_element) constructor
                 //FIXME - Implement offsets for different h/v alignments
                 var _serialScroll = (_serialOffset - _page*__layoutMaxHeight);
                 shader_set_uniform_f(_u_vClip, 0, 0, __layoutMaxWidth, __layoutMaxHeight - _serialScroll);
-                shader_set_uniform_f(_u_vScroll, _scrollX, _scrollY + _serialScroll);
+                shader_set_uniform_f(_u_vScroll, _scrollXArray[_page], _scrollYArray[_page] + _serialScroll);
                 __pagesArray[_page].__Submit(_doubleDraw);
                 
                 //FIXME - Implement offsets for different h/v alignments
                 var _serialScroll = (_serialOffset - (_page+1)*__layoutMaxHeight);
                 shader_set_uniform_f(_u_vClip, 0, _serialScroll, __layoutMaxWidth, __layoutMaxHeight);
-                shader_set_uniform_f(_u_vScroll, _scrollX, _serialScroll);
+                shader_set_uniform_f(_u_vScroll, _scrollXArray[_page+1], _scrollYArray[_page+1] + _serialScroll);
                 __pagesArray[_page+1].__Submit(_doubleDraw);
             }
         }

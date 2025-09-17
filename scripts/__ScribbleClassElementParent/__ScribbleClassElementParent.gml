@@ -67,13 +67,13 @@ function __ScribbleClassElementParent(_text) constructor
     
     __clip = false;
     
-    __scrollX = 0;
-    __scrollY = 0;
-    __scrollWasClamped = true;
+    __scrollXArray = [];
+    __scrollYArray = [];
+    __scrollState = 0;
     __scrollSpeed = 0;
     __scrollPause = 0;
     __scrollAuto  = 0; //0 = off, 1 = x-axis, 2 = y-axis
-    __scrollState = 0;
+    __scrollWasClamped = true;
     __scrollPauseCounter = 0;
     
     __serial = false;
@@ -549,85 +549,97 @@ function __ScribbleClassElementParent(_text) constructor
         return scroll_to_y(_line_data.y, _line_data.y + _line_data.height-1);
     }
     
-    static scroll_to_x = function(_min, _max)
+    static scroll_to_x = function(_min, _max, _page = __page)
     {
+        __EnsureModel();
+        
         if (1 + _max - _min > __layoutMaxWidth)
         {
-            //Line is bigger than can be displayed, centre the line
-            __scrollX = clamp(((_min + _max) div 2) - (__layoutMaxWidth div 2), 0, get_scroll_max_x());
+            //Range is bigger than can be displayed, centre the line
+            __scrollXArray[@ _page] = clamp(((_min + _max) div 2) - (__layoutMaxWidth div 2), 0, get_scroll_max_x());
         }
-        else if (_min < __scrollX)
+        else if (_min < __scrollXArray[_page])
         {
-            //Line is above the top of the region
-            __scrollX = clamp(_min, 0, get_scroll_max_x());
+            //Range is above the top of the region
+            __scrollXArray[@ _page] = clamp(_min, 0, get_scroll_max_x());
         }
-        else if (_max >= __layoutMaxWidth + __scrollX)
+        else if (_max >= __layoutMaxWidth + __scrollXArray[_page])
         {
-            //Line is below the bottom of the region
-            __scrollX = clamp(_max - __layoutMaxWidth, 0, get_scroll_max_x());
+            //Range is below the bottom of the region
+            __scrollXArray[@ _page] = clamp(_max - __layoutMaxWidth, 0, get_scroll_max_x());
         }
         else
         {
-            //Line is visible, do nothing
+            //Range is visible, do nothing
         }
         
         return self;
     }
     
-    static scroll_to_y = function(_min, _max)
+    static scroll_to_y = function(_min, _max, _page = __page)
     {
+        __EnsureModel();
+        
         if (1 + _max - _min > __layoutMaxHeight)
         {
-            //Line is bigger than can be displayed, centre the line
-            __scrollY = clamp(((_min + _max) div 2) - (__layoutMaxHeight div 2), 0, get_scroll_max_y());
+            //Range is bigger than can be displayed, centre the line
+            __scrollYArray[@ _page] = clamp(((_min + _max) div 2) - (__layoutMaxHeight div 2), 0, get_scroll_max_y());
         }
-        else if (_min < __scrollY)
+        else if (_min < __scrollYArray[_page])
         {
-            //Line is above the top of the region
-            __scrollY = clamp(_min, 0, get_scroll_max_y());
+            //Range is above the top of the region
+            __scrollYArray[@ _page] = clamp(_min, 0, get_scroll_max_y());
         }
-        else if (_max >= __layoutMaxHeight + __scrollY)
+        else if (_max >= __layoutMaxHeight + __scrollYArray[_page])
         {
-            //Line is below the bottom of the region
-            __scrollY = clamp(_max - __layoutMaxHeight, 0, get_scroll_max_y());
+            //Range is below the bottom of the region
+            __scrollYArray[@ _page] = clamp(_max - __layoutMaxHeight, 0, get_scroll_max_y());
         }
         else
         {
-            //Line is visible, do nothing
+            //Range is visible, do nothing
         }
         
         return self;
     }
     
-    static scroll = function(_y, _clamp = true)
+    static scroll = function(_y, _clamp = true, _page = __page)
     {
+        __EnsureModel();
+        
         __scrollAuto = 0;
         
-        __scrollY = _clamp? clamp(_y, 0, get_scroll_max_y()) : _y;
+        __scrollYArray[@ _page] = _clamp? clamp(_y, 0, get_scroll_max_y()) : _y;
         __scrollWasClamped = _clamp;
         
         return self;
     }
     
-    static scroll_ext = function(_x, _y, _clamp = true)
+    static scroll_ext = function(_x, _y, _clamp = true, _page = __page)
     {
+        __EnsureModel();
+        
         __scrollAuto = 0;
         
-        __scrollX = _clamp? clamp(_x, 0, get_scroll_max_x()) : _x;
-        __scrollY = _clamp? clamp(_y, 0, get_scroll_max_y()) : _y;
+        __scrollXArray[@ _page] = _clamp? clamp(_x, 0, get_scroll_max_x()) : _x;
+        __scrollYArray[@ _page] = _clamp? clamp(_y, 0, get_scroll_max_y()) : _y;
         __scrollWasClamped = _clamp;
         
         return self;
     }
     
-    static get_scroll_x = function()
+    static get_scroll_x = function(_page = __page)
     {
-        return __scrollX;
+        __EnsureModel();
+        
+        return __scrollXArray[_page];
     }
     
-    static get_scroll_y = function()
+    static get_scroll_y = function(_page = __page)
     {
-        return __scrollY;
+        __EnsureModel();
+        
+        return __scrollYArray[_page];
     }
     
     static get_scroll_max_x = function(_page = __page)
@@ -644,17 +656,17 @@ function __ScribbleClassElementParent(_text) constructor
         return _model.__GetScrollMaxY(_page);
     }
     
-    static __AutoScroll = function()
+    static __AutoScroll = function(_page = __page)
     {
         if (__scrollAuto == 1)
         {
             if (__scrollState == 0)
             {
-                __scrollX += __scrollSpeed*_system.__tickSize;
+                __scrollXArray[@ _page] += __scrollSpeed*_system.__tickSize;
                 
-                if (__scrollX >= get_scroll_max_x())
+                if (__scrollXArray[_page] >= get_scroll_max_x())
                 {
-                    __scrollX = get_scroll_max_x();
+                    __scrollXArray[@ _page] = get_scroll_max_x();
                     __scrollPauseCounter = 0;
                     __scrollState = 1;
                 }
@@ -670,11 +682,11 @@ function __ScribbleClassElementParent(_text) constructor
             }
             else if (__scrollState == 2)
             {
-                __scrollX -= __scrollSpeed*_system.__tickSize;
+                __scrollXArray[@ _page] -= __scrollSpeed*_system.__tickSize;
                 
-                if (__scrollX <= 0)
+                if (__scrollXArray[_page] <= 0)
                 {
-                    __scrollX = 0;
+                    __scrollXArray[@ _page] = 0;
                     __scrollPauseCounter = 0;
                     __scrollState = 3;
                 }
@@ -693,11 +705,11 @@ function __ScribbleClassElementParent(_text) constructor
         {
             if (__scrollState == 0)
             {
-                __scrollY += __scrollSpeed*_system.__tickSize;
+                __scrollYArray[@ _page] += __scrollSpeed*_system.__tickSize;
                 
-                if (__scrollY >= get_scroll_max_y())
+                if (__scrollYArray[_page] >= get_scroll_max_y())
                 {
-                    __scrollY = get_scroll_max_y();
+                    __scrollYArray[@ _page] = get_scroll_max_y();
                     __scrollPauseCounter = 0;
                     __scrollState = 1;
                 }
@@ -713,11 +725,11 @@ function __ScribbleClassElementParent(_text) constructor
             }
             else if (__scrollState == 2)
             {
-                __scrollY -= __scrollSpeed*_system.__tickSize;
+                __scrollYArray[@ _page] -= __scrollSpeed*_system.__tickSize;
                 
-                if (__scrollY <= 0)
+                if (__scrollYArray[_page] <= 0)
                 {
-                    __scrollY = 0;
+                    __scrollYArray[@ _page] = 0;
                     __scrollPauseCounter = 0;
                     __scrollState = 3;
                 }
@@ -1438,13 +1450,6 @@ function __ScribbleClassElementParent(_text) constructor
         if (_old_page != __page)
         {
             __bboxDirty = true;
-            
-            //Update our scroll limits if the user wants to clamp position
-            if (__scrollWasClamped)
-            {
-                __scrollX = clamp(__scrollX, 0, get_scroll_max_x());
-                __scrollY = clamp(__scrollY, 0, get_scroll_max_y());
-            }
         }
         
         return self;
@@ -1843,11 +1848,11 @@ function __ScribbleClassElementParent(_text) constructor
             
             var _model = __weakRef.__Refresh();
             
-            //Update our scroll limits if the user wants to clamp position
-            if (__scrollWasClamped)
+            var _newPageCount = _model.__GetPageCount();
+            if (array_length(__scrollXArray) != _newPageCount)
             {
-                __scrollX = clamp(__scrollX, 0, get_scroll_max_x());
-                __scrollY = clamp(__scrollY, 0, get_scroll_max_y());
+                array_resize(__scrollXArray, _newPageCount);
+                array_resize(__scrollYArray, _newPageCount);
             }
             
             return _model;
