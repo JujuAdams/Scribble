@@ -274,7 +274,6 @@
     {"name":"__scribble_class_control_strike","order":6,"path":"scripts/__scribble_class_control_strike/__scribble_class_control_strike.yy",},
     {"name":"__scribble_class_control_underline","order":5,"path":"scripts/__scribble_class_control_underline/__scribble_class_control_underline.yy",},
     {"name":"__scribble_class_generator_state","order":2,"path":"scripts/__scribble_class_generator_state/__scribble_class_generator_state.yy",},
-    {"name":"__scribble_class_null_element","order":6,"path":"scripts/__scribble_class_null_element/__scribble_class_null_element.yy",},
     {"name":"__scribble_config_behaviours","order":1,"path":"scripts/__scribble_config_behaviours/__scribble_config_behaviours.yy",},
     {"name":"__scribble_config_colours","order":2,"path":"scripts/__scribble_config_colours/__scribble_config_colours.yy",},
     {"name":"__scribble_constants","order":3,"path":"scripts/__scribble_constants/__scribble_constants.yy",},
