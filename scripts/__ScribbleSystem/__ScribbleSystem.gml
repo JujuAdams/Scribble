@@ -161,8 +161,8 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __material_map                = ds_map_create();
         
         //Multi-use buffers
-        __buffer_a = buffer_create(1024, buffer_grow, 1);
-        __buffer_b = buffer_create(1024, buffer_grow, 1);
+        __bufferA = buffer_create(1024, buffer_grow, 1);
+        __bufferB = buffer_create(1024, buffer_grow, 1);
         
         //Contains animation parameters. See scribble_anim_reset()
         __anim_properties = array_create(__SCRIBBLE_ANIM_SIZE, undefined);
@@ -195,8 +195,8 @@ function __ScribbleSystem(_calledFromInitialize = false)
         
         //Contains Unicode data, necessary for extended language support
         __glyphData                = __ScribbleGlyphDataInitialize();
-        __krutidev_lookup_map       = __ScribbleKrutidevLookupMapInitialize();
-        __krutidev_matra_lookup_map = __ScribbleKrutidevMatraLookupMapInitialize();
+        __krutidevLookupMap       = __ScribbleKrutidevLookupMapInitialize();
+        __krutidevMatraLookupMap = __ScribbleKrutidevMatraLookupMapInitialize();
         
         //External sound reference storage
         __external_sprite_map = ds_map_create();

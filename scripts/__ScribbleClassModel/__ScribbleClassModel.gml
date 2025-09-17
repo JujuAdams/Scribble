@@ -32,7 +32,7 @@ function __ScribbleClassModel(_element) constructor
     __wrapNoPages        = _element.__wrapNoPages;
     __layoutMaxScale     = _element.__layoutMaxScale;
     
-    __bezier_array = _element.__bezier_array;
+    __bezierArray = _element.__bezierArray;
     
     __bidiHint           = _element.__bidiHint;
     __ignoreCommandTags  = _element.__ignoreCommandTags;
@@ -454,7 +454,7 @@ function __ScribbleClassModel(_element) constructor
         
         var _pageData = new __ScribbleClassPage(self);
         _pageData.__lineStart  = _lineStart
-        _pageData.__glyphStart = _generatorState.__word_grid[# _generatorState.__line_array[_lineStart].wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START];
+        _pageData.__glyphStart = _generatorState.__wordGrid[# _generatorState.__lineArray[_lineStart].wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START];
         
         array_push(__pagesArray, _pageData);
         __pages++;

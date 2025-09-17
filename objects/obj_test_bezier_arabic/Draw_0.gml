@@ -15,9 +15,9 @@ var _count = 20;
 var _t = 0;
 repeat(_count)
 {
-    var _inv_t = 1 - _t;
-    draw_vertex(_inv_t*_inv_t*_inv_t*x0 + 3.0*_inv_t*_inv_t*_t*x1 + 3.0*_inv_t*_t*_t*x2 + _t*_t*_t*x3,
-                _inv_t*_inv_t*_inv_t*y0 + 3.0*_inv_t*_inv_t*_t*y1 + 3.0*_inv_t*_t*_t*y2 + _t*_t*_t*y3);
+    var _invT = 1 - _t;
+    draw_vertex(_invT*_invT*_invT*x0 + 3.0*_invT*_invT*_t*x1 + 3.0*_invT*_t*_t*x2 + _t*_t*_t*x3,
+                _invT*_invT*_invT*y0 + 3.0*_invT*_invT*_t*y1 + 3.0*_invT*_t*_t*y2 + _t*_t*_t*y3);
     _t += 1/(_count-1);
 }
 

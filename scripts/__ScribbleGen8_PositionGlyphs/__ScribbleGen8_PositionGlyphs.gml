@@ -3,7 +3,7 @@
 function __ScribbleGen8_PositionGlyphs()
 {
     static _generatorState = __ScribbleSystem().__generatorState;
-    static _stretch_array = array_create_ext(1000, function()
+    static _stretchArray = array_create_ext(1000, function()
     {
         return {
             __wordStart: undefined,
@@ -14,22 +14,22 @@ function __ScribbleGen8_PositionGlyphs()
     
     with(_generatorState)
     {
-        var _glyphGrid    = __glyphGrid;
-        var _word_grid     = __word_grid;
-        var _lineArray    = __line_array;
-        var _temp_grid     = __temp_grid;
-        var _overall_bidi  = __overallBidi;
+        var _glyphGrid     = __glyphGrid;
+        var _wordGrid      = __wordGrid;
+        var _lineArray     = __lineArray;
+        var _tempGrid      = __tempGrid;
+        var _overallBidi   = __overallBidi;
         var _modelMaxWidth = __modelMaxWidth;
     }
     
     var _lineHeight = __lineHeight;
     
-    ds_grid_clear(_temp_grid, 0); //FIXME - Works around a bug in ds_grid_add_grid_region() (runtime 2.3.7.474  2021-12-03)
+    ds_grid_clear(_tempGrid, 0); //FIXME - Works around a bug in ds_grid_add_grid_region() (runtime 2.3.7.474  2021-12-03)
     
-    var _model_min_x =  infinity;
-    var _model_min_y =  infinity;
-    var _model_max_x = -infinity;
-    var _model_max_y = -infinity;
+    var _modelMinX =  infinity;
+    var _modelMinY =  infinity;
+    var _modelMaxX = -infinity;
+    var _modelMaxY = -infinity;
     
     //Now handle each page in turn
     var _i = 0;
@@ -39,80 +39,80 @@ function __ScribbleGen8_PositionGlyphs()
         
         if (SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE)
         {
-            var _alignment_width     = _pageData.__width;
-            var _pin_alignment_width = _pageData.__width;
+            var _alignmentWidth     = _pageData.__width;
+            var _pinAlignmentWidth = _pageData.__width;
         }
         else
         {
             // If we were given no maximum alignment width, align to the actual width of the model
-            var _alignment_width     = (_modelMaxWidth == infinity)? __width : _modelMaxWidth;
-            var _pin_alignment_width = (_modelMaxWidth == infinity)? __width : _modelMaxWidth;
+            var _alignmentWidth     = (_modelMaxWidth == infinity)? __width : _modelMaxWidth;
+            var _pinAlignmentWidth = (_modelMaxWidth == infinity)? __width : _modelMaxWidth;
         }
             
-        _alignment_width     /= __fitScale;
-        _pin_alignment_width /= __fitScale;
+        _alignmentWidth     /= __fitScale;
+        _pinAlignmentWidth /= __fitScale;
         
-        var _page_min_x =  infinity;
-        var _page_max_x = -infinity; 
+        var _pageMinX =  infinity;
+        var _pageMaxX = -infinity; 
         
-        var _page_start_line = _pageData.__lineStart;
+        var _pageStartLine = _pageData.__lineStart;
         var _pageEndLine   = _pageData.__lineEnd;
         
-        var _j = _page_start_line;
-        repeat(1 + _pageEndLine - _page_start_line)
+        var _j = _pageStartLine;
+        repeat(1 + _pageEndLine - _pageStartLine)
         {
             with(_lineArray[_j])
             {
-                var _line_x               = x;
-                var _line_y               = y;
-                var _line_word_start      = wordStart;
-                var _line_word_end        = wordEnd;
-                var _line_width           = width;
-                var _line_halign          = hAlign;
-                var _line_disable_justify = disableJustify;
+                var _lineX              = x;
+                var _lineY              = y;
+                var _lineWordStart      = wordStart;
+                var _lineWordEnd        = wordEnd;
+                var _lineWidth          = width;
+                var _lineHAlign         = hAlign;
+                var _lineDisableJustify = disableJustify;
             }
             
-            var _line_glyph_start = _word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD_GLYPH_START];
-            var _line_glyph_end   = _word_grid[# _line_word_end,   __SCRIBBLE_GEN_WORD_GLYPH_END  ];
+            var _lineGlyphStart = _wordGrid[# _lineWordStart, __SCRIBBLE_GEN_WORD_GLYPH_START];
+            var _lineGlyphEnd   = _wordGrid[# _lineWordEnd,   __SCRIBBLE_GEN_WORD_GLYPH_END  ];
             
             ///////
             // Vertically centre glyphs on the line
             ///////
             
-            var _line_glyph_count = 1 + _line_glyph_end - _line_glyph_start;
+            var _lineGlyphCount = 1 + _lineGlyphEnd - _lineGlyphStart;
             
             
             
-            // _glyphGrid[# _j, __SCRIBBLE_GEN_GLYPH_Y] = _line_y + (_lineHeight - _glyphGrid[# _j, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT]) div 2;
-            ds_grid_set_grid_region(_temp_grid, _glyphGrid, _line_glyph_start, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT, _line_glyph_end, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT, 0, 0);
-            ds_grid_multiply_region(_temp_grid, 0, 0, _line_glyph_count-1, 0, -0.5);
-            ds_grid_add_region(_temp_grid, 0, 0, _line_glyph_count-1, 0, 0.5*_lineHeight + _line_y);
-            ds_grid_add_grid_region(_glyphGrid, _temp_grid, 0, 0, _line_glyph_count-1, 0, _line_glyph_start, __SCRIBBLE_GEN_GLYPH_Y);
+            // _glyphGrid[# _j, __SCRIBBLE_GEN_GLYPH_Y] = _lineY + (_lineHeight - _glyphGrid[# _j, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT]) div 2;
+            ds_grid_set_grid_region(_tempGrid, _glyphGrid, _lineGlyphStart, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT, _lineGlyphEnd, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT, 0, 0);
+            ds_grid_multiply_region(_tempGrid, 0, 0, _lineGlyphCount-1, 0, -0.5);
+            ds_grid_add_region(_tempGrid, 0, 0, _lineGlyphCount-1, 0, 0.5*_lineHeight + _lineY);
+            ds_grid_add_grid_region(_glyphGrid, _tempGrid, 0, 0, _lineGlyphCount-1, 0, _lineGlyphStart, __SCRIBBLE_GEN_GLYPH_Y);
             
             ///////
             // Figure out what order words should come in
             ///////
             
             // FIXME - Do we need to pre-build stretches? Can't we handle this later?
-            var _line_stretch_count = 0;
-            var _stretch_bidi = _word_grid[# _line_word_start, __SCRIBBLE_GEN_WORD_BIDI];
+            var _lineStretchCount = 0;
+            var _stretchBidi = _wordGrid[# _lineWordStart, __SCRIBBLE_GEN_WORD_BIDI];
             
-            var _stretch_word_start = _line_word_start;
-            var _w = _line_word_start;
-            repeat(1 + _line_word_end - _line_word_start)
+            var _stretchWordStart = _lineWordStart;
+            var _w = _lineWordStart;
+            repeat(1 + _lineWordEnd - _lineWordStart)
             {
-                var _word_bidi = _word_grid[# _w, __SCRIBBLE_GEN_WORD_BIDI];
-                if (_word_bidi != _stretch_bidi)
+                var _wordBidi = _wordGrid[# _w, __SCRIBBLE_GEN_WORD_BIDI];
+                if (_wordBidi != _stretchBidi)
                 {
-                    var _stretchStruct = _stretch_array[_line_stretch_count];
-                    _stretchStruct.__wordStart = _stretch_word_start;
+                    var _stretchStruct = _stretchArray[_lineStretchCount];
+                    _stretchStruct.__wordStart = _stretchWordStart;
                     _stretchStruct.__wordEnd   = _w - 1;
-                    _stretchStruct.__bidi      = _stretch_bidi;
+                    _stretchStruct.__bidi      = _stretchBidi;
                     
-                    _line_stretch_count++;
+                    _lineStretchCount++;
                     
-                    _stretch_word_start = _w;
-                    _stretch_bidi = _word_bidi;
+                    _stretchWordStart = _w;
+                    _stretchBidi = _wordBidi;
                 }
             
                 ++_w;
@@ -120,138 +120,138 @@ function __ScribbleGen8_PositionGlyphs()
             
             if (_w > 0)
             {
-                var _stretchStruct = _stretch_array[_line_stretch_count];
-                _stretchStruct.__wordStart = _stretch_word_start;
+                var _stretchStruct = _stretchArray[_lineStretchCount];
+                _stretchStruct.__wordStart = _stretchWordStart;
                 _stretchStruct.__wordEnd   = _w - 1;
-                _stretchStruct.__bidi      = _stretch_bidi;
+                _stretchStruct.__bidi      = _stretchBidi;
                 
-                _line_stretch_count++;
+                _lineStretchCount++;
             }
             
             
             
             // Text on the last line is never justified
-            if ((_line_halign == __SCRIBBLE_FA_JUSTIFY) && _line_disable_justify) _line_halign = __SCRIBBLE_PIN_LEFT;
+            if ((_lineHAlign == __SCRIBBLE_FA_JUSTIFY) && _lineDisableJustify) _lineHAlign = __SCRIBBLE_PIN_LEFT;
             
-            var _justification_extra_spacing = 0;
+            var _justificationExtraSpacing = 0;
             
-            var _line_adjusted_width = _line_width;
-            if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && (_line_halign != fa_left) && (_line_halign != __SCRIBBLE_PIN_LEFT))
+            var _lineAdjustedWidth = _lineWidth;
+            if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && (_lineHAlign != fa_left) && (_lineHAlign != __SCRIBBLE_PIN_LEFT))
             {
-                if ((_line_word_end >= 1)
-                && (_word_grid[# _line_word_end, __SCRIBBLE_GEN_WORD_BIDI_RAW] == __SCRIBBLE_BIDI_WHITESPACE)
-                && (_word_grid[# _line_word_end-1, __SCRIBBLE_GEN_WORD_BIDI_RAW] != __SCRIBBLE_BIDI_WHITESPACE))
+                if ((_lineWordEnd >= 1)
+                && (_wordGrid[# _lineWordEnd, __SCRIBBLE_GEN_WORD_BIDI_RAW] == __SCRIBBLE_BIDI_WHITESPACE)
+                && (_wordGrid[# _lineWordEnd-1, __SCRIBBLE_GEN_WORD_BIDI_RAW] != __SCRIBBLE_BIDI_WHITESPACE))
                 {
-                    _line_adjusted_width -= _word_grid[# _line_word_end, __SCRIBBLE_GEN_WORD_WIDTH];
+                    _lineAdjustedWidth -= _wordGrid[# _lineWordEnd, __SCRIBBLE_GEN_WORD_WIDTH];
                     
-                    _word_grid[# _line_word_end, __SCRIBBLE_GEN_WORD_WIDTH] = 0;
-                    var _word_glyph = _word_grid[# _line_word_end, __SCRIBBLE_GEN_WORD_GLYPH_START]; //Assume that whitespace words only have one glyph
-                    _glyphGrid[# _word_glyph, __SCRIBBLE_GEN_GLYPH_WIDTH     ] = 0;
-                    _glyphGrid[# _word_glyph, __SCRIBBLE_GEN_GLYPH_SEPARATION] = 0;
+                    _wordGrid[# _lineWordEnd, __SCRIBBLE_GEN_WORD_WIDTH] = 0;
+                    var _wordGlyph = _wordGrid[# _lineWordEnd, __SCRIBBLE_GEN_WORD_GLYPH_START]; //Assume that whitespace words only have one glyph
+                    _glyphGrid[# _wordGlyph, __SCRIBBLE_GEN_GLYPH_WIDTH     ] = 0;
+                    _glyphGrid[# _wordGlyph, __SCRIBBLE_GEN_GLYPH_SEPARATION] = 0;
                 }
             }
             
-            var _glyph_x = (_overall_bidi == __SCRIBBLE_BIDI_R2L)? -_line_x : _line_x;
+            var _glyphX = (_overallBidi == __SCRIBBLE_BIDI_R2L)? -_lineX : _lineX;
             
-            switch(_line_halign)
+            switch(_lineHAlign)
             {
-                case fa_left:   _glyph_x += (_overall_bidi == __SCRIBBLE_BIDI_R2L)? (_alignment_width - _line_adjusted_width) : 0; break;
-                case fa_center: _glyph_x += -(_line_adjusted_width div 2);                                                         break;
-                case fa_right:  _glyph_x += -_line_adjusted_width;                                                                 break;
+                case fa_left:   _glyphX += (_overallBidi == __SCRIBBLE_BIDI_R2L)? (_alignmentWidth - _lineAdjustedWidth) : 0; break;
+                case fa_center: _glyphX += -(_lineAdjustedWidth div 2);                                                       break;
+                case fa_right:  _glyphX += -_lineAdjustedWidth;                                                               break;
 
-                case __SCRIBBLE_PIN_LEFT:   _glyph_x += (_overall_bidi == __SCRIBBLE_BIDI_R2L)? (_pin_alignment_width - _line_adjusted_width) : 0; break;
-                case __SCRIBBLE_PIN_CENTRE: _glyph_x += (_pin_alignment_width - _line_adjusted_width) div 2;                                       break;
-                case __SCRIBBLE_PIN_RIGHT:  _glyph_x += _pin_alignment_width - _line_adjusted_width;                                               break;
+                case __SCRIBBLE_PIN_LEFT:   _glyphX += (_overallBidi == __SCRIBBLE_BIDI_R2L)? (_pinAlignmentWidth - _lineAdjustedWidth) : 0; break;
+                case __SCRIBBLE_PIN_CENTRE: _glyphX += (_pinAlignmentWidth - _lineAdjustedWidth) div 2;                                      break;
+                case __SCRIBBLE_PIN_RIGHT:  _glyphX += _pinAlignmentWidth - _lineAdjustedWidth;                                              break;
                 
                 case __SCRIBBLE_FA_JUSTIFY:
                     // Don't apply justification on the last line on a page
                     if (_j != _pageEndLine)
                     {
-                        var _line_word_count = 1 + _line_word_end - _line_word_start;
-                        if (_line_word_count > 1) // Prevent div-by-zero
+                        var _lineWordCount = 1 + _lineWordEnd - _lineWordStart;
+                        if (_lineWordCount > 1) // Prevent div-by-zero
                         {
                             // Distribute spacing over the line, on which there are n-1 spaces
-                            var _justification_extra_spacing = (_pin_alignment_width - _line_adjusted_width) / (_line_word_count - 1);
+                            var _justificationExtraSpacing = (_pinAlignmentWidth - _lineAdjustedWidth) / (_lineWordCount - 1);
                         }
                     }
                 break;
             }
             
             // Figure out the boundaries of the page + model
-            var _page_min_x  = min(_page_min_x,  _glyph_x                       );
-            var _page_max_x  = max(_page_max_x,  _glyph_x + _line_adjusted_width);
-            var _model_min_x = min(_model_min_x, _glyph_x                       );
-            var _model_max_x = max(_model_max_x, _glyph_x + _line_adjusted_width);
+            var _pageMinX  = min(_pageMinX,  _glyphX                     );
+            var _pageMaxX  = max(_pageMaxX,  _glyphX + _lineAdjustedWidth);
+            var _modelMinX = min(_modelMinX, _glyphX                     );
+            var _modelMaxX = max(_modelMaxX, _glyphX + _lineAdjustedWidth);
             
             
             
-            if (_overall_bidi < __SCRIBBLE_BIDI_R2L)
+            if (_overallBidi < __SCRIBBLE_BIDI_R2L)
             {
                 // "Normal" L2R text, no stretch reordering required
                 var _k = 0;
-                var _stretch_incr = 1;
+                var _stretchIncr = 1;
             }
             else
             {
                 // R2L text, stretches need to be reversed
-                var _k = _line_stretch_count-1;
-                var _stretch_incr = -1;
+                var _k = _lineStretchCount-1;
+                var _stretchIncr = -1;
             }
             
-            repeat(_line_stretch_count)
+            repeat(_lineStretchCount)
             {
-                var _stretchStruct = _stretch_array[_k];
-                var _stretch_word_start = _stretchStruct.__wordStart;
-                var _stretch_word_end   = _stretchStruct.__wordEnd;
-                var _stretch_bidi       = _stretchStruct.__bidi;
+                var _stretchStruct = _stretchArray[_k];
+                var _stretchWordStart = _stretchStruct.__wordStart;
+                var _stretchWordEnd   = _stretchStruct.__wordEnd;
+                var _stretchBidi      = _stretchStruct.__bidi;
             
-                if (_stretch_bidi < __SCRIBBLE_BIDI_R2L)
+                if (_stretchBidi < __SCRIBBLE_BIDI_R2L)
                 {
                     // "Normal" L2R text, no word reordering required
-                    var _w = _stretch_word_start;
-                    var _word_incr = 1;
+                    var _w = _stretchWordStart;
+                    var _wordIncr = 1;
                 }
                 else
                 {
                     // R2L text, words need to be reversed
-                    var _w = _stretch_word_end;
-                    var _word_incr = -1;
+                    var _w = _stretchWordEnd;
+                    var _wordIncr = -1;
                 }
                 
-                repeat(1 + _stretch_word_end - _stretch_word_start)
+                repeat(1 + _stretchWordEnd - _stretchWordStart)
                 {
-                    var _word_glyph_start = _word_grid[# _w, __SCRIBBLE_GEN_WORD_GLYPH_START];
-                    var _word_glyph_end   = _word_grid[# _w, __SCRIBBLE_GEN_WORD_GLYPH_END  ];
+                    var _wordGlyphStart = _wordGrid[# _w, __SCRIBBLE_GEN_WORD_GLYPH_START];
+                    var _wordGlyphEnd   = _wordGrid[# _w, __SCRIBBLE_GEN_WORD_GLYPH_END  ];
                 
-                    ds_grid_add_region(_glyphGrid, _word_glyph_start, __SCRIBBLE_GEN_GLYPH_X, _word_glyph_end, __SCRIBBLE_GEN_GLYPH_X, _glyph_x);
-                    _glyph_x += _word_grid[# _w, __SCRIBBLE_GEN_WORD_WIDTH] + _justification_extra_spacing;
+                    ds_grid_add_region(_glyphGrid, _wordGlyphStart, __SCRIBBLE_GEN_GLYPH_X, _wordGlyphEnd, __SCRIBBLE_GEN_GLYPH_X, _glyphX);
+                    _glyphX += _wordGrid[# _w, __SCRIBBLE_GEN_WORD_WIDTH] + _justificationExtraSpacing;
                 
-                    _w += _word_incr;
+                    _w += _wordIncr;
                 }
             
-                _k += _stretch_incr;
+                _k += _stretchIncr;
             }
             
             ++_j;
         }
         
         
-        if (_page_min_x == infinity) _page_min_x = 0;
-        _pageData.__minX  = _page_min_x;
-        _pageData.__maxX  = max(_page_min_x, _page_max_x);
+        if (_pageMinX == infinity) _pageMinX = 0;
+        _pageData.__minX = _pageMinX;
+        _pageData.__maxX = max(_pageMinX, _pageMaxX);
         
-        _model_min_y = min(_model_min_y, _pageData.__minY);
-        _model_max_y = max(_model_max_y, _pageData.__maxY);
+        _modelMinY = min(_modelMinY, _pageData.__minY);
+        _modelMaxY = max(_modelMaxY, _pageData.__maxY);
         
         ++_i;
     }
     
-    if (_model_min_x == infinity) _model_min_x = 0;
+    if (_modelMinX == infinity) _modelMinX = 0;
     
-   __minX = _model_min_x;
-   __minY = _model_min_y;
-   __maxX = max(_model_min_x, _model_max_x);
-   __maxY = _model_max_y;
+   __minX = _modelMinX;
+   __minY = _modelMinY;
+   __maxX = max(_modelMinX, _modelMaxX);
+   __maxY = _modelMaxY;
     
     __width  = 1 + __maxX - __minX;
     __height = 1 + __maxY - __minY;

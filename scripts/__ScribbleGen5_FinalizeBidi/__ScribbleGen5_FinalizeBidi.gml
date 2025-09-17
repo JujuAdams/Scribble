@@ -6,9 +6,9 @@ function __ScribbleGen5_FinalizeBidi()
     static _generatorState = __ScribbleSystem().__generatorState;
     with(_generatorState)
     {
-        var _word_grid    = __word_grid;
-        var _word_count   = __word_count;
-        var _overall_bidi = __overallBidi;
+        var _wordGrid    = __wordGrid;
+        var _wordCount   = __wordCount;
+        var _overallBidi = __overallBidi;
     }
     
     //TODO - Optimise this by storing where symbolic bidi words are
@@ -16,31 +16,31 @@ function __ScribbleGen5_FinalizeBidi()
     
     // Iterate over all words, assigning directionality to neutral words
     var _i = 0;
-    repeat(_word_count)
+    repeat(_wordCount)
     {
-        var _bidi = _word_grid[# _i, __SCRIBBLE_GEN_WORD_BIDI_RAW];
+        var _bidi = _wordGrid[# _i, __SCRIBBLE_GEN_WORD_BIDI_RAW];
         if (_bidi <= __SCRIBBLE_BIDI_SYMBOL) //symbol or whitespace
         {
             // Get the direction of adjacent words
-            var _prev_bidi = (_i > 0)?             _word_grid[# _i-1, __SCRIBBLE_GEN_WORD_BIDI] : __SCRIBBLE_BIDI_SYMBOL;
-            var _next_bidi = (_i < _word_count-1)? _word_grid[# _i+1, __SCRIBBLE_GEN_WORD_BIDI] : __SCRIBBLE_BIDI_SYMBOL;
+            var _prevBidi = (_i > 0)?            _wordGrid[# _i-1, __SCRIBBLE_GEN_WORD_BIDI] : __SCRIBBLE_BIDI_SYMBOL;
+            var _nextBidi = (_i < _wordCount-1)? _wordGrid[# _i+1, __SCRIBBLE_GEN_WORD_BIDI] : __SCRIBBLE_BIDI_SYMBOL;
             
             // If either adjacent word has no defined bidi (usually the case at the end of strings
             // or in a sequence of symbols) then use the direction of the other adjacent word
-            if (_prev_bidi <= __SCRIBBLE_BIDI_SYMBOL) _prev_bidi = _next_bidi; //symbol or whitespace
-            if (_next_bidi <= __SCRIBBLE_BIDI_SYMBOL) _next_bidi = _prev_bidi; //symbol or whitespace
+            if (_prevBidi <= __SCRIBBLE_BIDI_SYMBOL) _prevBidi = _nextBidi; //symbol or whitespace
+            if (_nextBidi <= __SCRIBBLE_BIDI_SYMBOL) _nextBidi = _prevBidi; //symbol or whitespace
             
             //TODO - Handle this recursively
             
             // Prefer the overall direction if either adjacent word shares it
-            var _new_bidi = ((_prev_bidi == _overall_bidi) || (_next_bidi == _overall_bidi))? _overall_bidi : _prev_bidi;
+            var _newBidi = ((_prevBidi == _overallBidi) || (_nextBidi == _overallBidi))? _overallBidi : _prevBidi;
             
             // If we *still* can't decide on the direction, default to L2R
-            if (_new_bidi <= __SCRIBBLE_BIDI_SYMBOL) _new_bidi = __SCRIBBLE_BIDI_L2R; //symbol or whitespace
+            if (_newBidi <= __SCRIBBLE_BIDI_SYMBOL) _newBidi = __SCRIBBLE_BIDI_L2R; //symbol or whitespace
             
-            _word_grid[# _i, __SCRIBBLE_GEN_WORD_BIDI] = _new_bidi;
+            _wordGrid[# _i, __SCRIBBLE_GEN_WORD_BIDI] = _newBidi;
             
-            _bidi = _new_bidi;
+            _bidi = _newBidi;
         }
         
         ++_i;

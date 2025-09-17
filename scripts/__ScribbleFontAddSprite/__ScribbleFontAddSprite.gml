@@ -65,7 +65,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _strikeY    = floor(0.5*(sprite_get_bbox_bottom(_sprite) - sprite_get_bbox_top(_sprite)));
     
     var _fontData = new __ScribbleClassFont(_spriteName, _size, __SCRIBBLE_RENDER_RASTER, undefined, true, _underlineY, _strikeY);
-    var _font_glyphs_map   = _fontData.__glyphsMap;
+    var _fontGlyphsMap   = _fontData.__glyphsMap;
     var _fontGlyphDataGrid = _fontData.__glyphDataGrid;
     if (_isKrutidev) _fontData.__isKrutidev = true;
     
@@ -124,7 +124,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_V1          ] = 0;
             //_fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = _texelsValid; //Set above in bulk
             
-            _font_glyphs_map[? _unicode] = _i;
+            _fontGlyphsMap[? _unicode] = _i;
         }
         else
         {
@@ -206,13 +206,13 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_V1          ] = _uvs[3];
             //_fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = _texelsValid; //Set above in bulk
             
-            _font_glyphs_map[? _unicode] = _i;
+            _fontGlyphsMap[? _unicode] = _i;
         }
         
         ++_i;
     }
     
-    var _spaceIndex = _font_glyphs_map[? SCRIBBLE_UNICODE_SPACE];
+    var _spaceIndex = _fontGlyphsMap[? SCRIBBLE_UNICODE_SPACE];
     _fontData.__height = _fontGlyphDataGrid[# _spaceIndex, __SCRIBBLE_GLYPH_PROPR_HEIGHT];
     _fontData.__EnsureAdditionalCharacters();
     

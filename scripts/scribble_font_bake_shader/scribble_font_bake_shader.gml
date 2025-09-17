@@ -89,8 +89,8 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     //We spin up vertex buffers on demand based on what textures are being used
     var _vbuff_data_map = ds_map_create();
     
-    var _line_x      = 0;
-    var _line_y      = 0;
+    var _lineX      = 0;
+    var _lineY      = 0;
     var _lineHeight = 0;
     
     var _i = 0;
@@ -122,7 +122,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         var _height_ext = _height + _outline + _t_pad + _b_pad;
         
         //Check to see if we have space on this texture page
-        if (_line_y + _height_ext >= _texture_size)
+        if (_lineY + _height_ext >= _texture_size)
         {
             __ScribbleError("No space left on ", _texture_size, "x", _texture_size, " texture page\nPlease increase the size of the texture page");
             vertex_end(_vbuff);
@@ -131,10 +131,10 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         }
         
         //Line wrap glyphs
-        if (_line_x + _width_ext >= _texture_size)
+        if (_lineX + _width_ext >= _texture_size)
         {
-            _line_x       = 0;
-            _line_y      += _lineHeight;
+            _lineX       = 0;
+            _lineY      += _lineHeight;
             _lineHeight  = 0;
         }
         
@@ -156,8 +156,8 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
             var _vbuff = _vbuff_data.__vertexBuffer;
         }
         
-        var _l = _l_pad + _line_x;
-        var _t = _t_pad + _line_y;
+        var _l = _l_pad + _lineX;
+        var _t = _t_pad + _lineY;
         var _r = _l + _width;
         var _b = _t + _height;
         
@@ -169,12 +169,12 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         vertex_position(_vbuff, _r, _b); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u1, _v1);
         vertex_position(_vbuff, _l, _b); vertex_color(_vbuff, c_white, 1.0); vertex_texcoord(_vbuff, _u0, _v1);
             
-        _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U0] = _line_x;
-        _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V0] = _line_y;
-        _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U1] = _line_x + _width  + _l_pad + _r_pad;;
-        _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V1] = _line_y + _height + _t_pad + _b_pad;;
+        _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U0] = _lineX;
+        _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V0] = _lineY;
+        _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U1] = _lineX + _width  + _l_pad + _r_pad;;
+        _new_glyphs_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V1] = _lineY + _height + _t_pad + _b_pad;;
         
-        _line_x += _width_ext;
+        _lineX += _width_ext;
         _lineHeight = max(_lineHeight, _height_ext);
         
         ++_i;

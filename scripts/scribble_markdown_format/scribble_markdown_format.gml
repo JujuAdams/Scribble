@@ -115,7 +115,7 @@ function scribble_markdown_format(_string)
     
     static _func_delete_buffer = function(_buffer_a, _buffer_size, _delete_size, _pos = buffer_tell(_buffer_a)-2)
     {
-        static _buffer_b = __ScribbleSystem().__buffer_b;
+        static _buffer_b = __ScribbleSystem().__bufferB;
         
         var _copy_pos  = _pos + _delete_size;
         var _copy_size = _buffer_size - _copy_pos;
@@ -130,7 +130,7 @@ function scribble_markdown_format(_string)
     
     static _func_insert_buffer = function(_buffer_a, _buffer_size, _insert_string, _write_pos = buffer_tell(_buffer_a)-2)
     {
-        static _buffer_b = __ScribbleSystem().__buffer_b;
+        static _buffer_b = __ScribbleSystem().__bufferB;
         
         var _insert_size = string_byte_length(_insert_string);
         if (_insert_size <= 0) return 0;
@@ -149,7 +149,7 @@ function scribble_markdown_format(_string)
     
     static _func_delete_and_insert_buffer = function(_buffer_a, _buffer_size, _delete_size, _insert_string = "", _write_pos = buffer_tell(_buffer_a)-2)
     {
-        static _buffer_b = __ScribbleSystem().__buffer_b;
+        static _buffer_b = __ScribbleSystem().__bufferB;
         
         var _copy_pos  = _write_pos + _delete_size;
         var _copy_size = _buffer_size - _copy_pos;
@@ -218,7 +218,7 @@ function scribble_markdown_format(_string)
     
     var _markdown_styles_struct = __ScribbleSystem().__state.__markdown_styles_struct;
     
-    static _buffer = __ScribbleSystem().__buffer_a;
+    static _buffer = __ScribbleSystem().__bufferA;
     
     buffer_seek(_buffer, buffer_seek_start, 0);
     buffer_write(_buffer, buffer_string, _string);
@@ -534,21 +534,21 @@ function scribble_markdown_format(_string)
                     _is_link = false;
                     
                     //Look for the name of the region (which would otherwise be a URL in markdown)
-                    var _region_start = _link_peek+1;
-                    var _region_end   = _region_start;
+                    var _regionStart = _link_peek+1;
+                    var _regionEnd   = _regionStart;
                     
                     while(true)
                     {
-                        var _region_next_value = buffer_peek(_buffer, _region_end, buffer_u8);
+                        var _region_next_value = buffer_peek(_buffer, _regionEnd, buffer_u8);
                         if ((_region_next_value == 0x00) || (_region_next_value == ord(")"))) break;
-                        ++_region_end;
+                        ++_regionEnd;
                     }
                     
-                    buffer_poke(_buffer, _region_end, buffer_u8, 0x00);
-                    var _region_name = buffer_peek(_buffer, _region_start, buffer_string);
+                    buffer_poke(_buffer, _regionEnd, buffer_u8, 0x00);
+                    var _regionName = buffer_peek(_buffer, _regionStart, buffer_string);
                     
-                    _buffer_size += _func_delete_buffer(_buffer, _buffer_size, 1 + _region_end - _region_start, _region_start);
-                    _buffer_size += _func_insert_buffer(_buffer, _buffer_size, "region," + _region_name + "]", _link_start+1);
+                    _buffer_size += _func_delete_buffer(_buffer, _buffer_size, 1 + _regionEnd - _regionStart, _regionStart);
+                    _buffer_size += _func_insert_buffer(_buffer, _buffer_size, "region," + _regionName + "]", _link_start+1);
                     buffer_seek(_buffer, buffer_seek_relative, 2);
                     __SCRIBBLE_MARKDOWN_UPDATE_NEXT_VALUE
                     

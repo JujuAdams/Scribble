@@ -24,27 +24,27 @@
 
 #macro __SCRIBBLE_PARSER_NEXT_GLYPH  ++_glyphCount;\
                                      _glyph_prev_arabic_join_next = false;\ //Presume we're not an Arabic joining character
-                                     if (SCRIBBLE_ALLOW_LIGATURES) _glyph_history = (_glyph_history | _glyph_ord) << 16;\
+                                     if (SCRIBBLE_ALLOW_LIGATURES) _glyph_history = (_glyph_history | _glyphOrd) << 16;\
                                      _glyph_prev_prev = _glyph_prev;\
-                                     _glyph_prev = _glyph_write;
+                                     _glyph_prev = _glyphWrite;
 
 
 
 #macro __SCRIBBLE_PARSER_WRITE_GLYPH  \//Pull info out of the font's data structures
-                                      var _data_index = _font_glyphs_map[? _glyph_write];\
+                                      var _dataIndex = _fontGlyphsMap[? _glyphWrite];\
                                       \//If our glyph is missing, choose the missing character glyph instead!
-                                      if (_data_index == undefined)\
+                                      if (_dataIndex == undefined)\
                                       {\
-                                          __ScribbleTrace("Couldn't find glyph data for character code " + string(_glyph_write) + " (" + chr(_glyph_write) + ") in font \"" + string(_fontName) + "\"");\
-                                          _data_index = _font_glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)];\
+                                          __ScribbleTrace("Couldn't find glyph data for character code " + string(_glyphWrite) + " (" + chr(_glyphWrite) + ") in font \"" + string(_fontName) + "\"");\
+                                          _dataIndex = _fontGlyphsMap[? ord(SCRIBBLE_MISSING_CHARACTER)];\
                                       }\
                                       \//Add this glyph to our grid by copying from the font's own glyph data grid
-                                      ds_grid_set_grid_region(_glyphGrid, _fontGlyphDataGrid, _data_index, __SCRIBBLE_GLYPH_PROPR_UNICODE, _data_index, __SCRIBBLE_GLYPH_PROPR_V1, _glyphCount, __SCRIBBLE_GEN_GLYPH_UNICODE);\
+                                      ds_grid_set_grid_region(_glyphGrid, _fontGlyphDataGrid, _dataIndex, __SCRIBBLE_GLYPH_PROPR_UNICODE, _dataIndex, __SCRIBBLE_GLYPH_PROPR_V1, _glyphCount, __SCRIBBLE_GEN_GLYPH_UNICODE);\
                                       _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;\ //FIXME - Use region function and control pop to make this more efficient
                                       \
                                       if (SCRIBBLE_USE_KERNING)\
                                       {\
-                                          var _kerning = _font_kerning_map[? ((_glyph_write & 0xFFFF) << 16) | (_glyph_prev & 0xFFFF)];\
+                                          var _kerning = _font_kerning_map[? ((_glyphWrite & 0xFFFF) << 16) | (_glyph_prev & 0xFFFF)];\
                                           if (_kerning != undefined)\
                                           {\
                                               _glyphGrid[# _glyphCount-1, __SCRIBBLE_GEN_GLYPH_SEPARATION] += _kerning*_glyphGrid[# _glyphCount-1, __SCRIBBLE_GEN_GLYPH_SCALE];\
@@ -61,16 +61,16 @@
                                     if (_fontData.__isKrutidev) __hasDevanagari = true;\
                                     \
                                     var _fontGlyphDataGrid     = _fontData.__glyphDataGrid;\
-                                    var _font_glyphs_map          = _fontData.__glyphsMap;\
+                                    var _fontGlyphsMap          = _fontData.__glyphsMap;\
                                     var _font_kerning_map         = _fontData.__kerningMap;\
                                     var _font_halign_offset_array = _fontData.__halignOffsetArray;\
                                     var _font_valign_offset_array = _fontData.__valignOffsetArray;\
                                     var _fontLigatureMap          = _fontData.__ligatureMap;\
                                     \
-                                    var _stateHAlignOffset = _font_halign_offset_array[_state_halign];\
+                                    var _stateHAlignOffset = _font_halign_offset_array[_stateHAlign];\
                                     var _stateVAlignOffset = _font_valign_offset_array[__vAlign ?? _starting_valign];\
                                     \
-                                    var _space_data_index = _font_glyphs_map[? SCRIBBLE_UNICODE_SPACE];\
+                                    var _space_data_index = _fontGlyphsMap[? SCRIBBLE_UNICODE_SPACE];\
                                     if (_space_data_index == undefined)\
                                     {\
                                         __ScribbleError("The space character is missing from font definition for \"", _fontName, "\"");\
@@ -167,8 +167,8 @@ function __ScribbleGen2_Parser()
     static _tagDict               = _system.__tagDict;
     static _external_sprite_map   = _system.__external_sprite_map;
     static _externalSoundMap    = _system.__externalSoundMap;
-    static _string_buffer         = _system.__buffer_a;
-    static _other_string_buffer   = _system.__buffer_b;
+    static _stringBuffer         = _system.__bufferA;
+    static _other_string_buffer   = _system.__bufferB;
     static _fontDataMap         = _system.__fontDataMap;
     static _generatorState       = _system.__generatorState;
     static _sprite_whitelist_map  = _system.__state.__sprite_whitelist_map;
@@ -176,9 +176,9 @@ function __ScribbleGen2_Parser()
     with(_generatorState)
     {
         var _glyphGrid     = __glyphGrid;
-        var _word_grid      = __word_grid;
+        var _wordGrid      = __wordGrid;
         var _controlArray   = __controlArray;
-        var _vbuff_pos_grid = __vbuff_pos_grid;
+        var _vbuffPosGrid = __vbuffPosGrid;
     }
     
     static _glyph_data_struct = __ScribbleSystem().__glyphData;
@@ -203,17 +203,17 @@ function __ScribbleGen2_Parser()
     _element_text = ((__preprocessorFunc ?? _system.__defaultPreprocessorFunc)(_element_text)) ?? _element_text;
     
     //Place our input string into a buffer for quicker reading
-    buffer_seek(_string_buffer, buffer_seek_start, 0);
-    buffer_write(_string_buffer, buffer_string, _element_text);
-    buffer_write(_string_buffer, buffer_u64, 0x00); //Add some extra null characters to avoid errors where we're reading outside the buffer
-    var _buffer_length = buffer_tell(_string_buffer);
-    buffer_seek(_string_buffer, buffer_seek_start, 0);
+    buffer_seek(_stringBuffer, buffer_seek_start, 0);
+    buffer_write(_stringBuffer, buffer_string, _element_text);
+    buffer_write(_stringBuffer, buffer_u64, 0x00); //Add some extra null characters to avoid errors where we're reading outside the buffer
+    var _buffer_length = buffer_tell(_stringBuffer);
+    buffer_seek(_stringBuffer, buffer_seek_start, 0);
     
     //Resize grids if we have to
     var _element_expected_text_length = string_length(_element_text) + 2;
     if (ds_grid_width(_glyphGrid    ) < _element_expected_text_length) ds_grid_resize(_glyphGrid,     _element_expected_text_length, __SCRIBBLE_GEN_GLYPH_SIZE);
-    if (ds_grid_width(_word_grid     ) < _element_expected_text_length) ds_grid_resize(_word_grid,      _element_expected_text_length, __SCRIBBLE_GEN_GLYPH_SIZE);
-    if (ds_grid_width(_vbuff_pos_grid) < _element_expected_text_length) ds_grid_resize(_vbuff_pos_grid, _element_expected_text_length, __SCRIBBLE_GEN_GLYPH_SIZE);
+    if (ds_grid_width(_wordGrid     ) < _element_expected_text_length) ds_grid_resize(_wordGrid,      _element_expected_text_length, __SCRIBBLE_GEN_GLYPH_SIZE);
+    if (ds_grid_width(_vbuffPosGrid) < _element_expected_text_length) ds_grid_resize(_vbuffPosGrid, _element_expected_text_length, __SCRIBBLE_GEN_GLYPH_SIZE);
     
     //Start the parser!
     var _tag_start           = undefined;
@@ -223,7 +223,7 @@ function __ScribbleGen2_Parser()
     var _tag_open_count      = 0;
     
     var _glyphCount                 = 0;
-    var _glyph_ord                   = 0x0000;
+    var _glyphOrd                   = 0x0000;
     var _glyph_history               = 0x0000;
     var _glyph_prev                  = 0x0000;
     var _glyph_prev_prev             = 0x0000;
@@ -236,7 +236,7 @@ function __ScribbleGen2_Parser()
     
     var _state_effect_flags         = 0;
     var _state_colour               = 0xFF000000 | _starting_colour; //Uses all four bytes
-    var _state_halign               = _starting_halign;
+    var _stateHAlign               = _starting_halign;
     var _state_command_tag_flipflop = false;
     
     var _state_scale             = _pre_scale;
@@ -248,7 +248,7 @@ function __ScribbleGen2_Parser()
     
     var _offset_data_array = []; // start glyph, dX, dY
     
-    array_push(_controlArray, new __ScribbleClassControlHAlign(_state_halign));
+    array_push(_controlArray, new __ScribbleClassControlHAlign(_stateHAlign));
     ++_controlCount;
     
     array_push(_controlArray, new __ScribbleClassControlColor(_state_colour));
@@ -260,36 +260,36 @@ function __ScribbleGen2_Parser()
     while(true)
     {
         // In-lined __ScribbleBufferReadUnicode() for speed
-        var _glyph_ord  = buffer_read(_string_buffer, buffer_u8); //Assume 0xxxxxxx
+        var _glyphOrd  = buffer_read(_stringBuffer, buffer_u8); //Assume 0xxxxxxx
         
         // Break out if we hit a null terminator
-        if (_glyph_ord == 0x00) break;
+        if (_glyphOrd == 0x00) break;
         
         // Only do the following tests if the first byte is large enough (the MSB is 1)
-        if ((_glyph_ord & $E0) == $C0) //110xxxxx 10xxxxxx
+        if ((_glyphOrd & $E0) == $C0) //110xxxxx 10xxxxxx
         {
-            _glyph_ord = ((_glyph_ord & $1F) << 6) | (buffer_read(_string_buffer, buffer_u8) & $3F);
+            _glyphOrd = ((_glyphOrd & $1F) << 6) | (buffer_read(_stringBuffer, buffer_u8) & $3F);
         }
-        else if ((_glyph_ord & $F0) == $E0) //1110xxxx 10xxxxxx 10xxxxxx
+        else if ((_glyphOrd & $F0) == $E0) //1110xxxx 10xxxxxx 10xxxxxx
         {
-            var _glyph_ord_b = buffer_read(_string_buffer, buffer_u8);
-            var _glyph_ord_c = buffer_read(_string_buffer, buffer_u8);
-            _glyph_ord = ((_glyph_ord & $0F) << 12) | ((_glyph_ord_b & $3F) <<  6) | (_glyph_ord_c & $3F);
+            var _glyph_ord_b = buffer_read(_stringBuffer, buffer_u8);
+            var _glyph_ord_c = buffer_read(_stringBuffer, buffer_u8);
+            _glyphOrd = ((_glyphOrd & $0F) << 12) | ((_glyph_ord_b & $3F) <<  6) | (_glyph_ord_c & $3F);
         }
-        else if ((_glyph_ord & $F8) == $F0) //11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+        else if ((_glyphOrd & $F8) == $F0) //11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
         {
-            var _glyph_ord_b = buffer_read(_string_buffer, buffer_u8);
-            var _glyph_ord_c = buffer_read(_string_buffer, buffer_u8);
-            var _glyph_ord_d = buffer_read(_string_buffer, buffer_u8);
-            _glyph_ord = ((_glyph_ord & $07) << 18) | ((_glyph_ord_b & $3F) << 12) | ((_glyph_ord_c & $3F) <<  6) | (_glyph_ord_d & $3F);
+            var _glyph_ord_b = buffer_read(_stringBuffer, buffer_u8);
+            var _glyph_ord_c = buffer_read(_stringBuffer, buffer_u8);
+            var _glyph_ord_d = buffer_read(_stringBuffer, buffer_u8);
+            _glyphOrd = ((_glyphOrd & $07) << 18) | ((_glyph_ord_b & $3F) << 12) | ((_glyph_ord_c & $3F) <<  6) | (_glyph_ord_d & $3F);
         }
         else if (SCRIBBLE_FIX_ESCAPED_NEWLINES)
         {
             // If we haven't needed to process 2/3/4-byte UTF8 glyphs then check for \n replacement (if enabled)
-            if ((_glyph_ord == 0x5C) && (buffer_peek(_string_buffer, buffer_tell(_string_buffer), buffer_u8) == 0x6E)) //Backslash followed by "n"
+            if ((_glyphOrd == 0x5C) && (buffer_peek(_stringBuffer, buffer_tell(_stringBuffer), buffer_u8) == 0x6E)) //Backslash followed by "n"
             {
-                buffer_seek(_string_buffer, buffer_seek_relative, 1); //Skip the n
-                _glyph_ord = SCRIBBLE_UNICODE_NEWLINE;
+                buffer_seek(_stringBuffer, buffer_seek_relative, 1); //Skip the n
+                _glyphOrd = SCRIBBLE_UNICODE_NEWLINE;
             }
         }
         
@@ -297,7 +297,7 @@ function __ScribbleGen2_Parser()
         {
             #region Command tag handling
             
-            if (_glyph_ord == SCRIBBLE_COMMAND_TAG_CLOSE) //If we've hit a command tag close character (usually ])
+            if (_glyphOrd == SCRIBBLE_COMMAND_TAG_CLOSE) //If we've hit a command tag close character (usually ])
             {
                 _tag_open_count--;
                 
@@ -305,13 +305,13 @@ function __ScribbleGen2_Parser()
                 {
                     //Increment the parameter count and place a null byte for string reading
                     ++_tag_parameter_count;
-                    buffer_poke(_string_buffer, buffer_tell(_string_buffer)-1, buffer_u8, 0);
+                    buffer_poke(_stringBuffer, buffer_tell(_stringBuffer)-1, buffer_u8, 0);
                     
                     //Jump back to the start of the command tag and read out strings for the command parameters
-                    buffer_seek(_string_buffer, buffer_seek_start, _tag_start);
+                    buffer_seek(_stringBuffer, buffer_seek_start, _tag_start);
                     repeat(_tag_parameter_count)
                     {
-                        array_push(_tag_parameters, string_trim(buffer_read(_string_buffer, buffer_string)));
+                        array_push(_tag_parameters, string_trim(buffer_read(_stringBuffer, buffer_string)));
                     }
                     
                     //Reset command tag state
@@ -410,7 +410,7 @@ function __ScribbleGen2_Parser()
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = 1;
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                             
-                            _glyph_write = 0x0000;
+                            _glyphWrite = 0x0000;
                             __SCRIBBLE_PARSER_NEXT_GLYPH
                         break;
                         
@@ -597,7 +597,7 @@ function __ScribbleGen2_Parser()
                                 _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = 1;
                                 _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                                 
-                                _glyph_write = SCRIBBLE_UNICODE_NBSP;
+                                _glyphWrite = SCRIBBLE_UNICODE_NBSP;
                                 __SCRIBBLE_PARSER_NEXT_GLYPH
                             }
                         break;
@@ -620,7 +620,7 @@ function __ScribbleGen2_Parser()
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = 1;
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                             
-                            _glyph_write = SCRIBBLE_UNICODE_ZWSP;
+                            _glyphWrite = SCRIBBLE_UNICODE_ZWSP;
                             __SCRIBBLE_PARSER_NEXT_GLYPH
                         break;
                     
@@ -640,7 +640,7 @@ function __ScribbleGen2_Parser()
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = 1;
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                             
-                            _glyph_write = SCRIBBLE_UNICODE_R2L;
+                            _glyphWrite = SCRIBBLE_UNICODE_R2L;
                             __SCRIBBLE_PARSER_NEXT_GLYPH
                         break;
                     
@@ -658,7 +658,7 @@ function __ScribbleGen2_Parser()
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = 1;
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                             
-                            _glyph_write = SCRIBBLE_UNICODE_L2R;
+                            _glyphWrite = SCRIBBLE_UNICODE_L2R;
                             __SCRIBBLE_PARSER_NEXT_GLYPH
                         break;
                     
@@ -849,7 +849,7 @@ function __ScribbleGen2_Parser()
                                 ds_grid_multiply_region(_glyphGrid, _glyphCount, __SCRIBBLE_GEN_GLYPH_X, _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE, 1/_state_scale);
                             }
                             
-                            _glyph_write = 0x0000;
+                            _glyphWrite = 0x0000;
                             __SCRIBBLE_PARSER_NEXT_GLYPH
                         break;
                     
@@ -966,7 +966,7 @@ function __ScribbleGen2_Parser()
                                 ds_grid_multiply_region(_glyphGrid, _glyphCount, __SCRIBBLE_GEN_GLYPH_X, _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE, 1/_state_scale);
                             }
                             
-                            _glyph_write = 0x0000;
+                            _glyphWrite = 0x0000;
                             __SCRIBBLE_PARSER_NEXT_GLYPH
                         break;
                         
@@ -1032,7 +1032,7 @@ function __ScribbleGen2_Parser()
                                     }
                                     
                                     //Figure out how much we need to copy and if we need to resize the target buffer
-                                    var _copy_size = _buffer_length - buffer_tell(_string_buffer);
+                                    var _copy_size = _buffer_length - buffer_tell(_stringBuffer);
                                     
                                     _buffer_length = string_byte_length(_macro_result) + _copy_size;
                                     if (_buffer_length > buffer_get_size(_other_string_buffer)) buffer_resize(_other_string_buffer, _buffer_length);
@@ -1040,12 +1040,12 @@ function __ScribbleGen2_Parser()
                                     //Write the new string to the other buffer, and then copy the remainder of the data in the old buffer
                                     buffer_seek(_other_string_buffer, buffer_seek_start, 0);
                                     buffer_write(_other_string_buffer, buffer_text, _macro_result);
-                                    buffer_copy(_string_buffer, buffer_tell(_string_buffer), _copy_size, _other_string_buffer, buffer_tell(_other_string_buffer));
+                                    buffer_copy(_stringBuffer, buffer_tell(_stringBuffer), _copy_size, _other_string_buffer, buffer_tell(_other_string_buffer));
                                     buffer_seek(_other_string_buffer, buffer_seek_start, 0);
                                     
                                     //Swap the two buffers over
-                                    var _temp = _string_buffer;
-                                    _string_buffer = _other_string_buffer;
+                                    var _temp = _stringBuffer;
+                                    _stringBuffer = _other_string_buffer;
                                     _other_string_buffer = _temp;
                                 }
                             }                        
@@ -1056,21 +1056,21 @@ function __ScribbleGen2_Parser()
                             }
                             else
                             {
-                                var _sprite_index = _external_sprite_map[? _tag_command_name] ?? asset_get_index(_tag_command_name); 
-                                if (not sprite_exists(_sprite_index))
+                                var _spriteIndex = _external_sprite_map[? _tag_command_name] ?? asset_get_index(_tag_command_name); 
+                                if (not sprite_exists(_spriteIndex))
                                 {
-                                    _sprite_index = handle_parse(_tag_command_name);
+                                    _spriteIndex = handle_parse(_tag_command_name);
                                 }
                                 
-                                if (sprite_exists(_sprite_index))
+                                if (sprite_exists(_spriteIndex))
                                 {
                                     #region Sprite
                                     
-                                    if (sprite_exists(_sprite_index) && ((not SCRIBBLE_USE_SPRITE_WHITELIST) || (_sprite_whitelist_map[? _sprite_index] ?? false)))
+                                    if (sprite_exists(_spriteIndex) && ((not SCRIBBLE_USE_SPRITE_WHITELIST) || (_sprite_whitelist_map[? _spriteIndex] ?? false)))
                                     {
                                         var _sprite_scale = SCRIBBLE_GLOBAL_SPRITE_SCALE;
-                                        var _sprite_w = _sprite_scale*sprite_get_width( _sprite_index);
-                                        var _sprite_h = _sprite_scale*sprite_get_height(_sprite_index);
+                                        var _sprite_w = _sprite_scale*sprite_get_width( _spriteIndex);
+                                        var _sprite_h = _sprite_scale*sprite_get_height(_spriteIndex);
                                 
                                         if (SCRIBBLE_SHRINK_INLINE_SPRITES)
                                         {
@@ -1080,46 +1080,46 @@ function __ScribbleGen2_Parser()
                                             _sprite_scale *= _scale;
                                         }
                                 
-                                        var _image_index = 0;
-                                        var _image_speed = 0;
+                                        var _imageIndex = 0;
+                                        var _imageSpeed = 0;
                                         switch(_tag_parameter_count)
                                         {
                                             case 1:
-                                                _image_index = 0;
-                                                _image_speed = SCRIBBLE_DEFAULT_SPRITE_SPEED;
+                                                _imageIndex = 0;
+                                                _imageSpeed = SCRIBBLE_DEFAULT_SPRITE_SPEED;
                                             break;
                                                          
                                             case 2:
-                                                _image_index = real(_tag_parameters[1]);
-                                                _image_speed = 0;
+                                                _imageIndex = real(_tag_parameters[1]);
+                                                _imageSpeed = 0;
                                             break;
                                                      
                                             default:
-                                                _image_index = real(_tag_parameters[1]);
-                                                _image_speed = real(_tag_parameters[2]);
+                                                _imageIndex = real(_tag_parameters[1]);
+                                                _imageSpeed = real(_tag_parameters[2]);
                                             break;
                                         }
                                         
-                                        if (_image_index < 0)
+                                        if (_imageIndex < 0)
                                         {
-                                            var _sprite_once = true;
-                                            _image_index = 0;
+                                            var _spriteOnce = true;
+                                            _imageIndex = 0;
                                             
                                             if (_tag_parameter_count == 2)
                                             {
-                                                _image_speed = SCRIBBLE_DEFAULT_SPRITE_SPEED;
+                                                _imageSpeed = SCRIBBLE_DEFAULT_SPRITE_SPEED;
                                             }
                                         }
                                         else
                                         {
-                                            var _sprite_once = false;
+                                            var _spriteOnce = false;
                                         }
                                         
                                         //Apply IDE sprite speed
-                                        _image_speed *= __ScribbleGetImageSpeed(_sprite_index);
+                                        _imageSpeed *= __ScribbleGetImageSpeed(_spriteIndex);
                                 
                                         //Only report the model as animated if we're actually able to animate this sprite
-                                        if ((_image_speed != 0) && (sprite_get_number(_sprite_index) > 1)) __hasAnimation = true;
+                                        if ((_imageSpeed != 0) && (sprite_get_number(_spriteIndex) > 1)) __hasAnimation = true;
                                 
                                         //Add this glyph to our grid
                                         _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = __SCRIBBLE_GLYPH_REPL_SPRITE;
@@ -1137,10 +1137,10 @@ function __ScribbleGen2_Parser()
                                         _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                                 
                                         _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SPRITE_DATA] = {
-                                            __spriteIndex: _sprite_index,
-                                            __imageIndex:  _image_index,
-                                            __imageSpeed:  _image_speed,
-                                            __spriteOnce:  _sprite_once,
+                                            __spriteIndex: _spriteIndex,
+                                            __imageIndex:  _imageIndex,
+                                            __imageSpeed:  _imageSpeed,
+                                            __spriteOnce:  _spriteOnce,
                                         };
                                         
                                         if (_spritesDontScale && (_state_scale != 1))
@@ -1148,7 +1148,7 @@ function __ScribbleGen2_Parser()
                                             ds_grid_multiply_region(_glyphGrid, _glyphCount, __SCRIBBLE_GEN_GLYPH_X, _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE, 1/_state_scale);
                                         }
                                         
-                                        _glyph_write = 0x0000;
+                                        _glyphWrite = 0x0000;
                                         __SCRIBBLE_PARSER_NEXT_GLYPH
                                     }
                             
@@ -1230,13 +1230,13 @@ function __ScribbleGen2_Parser()
                     }
                 
                     //If this command set a new horizontal alignment, and this alignment is different to what we had before, store it as a command
-                    if ((_new_halign != undefined) && (_new_halign != _state_halign))
+                    if ((_new_halign != undefined) && (_new_halign != _stateHAlign))
                     {
-                        _state_halign = _new_halign;
+                        _stateHAlign = _new_halign;
                         _new_halign = undefined;
-                        _stateHAlignOffset = _font_halign_offset_array[_state_halign];
+                        _stateHAlignOffset = _font_halign_offset_array[_stateHAlign];
                     
-                        array_push(_controlArray, new __ScribbleClassControlHAlign(_state_halign));
+                        array_push(_controlArray, new __ScribbleClassControlHAlign(_stateHAlign));
                         ++_controlCount;
                     
                         if (_glyphCount > 0)
@@ -1256,7 +1256,7 @@ function __ScribbleGen2_Parser()
                                 _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = 1;
                                 _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                                 
-                                _glyph_write = SCRIBBLE_UNICODE_NEWLINE;
+                                _glyphWrite = SCRIBBLE_UNICODE_NEWLINE;
                                 __SCRIBBLE_PARSER_NEXT_GLYPH
                             }
                             else
@@ -1283,16 +1283,16 @@ function __ScribbleGen2_Parser()
                     }
                 }
             }
-            else if (_glyph_ord == SCRIBBLE_COMMAND_TAG_ARGUMENT) //If we've hit a command tag argument delimiter character (usually ,)
+            else if (_glyphOrd == SCRIBBLE_COMMAND_TAG_ARGUMENT) //If we've hit a command tag argument delimiter character (usually ,)
             {
                 if (_tag_open_count == 1)
                 {
                     //Increment the parameter count and place a null byte for string reading later
                     ++_tag_parameter_count;
-                    buffer_poke(_string_buffer, buffer_tell(_string_buffer)-1, buffer_u8, 0);
+                    buffer_poke(_stringBuffer, buffer_tell(_stringBuffer)-1, buffer_u8, 0);
                 }
             }
-            else if (_glyph_ord == SCRIBBLE_COMMAND_TAG_OPEN)
+            else if (_glyphOrd == SCRIBBLE_COMMAND_TAG_OPEN)
             {
                 _tag_open_count++;
             }
@@ -1301,7 +1301,7 @@ function __ScribbleGen2_Parser()
         }
         else
         {
-            if ((_glyph_ord == SCRIBBLE_COMMAND_TAG_OPEN) && !_ignore_commands && (_state_command_tag_flipflop || (__ScribbleBufferPeekUnicode(_string_buffer, buffer_tell(_string_buffer)) != SCRIBBLE_COMMAND_TAG_OPEN)))
+            if ((_glyphOrd == SCRIBBLE_COMMAND_TAG_OPEN) && !_ignore_commands && (_state_command_tag_flipflop || (__ScribbleBufferPeekUnicode(_stringBuffer, buffer_tell(_stringBuffer)) != SCRIBBLE_COMMAND_TAG_OPEN)))
             {
                 if (_state_command_tag_flipflop)
                 {
@@ -1310,14 +1310,14 @@ function __ScribbleGen2_Parser()
                 else
                 {
                     //Begin a command tag
-                    _tag_start           = buffer_tell(_string_buffer);
+                    _tag_start           = buffer_tell(_stringBuffer);
                     _tag_open_count      = 1;
                     _tag_parameter_count = 0;
                     _tag_parameters      = [];
                 }
             }
-            else if ((_glyph_ord == SCRIBBLE_UNICODE_NEWLINE) //If we've hit a newline (\n)
-                 || (SCRIBBLE_HASH_NEWLINE && (_glyph_ord == 0x23))) //If we've hit a hash, and hash newlines are on
+            else if ((_glyphOrd == SCRIBBLE_UNICODE_NEWLINE) //If we've hit a newline (\n)
+                 || (SCRIBBLE_HASH_NEWLINE && (_glyphOrd == 0x23))) //If we've hit a hash, and hash newlines are on
             {
                 //TODO - Prepare boilerplate version of this glyph in the font for faster copy-pasting
                 
@@ -1333,10 +1333,10 @@ function __ScribbleGen2_Parser()
                 _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = 1;
                 _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                 
-                _glyph_write = SCRIBBLE_UNICODE_NEWLINE;
+                _glyphWrite = SCRIBBLE_UNICODE_NEWLINE;
                 __SCRIBBLE_PARSER_NEXT_GLYPH
             }
-            else if (_glyph_ord == SCRIBBLE_UNICODE_TAB) //ASCII horizontal tab
+            else if (_glyphOrd == SCRIBBLE_UNICODE_TAB) //ASCII horizontal tab
             {
                 #region Add a tab glyph to our grid
                 
@@ -1354,12 +1354,12 @@ function __ScribbleGen2_Parser()
                 _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = 1;
                 _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                 
-                _glyph_write = SCRIBBLE_UNICODE_TAB;
+                _glyphWrite = SCRIBBLE_UNICODE_TAB;
                 __SCRIBBLE_PARSER_NEXT_GLYPH
                 
                 #endregion
             }
-            else if (_glyph_ord == SCRIBBLE_UNICODE_SPACE) //ASCII space
+            else if (_glyphOrd == SCRIBBLE_UNICODE_SPACE) //ASCII space
             {
                 #region Add a space glyph to our grid
                 
@@ -1377,12 +1377,12 @@ function __ScribbleGen2_Parser()
                 _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = 1;
                 _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                 
-                _glyph_write = SCRIBBLE_UNICODE_SPACE;
+                _glyphWrite = SCRIBBLE_UNICODE_SPACE;
                 __SCRIBBLE_PARSER_NEXT_GLYPH
                 
                 #endregion
             }
-            else if (_glyph_ord == SCRIBBLE_UNICODE_NBSP)
+            else if (_glyphOrd == SCRIBBLE_UNICODE_NBSP)
             {
                 #region Add a non-breaking space glyph to our grid
                 
@@ -1400,12 +1400,12 @@ function __ScribbleGen2_Parser()
                 _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = 1;
                 _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                 
-                _glyph_write = SCRIBBLE_UNICODE_NBSP;
+                _glyphWrite = SCRIBBLE_UNICODE_NBSP;
                 __SCRIBBLE_PARSER_NEXT_GLYPH
                 
                 #endregion
             }
-            else if ((_glyph_ord == SCRIBBLE_UNICODE_ZWSP) || (SCRIBBLE_THAI_GRAVE_ACCENTS_ARE_ZWSP && __hasThai && (_glyph_ord == 0x60))) //Zero-width space, or a Thai grave accent
+            else if ((_glyphOrd == SCRIBBLE_UNICODE_ZWSP) || (SCRIBBLE_THAI_GRAVE_ACCENTS_ARE_ZWSP && __hasThai && (_glyphOrd == 0x60))) //Zero-width space, or a Thai grave accent
             {
                 #region Add a zero-width space glyph to our grid
                 
@@ -1423,15 +1423,15 @@ function __ScribbleGen2_Parser()
                 _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = 1;
                 _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                 
-                _glyph_write = SCRIBBLE_UNICODE_ZWSP;
+                _glyphWrite = SCRIBBLE_UNICODE_ZWSP;
                 __SCRIBBLE_PARSER_NEXT_GLYPH
                 
                 #endregion
             }
-            else if (SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS && (_glyph_ord == SCRIBBLE_UNICODE_ELLIPSIS))
+            else if (SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS && (_glyphOrd == SCRIBBLE_UNICODE_ELLIPSIS))
             {
                 //Figure out how much we need to copy and if we need to resize the target buffer
-                var _copy_size = _buffer_length - buffer_tell(_string_buffer);
+                var _copy_size = _buffer_length - buffer_tell(_stringBuffer);
                 
                 _buffer_length = 3 + _copy_size;
                 if (_buffer_length > buffer_get_size(_other_string_buffer)) buffer_resize(_other_string_buffer, _buffer_length);
@@ -1439,52 +1439,52 @@ function __ScribbleGen2_Parser()
                 //Write the new string to the other buffer, and then copy the remainder of the data in the old buffer
                 buffer_seek(_other_string_buffer, buffer_seek_start, 0);
                 buffer_write(_other_string_buffer, buffer_text, "...");
-                buffer_copy(_string_buffer, buffer_tell(_string_buffer), _copy_size, _other_string_buffer, 3);
+                buffer_copy(_stringBuffer, buffer_tell(_stringBuffer), _copy_size, _other_string_buffer, 3);
                 buffer_seek(_other_string_buffer, buffer_seek_start, 0);
                 
                 //Swap the two buffers over
-                var _temp = _string_buffer;
-                _string_buffer = _other_string_buffer;
+                var _temp = _stringBuffer;
+                _stringBuffer = _other_string_buffer;
                 _other_string_buffer = _temp;
             }
-            else if (_glyph_ord > SCRIBBLE_UNICODE_SPACE) //Only write glyphs that aren't system control characters
+            else if (_glyphOrd > SCRIBBLE_UNICODE_SPACE) //Only write glyphs that aren't system control characters
             {
                 if (SCRIBBLE_UNDO_UNICODE_SUBSTITUTIONS)
                 { 
-                    if ((_glyph_ord == SCRIBBLE_UNICODE_EN_DASH)
-                    ||  (_glyph_ord == SCRIBBLE_UNICODE_EM_DASH)
-                    ||  (_glyph_ord == SCRIBBLE_UNICODE_BAR)) //Horizontal bar ―
+                    if ((_glyphOrd == SCRIBBLE_UNICODE_EN_DASH)
+                    ||  (_glyphOrd == SCRIBBLE_UNICODE_EM_DASH)
+                    ||  (_glyphOrd == SCRIBBLE_UNICODE_BAR)) //Horizontal bar ―
                     {
                         //Replace with hyphen -
-                        _glyph_ord = SCRIBBLE_UNICODE_HYPHEN;
+                        _glyphOrd = SCRIBBLE_UNICODE_HYPHEN;
                     }
-                    else if ((_glyph_ord == SCRIBBLE_UNICODE_QUOTE_ST)  //Start single quote ‘
-                         ||  (_glyph_ord == SCRIBBLE_UNICODE_QUOTE_END)) //End single quote ’
+                    else if ((_glyphOrd == SCRIBBLE_UNICODE_QUOTE_ST)  //Start single quote ‘
+                         ||  (_glyphOrd == SCRIBBLE_UNICODE_QUOTE_END)) //End single quote ’
                     {
                         //Replace with single quote '
-                        _glyph_ord = SCRIBBLE_UNICODE_APOSTROPHE;
+                        _glyphOrd = SCRIBBLE_UNICODE_APOSTROPHE;
                     }
-                    else if ((_glyph_ord == SCRIBBLE_UNICODE_DQUOTE_ST)
-                         ||  (_glyph_ord == SCRIBBLE_UNICODE_DQUOTE_END)
-                         ||  (_glyph_ord == SCRIBBLE_UNICODE_DQUOTE_LOW)
-                         ||  (_glyph_ord == SCRIBBLE_UNICODE_DQUOTE_HI))
+                    else if ((_glyphOrd == SCRIBBLE_UNICODE_DQUOTE_ST)
+                         ||  (_glyphOrd == SCRIBBLE_UNICODE_DQUOTE_END)
+                         ||  (_glyphOrd == SCRIBBLE_UNICODE_DQUOTE_LOW)
+                         ||  (_glyphOrd == SCRIBBLE_UNICODE_DQUOTE_HI))
                     {
                         //Replace with double quote "
-                        _glyph_ord = SCRIBBLE_UNICODE_DQUOTE;
+                        _glyphOrd = SCRIBBLE_UNICODE_DQUOTE;
                     }
-                    else if (_glyph_ord == SCRIBBLE_UNICODE_GREEK_QMARK) //Greek question mark ;
+                    else if (_glyphOrd == SCRIBBLE_UNICODE_GREEK_QMARK) //Greek question mark ;
                     {
                         //Replace with semicolon
-                        _glyph_ord = SCRIBBLE_UNICODE_SEMICOLON;
+                        _glyphOrd = SCRIBBLE_UNICODE_SEMICOLON;
                     }
                 }
                 
                 #region Add a standard glyph
                 
-                var _glyph_write  = _glyph_ord;
-                var _glyph_joiner = _glyph_ord;
+                var _glyphWrite  = _glyphOrd;
+                var _glyph_joiner = _glyphOrd;
                 
-                if (SCRIBBLE_ALLOW_ARABIC && (_glyph_write >= 0x0600) && (_glyph_write <= 0x06FF)) // Arabic Unicode block
+                if (SCRIBBLE_ALLOW_ARABIC && (_glyphWrite >= 0x0600) && (_glyphWrite <= 0x06FF)) // Arabic Unicode block
                 {
                     #region Arabic handling
                     
@@ -1498,11 +1498,11 @@ function __ScribbleGen2_Parser()
                     
                     __hasArabic = true;
                     
-                    var _buffer_offset = buffer_tell(_string_buffer);
-                    var _glyph_next = __ScribbleBufferPeekUnicode(_string_buffer, _buffer_offset);
+                    var _buffer_offset = buffer_tell(_stringBuffer);
+                    var _glyph_next = __ScribbleBufferPeekUnicode(_stringBuffer, _buffer_offset);
                     
                     // Lam with Alef ligatures
-                    if (_glyph_write == 0x0644)
+                    if (_glyphWrite == 0x0644)
                     {
                         var _glyph_replacement = undefined;
                         switch(_glyph_next)
@@ -1515,14 +1515,14 @@ function __ScribbleGen2_Parser()
                         
                         if (_glyph_replacement != undefined)
                         {
-                            _glyph_write  = _glyph_replacement;
+                            _glyphWrite  = _glyph_replacement;
                             _glyph_joiner = _glyph_replacement;
                             
                             // Skip over the next glyph entirely
                             // The size of an Alef, no matter what form, is only 2 bytes
-                            buffer_seek(_string_buffer, buffer_seek_relative, 2);
+                            buffer_seek(_stringBuffer, buffer_seek_relative, 2);
                             
-                            _glyph_next = __ScribbleBufferPeekUnicode(_string_buffer, _buffer_offset);
+                            _glyph_next = __ScribbleBufferPeekUnicode(_stringBuffer, _buffer_offset);
                         }
                     }
                     
@@ -1530,7 +1530,7 @@ function __ScribbleGen2_Parser()
                     while((_glyph_next >= 0x064B) && (_glyph_next <= 0x0652)) // Tashkil range
                     {
                         _buffer_offset += 2;
-                        _glyph_next = __ScribbleBufferPeekUnicode(_string_buffer, _buffer_offset);
+                        _glyph_next = __ScribbleBufferPeekUnicode(_stringBuffer, _buffer_offset);
                     }
                     
                     // Figure out what to replace this glyph with, depending on what glyphs around it join in which directions
@@ -1539,27 +1539,27 @@ function __ScribbleGen2_Parser()
                     {
                         if (_arabic_join_prev_map[? _glyph_next]) // Does the next glyph allow joining to us?
                         {
-                            var _new_glyph = _arabic_medial_map[? _glyph_write];
+                            var _new_glyph = _arabic_medial_map[? _glyphWrite];
                         }
                         else
                         {
-                            var _new_glyph = _arabic_final_map[? _glyph_write];
+                            var _new_glyph = _arabic_final_map[? _glyphWrite];
                         }
                     }
                     else
                     {
                         if (_arabic_join_prev_map[? _glyph_next]) // Does the next glyph allow joining to us?
                         {
-                            var _new_glyph = _arabic_initial_map[? _glyph_write];
+                            var _new_glyph = _arabic_initial_map[? _glyphWrite];
                         }
                         else
                         {
-                            var _new_glyph = _arabic_isolated_map[? _glyph_write];
+                            var _new_glyph = _arabic_isolated_map[? _glyphWrite];
                         }
                     }
                     
                     // Update the glyph we're trying to write if we found a replacement
-                    if (_new_glyph != undefined) _glyph_write = _new_glyph;
+                    if (_new_glyph != undefined) _glyphWrite = _new_glyph;
                     
                     #endregion
                     
@@ -1584,20 +1584,20 @@ function __ScribbleGen2_Parser()
                 }
                 else
                 {
-                    if (SCRIBBLE_ALLOW_DEVANAGARI && (_glyph_write >= 0x0900) && (_glyph_write <= 0x097F))
+                    if (SCRIBBLE_ALLOW_DEVANAGARI && (_glyphWrite >= 0x0900) && (_glyphWrite <= 0x097F))
                     {
                         //Devanagari is so complex it gets its own function
                         __hasDevanagari = true;
                         
                         //Create a placeholder glyph entry
-                        _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = _glyph_write;
+                        _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = _glyphWrite;
                         _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                         
                         __SCRIBBLE_PARSER_NEXT_GLYPH
                     }
                     else
                     {
-                        if (SCRIBBLE_ALLOW_THAI && (_glyph_write >= 0x0E00) && (_glyph_write <= 0x0E7F))
+                        if (SCRIBBLE_ALLOW_THAI && (_glyphWrite >= 0x0E00) && (_glyphWrite <= 0x0E7F))
                         {
                             #region C90 Thai handling
                             
@@ -1611,92 +1611,92 @@ function __ScribbleGen2_Parser()
                             
                             __hasThai = true;
                         
-                            if (_thai_top_map[? _glyph_write] && (_glyphCount >= 1))
+                            if (_thai_top_map[? _glyphWrite] && (_glyphCount >= 1))
                             {
                                 var _base = _glyph_prev;
                                 if (_thai_lower_map[? _base] && (_glyphCount >= 2)) _base = _glyph_prev_prev;
                             
                                 if (_thai_base_map[? _base])
                                 {
-                                    _glyph_next = __ScribbleBufferPeekUnicode(_string_buffer, buffer_tell(_string_buffer));
+                                    _glyph_next = __ScribbleBufferPeekUnicode(_stringBuffer, buffer_tell(_stringBuffer));
                                 
                                     var _followingNikhahit = ((_glyph_next == 0x0e33) || (_glyph_next == 0x0e4d));
                                     if (_thai_base_ascender_map[? _base])
                                     {
                                         if (_followingNikhahit)
                                         {
-                                            _glyph_write += 0xf713 - 0x0e48;
+                                            _glyphWrite += 0xf713 - 0x0e48;
                                             __SCRIBBLE_PARSER_WRITE_GLYPH;
                                         
-                                            _glyph_write = 0xf711;
+                                            _glyphWrite = 0xf711;
                                         
                                             if (_glyph_next == 0x0e33)
                                             {
                                                 __SCRIBBLE_PARSER_WRITE_GLYPH;
-                                                _glyph_write = 0x0e32;
+                                                _glyphWrite = 0x0e32;
                                             }
                                         
                                             //Skip over the next glyph
-                                            buffer_seek(_string_buffer, buffer_seek_relative, 2);
+                                            buffer_seek(_stringBuffer, buffer_seek_relative, 2);
                                         
                                             //Fall through remaining code
                                             _skip_write = true;
                                         }
                                         else
                                         {
-                                            _glyph_write += 0xf705 - 0x0e48;
+                                            _glyphWrite += 0xf705 - 0x0e48;
                                         
                                             if ((_glyphCount >= 2) && _thai_upper_map[? _glyph_prev] && _thai_base_ascender_map[? _glyph_prev])
                                             {
-                                                _glyph_write += 0xf713 - 0x0e48;
+                                                _glyphWrite += 0xf713 - 0x0e48;
                                             }
                                         }
                                     }
                                     else if (!_followingNikhahit)
                                     {
-                                        _glyph_write += 0xf70a - 0x0e48;
+                                        _glyphWrite += 0xf70a - 0x0e48;
                                     
                                         if ((_glyphCount >= 2) && _thai_upper_map[? _glyph_prev] && _thai_base_ascender_map[? _glyph_prev])
                                         {
-                                            _glyph_write += 0xf713 - 0x0e48;
+                                            _glyphWrite += 0xf713 - 0x0e48;
                                         }
                                     }
                                 }
                             }
-                            else if (_thai_upper_map[? _glyph_write] && (_glyphCount > 0) && _thai_base_ascender_map[? _glyph_prev])
+                            else if (_thai_upper_map[? _glyphWrite] && (_glyphCount > 0) && _thai_base_ascender_map[? _glyph_prev])
                             {
-                                switch(_glyph_write)
+                                switch(_glyphWrite)
                                 {
-                                    case 0x0e31: _glyph_write = 0xf710; break;
-                                    case 0x0e34: _glyph_write = 0xf701; break;
-                                    case 0x0e35: _glyph_write = 0xf702; break;
-                                    case 0x0e36: _glyph_write = 0xf703; break;
-                                    case 0x0e37: _glyph_write = 0xf704; break;
-                                    case 0x0e4d: _glyph_write = 0xf711; break;
-                                    case 0x0e47: _glyph_write = 0xf712; break;
+                                    case 0x0e31: _glyphWrite = 0xf710; break;
+                                    case 0x0e34: _glyphWrite = 0xf701; break;
+                                    case 0x0e35: _glyphWrite = 0xf702; break;
+                                    case 0x0e36: _glyphWrite = 0xf703; break;
+                                    case 0x0e37: _glyphWrite = 0xf704; break;
+                                    case 0x0e4d: _glyphWrite = 0xf711; break;
+                                    case 0x0e47: _glyphWrite = 0xf712; break;
                                 }
                             }
-                            else if (_thai_lower_map[? _glyph_write] && (_glyphCount > 0) && _thai_base_descender_map[? _glyph_prev])
+                            else if (_thai_lower_map[? _glyphWrite] && (_glyphCount > 0) && _thai_base_descender_map[? _glyph_prev])
                             {
-                                _glyph_write += 0xf718 - 0x0e38;
+                                _glyphWrite += 0xf718 - 0x0e38;
                             }
                             else
                             {
-                                _glyph_next = __ScribbleBufferPeekUnicode(_string_buffer, buffer_tell(_string_buffer));
+                                _glyph_next = __ScribbleBufferPeekUnicode(_stringBuffer, buffer_tell(_stringBuffer));
                             
-                                if ((_glyph_write == 0x0e0d) && _thai_lower_map[? _glyph_next])
+                                if ((_glyphWrite == 0x0e0d) && _thai_lower_map[? _glyph_next])
                                 {
-                                    _glyph_write = 0xf70f;
+                                    _glyphWrite = 0xf70f;
                                 }
-                                else if ((_glyph_write == 0x0e10) && _thai_lower_map[? _glyph_next])
+                                else if ((_glyphWrite == 0x0e10) && _thai_lower_map[? _glyph_next])
                                 {
-                                    _glyph_write = 0xf700;
+                                    _glyphWrite = 0xf700;
                                 }
                             }
                         
                             #endregion
                         }
-                        else if (SCRIBBLE_ALLOW_HEBREW && (_glyph_write >= 0x0590) && (_glyph_write <= 0x05FF))
+                        else if (SCRIBBLE_ALLOW_HEBREW && (_glyphWrite >= 0x0590) && (_glyphWrite <= 0x05FF))
                         {
                             //Hebrew handling is, mercifully, straight-forward beyond R2L directionality
                             __hasHebrew = true;
@@ -1704,19 +1704,19 @@ function __ScribbleGen2_Parser()
                         
                         if (SCRIBBLE_ALLOW_LIGATURES)
                         {
-                            var _ligature = _fontLigatureMap[? (_glyph_history & 0xFFFF_FFFF_0000) | _glyph_write];
+                            var _ligature = _fontLigatureMap[? (_glyph_history & 0xFFFF_FFFF_0000) | _glyphWrite];
                             if (_ligature != undefined)
                             {
                                 _glyphCount -= ds_map_exists(_fontLigatureMap, (_glyph_history & 0xFFFF_FFFF_0000) >> 16)? 1 : 2;
-                                _glyph_write = _ligature;
+                                _glyphWrite = _ligature;
                             }
                             else
                             {
-                                var _ligature = _fontLigatureMap[? (_glyph_history & 0xFFFF_0000) | _glyph_write];
+                                var _ligature = _fontLigatureMap[? (_glyph_history & 0xFFFF_0000) | _glyphWrite];
                                 if (_ligature != undefined)
                                 {
                                     --_glyphCount;
-                                    _glyph_write = _ligature;
+                                    _glyphWrite = _ligature;
                                 }
                             }
                         }
@@ -1725,7 +1725,7 @@ function __ScribbleGen2_Parser()
                     }
                 }
                 
-                if (_glyph_ord == SCRIBBLE_COMMAND_TAG_OPEN) _state_command_tag_flipflop = true;
+                if (_glyphOrd == SCRIBBLE_COMMAND_TAG_OPEN) _state_command_tag_flipflop = true;
                 
                 #endregion
             }

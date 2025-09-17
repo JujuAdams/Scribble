@@ -47,14 +47,14 @@ function __ScribbleClassPage(_model) constructor
         with(_generatorState)
         {
             var _glyphGrid     = __glyphGrid;
-            var _word_grid      = __word_grid;
-            var _lineArray     = __line_array;
+            var _wordGrid      = __wordGrid;
+            var _lineArray     = __lineArray;
             var _modelMaxHeight = __modelMaxHeight;
         }
         
         __lineEnd    = _pageEndLine;
         __lineCount  = 1 + __lineEnd - __lineStart;
-        __glyphEnd   = _word_grid[# _lineArray[__lineEnd].wordEnd, __SCRIBBLE_GEN_WORD_GLYPH_END];
+        __glyphEnd   = _wordGrid[# _lineArray[__lineEnd].wordEnd, __SCRIBBLE_GEN_WORD_GLYPH_END];
         __glyphCount = 1 + __glyphEnd - __glyphStart;
         
         var _pageWidth = 0;
@@ -141,8 +141,8 @@ function __ScribbleClassPage(_model) constructor
         {
             var _lineStruct = _lineArray[_line];
             
-            var _glyphStart = _word_grid[# _lineStruct.wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START] - __glyphStart;
-            var _glyphEnd   = _word_grid[# _lineStruct.wordEnd,   __SCRIBBLE_GEN_WORD_GLYPH_END  ] - __glyphStart;
+            var _glyphStart = _wordGrid[# _lineStruct.wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START] - __glyphStart;
+            var _glyphEnd   = _wordGrid[# _lineStruct.wordEnd,   __SCRIBBLE_GEN_WORD_GLYPH_END  ] - __glyphStart;
             
             _lineStruct.glyphStart = _glyphStart;
             _lineStruct.glyphEnd   = _glyphEnd;

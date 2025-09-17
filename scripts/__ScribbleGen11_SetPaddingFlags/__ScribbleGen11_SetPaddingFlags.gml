@@ -4,9 +4,9 @@ function __ScribbleGen11_SetPaddingFlags()
     static _generatorState = __ScribbleSystem().__generatorState;
     with(_generatorState)
     {
-        var _uses_halign_left   = __uses_halign_left;
-        var _uses_halign_center = __uses_halign_center;
-        var _uses_halign_right  = __uses_halign_right;
+        var _usesHAlignLeft   = __usesHAlignLeft;
+        var _usesHAlignCenter = __usesHAlignCenter;
+        var _usesHAlignRight  = __usesHAlignRight;
     }
     
     //Figure out how to pad the bounding box based on what alignments have been used
@@ -23,14 +23,14 @@ function __ScribbleGen11_SetPaddingFlags()
         __padBboxB = false;
     }
     
-    if (_uses_halign_center)
+    if (_usesHAlignCenter)
     {
         __padBboxL = true;
         __padBboxR = true;
     }
-    else if (_uses_halign_left)
+    else if (_usesHAlignLeft)
     {
-        if (_uses_halign_right)
+        if (_usesHAlignRight)
         {
             __padBboxL = true;
             __padBboxR = true;
@@ -41,7 +41,7 @@ function __ScribbleGen11_SetPaddingFlags()
             __padBboxR = true;
         }
     }
-    else if (_uses_halign_right)
+    else if (_usesHAlignRight)
     {
         __padBboxL = true;
         __padBboxR = false;

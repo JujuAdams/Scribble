@@ -2,7 +2,7 @@
 
 function __ScribbleGen2b_PostParse()
 {
-    static _generatorState       = __ScribbleSystem().__generatorState;
+    static _generatorState     = __ScribbleSystem().__generatorState;
     static _globalGlyphBidiMap = __ScribbleSystem().__glyphData.__bidiMap;
     
     with(_generatorState)
@@ -11,27 +11,27 @@ function __ScribbleGen2b_PostParse()
         // Determine the overall bidi direction
         ///////
         
-        var _overall_bidi = _generatorState.__overallBidi;
-        if ((_overall_bidi != __SCRIBBLE_BIDI_L2R) && (_overall_bidi != __SCRIBBLE_BIDI_R2L))
+        var _overallBidi = _generatorState.__overallBidi;
+        if ((_overallBidi != __SCRIBBLE_BIDI_L2R) && (_overallBidi != __SCRIBBLE_BIDI_R2L))
         {
             //Searching until we find a glyph with a well-defined direction
             var _i = 0;
             repeat(__glyphCount)
             {
-                var _glyph_ord = __glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE];
-                if (_glyph_ord > 0)
+                var _glyphOrd = __glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE];
+                if (_glyphOrd > 0)
                 {
-                    var _bidi = _globalGlyphBidiMap[? _glyph_ord] ?? __SCRIBBLE_BIDI_L2R;
+                    var _bidi = _globalGlyphBidiMap[? _glyphOrd] ?? __SCRIBBLE_BIDI_L2R;
                     if (_bidi == __SCRIBBLE_BIDI_L2R)
                     {
-                        _overall_bidi = __SCRIBBLE_BIDI_L2R;
+                        _overallBidi = __SCRIBBLE_BIDI_L2R;
                         break;
                     }
                     
                     //Group R2L and R2L_ARABIC under the same overall bidi direction
                     if (_bidi >= __SCRIBBLE_BIDI_R2L)
                     {
-                        _overall_bidi = __SCRIBBLE_BIDI_R2L;
+                        _overallBidi = __SCRIBBLE_BIDI_R2L;
                         break;
                     }
                 }
@@ -40,15 +40,15 @@ function __ScribbleGen2b_PostParse()
             }
             
             // We didn't find a glyph with a direction, default to L2R
-            if ((_overall_bidi != __SCRIBBLE_BIDI_L2R) && (_overall_bidi != __SCRIBBLE_BIDI_R2L))
+            if ((_overallBidi != __SCRIBBLE_BIDI_L2R) && (_overallBidi != __SCRIBBLE_BIDI_R2L))
             {
-                _overall_bidi = __SCRIBBLE_BIDI_L2R;
+                _overallBidi = __SCRIBBLE_BIDI_L2R;
             }
             
-            _generatorState.__overallBidi = _overall_bidi;
+            _generatorState.__overallBidi = _overallBidi;
             
             //Make sure the null terminator uses the overall bidi for the algorithm to function properly
-            __glyphGrid[# __glyphCount, __SCRIBBLE_GEN_GLYPH_BIDI] = _overall_bidi;
+            __glyphGrid[# __glyphCount, __SCRIBBLE_GEN_GLYPH_BIDI] = _overallBidi;
         }
         
         

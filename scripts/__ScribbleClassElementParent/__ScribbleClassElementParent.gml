@@ -94,7 +94,7 @@ function __ScribbleClassElementParent(_text) constructor
     __ignoreCommandTags = false;
     __template = undefined;
     
-    __bezier_array = array_create(6, 0.0);
+    __bezierArray = array_create(6, 0.0);
     __bezier_using = false;
     
     __animation_time  = 0;
@@ -927,7 +927,7 @@ function __ScribbleClassElementParent(_text) constructor
     {
         if (argument_count <= 0)
         {
-            var _bezier_array = array_create(6, 0.0);
+            var _bezierArray = array_create(6, 0.0);
         }
         else if (argument_count == 8)
         {
@@ -953,14 +953,14 @@ function __ScribbleClassElementParent(_text) constructor
             __ScribbleError("Wrong number of arguments (", argument_count, ") provided\nExpecting 0 or 8");
         }
         
-        var _bezier_array = [_x2 - _x1, _y2 - _y1,
+        var _bezierArray = [_x2 - _x1, _y2 - _y1,
                              _x3 - _x1, _y3 - _y1,
                              _x4 - _x1, _y4 - _y1];
         
-        if (!array_equals(__bezier_array, _bezier_array))
+        if (!array_equals(__bezierArray, _bezierArray))
         {
             __modelDirty = true;
-            __bezier_array = _bezier_array;
+            __bezierArray = _bezierArray;
             __bezier_using = true;
         }
         
@@ -1017,7 +1017,7 @@ function __ScribbleClassElementParent(_text) constructor
         repeat(_i+1)
         {
             var _region = _region_array[_i];
-            var _bbox_array = _region.bbox_array;
+            var _bbox_array = _region.bboxArray;
             
             var _j = 0;
             repeat(array_length(_bbox_array))
@@ -1064,8 +1064,8 @@ function __ScribbleClassElementParent(_text) constructor
             if (_region.name == _name)
             {
                 __region_active      = _name;
-                __region_glyph_start = _region.start_glyph;
-                __region_glyph_end   = _region.end_glyph;
+                __region_glyph_start = _region.startGlyph;
+                __region_glyph_end   = _region.endGlyph;
                 __region_colour      = _colour;
                 __region_blend       = _blend_amount;
                 return self;
@@ -1118,7 +1118,7 @@ function __ScribbleClassElementParent(_text) constructor
                 
                 //TODO - Make regions a class and move this code to a method?
                 
-                var _bbox_array = _region.bbox_array;
+                var _bbox_array = _region.bboxArray;
                 var _j = 0;
                 repeat(array_length(_bbox_array))
                 {
@@ -1956,7 +1956,7 @@ function __ScribbleClassElementParent(_text) constructor
         {
             //If we're using a Bezier curve for this element, push that value into the shader
             _shader_set_to_use_bezier = true;
-            shader_set_uniform_f_array(_u_aBezier, __bezier_array);
+            shader_set_uniform_f_array(_u_aBezier, __bezierArray);
         }
         else if (_shader_set_to_use_bezier)
         {

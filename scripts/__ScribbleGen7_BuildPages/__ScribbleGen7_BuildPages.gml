@@ -6,14 +6,14 @@ function __ScribbleGen7_BuildPages()
     
     with(_generatorState)
     {
-        var _modelMaxHeight  = __modelMaxHeight;
-        var _lineArray      = __line_array;
+        var _modelMaxHeight = __modelMaxHeight;
+        var _lineArray      = __lineArray;
     }
     
-    var _layoutMaxHeight       = __layoutMaxHeight;
-    var _lineHeight           = __lineHeight;
-    var _line_spacing_add      = __lineSpacingAdd;
-    var _line_spacing_multiply = __lineSpacingMultiply;
+    var _layoutMaxHeight     = __layoutMaxHeight;
+    var _lineHeight          = __lineHeight;
+    var _lineSpacingAdd      = __lineSpacingAdd;
+    var _lineSpacingMultiply = __lineSpacingMultiply;
     
     if (is_infinity(_layoutMaxHeight))
     {
@@ -28,7 +28,7 @@ function __ScribbleGen7_BuildPages()
     
     var _pageData = __AddPage(0);
     var _firstLine = true;
-    var _line_y = 0;
+    var _lineY = 0;
     var _width = 0;
     
     var _line = 0;
@@ -41,10 +41,10 @@ function __ScribbleGen7_BuildPages()
             _width = max(_width, _lineStruct.width);
         }
         
-        var _starts_manual_page = _lineStruct.startsManualPage;
-        var _overflow = _paginate && (_line_y + _lineHeight > _simulated_model_height);
+        var _startsManualPage = _lineStruct.startsManualPage;
+        var _overflow = _paginate && (_lineY + _lineHeight > _simulated_model_height);
         
-        if (_starts_manual_page || (_overflow && (not _firstLine) && (not _skippingLines)))
+        if (_startsManualPage || (_overflow && (not _firstLine) && (not _skippingLines)))
         {
             if (not _skippingLines)
             {
@@ -53,9 +53,9 @@ function __ScribbleGen7_BuildPages()
             
             _firstLine = true;
             _lineStruct.y = 0;
-            _line_y = _line_spacing_add + _lineHeight*_line_spacing_multiply;
+            _lineY = _lineSpacingAdd + _lineHeight*_lineSpacingMultiply;
             
-            if (_starts_manual_page)
+            if (_startsManualPage)
             {
                 _skippingLines = false;
             }
@@ -72,8 +72,8 @@ function __ScribbleGen7_BuildPages()
         else
         {
             _firstLine = false;
-            _lineStruct.y = _line_y;
-            _line_y += _line_spacing_add + _lineHeight*_line_spacing_multiply;
+            _lineStruct.y = _lineY;
+            _lineY += _lineSpacingAdd + _lineHeight*_lineSpacingMultiply;
         }
         
         ++_line;

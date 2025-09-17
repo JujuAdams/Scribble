@@ -126,7 +126,7 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
         
         var _fontData = new __ScribbleClassFont(_name, _size, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _fromBundle, _texelsValid, _underlineY, _strikeY);
         
-        var _font_glyphs_map   = _fontData.__glyphsMap;
+        var _fontGlyphsMap   = _fontData.__glyphsMap;
         var _fontGlyphDataGrid = _fontData.__glyphDataGrid;
         var _font_kerning_map  = _fontData.__kerningMap;
         if (_isKrutidev) _fontData.__isKrutidev = true;
@@ -247,12 +247,12 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
             _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_V1          ] = _v1;
             //_fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = _texelsValid; //Set above in bulk
             
-            _font_glyphs_map[? _unicode] = _i;
+            _fontGlyphsMap[? _unicode] = _i;
             
             ++_i;
         }
         
-        var _spaceIndex = _font_glyphs_map[? SCRIBBLE_UNICODE_SPACE];
+        var _spaceIndex = _fontGlyphsMap[? SCRIBBLE_UNICODE_SPACE];
         if (_lineHeight == undefined)
         {
             _lineHeight = _fontGlyphDataGrid[# _spaceIndex, __SCRIBBLE_GLYPH_PROPR_HEIGHT];
@@ -265,7 +265,7 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
         var _GMScaling = _fontInfo.size / _fontGlyphDataGrid[# _spaceIndex, __SCRIBBLE_GLYPH_PROPR_HEIGHT];
         if (_GMScaling > 1)
         {
-            __ScribbleTrace("Warning! Font \"", _name, "\" may have been scaled during compilation (font size = ", _fontInfo.size, ", space height = ", _fontGlyphDataGrid[# _font_glyphs_map[? 32], __SCRIBBLE_GLYPH_PROPR_HEIGHT], ", scaling factor = ", _GMScaling, "). Check that the font is rendering correctly. If it is not, try setting `SCRIBBLE_ATTEMPT_FONT_SCALING_FIX` to `false`");
+            __ScribbleTrace("Warning! Font \"", _name, "\" may have been scaled during compilation (font size = ", _fontInfo.size, ", space height = ", _fontGlyphDataGrid[# _fontGlyphsMap[? 32], __SCRIBBLE_GLYPH_PROPR_HEIGHT], ", scaling factor = ", _GMScaling, "). Check that the font is rendering correctly. If it is not, try setting `SCRIBBLE_ATTEMPT_FONT_SCALING_FIX` to `false`");
             if (SCRIBBLE_ATTEMPT_FONT_SCALING_FIX) scribble_font_scale(_name, ceil(_GMScaling));
         }
     }

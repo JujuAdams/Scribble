@@ -1061,13 +1061,13 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                     //Always delay the last character if we find events to execute at the end of the page
                                     if ((__typistEventRevealIndex < _pageRevealCount-1) || (_foundEventsCount > 0))
                                     {
-                                        var _glyph_ord = _pageData.__glyphGrid[# __typistEventRevealIndex-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
-                                        var _delay = __characterDelayDict[$ _glyph_ord] ?? 0;
+                                        var _glyphOrd = _pageData.__glyphGrid[# __typistEventRevealIndex-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
+                                        var _delay = __characterDelayDict[$ _glyphOrd] ?? 0;
                                         
                                         if (__typistEventRevealIndex >= 2)
                                         {
-                                            _glyph_ord = (_glyph_ord << 32) | _pageData.__glyphGrid[# __typistEventRevealIndex-2, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
-                                            var _double_char_delay = __characterDelayDict[$ _glyph_ord];
+                                            _glyphOrd = (_glyphOrd << 32) | _pageData.__glyphGrid[# __typistEventRevealIndex-2, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
+                                            var _double_char_delay = __characterDelayDict[$ _glyphOrd];
                                             _double_char_delay = (_double_char_delay == undefined)? 0 : _double_char_delay;
                                             
                                             _delay = max(_delay, _double_char_delay);
