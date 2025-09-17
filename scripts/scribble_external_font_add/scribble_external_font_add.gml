@@ -20,13 +20,13 @@ function scribble_external_font_add(_sprite, _image, _json, _font_name = undefin
     var _source_font_info = sprite_get_info(_sprite);
     var _frame_info = _source_font_info.frames[_image]
     
-    var _texture_index  = _frame_info.texture;
+    var _textureIndex  = _frame_info.texture;
     
     //Ensure this texture has been fetched so we get valid texture dimensions
-    texture_prefetch(_texture_index);
+    texture_prefetch(_textureIndex);
     
-    var _texture_width  = texture_get_width(_texture_index);
-    var _texture_height = texture_get_height(_texture_index);
+    var _texture_width  = texture_get_width(_textureIndex);
+    var _texture_height = texture_get_height(_textureIndex);
     
     
     var _texture_uvs = [
@@ -43,7 +43,7 @@ function scribble_external_font_add(_sprite, _image, _json, _font_name = undefin
     
     //Convert the .yy JSON format into the key parts of the `font_get_info()` format that we need
     var _font_info = {
-        texture:        _texture_index,
+        texture:        _textureIndex,
         glyphs:         {},
         ascenderOffset: _json.ascenderOffset,
         ascender:       _json.ascender,

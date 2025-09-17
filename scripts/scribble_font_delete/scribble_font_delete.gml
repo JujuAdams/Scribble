@@ -3,9 +3,9 @@
 
 function scribble_font_delete(_name)
 {
-    static _font_data_map = __scribble_system().__font_data_map;
-    if (!ds_map_exists(_font_data_map, _name)) return;
+    static _fontDataMap = __scribble_system().__fontDataMap;
+    if (!ds_map_exists(_fontDataMap, _name)) return;
     
-    _font_data_map[? _name].__destroy();
-    ds_map_delete(_font_data_map, _name);
+    _fontDataMap[? _name].__Destroy();
+    ds_map_delete(_fontDataMap, _name);
 }

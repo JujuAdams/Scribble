@@ -1,11 +1,11 @@
 // Feather disable all
 function scribble_super_glyph_delete(_target)
 {
-    static _font_data_map = __scribble_system().__font_data_map;
-    var _font_data = _font_data_map[? _target];
+    static _fontDataMap = __scribble_system().__fontDataMap;
+    var _font_data = _fontDataMap[? _target];
     if (_font_data == undefined) __scribble_error("Font \"", _font_data, "\" not found");
     
-    var _glyphs_map = _font_data.__glyphs_map;
+    var _glyphs_map = _font_data.__glyphsMap;
     
     //Copy arguments into an array
     var _glyphs_array = array_create(argument_count - 1);

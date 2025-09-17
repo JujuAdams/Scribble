@@ -15,20 +15,20 @@ function scribble_font_set_style_family(_r_font, _b_font, _i_font, _bi_font)
     _font_names[@ 2] = is_string(_i_font )? _i_font  : undefined;
     _font_names[@ 3] = is_string(_bi_font)? _bi_font : undefined;
     
-    static _font_data_map = __scribble_system().__font_data_map;
+    static _fontDataMap = __scribble_system().__fontDataMap;
     
     var _i = 0;
     repeat(4)
     {
-        var _struct = _font_data_map[? _font_names[_i]];
+        var _struct = _fontDataMap[? _font_names[_i]];
         if (is_struct(_struct))
         {
             with(_struct)
             {
-                __style_regular     = _font_names[0];
-                __style_bold        = _font_names[1];
-                __style_italic      = _font_names[2];
-                __style_bold_italic = _font_names[3];
+                __styleRegular     = _font_names[0];
+                __styleBold        = _font_names[1];
+                __styleItalic      = _font_names[2];
+                __styleBoldItalic = _font_names[3];
             }
         }
         

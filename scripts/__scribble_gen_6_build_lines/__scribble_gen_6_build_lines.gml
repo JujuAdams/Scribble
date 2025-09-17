@@ -90,8 +90,8 @@ function __scribble_gen_6_build_lines()
                 }
                 
                 var _fontData          = __scribble_get_font_data(_fontName);
-                var _fontGlyphDataGrid = _fontData.__glyph_data_grid;
-                var _fontGlyphsMap     = _fontData.__glyphs_map;
+                var _fontGlyphDataGrid = _fontData.__glyphDataGrid;
+                var _fontGlyphsMap     = _fontData.__glyphsMap;
                 
                 var _dataIndex = _fontGlyphsMap[? ord(".")];
                 if (_dataIndex == undefined)
@@ -176,7 +176,7 @@ function __scribble_gen_6_build_lines()
         var _word_grid             = __word_grid;
         var _controlArray          = __controlArray;
         var _temp_grid             = __temp_grid;
-        var _glyph_count           = __glyph_count;
+        var _glyphCount           = __glyph_count;
         var _word_count            = __word_count;
         var _sectionCount          = __sectionCount;
         var _modelMaxWidth         = (_wrapText? __modelMaxWidth  : infinity);
@@ -588,7 +588,7 @@ function __scribble_gen_6_build_lines()
             array_insert(_controlArray, _lineEndControlCount+1, new __scribble_class_control_event(__SCRIBBLE_DELAY_COMMAND_TAG, [__newline_delay]));
             
             var _line_start_glyph = _word_grid[# _line_array[_i+1].wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START];
-            ds_grid_add_region(_glyph_grid, _line_start_glyph, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT, _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT, 1);
+            ds_grid_add_region(_glyph_grid, _line_start_glyph, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT, _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT, 1);
             
             ++_i;
         }

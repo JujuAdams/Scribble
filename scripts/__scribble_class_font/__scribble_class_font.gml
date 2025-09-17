@@ -8,75 +8,75 @@
 /// @param underlineY
 /// @param strikeY
 
-function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, _texels_valid, _underlineY, _strikeY) constructor
+function __scribble_class_font(_name, _glyphCount, _renderType, _fromBundle, _texelsValid, _underlineY, _strikeY) constructor
 {
     //The name of the font. This is the alias used to reference the font elsewhere
     __name = _name;
     
     //One of the `__SCRIBBLE_RENDER_*` macros. Largely used to determine which shader path to use
-    __render_type = _render_type;
+    __renderType = _renderType;
     
     //Whether the source texture data exists in the asset bundle. If set to `false`, the source
     //texture data was added at runtime (probably with `sprite_add()`). This value can be `undefined`
     //if the origin is not known (typically spritefonts).
-    __from_bundle = _from_bundle;
+    __fromBundle = _fromBundle;
     
     //Whether the source texture is ready - loaded into RAM and fetched into VRAM
-    __texels_valid = _texels_valid;
+    __texelsValid = _texelsValid;
     
     //Position of the underline/strike-through relative to the top of the line
     __underlineY = _underlineY; //*Not* the raw value. This value is changed by scribble_font_scale()
     __strikeY    = _strikeY;    //*Not* the raw value. This value is changed by scribble_font_scale()
     
-    static _font_data_map = __scribble_system().__font_data_map;
-    _font_data_map[? _name] = self;
+    static _fontDataMap = __scribble_system().__fontDataMap;
+    _fontDataMap[? _name] = self;
     
-    __glyph_data_grid = ds_grid_create(_glyph_count, __SCRIBBLE_GLYPH_PROPR_COUNT);
-    __glyphs_map      = ds_map_create();
-    __kerning_map     = ds_map_create();
-    __ligatureMap     = ds_map_create();
+    __glyphDataGrid = ds_grid_create(_glyphCount, __SCRIBBLE_GLYPH_PROPR_COUNT);
+    __glyphsMap     = ds_map_create();
+    __kerningMap    = ds_map_create();
+    __ligatureMap   = ds_map_create();
     
     __is_krutidev = false;
-    __bilinear    = (__render_type == __SCRIBBLE_RENDER_SDF)? true : undefined;
+    __bilinear    = (__renderType == __SCRIBBLE_RENDER_SDF)? true : undefined;
     
-    __superfont     = false;
-    __runtime       = false;
-    __source_sprite = undefined;
-    __remap         = undefined;
+    __superfont    = false;
+    __runtime      = false;
+    __sourceSprite = undefined;
+    __remap        = undefined;
     
     __scale  = 1.0;
     __height = 0; //*Not* the raw height. This value is changed by scribble_font_scale()
     
-    __halign_offset_array = [0, 0, 0,   0, 0, 0, 0];
-    __valign_offset_array = [0, 0, 0,   0, 0, 0];
+    __halignOffsetArray = [0, 0, 0,   0, 0, 0, 0];
+    __valignOffsetArray = [0, 0, 0,   0, 0, 0];
     
-    __style_regular     = undefined;
-    __style_bold        = undefined;
-    __style_italic      = undefined;
-    __style_bold_italic = undefined;
-    
-    
+    __styleRegular    = undefined;
+    __styleBold       = undefined;
+    __styleItalic     = undefined;
+    __styleBoldItalic = undefined;
     
     
     
-    static __copy_to = function(_target, _copy_styles)
+    
+    
+    static __CopyTo = function(_target, _copyStyles)
     {
         var _names = variable_struct_get_names(self);
         var _i = 0;
         repeat(array_length(_names))
         {
             var _name = _names[_i];
-            if (_name == "__glyphs_map")
+            if (_name == "__glyphsMap")
             {
-                ds_map_copy(_target.__glyphs_map, __glyphs_map);
+                ds_map_copy(_target.__glyphsMap, __glyphsMap);
             }
-            else if (_name == "__glyph_data_grid")
+            else if (_name == "__glyphDataGrid")
             {
-                ds_grid_copy(_target.__glyph_data_grid, __glyph_data_grid);
+                ds_grid_copy(_target.__glyphDataGrid, __glyphDataGrid);
             }
             else if ((_name != "__name")
-                  && (_name != "__from_bundle")
-                  && (_copy_styles || ((_name != "__style_regular") && (_name != "__style_bold") && (_name != "__style_italic") && (_name != "__style_bold_italic"))))
+                  && (_name != "__fromBundle")
+                  && (_copyStyles || ((_name != "__styleRegular") && (_name != "__styleBold") && (_name != "__styleItalic") && (_name != "__styleBoldItalic"))))
             {
                 variable_struct_set(_target, _name, variable_struct_get(self, _name));
             }
@@ -89,109 +89,109 @@ function __scribble_class_font(_name, _glyph_count, _render_type, _from_bundle, 
     {
         if (!__superfont) __scribble_error("Cannot clear non-superfont fonts");
         
-        ds_map_clear(__glyphs_map);
+        ds_map_clear(__glyphsMap);
         
         __height = 0;
-        __texels_valid = false;
+        __texelsValid = false;
     }
     
-    static __ensure_material_textures_fetched = function()
+    static __EnsureMaterialTexturesFetched = function()
     {
         //N.B. This is an expensive function! Use sparingly
         
-        var _glyph_data_grid = __glyph_data_grid;
-        var _glyph_count = ds_grid_width(_glyph_data_grid);
+        var _glyphDataGrid = __glyphDataGrid;
+        var _glyphCount = ds_grid_width(_glyphDataGrid);
         
         //TODO - Use some kind of cool optimization if the font is a standard font and every glyph has the same material
         
         var _i = 0;
-        repeat(_glyph_count)
+        repeat(_glyphCount)
         {
-            var _material = _glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL];
-            var _texture_index = _material.__texture;
-            if (_texture_index != undefined)
+            var _material = _glyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL];
+            var _textureIndex = _material.__texture;
+            if (_textureIndex != undefined)
             {
-                texture_prefetch(_texture_index);
+                texture_prefetch(_textureIndex);
             }
             
             ++_i;
         }
     }
     
-    static __ensure_texel_data = function()
+    static __EnsureTexelData = function()
     {
-        if (__texels_valid) return;
+        if (__texelsValid) return;
         
-        var _glyph_data_grid = __glyph_data_grid;
-        var _glyph_count = ds_grid_width(_glyph_data_grid);
+        var _glyphDataGrid = __glyphDataGrid;
+        var _glyphCount = ds_grid_width(_glyphDataGrid);
         
-        if (not ds_grid_value_exists(_glyph_data_grid, 0, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, _glyph_count-1, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, false))
+        if (not ds_grid_value_exists(_glyphDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, false))
         {
             //Don't do any extra work if every texel is valid
-            __texels_valid = true;
+            __texelsValid = true;
             return;
         }
         
         //TODO - Use some kind of cool optimization if the font is a standard font and every glyph has the same material
         
-        var _all_ready = true;
+        var _allReady = true;
         var _i = 0;
-        repeat(_glyph_count)
+        repeat(_glyphCount)
         {
-            if (not _glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID])
+            if (not _glyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID])
             {
-                var _material = _glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL];
+                var _material = _glyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL];
                 
-                var _texture_index = _material.__texture;
-                if ((_texture_index != undefined) && texture_is_ready(_texture_index))
+                var _textureIndex = _material.__texture;
+                if ((_textureIndex != undefined) && texture_is_ready(_textureIndex))
                 {
-                    _glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = true;
+                    _glyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = true;
                     
-                    var _texel_w = texture_get_texel_width(_texture_index);
-                    var _texel_h = texture_get_texel_height(_texture_index);
+                    var _texel_w = texture_get_texel_width(_textureIndex);
+                    var _texel_h = texture_get_texel_height(_textureIndex);
                     
-                    _glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U0] *= _texel_w;
-                    _glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V0] *= _texel_h;
-                    _glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U1] *= _texel_w;
-                    _glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V1] *= _texel_h;
+                    _glyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_U0] *= _texel_w;
+                    _glyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_V0] *= _texel_h;
+                    _glyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_U1] *= _texel_w;
+                    _glyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_V1] *= _texel_h;
                 }
                 else
                 {
-                    _all_ready = false;
+                    _allReady = false;
                 }
             }
             
             ++_i;
         }
         
-        if (_all_ready)
+        if (_allReady)
         {
-            __texels_valid = true;
+            __texelsValid = true;
         }
     }
     
     static __EnsureAdditionalCharacters = function()
     {
-        if (not ds_map_exists(__glyphs_map, ord(SCRIBBLE_MISSING_CHARACTER)))
+        if (not ds_map_exists(__glyphsMap, ord(SCRIBBLE_MISSING_CHARACTER)))
         {
             __scribble_trace("Couldn't find \"missing character\" glyph data, character code ", ord(SCRIBBLE_MISSING_CHARACTER), " (", SCRIBBLE_MISSING_CHARACTER, ") in font \"", __name, "\"");
-            __glyphs_map[? ord(SCRIBBLE_MISSING_CHARACTER)] = __glyphs_map[? SCRIBBLE_UNICODE_ZWSP];
+            __glyphsMap[? ord(SCRIBBLE_MISSING_CHARACTER)] = __glyphsMap[? SCRIBBLE_UNICODE_ZWSP];
         }
     }
     
-    static __destroy = function()
+    static __Destroy = function()
     {
         if (__SCRIBBLE_DEBUG) __scribble_trace("Destroying font \"", __name, "\"");
         
-        ds_map_destroy(__glyphs_map);
-        ds_grid_destroy(__glyph_data_grid);
+        ds_map_destroy(__glyphsMap);
+        ds_grid_destroy(__glyphDataGrid);
         
-        ds_map_delete(_font_data_map, __name);
+        ds_map_delete(_fontDataMap, __name);
         
-        if (__source_sprite != undefined)
+        if (__sourceSprite != undefined)
         {
-            sprite_delete(__source_sprite);
-            __source_sprite = undefined;
+            sprite_delete(__sourceSprite);
+            __sourceSprite = undefined;
         }
     }
 }

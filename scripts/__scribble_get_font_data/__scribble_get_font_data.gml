@@ -2,8 +2,8 @@
 
 function __scribble_get_font_data(_name)
 {
-    static _font_data_map = __scribble_system().__font_data_map;
-    var _data = _font_data_map[? _name];
+    static _fontDataMap = __scribble_system().__fontDataMap;
+    var _data = _fontDataMap[? _name];
     if (_data == undefined)
     {
         var _string = "Font \"" + string(_name) + "\" not recognised";

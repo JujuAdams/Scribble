@@ -23,11 +23,11 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _font_info = font_get_info(_spritefont);
     var _sprite_name = sprite_get_name(_sprite);
     
-    static _font_data_map = __scribble_system().__font_data_map;
-    if (ds_map_exists(_font_data_map, _sprite_name))
+    static _fontDataMap = __scribble_system().__fontDataMap;
+    if (ds_map_exists(_fontDataMap, _sprite_name))
     {
         __scribble_trace("Warning! A spritefont for \"", _sprite_name, "\" has already been added. Destroying the old spritefont and creating a new one");
-        _font_data_map[? _sprite_name].__destroy();
+        _fontDataMap[? _sprite_name].__Destroy();
     }
     
     var _is_krutidev = __scribble_asset_is_krutidev(_sprite, asset_sprite);
@@ -65,8 +65,8 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _strikeY    = floor(0.5*(sprite_get_bbox_bottom(_sprite) - sprite_get_bbox_top(_sprite)));
     
     var _font_data = new __scribble_class_font(_sprite_name, _size, __SCRIBBLE_RENDER_RASTER, undefined, true, _underlineY, _strikeY);
-    var _font_glyphs_map      = _font_data.__glyphs_map;
-    var _font_glyph_data_grid = _font_data.__glyph_data_grid;
+    var _font_glyphs_map      = _font_data.__glyphsMap;
+    var _font_glyph_data_grid = _font_data.__glyphDataGrid;
     if (_is_krutidev) _font_data.__is_krutidev = true;
     
     //Set some basic repeated values in bulk for a little speed boost
@@ -74,7 +74,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     ds_grid_set_region(_font_glyph_data_grid, 0, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, _size-1, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, true);
     
     //Also create a duplicate entry so that we can find this spritefont in draw_text_scribble()
-    _font_data_map[? font_get_name(_spritefont)] = _font_data;
+    _fontDataMap[? font_get_name(_spritefont)] = _font_data;
     
     var _i = 0;
     repeat(_size)
@@ -122,7 +122,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V0          ] = 0;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U1          ] = 0;
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V1          ] = 0;
-            //_font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = _texels_valid; //Set above in bulk
+            //_font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = _texelsValid; //Set above in bulk
             
             _font_glyphs_map[? _unicode] = _i;
         }
@@ -204,7 +204,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V0          ] = _uvs[1];
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_U1          ] = _uvs[2];
             _font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_V1          ] = _uvs[3];
-            //_font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = _texels_valid; //Set above in bulk
+            //_font_glyph_data_grid[# _i, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = _texelsValid; //Set above in bulk
             
             _font_glyphs_map[? _unicode] = _i;
         }

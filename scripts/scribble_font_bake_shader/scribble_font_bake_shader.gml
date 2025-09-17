@@ -43,46 +43,46 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
         return undefined;
     }
 
-    static _font_data_map = __scribble_system().__font_data_map;
-    var _src_font_data = _font_data_map[? _source_font_name];
+    static _fontDataMap = __scribble_system().__fontDataMap;
+    var _src_font_data = _fontDataMap[? _source_font_name];
     if (!is_struct(_src_font_data))
     {
         __scribble_error("Source font \"", _source_font_name, "\" not found\n\"", _new_font_name, "\" will not be available");
         return undefined;
     }
     
-    if (_src_font_data.__render_type == __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS)
+    if (_src_font_data.__renderType == __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS)
     {
         __scribble_error("Source font cannot already have effects baked into it");
         return undefined;
     }
     
-    if (_src_font_data.__render_type == __SCRIBBLE_RENDER_SDF)
+    if (_src_font_data.__renderType == __SCRIBBLE_RENDER_SDF)
     {
         __scribble_error("Source font cannot be an SDF font");
         return undefined;
     }
     
-    _src_font_data.__ensure_material_textures_fetched();
-    _src_font_data.__ensure_texel_data();
+    _src_font_data.__EnsureMaterialTexturesFetched();
+    _src_font_data.__EnsureTexelData();
     
-    var _src_glyph_grid = _src_font_data.__glyph_data_grid;
-    var _glyph_count = ds_grid_width(_src_glyph_grid);
+    var _src_glyph_grid = _src_font_data.__glyphDataGrid;
+    var _glyphCount = ds_grid_width(_src_glyph_grid);
     
     //Create a new font
-    var _new_font_data = new __scribble_class_font(_new_font_name, _glyph_count, undefined, false, true,
+    var _new_font_data = new __scribble_class_font(_new_font_name, _glyphCount, undefined, false, true,
                                                    _src_font_data.__underlineY + _t_pad + _b_pad,
                                                    _src_font_data.__strikeY    + _t_pad + _b_pad);
     _new_font_data.__bilinear = _smooth;
     _new_font_data.__runtime  = true;
     _new_font_data.__height   = _src_font_data.__height + _t_pad + _b_pad;
     
-    var _new_glyphs_grid = _new_font_data.__glyph_data_grid;
+    var _new_glyphs_grid = _new_font_data.__glyphDataGrid;
     
     //Copy the raw data over from the source font (this include the glyph map, glyph grid, and other assorted properties)
-    _src_font_data.__copy_to(_new_font_data, false);
+    _src_font_data.__CopyTo(_new_font_data, false);
     
-    if (_markAsRasterEffect) _new_font_data.__render_type = __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS;
+    if (_markAsRasterEffect) _new_font_data.__renderType = __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS;
     
     
     
@@ -94,7 +94,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     var _line_height = 0;
     
     var _i = 0;
-    repeat(_glyph_count)
+    repeat(_glyphCount)
     {
         var _material = _src_glyph_grid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL];
         var _texture = _material.__texture;
@@ -232,20 +232,20 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     
     //Make a sprite from the effect surface to make the texture stick
     var _sprite = sprite_create_from_surface(_surface_1, 0, 0, _texture_size, _texture_size, false, false, 0, 0);
-    _new_font_data.__source_sprite = _sprite;
+    _new_font_data.__sourceSprite = _sprite;
     surface_free(_surface_1);
     
     //Create a new material for this font
-    var _new_material = __scribble_get_material(_new_font_name, __scribble_sprite_get_texture_index(_sprite, 0), _new_font_data.__render_type, undefined, undefined, _new_font_data.__bilinear);
+    var _new_material = __scribble_get_material(_new_font_name, __scribble_sprite_get_texture_index(_sprite, 0), _new_font_data.__renderType, undefined, undefined, _new_font_data.__bilinear);
     
     //Make bulk corrections to various glyph properties based on the input parameters
-    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_X_OFFSET,    _glyph_count-1, __SCRIBBLE_GLYPH_PROPR_X_OFFSET,    -_l_pad);
-    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET,    _glyph_count-1, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET,    -_t_pad);
-    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_WIDTH,       _glyph_count-1, __SCRIBBLE_GLYPH_PROPR_WIDTH,       _l_pad + _r_pad);
-    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_HEIGHT,      _glyph_count-1, __SCRIBBLE_GLYPH_PROPR_HEIGHT,      _t_pad + _b_pad);
-    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, _glyph_count-1, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, _t_pad + _b_pad);
-    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_SEPARATION,  _glyph_count-1, __SCRIBBLE_GLYPH_PROPR_SEPARATION,  _separation);
-    ds_grid_set_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_MATERIAL,    _glyph_count-1, __SCRIBBLE_GLYPH_PROPR_MATERIAL,    _new_material);
+    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_X_OFFSET,    _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_X_OFFSET,    -_l_pad);
+    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET,    _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET,    -_t_pad);
+    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_WIDTH,       _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_WIDTH,       _l_pad + _r_pad);
+    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_HEIGHT,      _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_HEIGHT,      _t_pad + _b_pad);
+    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, _t_pad + _b_pad);
+    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_SEPARATION,  _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_SEPARATION,  _separation);
+    ds_grid_set_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_MATERIAL,    _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_MATERIAL,    _new_material);
     
     //Figure out the new UVs using some bulk commands
     var _sprite_uvs = sprite_get_uvs(_sprite, 0);
@@ -254,14 +254,14 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     var _sprite_u1 = _sprite_uvs[2];
     var _sprite_v1 = _sprite_uvs[3];
     
-    ds_grid_multiply_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_U0, _glyph_count-1, __SCRIBBLE_GLYPH_PROPR_V1, 1/_texture_size);
-    ds_grid_multiply_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_U0, _glyph_count-1, __SCRIBBLE_GLYPH_PROPR_U1, _sprite_u1 - _sprite_u0); //Note we're adjusting U0 and U1 in the same pass
-    ds_grid_multiply_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_V0, _glyph_count-1, __SCRIBBLE_GLYPH_PROPR_V1, _sprite_v1 - _sprite_v0); //Note we're adjusting V0 and V1 in the same pass
-    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_U0, _glyph_count-1, __SCRIBBLE_GLYPH_PROPR_U1, _sprite_u0); //Note we're adjusting U0 and U1 in the same pass
-    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_V0, _glyph_count-1, __SCRIBBLE_GLYPH_PROPR_V1, _sprite_v0); //Note we're adjusting V0 and V1 in the same pass
+    ds_grid_multiply_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_U0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_V1, 1/_texture_size);
+    ds_grid_multiply_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_U0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_U1, _sprite_u1 - _sprite_u0); //Note we're adjusting U0 and U1 in the same pass
+    ds_grid_multiply_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_V0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_V1, _sprite_v1 - _sprite_v0); //Note we're adjusting V0 and V1 in the same pass
+    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_U0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_U1, _sprite_u0); //Note we're adjusting U0 and U1 in the same pass
+    ds_grid_add_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_V0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_V1, _sprite_v0); //Note we're adjusting V0 and V1 in the same pass
     
     //All texels are automatically valid
-    ds_grid_set_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, _glyph_count-1, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, true);
+    ds_grid_set_region(_new_glyphs_grid, 0, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, true);
     
     _new_font_data.__EnsureAdditionalCharacters();
 }

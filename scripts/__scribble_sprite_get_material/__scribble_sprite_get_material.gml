@@ -7,12 +7,12 @@ function __scribble_sprite_get_material(_sprite, _image)
 {
     static _sprite_texture_material_map = __scribble_system().__sprite_texture_material_map;
     
-    var _texture_index = __scribble_sprite_get_texture_index(_sprite, _image);
-    var _material = _sprite_texture_material_map[? _texture_index];
+    var _textureIndex = __scribble_sprite_get_texture_index(_sprite, _image);
+    var _material = _sprite_texture_material_map[? _textureIndex];
     if (_material == undefined)
     {
-        var _material = __scribble_get_material(sprite_get_name(_sprite), _texture_index, __SCRIBBLE_RENDER_RASTER, undefined, undefined, SCRIBBLE_SPRITE_BILINEAR_FILTERING);
-        _sprite_texture_material_map[? _texture_index] = _material;
+        var _material = __scribble_get_material(sprite_get_name(_sprite), _textureIndex, __SCRIBBLE_RENDER_RASTER, undefined, undefined, SCRIBBLE_SPRITE_BILINEAR_FILTERING);
+        _sprite_texture_material_map[? _textureIndex] = _material;
     }
     
     return _material;

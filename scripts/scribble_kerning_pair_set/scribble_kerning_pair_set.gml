@@ -29,7 +29,7 @@ function scribble_kerning_pair_set(_font, _first_char, _second_char, _value, _re
     }
     
     var _font_data = __scribble_get_font_data(_font);
-    var _kerning_map = _font_data.__kerning_map;
+    var _kerning_map = _font_data.__kerningMap;
     
     var _lookup = ((_second_unicode & 0xFFFF) << 16) | (_first_unicode & 0xFFFF);
     var _new_value = _relative? ((_kerning_map[? _lookup] ?? 0) + _value) : _value;

@@ -10,7 +10,7 @@ function scribble_font_force_bilinear_filtering(_font, _state)
         if (__bilinear == _state) return;
         __bilinear = _state;
         
-        var _grid = __glyph_data_grid;
+        var _grid = __glyphDataGrid;
         var _i = 0;
         repeat(ds_grid_width(_grid))
         {

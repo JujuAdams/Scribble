@@ -8,10 +8,10 @@ function scribble_super_glyph_copy_all(_target, _source, _overwrite)
     var _target_font_data = __scribble_get_font_data(_target);
     var _source_font_data = __scribble_get_font_data(_source);
     
-    var _source_glyphs_map       = _source_font_data.__glyphs_map;
-    var _source_glyphs_data_grid = _source_font_data.__glyph_data_grid;
-    var _target_glyphs_map       = _target_font_data.__glyphs_map;
-    var _target_glyph_data_grid  = _target_font_data.__glyph_data_grid;
+    var _source_glyphs_map       = _source_font_data.__glyphsMap;
+    var _source_glyphs_data_grid = _source_font_data.__glyphDataGrid;
+    var _target_glyphs_map       = _target_font_data.__glyphsMap;
+    var _target_glyph_data_grid  = _target_font_data.__glyphDataGrid;
     
     var _keys_array = ds_map_keys_to_array(_source_glyphs_map);
     var _i = 0;

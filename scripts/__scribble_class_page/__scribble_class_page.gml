@@ -202,12 +202,12 @@ function __scribble_class_page(_model) constructor
                 gpu_set_tex_filter(_bilinear);
             }
             
-            if (_material.__render_type == __SCRIBBLE_RENDER_RASTER)
+            if (_material.__renderType == __SCRIBBLE_RENDER_RASTER)
             {
                 shader_set_uniform_f(_u_fRenderType, __SCRIBBLE_RENDER_RASTER);
                 vertex_submit(_data.__vertex_buffer, pr_trianglelist, _material.__texture);
             }
-            else if (_material.__render_type == __SCRIBBLE_RENDER_SDF)
+            else if (_material.__renderType == __SCRIBBLE_RENDER_SDF)
             {
                 //Set shader uniforms unique to the SDF shader
                 shader_set_uniform_f(_u_fRenderType, __SCRIBBLE_RENDER_SDF);
@@ -224,7 +224,7 @@ function __scribble_class_page(_model) constructor
                     shader_set_uniform_f(_u_fSecondDraw, 0);
                 }
             }
-            else if (_material.__render_type == __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS)
+            else if (_material.__renderType == __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS)
             {
                 shader_set_uniform_f(_u_fRenderType, __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS);
                 vertex_submit(_data.__vertex_buffer, pr_trianglelist, _material.__texture);

@@ -1,9 +1,9 @@
 // Feather disable all
-#macro __SCRIBBLE_PARSER_INSERT_NUKTA  ds_grid_set_grid_region(_temp_grid, _glyph_grid, _i+1, 0, _glyph_count+3, __SCRIBBLE_GEN_GLYPH_SIZE, 0, 0);\
-                                       ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyph_count+3 - _i, __SCRIBBLE_GEN_GLYPH_SIZE, _i+2, 0);\
+#macro __SCRIBBLE_PARSER_INSERT_NUKTA  ds_grid_set_grid_region(_temp_grid, _glyph_grid, _i+1, 0, _glyphCount+3, __SCRIBBLE_GEN_GLYPH_SIZE, 0, 0);\
+                                       ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyphCount+3 - _i, __SCRIBBLE_GEN_GLYPH_SIZE, _i+2, 0);\
                                        \
                                        ++_i;\
-                                       ++_glyph_count;\
+                                       ++_glyphCount;\
                                        \
                                        _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x093C;\ //Nukta
                                        _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT];
@@ -23,18 +23,18 @@ function __scribble_gen_3_devanagari()
         var _glyph_grid   = __glyph_grid;
         var _controlArray = __controlArray;
         var _temp_grid    = __temp2_grid;
-        var _glyph_count  = _generator_state.__glyph_count;
+        var _glyphCount  = _generator_state.__glyph_count;
     }
     
     //Glyph count includes the terminating null. We don't need that for Krutidev conversion
-    --_glyph_count;
+    --_glyphCount;
     
     //Pad the end because we'll need to read beyond the end of the string during the final find-replace
     //We pad with 0xFFFF to avoid accidentally making incorrect substring matches later
-    _glyph_grid[# _glyph_count,   __SCRIBBLE_GEN_GLYPH_UNICODE] = 0xFFFF;
-    _glyph_grid[# _glyph_count+1, __SCRIBBLE_GEN_GLYPH_UNICODE] = 0xFFFF;
-    _glyph_grid[# _glyph_count+2, __SCRIBBLE_GEN_GLYPH_UNICODE] = 0xFFFF;
-    _glyph_grid[# _glyph_count+3, __SCRIBBLE_GEN_GLYPH_UNICODE] = 0xFFFF;
+    _glyph_grid[# _glyphCount,   __SCRIBBLE_GEN_GLYPH_UNICODE] = 0xFFFF;
+    _glyph_grid[# _glyphCount+1, __SCRIBBLE_GEN_GLYPH_UNICODE] = 0xFFFF;
+    _glyph_grid[# _glyphCount+2, __SCRIBBLE_GEN_GLYPH_UNICODE] = 0xFFFF;
+    _glyph_grid[# _glyphCount+3, __SCRIBBLE_GEN_GLYPH_UNICODE] = 0xFFFF;
     
     
     
@@ -43,7 +43,7 @@ function __scribble_gen_3_devanagari()
     var _in_single_quote = false;
     var _in_double_quote = false;
     var _i = 0;
-    repeat(_glyph_count)
+    repeat(_glyphCount)
     {
         switch(_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE])
         {
@@ -123,7 +123,7 @@ function __scribble_gen_3_devanagari()
     
     //TODO - Log where ि  is found during the nukta ligature sweep
     var _i = 1; //Start at the second char because we don't care if the string starts with 0x093F (Vowel Sign I)
-    repeat(_glyph_count-1)
+    repeat(_glyphCount-1)
     {
         var _char = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE];
         if (_char == ord("ि"))
@@ -169,8 +169,8 @@ function __scribble_gen_3_devanagari()
     
     #region Move र् (ra + virama) after matras
     
-    //Using a for-loop here as _glyph_count may change
-    for(var _i = 0; _i < _glyph_count; ++_i)
+    //Using a for-loop here as _glyphCount may change
+    for(var _i = 0; _i < _glyphCount; ++_i)
     {
         //TODO - Log where ra-virama is found during the nukta ligature sweep
         if ((_glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_UNICODE] == ord("र")) && (_glyph_grid[# _i+1, __SCRIBBLE_GEN_GLYPH_UNICODE] == 0x094D)) //Ra followed by virama
@@ -189,7 +189,7 @@ function __scribble_gen_3_devanagari()
             
             //Copy everything after the ra-virama position into the temp buffer
             //We're going to copy that back into the glyph grid in two stages
-            ds_grid_set_grid_region(_temp_grid, _glyph_grid, _i+2, 0, _glyph_count-1 + 4, __SCRIBBLE_GEN_GLYPH_SIZE, _i+2, 0);
+            ds_grid_set_grid_region(_temp_grid, _glyph_grid, _i+2, 0, _glyphCount-1 + 4, __SCRIBBLE_GEN_GLYPH_SIZE, _i+2, 0);
             
             //First copy: Move the gylphs between the old position and the new position back two slots
             //            This effective deletes the old ra+virama position
@@ -200,10 +200,10 @@ function __scribble_gen_3_devanagari()
             _glyph_grid[# _i + _copyCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _glyph_grid[# _copyCount-1, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT];
             
             //Second copy: Place the remainder of the glyphs after ra+virama
-            ds_grid_set_grid_region(_glyph_grid, _temp_grid, _newPosition+1, 0, _glyph_count+3, __SCRIBBLE_GEN_GLYPH_SIZE, _i + _copyCount + 1, 0);
+            ds_grid_set_grid_region(_glyph_grid, _temp_grid, _newPosition+1, 0, _glyphCount+3, __SCRIBBLE_GEN_GLYPH_SIZE, _i + _copyCount + 1, 0);
             
             //Overall this reduces the total number of glyphs by one since we're replace ra + virama with a single Z
-            --_glyph_count;
+            --_glyphCount;
         }
     }
     
@@ -220,8 +220,8 @@ function __scribble_gen_3_devanagari()
     var _threeChar = _twoChar   | ((_glyph_grid[# 1, __SCRIBBLE_GEN_GLYPH_UNICODE] & 0xFFFF) << 32);
     var _fourChar  = _threeChar | ((_glyph_grid[# 2, __SCRIBBLE_GEN_GLYPH_UNICODE] & 0xFFFF) << 48);
     
-    //Using a for-loop here as _glyph_count may change
-    for(var _i = 0; _i < _glyph_count; ++_i;)
+    //Using a for-loop here as _glyphCount may change
+    for(var _i = 0; _i < _glyphCount; ++_i;)
     {
         _oneChar   = _twoChar   >> 16;
         _twoChar   = _threeChar >> 16;
@@ -277,9 +277,9 @@ function __scribble_gen_3_devanagari()
                 {
                     //If we're replacing with fewer characters than we found then we need to delete some characters
                     var _copyStart = _i + _copyCount + _foundLength - _replacementLength;
-                    var _copyLength = _glyph_count - _copyStart;
+                    var _copyLength = _glyphCount - _copyStart;
                     
-                    ds_grid_set_grid_region(_temp_grid, _glyph_grid, _copyStart, 0, _glyph_count, __SCRIBBLE_GEN_GLYPH_SIZE, 0, 0);
+                    ds_grid_set_grid_region(_temp_grid, _glyph_grid, _copyStart, 0, _glyphCount, __SCRIBBLE_GEN_GLYPH_SIZE, 0, 0);
                     ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _copyLength, __SCRIBBLE_GEN_GLYPH_SIZE, _i + _copyCount, 0);
                 }
                 else if (_foundLength < _replacementLength)
@@ -287,8 +287,8 @@ function __scribble_gen_3_devanagari()
                     //Otherwise, we're adding characters to the array so we have to insert some characters into the output grid
                     
                     var _insertPos = _i + _copyCount;
-                    ds_grid_set_grid_region(_temp_grid, _glyph_grid, _insertPos, 0, _glyph_count, __SCRIBBLE_GEN_GLYPH_SIZE, 0, 0);
-                    ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyph_count - _insertPos, __SCRIBBLE_GEN_GLYPH_SIZE, _insertPos + (_replacementLength - _foundLength), 0);
+                    ds_grid_set_grid_region(_temp_grid, _glyph_grid, _insertPos, 0, _glyphCount, __SCRIBBLE_GEN_GLYPH_SIZE, 0, 0);
+                    ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _glyphCount - _insertPos, __SCRIBBLE_GEN_GLYPH_SIZE, _insertPos + (_replacementLength - _foundLength), 0);
                     
                     if (_replacementLength - _foundLength == 1)
                     {
@@ -312,7 +312,7 @@ function __scribble_gen_3_devanagari()
                 }
                 
                 _i           += _replacementLength - 1; //Off-by-one to account for ++_i in the for-loop
-                _glyph_count += _replacementLength - _foundLength;
+                _glyphCount += _replacementLength - _foundLength;
                 
                 //Recalculate our minibuffer since we've messed around with the array a lot
                 _twoChar   =              ((_glyph_grid[# _i+1, __SCRIBBLE_GEN_GLYPH_UNICODE] & 0xFFFF) << 16);
@@ -335,7 +335,7 @@ function __scribble_gen_3_devanagari()
     var _font_glyph_data_grid = undefined;
     
     var _i = 0;
-    repeat(_glyph_count)
+    repeat(_glyphCount)
     {
         var _control_delta = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] - _control_index;
         repeat(_control_delta)
@@ -344,8 +344,8 @@ function __scribble_gen_3_devanagari()
             {
                 var _font_name            = _controlArray[_control_index].__fontName;
                 var _font_data            = __scribble_get_font_data(_font_name);
-                var _font_glyph_data_grid = _font_data.__glyph_data_grid;
-                var _font_glyphs_map      = _font_data.__glyphs_map;
+                var _font_glyph_data_grid = _font_data.__glyphDataGrid;
+                var _font_glyphs_map      = _font_data.__glyphsMap;
             }
             
             _control_index++;
@@ -386,17 +386,17 @@ function __scribble_gen_3_devanagari()
     }
     
     //Create a null terminator so we correctly handle the last character in the string
-    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x00;
-    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_ISOLATED;
-    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
-    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;
-    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_WIDTH        ] = 0;
-    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_HEIGHT       ] = 0;
-    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = 0;
-    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
-    _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = (_glyph_count > 0)? _glyph_grid[# _glyph_count-1, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] : 0; //Make sure we collect controls at the end of a string
+    _glyph_grid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = 0x00;
+    _glyph_grid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_ISOLATED;
+    _glyph_grid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_X            ] = 0;
+    _glyph_grid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_Y            ] = 0;
+    _glyph_grid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_WIDTH        ] = 0;
+    _glyph_grid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_HEIGHT       ] = 0;
+    _glyph_grid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = 0;
+    _glyph_grid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = 0;
+    _glyph_grid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = (_glyphCount > 0)? _glyph_grid[# _glyphCount-1, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] : 0; //Make sure we collect controls at the end of a string
     
-    _generator_state.__glyph_count = _glyph_count+1;
+    _generator_state.__glyph_count = _glyphCount+1;
     
     #endregion
 }

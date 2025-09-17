@@ -51,7 +51,7 @@ function __scribble_gen_4_build_words()
     {
         var _glyph_grid   = __glyph_grid;
         var _word_grid    = __word_grid;
-        var _glyph_count  = __glyph_count;
+        var _glyphCount  = __glyph_count;
         var _sectionCount = __sectionCount;
         var _overall_bidi = __overall_bidi;
     }
@@ -70,7 +70,7 @@ function __scribble_gen_4_build_words()
     
     var _glyph_prev_whitespace = (_word_bidi == __SCRIBBLE_BIDI_WHITESPACE)
     
-    if (_glyph_count > 0)
+    if (_glyphCount > 0)
     {
         var _word_bidi = _glyph_grid[# 0, __SCRIBBLE_GEN_GLYPH_BIDI];
         
@@ -93,7 +93,7 @@ function __scribble_gen_4_build_words()
         }
         
         var _i = 1;
-        repeat(_glyph_count-1) //Ensure we fully handle the last word by including the null terminator in this loop
+        repeat(_glyphCount-1) //Ensure we fully handle the last word by including the null terminator in this loop
         {
             var _glyph_bidi = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH_BIDI];
             switch(_glyph_bidi)
