@@ -20,7 +20,7 @@ repeat(26)
 text = string_copy(text, 1, string_length(text)-1);
 
 scrollY = 0;
-serialY = 0;
+serialPage = 0;
 
 mousePrevX = undefined;
 mousePrevY = undefined;

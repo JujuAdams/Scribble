@@ -2,7 +2,7 @@
 
 if (mouse_check_button(mb_left))
 {
-    serialY += mouse_y - mousePrevY;
+    scrollY += mouse_y - mousePrevY;
 }
 
 if (mouse_check_button(mb_middle))
@@ -11,19 +11,14 @@ if (mouse_check_button(mb_middle))
     maxHeight += mouse_y - mousePrevY;
 }
 
-if (mouse_check_button(mb_right))
-{
-    scrollY += mouse_y - mousePrevY;
-}
-
 if (mouse_wheel_up())
 {
-    serialY += 5;
+    --serialPage;
 }
 
 if (mouse_wheel_down())
 {
-    serialY -= 5;
+    ++serialPage;
 }
 
 mousePrevX = mouse_x;

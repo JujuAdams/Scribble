@@ -77,7 +77,7 @@ function __scribble_class_element_parent(_text) constructor
     __scrollPauseCounter = 0;
     
     __serial = false;
-    __serialOffset = 0;
+    __serialY = 0;
     
     __scale_to_box_dirty    = true;
     __scale_to_box_width    = 0;
@@ -432,7 +432,7 @@ function __scribble_class_element_parent(_text) constructor
     
     
     
-    #region Clip & Scroll & Serial
+    #region Clip & Scroll
     
     static clip = function(_state = true)
     {
@@ -453,7 +453,7 @@ function __scribble_class_element_parent(_text) constructor
         return __clip;
     }
     
-    static scroll_auto_x = function(_speed = SCRIBBLE_DEFAULT_AUTOSCROLL_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME)
+    static scroll_auto_x = function(_speed = SCRIBBLE_DEFAULT_SCROLL_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME)
     {
         //Skip the pause if we're starting autoscroll
         if (__scrollAuto == 0)
@@ -476,7 +476,7 @@ function __scribble_class_element_parent(_text) constructor
         return self;
     }
     
-    static scroll_auto_y = function(_speed = SCRIBBLE_DEFAULT_AUTOSCROLL_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME)
+    static scroll_auto_y = function(_speed = SCRIBBLE_DEFAULT_SCROLL_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME)
     {
         //Skip the pause if we're starting autoscroll
         if (__scrollAuto == 0)
@@ -516,7 +516,7 @@ function __scribble_class_element_parent(_text) constructor
     static scroll_to_glyph_y = function(_index)
     {
         var _model = __EnsureModel();
-        if (not is_struct(_model)) return undefined;
+        if (not is_struct(_model)) return self;
         
         if (_model.__allow_glyph_data_getter)
         {
@@ -544,7 +544,7 @@ function __scribble_class_element_parent(_text) constructor
     static scroll_to_line = function(_index)
     {
         var _model = __EnsureModel();
-        if (not is_struct(_model)) return undefined;
+        if (not is_struct(_model)) return self;
         var _line_data = _model.__get_line_data(_index, __page);
         return scroll_to_y(_line_data.y, _line_data.y + _line_data.height-1);
     }
@@ -734,10 +734,21 @@ function __scribble_class_element_parent(_text) constructor
         }
     }
     
+    #endregion
+    
+    
+    
+    #region Serial
+    
     static serial = function(_state = true)
     {
-        clip(true); //Forcing clipping on
+        if (_state)
+        {
+            clip(true); //Forcing clipping on
+        }
+        
         __serial = _state;
+        
         return self;
     }
     
@@ -746,15 +757,28 @@ function __scribble_class_element_parent(_text) constructor
         return __serial;
     }
     
-    static serial_position = function(_value, _clamp = true)
+    static serial_y = function(_value, _clamp = true)
     {
-        __serialOffset = _clamp? clamp(_value, 0, get_serial_max()) : _value;
+        __serialY = _clamp? clamp(_value, 0, get_serial_max()) : _value;
         return self;
     }
     
-    static get_serial_position = function()
+    static get_serial_y = function()
     {
-        return __serialOffset;
+        return __serialY;
+    }
+    
+    static serial_to_page = function(_page)
+    {
+        if (is_infinity(__layoutMaxHeight))
+        {
+            __scribble_error("Cannot call `.serial_to_page()` without having called `.max_size()`");
+        }
+        
+        var _model = __EnsureModel();
+        if (not is_struct(_model)) return self;
+        
+        return serial_y(_model.__GetSerialY(_page));
     }
     
     static get_serial_max = function()

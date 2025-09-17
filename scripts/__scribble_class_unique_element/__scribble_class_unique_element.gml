@@ -100,7 +100,7 @@ function __scribble_class_unique_element(_string) : __scribble_class_element_par
         matrix_set(matrix_world, _matrix);
         
         //Submit the model
-        _model.__Draw(__page, __scrollX, __scrollY, __serial, __serialOffset, __clip, (__sdf_outline_thickness > 0) || (__sdf_shadow_alpha > 0));
+        _model.__Draw(__page, __scrollX, __scrollY, __serial, __serialY, __clip, (__sdf_outline_thickness > 0) || (__sdf_shadow_alpha > 0));
         
         //Make sure we reset the world matrix
         matrix_set(matrix_world, _old_matrix);

@@ -184,7 +184,7 @@ function __scribble_class_model(_element) constructor
                 
                 //FIXME - Implement offsets for different h/v alignments
                 var _serialScroll = (_serialOffset - _page*__layoutMaxHeight);
-                shader_set_uniform_f(_u_vClip, 0, 0, __layoutMaxWidth, max(0, __layoutMaxHeight - _serialScroll));
+                shader_set_uniform_f(_u_vClip, 0, 0, __layoutMaxWidth, __layoutMaxHeight - _serialScroll);
                 shader_set_uniform_f(_u_vScroll, _scrollX, _scrollY + _serialScroll);
                 __pages_array[_page].__Submit(_doubleDraw);
                 
@@ -363,6 +363,11 @@ function __scribble_class_model(_element) constructor
         }
         
         return max(0, __pages_array[_page].__max_y - __layoutMaxHeight);
+    }
+    
+    static __GetSerialY = function(_page)
+    {
+        return __layoutMaxHeight*clamp(_page, 0, array_length(__pages_array)-1);
     }
     
     static __GetSerialMax = function()
