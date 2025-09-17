@@ -4,7 +4,7 @@
 
 function scribble_cycle_exists(_name)
 {
-    static _cycle_data_map = __ScribbleSystem().__cycleDataMap;
+    static _cycleDataMap = __ScribbleSystem().__cycleDataMap;
     
-    return ds_map_exists(_cycle_data_map, _name);
+    return ds_map_exists(_cycleDataMap, _name);
 }

@@ -6,19 +6,19 @@ function __ScribbleGlyphDataInitialize()
         __bidiMap   : ds_map_create(),
         __mirror_map : ds_map_create(),
         
-        __arabic_isolated_map  : ds_map_create(),
-        __arabic_initial_map   : ds_map_create(),
-        __arabic_medial_map    : ds_map_create(),
-        __arabic_final_map     : ds_map_create(),
-        __arabic_join_prev_map : ds_map_create(),
-        __arabic_join_next_map : ds_map_create(),
+        __arabicIsolatedMap  : ds_map_create(),
+        __arabicInitialMap   : ds_map_create(),
+        __arabicMedialMap    : ds_map_create(),
+        __arabicFinalMap     : ds_map_create(),
+        __arabicJoinPrevMap : ds_map_create(),
+        __arabicJoinNextMap : ds_map_create(),
         
-        __thai_base_map           : ds_map_create(),
-        __thai_base_descender_map : ds_map_create(),
-        __thai_base_ascender_map  : ds_map_create(),
-        __thai_top_map            : ds_map_create(),
-        __thai_lower_map          : ds_map_create(),
-        __thai_upper_map          : ds_map_create(),
+        __thaiBaseMap           : ds_map_create(),
+        __thaiBaseDescenderMap : ds_map_create(),
+        __thaiBaseAscenderMap  : ds_map_create(),
+        __thaiTopMap            : ds_map_create(),
+        __thaiLowerMap          : ds_map_create(),
+        __thaiUpperMap          : ds_map_create(),
     };
     
     #region BiDi definitions
@@ -114,10 +114,10 @@ function __ScribbleGlyphDataInitialize()
     
     #region Arabic Presentation Forms
     
-    var _map_i = _data_struct.__arabic_isolated_map;
-    var _map_a = _data_struct.__arabic_initial_map;
-    var _map_b = _data_struct.__arabic_medial_map;
-    var _map_c = _data_struct.__arabic_final_map;
+    var _map_i = _data_struct.__arabicIsolatedMap;
+    var _map_a = _data_struct.__arabicInitialMap;
+    var _map_b = _data_struct.__arabicMedialMap;
+    var _map_c = _data_struct.__arabicFinalMap;
     
     //Hamza
     _map_i[? 0x0621] = 0xFE80; //Isolated
@@ -387,12 +387,12 @@ function __ScribbleGlyphDataInitialize()
     
     #region Arabic join direction
     
-    var _map_prev = _data_struct.__arabic_join_prev_map;
-    var _map_next = _data_struct.__arabic_join_next_map;
-    var _map_i    = _data_struct.__arabic_isolated_map;
-    var _map_a    = _data_struct.__arabic_initial_map;
-    var _map_b    = _data_struct.__arabic_medial_map;
-    var _map_c    = _data_struct.__arabic_final_map;
+    var _map_prev = _data_struct.__arabicJoinPrevMap;
+    var _map_next = _data_struct.__arabicJoinNextMap;
+    var _map_i    = _data_struct.__arabicIsolatedMap;
+    var _map_a    = _data_struct.__arabicInitialMap;
+    var _map_b    = _data_struct.__arabicMedialMap;
+    var _map_c    = _data_struct.__arabicFinalMap;
     
     var _arabic_array = ds_map_keys_to_array(_map_i);
     var _i = 0;
@@ -419,35 +419,35 @@ function __ScribbleGlyphDataInitialize()
     
     #region Thai
     
-    var _map = _data_struct.__thai_base_map;
+    var _map = _data_struct.__thaiBaseMap;
     for(var _i = 0x0E01; _i <= 0x0E2F; _i++) _map[? _i] = true;
     _map[? 0x0E30] = true;
     _map[? 0x0E40] = true;
     _map[? 0x0E41] = true;
     
-    var _map = _data_struct.__thai_base_descender_map;
+    var _map = _data_struct.__thaiBaseDescenderMap;
     _map[? 0x0E0E] = true;
     _map[? 0x0E0F] = true;
     
-    var _map = _data_struct.__thai_base_ascender_map;
+    var _map = _data_struct.__thaiBaseAscenderMap;
     _map[? 0x0E1B] = true;
     _map[? 0x0E1D] = true;
     _map[? 0x0E1F] = true;
     _map[? 0x0E2C] = true;
     
-    var _map = _data_struct.__thai_top_map;
+    var _map = _data_struct.__thaiTopMap;
     _map[? 0x0E48] = true;
     _map[? 0x0E49] = true;
     _map[? 0x0E4A] = true;
     _map[? 0x0E4B] = true;
     _map[? 0x0E4C] = true;
     
-    var _map = _data_struct.__thai_lower_map;
+    var _map = _data_struct.__thaiLowerMap;
     _map[? 0x0E38] = true;
     _map[? 0x0E39] = true;
     _map[? 0x0E3A] = true;
     
-    var _map = _data_struct.__thai_upper_map;
+    var _map = _data_struct.__thaiUpperMap;
     _map[? 0x0E31] = true;
     _map[? 0x0E34] = true;
     _map[? 0x0E35] = true;

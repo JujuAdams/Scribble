@@ -6,14 +6,14 @@
 /// @param firstChar          First character in the pair, as a string
 /// @param secondChar         Second character in the pair, as a string
 
-function scribble_kerning_pair_get(_font, _first_char, _second_char)
+function scribble_kerning_pair_get(_font, _firstChar, _secondChar)
 {
     var _fontData = __ScribbleGetFontData(_font);
     
-    var  _first_unicode = is_real( _first_char)?  _first_char : ord( _first_char);
-    var _second_unicode = is_real(_second_char)? _second_char : ord(_second_char);
+    var  _first_unicode = is_real( _firstChar)?  _firstChar : ord( _firstChar);
+    var _secondUnicode = is_real(_secondChar)? _secondChar : ord(_secondChar);
     
     var _kerning_map = _fontData.__kerningMap;
     
-    return (_kerning_map[? ((_second_unicode & 0xFFFF) << 16) | (_first_unicode & 0xFFFF)] ?? 0);
+    return (_kerning_map[? ((_secondUnicode & 0xFFFF) << 16) | (_first_unicode & 0xFFFF)] ?? 0);
 }

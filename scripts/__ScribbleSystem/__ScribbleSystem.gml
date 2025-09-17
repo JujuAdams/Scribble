@@ -184,7 +184,7 @@ function __ScribbleSystem(_calledFromInitialize = false)
             
             __markdown_styles_struct: {},
             
-            __sprite_whitelist_map: ds_map_create(),
+            __spriteWhitelistMap: ds_map_create(),
             __soundWhitelistMap:  ds_map_create(),
         };
         
@@ -199,7 +199,7 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __krutidevMatraLookupMap = __ScribbleKrutidevMatraLookupMapInitialize();
         
         //External sound reference storage
-        __external_sprite_map = ds_map_create();
+        __externalSpriteMap = ds_map_create();
         __externalSoundMap  = ds_map_create();
         
         __tagDict = {};

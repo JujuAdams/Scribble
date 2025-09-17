@@ -2,6 +2,6 @@
 
 function scribble_external_sprite_exists(_alias)
 {
-    static _external_sprite_map = __ScribbleSystem().__external_sprite_map;
-    return ds_map_exists(_external_sprite_map, _alias);
+    static _externalSpriteMap = __ScribbleSystem().__externalSpriteMap;
+    return ds_map_exists(_externalSpriteMap, _alias);
 }

@@ -128,7 +128,7 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
         
         var _fontGlyphsMap   = _fontData.__glyphsMap;
         var _fontGlyphDataGrid = _fontData.__glyphDataGrid;
-        var _font_kerning_map  = _fontData.__kerningMap;
+        var _fontKerningMap  = _fontData.__kerningMap;
         if (_isKrutidev) _fontData.__isKrutidev = true;
         
         //Set some basic repeated values in bulk for a little speed boost
@@ -191,7 +191,7 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
                     repeat(array_length(_kerningArray) div 2)
                     {
                         var _first = _kerningArray[_j];
-                        if (_first > 0) _font_kerning_map[? ((_unicode & 0xFFFF) << 16) | (_first & 0xFFFF)] = _kerningArray[_j+1];
+                        if (_first > 0) _fontKerningMap[? ((_unicode & 0xFFFF) << 16) | (_first & 0xFFFF)] = _kerningArray[_j+1];
                         _j += 2;
                     }
                 }

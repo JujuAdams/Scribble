@@ -4,8 +4,8 @@ var _tex_uv = sprite_get_uvs(spr_portrait, 0)
 var _textureTexelW = texture_get_texel_width(_tex_id);
 var _textureTexelH = texture_get_texel_height(_tex_id);
 
-var _tex_x = _tex_uv[0]/_textureTexelW;
-var _tex_y = _tex_uv[1]/_textureTexelH;
-var _tex_w = _tex_uv[2]/_textureTexelW - _tex_x;
-var _tex_h = _tex_uv[3]/_textureTexelH - _tex_y;
-scribble($"[texture, {_tex_id}, {_tex_x},{_tex_y},{_tex_w},{_tex_h}] is a pretty cool guy!").draw(24, 24)
+var _texX = _tex_uv[0]/_textureTexelW;
+var _texY = _tex_uv[1]/_textureTexelH;
+var _texW = _tex_uv[2]/_textureTexelW - _texX;
+var _texH = _tex_uv[3]/_textureTexelH - _texY;
+scribble($"[texture, {_tex_id}, {_texX},{_texY},{_texW},{_texH}] is a pretty cool guy!").draw(24, 24)
