@@ -125,7 +125,7 @@ function __ScribbleClassModel(_element) constructor
         __build();
     }
     
-    static __Draw = function(_page, _nextPageOffset, _scrollXArray, _scrollYArray, _clip, _doubleDraw)
+    static __Draw = function(_page, _scrollXArray, _scrollYArray, _clip, _doubleDraw)
     {
         static _u_vClip   = shader_get_uniform(__shdScribble, "u_vClip");
         static _u_vScroll = shader_get_uniform(__shdScribble, "u_vScroll");
@@ -137,7 +137,7 @@ function __ScribbleClassModel(_element) constructor
             _doubleDraw = true;
         }
         
-        if (_nextPageOffset == 0)
+        if (_page == floor(_page))
         {
             //If we're not in serial mode then we can only draw one page at a time
             
@@ -159,37 +159,24 @@ function __ScribbleClassModel(_element) constructor
             shader_set_uniform_f(_u_vScroll, _scrollXArray[_page], _scrollYArray[_page]);
             __pagesArray[_page].__Submit(_doubleDraw);
         }
-        else if (_nextPageOffset > 0)
+        else
         {
             //Otherwise, draw the two pages that are visible
             
             _usedClip = true;
             
+            var _offset = frac(_page)*__layoutMaxHeight;
+            _page = floor(_page);
+            
             //FIXME - Implement offsets for different h/v alignments
-            shader_set_uniform_f(_u_vClip, 0, 0, __layoutMaxWidth, __layoutMaxHeight - _nextPageOffset);
-            shader_set_uniform_f(_u_vScroll, _scrollXArray[_page], _scrollYArray[_page] + _nextPageOffset);
+            shader_set_uniform_f(_u_vClip, 0, 0, __layoutMaxWidth, __layoutMaxHeight - _offset);
+            shader_set_uniform_f(_u_vScroll, _scrollXArray[_page], _scrollYArray[_page] + _offset);
             __pagesArray[_page].__Submit(_doubleDraw);
             
             //FIXME - Implement offsets for different h/v alignments
-            shader_set_uniform_f(_u_vClip, 0, 0, __layoutMaxWidth, __layoutMaxHeight);
-            shader_set_uniform_f(_u_vScroll, _scrollXArray[_page+1], _scrollYArray[_page+1] + _nextPageOffset - __layoutMaxHeight);
+            shader_set_uniform_f(_u_vClip, 0, __layoutMaxHeight - _offset, __layoutMaxWidth, __layoutMaxHeight);
+            shader_set_uniform_f(_u_vScroll, _scrollXArray[_page+1], _scrollYArray[_page+1] + _offset - __layoutMaxHeight);
             __pagesArray[_page+1].__Submit(_doubleDraw);
-        }
-        else if (_nextPageOffset < 0)
-        {
-            //Otherwise, draw the two pages that are visible
-            
-            _usedClip = true;
-            
-            //FIXME - Implement offsets for different h/v alignments
-            shader_set_uniform_f(_u_vClip, 0, 0, __layoutMaxWidth, __layoutMaxHeight);
-            shader_set_uniform_f(_u_vScroll, _scrollXArray[_page-1], _scrollYArray[_page-1] + _nextPageOffset + __layoutMaxHeight);
-            __pagesArray[_page-1].__Submit(_doubleDraw);
-            
-            //FIXME - Implement offsets for different h/v alignments
-            shader_set_uniform_f(_u_vClip, 0, -_nextPageOffset, __layoutMaxWidth, __layoutMaxHeight);
-            shader_set_uniform_f(_u_vScroll, _scrollXArray[_page], _scrollYArray[_page] + _nextPageOffset);
-            __pagesArray[_page].__Submit(_doubleDraw);
         }
     }
     

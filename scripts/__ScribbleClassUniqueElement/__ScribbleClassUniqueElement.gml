@@ -87,7 +87,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         __lastDrawn = _system.__frames;
         
         __AutoScroll();
-        __NextPage();
         
         shader_set(__shdScribble);
         __SetStandardUniforms();
@@ -101,7 +100,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         matrix_set(matrix_world, _matrix);
         
         //Submit the model
-        _model.__Draw(__page, __nextPageOffset, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
+        _model.__Draw(__page + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
         
         //Make sure we reset the world matrix
         matrix_set(matrix_world, _oldMatrix);

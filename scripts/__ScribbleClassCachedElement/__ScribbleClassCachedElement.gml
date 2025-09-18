@@ -154,7 +154,6 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
         __weakRef.__AddToCache();
         
         __AutoScroll();
-        __NextPage();
         
         shader_set(__shdScribble);
         __SetStandardUniforms();
@@ -162,7 +161,7 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
         
         matrix_stack_push(__UpdateMatrix(_model, _x, _y));
         matrix_set(matrix_world, matrix_stack_top());
-        _model.__Draw(__page, __nextPageOffset, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
+        _model.__Draw(__page + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
         
         shader_reset();
         matrix_stack_pop();

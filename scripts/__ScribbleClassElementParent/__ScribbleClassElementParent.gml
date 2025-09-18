@@ -76,10 +76,6 @@ function __ScribbleClassElementParent(_text) constructor
     __scrollWasClamped = true;
     __scrollPauseCounter = 0;
     
-    __nextPage       = 0;
-    __nextPageSpeed  = SCRIBBLE_DEFAULT_SERIAL_SPEED;
-    __nextPageOffset = 0;
-    
     __scaleToBoxDirty    = true;
     __scaleToBoxWidth    = 0;
     __scaleToBoxHeight   = 0;
@@ -92,6 +88,8 @@ function __ScribbleClassElementParent(_text) constructor
     __visualBboxes = SCRIBBLE_DEFAULT_VISUAL_BBOXES;
     
     __page = 0;
+    __pageFraction = 0;
+    
     __ignoreCommandTags = false;
     __template = undefined;
     
@@ -1367,24 +1365,15 @@ function __ScribbleClassElementParent(_text) constructor
         var _model = __EnsureModel();
         if (is_struct(_model))
         {
-            if (_page < 0)
-            {
-                __ScribbleTrace("Warning! Cannot set a text element's page to less than 0");
-                __page = 0;
-            }
-            else if (_page > _model.__GetPageCount()-1)
-            {
-                __page = _model.__GetPageCount()-1;
-                __ScribbleTrace("Warning! Page ", _page, " is too big. Valid pages are from 0 to ", __page, " (pages are 0-indexed)");
-            }
-            else
-            {
-                __page = _page;
-            }
+            _page = clamp(_page, 0, _model.__GetPageCount()-1);
+            
+            __page = round(_page);
+            __pageFraction = _page - __page;
         }
         else
         {
             __page = 0;
+            __pageFraction = 0;
         }
         
         if (_oldPage != __page)
@@ -1392,59 +1381,12 @@ function __ScribbleClassElementParent(_text) constructor
             __bboxDirty = true;
         }
         
-        __nextPage       = 0;
-        __nextPageOffset = 0;
-        
         return self;
-    }
-    
-    static __NextPage = function()
-    {
-        if (__nextPage > 0)
-        {
-            __nextPageOffset += __nextPageSpeed;
-            
-            if (__nextPageOffset >= __layoutMaxHeight)
-            {
-                page(__page+1);
-            }
-        }
-        else if (__nextPage < 0)
-        {
-            __nextPageOffset -= __nextPageSpeed;
-            
-            if (__nextPageOffset <= -__layoutMaxHeight)
-            {
-                page(__page-1);
-            }
-        }
-    }
-    
-    static previous_page = function(_speed = SCRIBBLE_DEFAULT_SERIAL_SPEED)
-    {
-        if ((not __nextPage) && (__page > 0))
-        {
-            __nextPage       = -1;
-            __nextPageOffset = 0;
-        }
-        
-        __nextPageSpeed = abs(_speed);
-    }
-    
-    static next_page = function(_speed = SCRIBBLE_DEFAULT_SERIAL_SPEED)
-    {
-        if ((not __nextPage) && (not on_last_page()))
-        {
-            __nextPage       = 1;
-            __nextPageOffset = 0;
-        }
-        
-        __nextPageSpeed = abs(_speed);
     }
     
     static get_page = function()
     {
-        return __page;
+        return __page + __pageFraction;
     }
     
     static get_pages = function()
@@ -1461,12 +1403,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     static on_last_page = function()
     {
-        return (get_page() >= get_page_count() - 1);
-    }
-    
-    static get_page_speed = function()
-    {
-        return __nextPageSpeed;
+        return (get_page() >= get_page_count()-1);
     }
     
     #endregion
@@ -1537,14 +1474,10 @@ function __ScribbleClassElementParent(_text) constructor
     
     #region Animation
     
-    static animation_tick_speed = function()
-    {
-        __ScribbleError(".animation_tick_speed() has been replaced by .animation_speed()");
-    }
-    
     static set_animation_time = function(_time)
     {
         __animationTime = _time;
+        
         return self;
     }
     
@@ -1557,6 +1490,7 @@ function __ScribbleClassElementParent(_text) constructor
     {
         __animationSpeed = _speed;
         return self;
+        
     }
     
     static get_animation_speed = function()
@@ -1568,7 +1502,6 @@ function __ScribbleClassElementParent(_text) constructor
     {
         var _model = __EnsureModel();
         if (not is_struct(_model)) return false;
-        
         return _model.__hasAnimation;
     }
     

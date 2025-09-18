@@ -12,14 +12,14 @@ if (mouse_check_button(mb_middle))
     maxHeight += mouse_y - mousePrevY;
 }
 
-if (keyboard_check_pressed(vk_left))
+if (mouse_wheel_up())
 {
-    scribble(text).previous_page();
+    scribble(text).page(scribble(text).get_page() - 0.2);
 }
 
-if (keyboard_check_pressed(vk_right))
+if (mouse_wheel_down())
 {
-    scribble(text).next_page();
+    scribble(text).page(scribble(text).get_page() + 0.2);
 }
 
 mousePrevX = mouse_x;
