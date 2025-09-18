@@ -38,8 +38,10 @@
 #macro SCRIBBLE_DEFAULT_VISUAL_BBOXES  false
 
 #macro SCRIBBLE_DEFAULT_SCROLL_SPEED  4  //pixels per frame
-
 #macro SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME  45  //frames
+
+#macro SCRIBBLE_DEFAULT_PAN_SPEED  4  //pixels per frame
+#macro SCRIBBLE_DEFAULT_AUTOPAN_PAUSE_TIME  45  //frames
 
 
 

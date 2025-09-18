@@ -86,6 +86,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         __lastDrawn = _system.__frames;
         
+        __AutoPan();
         __AutoScroll();
         
         shader_set(__shdScribble);
@@ -1170,7 +1171,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                             }
                             else
                             {
-                                scroll_to_glyph_y(_eventRevealIndex);
+                                scroll_to_glyph(_eventRevealIndex);
                             }
                         }
                         else if (__revealType == SCRIBBLE_REVEAL_PER_LINE)

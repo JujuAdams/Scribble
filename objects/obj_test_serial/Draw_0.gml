@@ -10,7 +10,7 @@ draw_set_halign(fa_right);
 
 var _string = $"{maxWidth}x{maxHeight}";
 _string += $"\npage = {scribble(text).get_page()}";
-_string += $"\nscroll = {scribble(text).get_scroll_y()}";
+_string += $"\nscroll = {scribble(text).get_scroll()}";
 
 draw_text(room_width-10, 10, _string);
 draw_set_halign(fa_left);

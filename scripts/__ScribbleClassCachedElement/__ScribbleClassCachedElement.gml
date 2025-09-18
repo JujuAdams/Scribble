@@ -153,6 +153,7 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
         __lastDrawn = _system.__frames;
         __weakRef.__AddToCache();
         
+        __AutoPan();
         __AutoScroll();
         
         shader_set(__shdScribble);

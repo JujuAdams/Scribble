@@ -3,7 +3,7 @@
 if (mouse_check_button(mb_left))
 {
     var _element = scribble(text);
-    _element.scroll(_element.get_scroll_y() + mouse_y - mousePrevY, false);
+    _element.scroll(_element.get_scroll() + mouse_y - mousePrevY, false);
 }
 
 if (mouse_check_button(mb_middle))

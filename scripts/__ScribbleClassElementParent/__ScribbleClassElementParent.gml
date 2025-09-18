@@ -69,6 +69,14 @@ function __ScribbleClassElementParent(_text) constructor
     
     __scrollXArray = [];
     __scrollYArray = [];
+    
+    __panState = 0;
+    __panSpeed = SCRIBBLE_DEFAULT_PAN_SPEED;
+    __panPause = SCRIBBLE_DEFAULT_AUTOPAN_PAUSE_TIME;
+    __panAuto  = 0; //0 = off, 1 = x-axis, 2 = y-axis
+    __panWasClamped = true;
+    __panPauseCounter = 0;
+    
     __scrollState = 0;
     __scrollSpeed = SCRIBBLE_DEFAULT_SCROLL_SPEED;
     __scrollPause = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME;
@@ -76,7 +84,7 @@ function __ScribbleClassElementParent(_text) constructor
     __scrollWasClamped = true;
     __scrollPauseCounter = 0;
     
-    blockTrim = 0;
+    __blockTrim = 0;
     
     __scaleToBoxDirty    = true;
     __scaleToBoxWidth    = 0;
@@ -427,6 +435,149 @@ function __ScribbleClassElementParent(_text) constructor
     
     
     
+    #region Pan
+    
+    static pan_auto = function(_speed = SCRIBBLE_DEFAULT_PAN_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOPAN_PAUSE_TIME)
+    {
+        //Skip the pause if we're starting autoscroll
+        if (not __panAuto)
+        {
+            if (__panState == 1)
+            {
+                __panState = 2;
+            }
+            else if (__panState == 3)
+            {
+                __panState = 0;
+            }
+        }
+        
+        __panAuto = true;
+        
+        __panSpeed = _speed;
+        __panPause = _pauseTime;
+        
+        return self;
+    }
+    
+    static pan_to_glyph = function(_index)
+    {
+        var _model = __EnsureModel();
+        if (not is_struct(_model)) return undefined;
+        
+        if (not _model.__allowGlyphDataGetter)
+        {
+            __ScribbleError("Panning to a glyph requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
+        }
+        
+        var _glyphData = _model.__GetGlyphData(_index, __page);
+        return pan_to(_glyphData.left, _glyphData.right);
+    }
+    
+    static pan = function(_x, _clamp = true, _page = __page)
+    {
+        __EnsureModel();
+        
+        __panAuto = false;
+        
+        __panXArray[@ _page] = _clamp? clamp(_x, 0, get_pan_max()) : _x;
+        __panWasClamped = _clamp;
+        
+        return self;
+    }
+    
+    static pan_to = function(_min, _max, _page = __page)
+    {
+        __EnsureModel();
+        
+        if (1 + _max - _min > __layoutMaxWidth)
+        {
+            //Range is bigger than can be displayed, centre the line
+            __scrollXArray[@ _page] = clamp(((_min + _max) div 2) - (__layoutMaxWidth div 2), 0, get_pan_max());
+        }
+        else if (_min < __scrollXArray[_page])
+        {
+            //Range is above the top of the region
+            __scrollXArray[@ _page] = clamp(_min, 0, get_pan_max());
+        }
+        else if (_max >= __layoutMaxWidth + __scrollXArray[_page])
+        {
+            //Range is below the bottom of the region
+            __scrollXArray[@ _page] = clamp(_max - __layoutMaxWidth, 0, get_pan_max());
+        }
+        else
+        {
+            //Range is visible, do nothing
+        }
+        
+        return self;
+    }
+    
+    static get_pan = function(_page = __page)
+    {
+        __EnsureModel();
+        
+        return __scrollXArray[_page];
+    }
+    
+    static get_pan_max = function(_page = __page)
+    {
+        var _model = __EnsureModel();
+        if (not is_struct(_model)) return 0;
+        return _model.__GetScrollMaxX(_page);
+    }
+    
+    static __AutoPan = function(_page = __page)
+    {
+        if (__panAuto)
+        {
+            if (__panState == 0)
+            {
+                __scrollXArray[@ _page] += __panSpeed*_system.__tickSize;
+                
+                if (__scrollXArray[_page] >= get_pan_max())
+                {
+                    __scrollXArray[@ _page] = get_pan_max();
+                    __panPauseCounter = 0;
+                    __panState = 1;
+                }
+            }
+            else if (__panState == 1)
+            {
+                __panPauseCounter += _system.__tickSize
+                
+                if (__panPauseCounter >= __panPause)
+                {
+                    __panState = 2;
+                }
+            }
+            else if (__panState == 2)
+            {
+                __scrollXArray[@ _page] -= __panSpeed*_system.__tickSize;
+                
+                if (__scrollXArray[_page] <= 0)
+                {
+                    __scrollXArray[@ _page] = 0;
+                    __panPauseCounter = 0;
+                    __panState = 3;
+                }
+            }
+            else if (__panState == 3)
+            {
+                __panPauseCounter += _system.__tickSize
+                
+                if (__panPauseCounter >= ___panPause)
+                {
+                    __panState = 0;
+                }
+            }
+        }
+    }
+    
+    #endregion
+    
+    
+    
     #region Clip & Scroll
     
     static clip = function(_state = true)
@@ -441,10 +592,10 @@ function __ScribbleClassElementParent(_text) constructor
         return __clip;
     }
     
-    static scroll_auto_x = function(_speed = SCRIBBLE_DEFAULT_SCROLL_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME)
+    static scroll_auto = function(_speed = SCRIBBLE_DEFAULT_SCROLL_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME)
     {
         //Skip the pause if we're starting autoscroll
-        if (__scrollAuto == 0)
+        if (not __scrollAuto)
         {
             if (__scrollState == 1)
             {
@@ -456,7 +607,7 @@ function __ScribbleClassElementParent(_text) constructor
             }
         }
         
-        __scrollAuto = 1;
+        __scrollAuto = true;
         
         __scrollSpeed = _speed;
         __scrollPause = _pauseTime;
@@ -464,44 +615,7 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static scroll_auto_y = function(_speed = SCRIBBLE_DEFAULT_SCROLL_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME)
-    {
-        //Skip the pause if we're starting autoscroll
-        if (__scrollAuto == 0)
-        {
-            if (__scrollState == 1)
-            {
-                __scrollState = 2;
-            }
-            else if (__scrollState == 3)
-            {
-                __scrollState = 0;
-            }
-        }
-        
-        __scrollAuto = 2;
-        
-        __scrollSpeed = _speed;
-        __scrollPause = _pauseTime;
-        
-        return self;
-    }
-    
-    static scroll_to_glyph_x = function(_index)
-    {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return undefined;
-        
-        if (not _model.__allowGlyphDataGetter)
-        {
-            __ScribbleError("Scrolling to a glyph's x position requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
-        }
-        
-        var _glyphData = _model.__GetGlyphData(_index, __page);
-        return scroll_to_x(_glyphData.left, _glyphData.right);
-    }
-    
-    static scroll_to_glyph_y = function(_index)
+    static scroll_to_glyph = function(_index)
     {
         var _model = __EnsureModel();
         if (not is_struct(_model)) return self;
@@ -509,7 +623,7 @@ function __ScribbleClassElementParent(_text) constructor
         if (_model.__allowGlyphDataGetter)
         {
             var _glyphData = _model.__GetGlyphData(_index, __page);
-            return scroll_to_y(_glyphData.top, _glyphData.bottom);
+            return scroll_to(_glyphData.top, _glyphData.bottom);
         }
         else
         {
@@ -534,54 +648,27 @@ function __ScribbleClassElementParent(_text) constructor
         var _model = __EnsureModel();
         if (not is_struct(_model)) return self;
         var _line_data = _model.__GetLineData(_index, __page);
-        return scroll_to_y(_line_data.y, _line_data.y + _line_data.height-1);
+        return scroll_to(_line_data.y, _line_data.y + _line_data.height-1);
     }
     
-    static scroll_to_x = function(_min, _max, _page = __page)
-    {
-        __EnsureModel();
-        
-        if (1 + _max - _min > __layoutMaxWidth)
-        {
-            //Range is bigger than can be displayed, centre the line
-            __scrollXArray[@ _page] = clamp(((_min + _max) div 2) - (__layoutMaxWidth div 2), 0, get_scroll_max_x());
-        }
-        else if (_min < __scrollXArray[_page])
-        {
-            //Range is above the top of the region
-            __scrollXArray[@ _page] = clamp(_min, 0, get_scroll_max_x());
-        }
-        else if (_max >= __layoutMaxWidth + __scrollXArray[_page])
-        {
-            //Range is below the bottom of the region
-            __scrollXArray[@ _page] = clamp(_max - __layoutMaxWidth, 0, get_scroll_max_x());
-        }
-        else
-        {
-            //Range is visible, do nothing
-        }
-        
-        return self;
-    }
-    
-    static scroll_to_y = function(_min, _max, _page = __page)
+    static scroll_to = function(_min, _max, _page = __page)
     {
         __EnsureModel();
         
         if (1 + _max - _min > __layoutMaxHeight)
         {
             //Range is bigger than can be displayed, centre the line
-            __scrollYArray[@ _page] = clamp(((_min + _max) div 2) - (__layoutMaxHeight div 2), 0, get_scroll_max_y());
+            __scrollYArray[@ _page] = clamp(((_min + _max) div 2) - (__layoutMaxHeight div 2), 0, get_scroll_max());
         }
         else if (_min < __scrollYArray[_page])
         {
             //Range is above the top of the region
-            __scrollYArray[@ _page] = clamp(_min, 0, get_scroll_max_y());
+            __scrollYArray[@ _page] = clamp(_min, 0, get_scroll_max());
         }
         else if (_max >= __layoutMaxHeight + __scrollYArray[_page])
         {
             //Range is below the bottom of the region
-            __scrollYArray[@ _page] = clamp(_max - __layoutMaxHeight, 0, get_scroll_max_y());
+            __scrollYArray[@ _page] = clamp(_max - __layoutMaxHeight, 0, get_scroll_max());
         }
         else
         {
@@ -595,49 +682,22 @@ function __ScribbleClassElementParent(_text) constructor
     {
         __EnsureModel();
         
-        __scrollAuto = 0;
+        __scrollAuto = false;
         
-        __scrollYArray[@ _page] = _clamp? clamp(_y, 0, get_scroll_max_y()) : _y;
+        __scrollYArray[@ _page] = _clamp? clamp(_y, 0, get_scroll_max()) : _y;
         __scrollWasClamped = _clamp;
         
         return self;
     }
     
-    static scroll_ext = function(_x, _y, _clamp = true, _page = __page)
-    {
-        __EnsureModel();
-        
-        __scrollAuto = 0;
-        
-        __scrollXArray[@ _page] = _clamp? clamp(_x, 0, get_scroll_max_x()) : _x;
-        __scrollYArray[@ _page] = _clamp? clamp(_y, 0, get_scroll_max_y()) : _y;
-        __scrollWasClamped = _clamp;
-        
-        return self;
-    }
-    
-    static get_scroll_x = function(_page = __page)
-    {
-        __EnsureModel();
-        
-        return __scrollXArray[_page];
-    }
-    
-    static get_scroll_y = function(_page = __page)
+    static get_scroll = function(_page = __page)
     {
         __EnsureModel();
         
         return __scrollYArray[_page];
     }
     
-    static get_scroll_max_x = function(_page = __page)
-    {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return 0;
-        return _model.__GetScrollMaxX(_page);
-    }
-    
-    static get_scroll_max_y = function(_page = __page)
+    static get_scroll_max = function(_page = __page)
     {
         var _model = __EnsureModel();
         if (not is_struct(_model)) return 0;
@@ -646,58 +706,15 @@ function __ScribbleClassElementParent(_text) constructor
     
     static __AutoScroll = function(_page = __page)
     {
-        if (__scrollAuto == 1)
-        {
-            if (__scrollState == 0)
-            {
-                __scrollXArray[@ _page] += __scrollSpeed*_system.__tickSize;
-                
-                if (__scrollXArray[_page] >= get_scroll_max_x())
-                {
-                    __scrollXArray[@ _page] = get_scroll_max_x();
-                    __scrollPauseCounter = 0;
-                    __scrollState = 1;
-                }
-            }
-            else if (__scrollState == 1)
-            {
-                __scrollPauseCounter += _system.__tickSize
-                
-                if (__scrollPauseCounter >= __scrollPause)
-                {
-                    __scrollState = 2;
-                }
-            }
-            else if (__scrollState == 2)
-            {
-                __scrollXArray[@ _page] -= __scrollSpeed*_system.__tickSize;
-                
-                if (__scrollXArray[_page] <= 0)
-                {
-                    __scrollXArray[@ _page] = 0;
-                    __scrollPauseCounter = 0;
-                    __scrollState = 3;
-                }
-            }
-            else if (__scrollState == 3)
-            {
-                __scrollPauseCounter += _system.__tickSize
-                
-                if (__scrollPauseCounter >= __scrollPause)
-                {
-                    __scrollState = 0;
-                }
-            }
-        }
-        else if (__scrollAuto == 2)
+        if (__scrollAuto)
         {
             if (__scrollState == 0)
             {
                 __scrollYArray[@ _page] += __scrollSpeed*_system.__tickSize;
                 
-                if (__scrollYArray[_page] >= get_scroll_max_y())
+                if (__scrollYArray[_page] >= get_scroll_max())
                 {
-                    __scrollYArray[@ _page] = get_scroll_max_y();
+                    __scrollYArray[@ _page] = get_scroll_max();
                     __scrollPauseCounter = 0;
                     __scrollState = 1;
                 }
@@ -736,14 +753,14 @@ function __ScribbleClassElementParent(_text) constructor
     
     static block_trim = function(_value)
     {
-        blockTrim = _value;
+        __blockTrim = _value;
         
         return self;
     }
     
     static get_block_trim = function()
     {
-        return blockTrim;
+        return __blockTrim;
     }
     
     static __GetGlyphLine = function(_index)
@@ -787,13 +804,13 @@ function __ScribbleClassElementParent(_text) constructor
         }
         else
         {
-            return 1 + ((_index - _blockSize) div (_blockSize - blockTrim));
+            return 1 + ((_index - _blockSize) div (_blockSize - __blockTrim));
         }
     }
     
     static __GetBlockY = function(_index)
     {
-        return (_index*(get_block_size() - blockTrim))*__EnsureModel().__lineHeight;
+        return (_index*(get_block_size() - __blockTrim))*__EnsureModel().__lineHeight;
     }
     
     #endregion
