@@ -348,6 +348,8 @@
     {"id":{"name":"__ScribbleClassPage","path":"scripts/__ScribbleClassPage/__ScribbleClassPage.yy",},},
     {"id":{"name":"__ScribbleClassTag","path":"scripts/__ScribbleClassTag/__ScribbleClassTag.yy",},},
     {"id":{"name":"__ScribbleClassUniqueElement","path":"scripts/__ScribbleClassUniqueElement/__ScribbleClassUniqueElement.yy",},},
+    {"id":{"name":"__ScribbleConvertHAlignName","path":"scripts/__ScribbleConvertHAlignName/__ScribbleConvertHAlignName.yy",},},
+    {"id":{"name":"__ScribbleConvertVAlignName","path":"scripts/__ScribbleConvertVAlignName/__ScribbleConvertVAlignName.yy",},},
     {"id":{"name":"__ScribbleDrawCycle","path":"scripts/__ScribbleDrawCycle/__ScribbleDrawCycle.yy",},},
     {"id":{"name":"__ScribbleEnsureCycleSurface","path":"scripts/__ScribbleEnsureCycleSurface/__ScribbleEnsureCycleSurface.yy",},},
     {"id":{"name":"__ScribbleError","path":"scripts/__ScribbleError/__ScribbleError.yy",},},

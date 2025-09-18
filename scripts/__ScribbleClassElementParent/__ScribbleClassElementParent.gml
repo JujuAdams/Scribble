@@ -211,14 +211,8 @@ function __ScribbleClassElementParent(_text) constructor
     /// @param valign
     static align = function(_hAlign = __startingHAlign, _vAlign = __startingVAlign)
     {
-        if (_hAlign == "pin_left"  ) _hAlign = __SCRIBBLE_PIN_LEFT;
-        if (_hAlign == "pin_centre") _hAlign = __SCRIBBLE_PIN_CENTRE;
-        if (_hAlign == "pin_center") _hAlign = __SCRIBBLE_PIN_CENTRE;
-        if (_hAlign == "pin_right" ) _hAlign = __SCRIBBLE_PIN_RIGHT;
-        if (_vAlign == "pin_top"   ) _vAlign = __SCRIBBLE_PIN_TOP;
-        if (_vAlign == "pin_middle") _vAlign = __SCRIBBLE_PIN_MIDDLE;
-        if (_vAlign == "pin_bottom") _vAlign = __SCRIBBLE_PIN_BOTTOM;
-        if (_hAlign == "fa_justify") _hAlign = __SCRIBBLE_FA_JUSTIFY;
+        _hAlign = __ScribbleConvertHAlignName(_hAlign);
+        _vAlign = __ScribbleConvertVAlignName(_vAlign);
         
         if (_hAlign != __startingHAlign)
         {

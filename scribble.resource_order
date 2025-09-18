@@ -284,6 +284,8 @@
     {"name":"__ScribbleClassPage","order":2,"path":"scripts/__ScribbleClassPage/__ScribbleClassPage.yy",},
     {"name":"__ScribbleClassTag","order":8,"path":"scripts/__ScribbleClassTag/__ScribbleClassTag.yy",},
     {"name":"__ScribbleClassUniqueElement","order":2,"path":"scripts/__ScribbleClassUniqueElement/__ScribbleClassUniqueElement.yy",},
+    {"name":"__ScribbleConvertHAlignName","order":28,"path":"scripts/__ScribbleConvertHAlignName/__ScribbleConvertHAlignName.yy",},
+    {"name":"__ScribbleConvertVAlignName","order":29,"path":"scripts/__ScribbleConvertVAlignName/__ScribbleConvertVAlignName.yy",},
     {"name":"__ScribbleDrawCycle","order":23,"path":"scripts/__ScribbleDrawCycle/__ScribbleDrawCycle.yy",},
     {"name":"__ScribbleEnsureCycleSurface","order":22,"path":"scripts/__ScribbleEnsureCycleSurface/__ScribbleEnsureCycleSurface.yy",},
     {"name":"__ScribbleError","order":12,"path":"scripts/__ScribbleError/__ScribbleError.yy",},
