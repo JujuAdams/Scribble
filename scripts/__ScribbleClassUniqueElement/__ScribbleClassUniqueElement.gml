@@ -148,6 +148,23 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return self;
     }
     
+    static get_reveal_type = function()
+    {
+        return __revealType;
+    }
+    
+    static reveal_blocks = function(_state)
+    {
+        __typistRevealBlocks = _state;
+        
+        return self;
+    }
+    
+    static get_reveal_blocks = function()
+    {
+        return __typistRevealBlocks;
+    }
+    
     
     
     __typistAnim       = SCRIBBLE_TYPIST_ANIM_NONE;
@@ -161,6 +178,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     __typistDynamicPositioning = false;
     __typistDynamicPositioningSmooth = false;
     __typistPauseOnOverflow    = false;
+    __typistRevealBlocks       = false;
     
     __soundTagGain = 1;
     
@@ -1098,15 +1116,14 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                 {
                                     if (__revealType == SCRIBBLE_REVEAL_PER_CHAR)
                                     {
-                                        var _linesVisible = get_lines_visible();
-                                        if ((__GetGlyphLine(__typistEventRevealIndex) div _linesVisible) < (__GetGlyphLine(__typistEventRevealIndex+1) div _linesVisible))
+                                        if (__GetGlyphBlock(__typistEventRevealIndex) < __GetGlyphBlock(__typistEventRevealIndex+1))
                                         {
                                             array_push(__eventStack, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_PAUSE, undefined));
                                         }
                                     }
                                     else if (__revealType == SCRIBBLE_REVEAL_PER_LINE)
                                     {
-                                        if ((__typistEventRevealIndex div _linesVisible) < ((__typistEventRevealIndex+1) div _linesVisible))
+                                        if (__GetLineBlock(__typistEventRevealIndex) < __GetLineBlock(__typistEventRevealIndex+1))
                                         {
                                             array_push(__eventStack, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_PAUSE, undefined));
                                         }
@@ -1139,11 +1156,25 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                         
                         if (__revealType == SCRIBBLE_REVEAL_PER_CHAR)
                         {
-                            scroll_to_glyph_y(_eventRevealIndex);
+                            if (__typistRevealBlocks)
+                            {
+                                __scrollYArray[__page] = __GetBlockY(__GetGlyphBlock(_eventRevealIndex));
+                            }
+                            else
+                            {
+                                scroll_to_glyph_y(_eventRevealIndex);
+                            }
                         }
                         else if (__revealType == SCRIBBLE_REVEAL_PER_LINE)
                         {
-                            scroll_to_line(_eventRevealIndex);
+                            if (__typistRevealBlocks)
+                            {
+                                __scrollYArray[__page] = __GetBlockY(__GetLineBlock(_eventRevealIndex));
+                            }
+                            else
+                            {
+                                scroll_to_line(_eventRevealIndex);
+                            }
                         }
                         
                         if (__typistEventRevealIndex <= _pageRevealCount)
