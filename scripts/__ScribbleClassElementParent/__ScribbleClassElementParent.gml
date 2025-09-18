@@ -40,7 +40,7 @@ function __ScribbleClassElementParent(_text) constructor
     __randomizeAnimation = false;
     __newlineDelay       = 0; //Only relevant for unique text elements but needs to be available regardless
     
-    __allowTextGetter       = SCRIBBLE_FORCE_TEXT_GETTER;
+    __allowTextGetter      = SCRIBBLE_FORCE_TEXT_GETTER;
     __allowGlyphDataGetter = SCRIBBLE_FORCE_GLYPH_DATA_GETTER;
     
     __originX = 0.0;
@@ -70,18 +70,18 @@ function __ScribbleClassElementParent(_text) constructor
     __scrollXArray = [];
     __scrollYArray = [];
     
-    __panState = 0;
-    __panSpeed = SCRIBBLE_DEFAULT_PAN_SPEED;
-    __panPause = SCRIBBLE_DEFAULT_AUTOPAN_PAUSE_TIME;
-    __panAuto  = 0; //0 = off, 1 = x-axis, 2 = y-axis
-    __panWasClamped = true;
+    __panState        = 0;
+    __panSpeed        = SCRIBBLE_DEFAULT_PAN_SPEED;
+    __panPause        = SCRIBBLE_DEFAULT_AUTOPAN_PAUSE_TIME;
+    __panAuto         = 0; //0 = off, 1 = x-axis, 2 = y-axis
+    __panWasClamped   = true;
     __panPauseCounter = 0;
     
-    __scrollState = 0;
-    __scrollSpeed = SCRIBBLE_DEFAULT_SCROLL_SPEED;
-    __scrollPause = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME;
-    __scrollAuto  = 0; //0 = off, 1 = x-axis, 2 = y-axis
-    __scrollWasClamped = true;
+    __scrollState        = 0;
+    __scrollSpeed        = SCRIBBLE_DEFAULT_SCROLL_SPEED;
+    __scrollPause        = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME;
+    __scrollAuto         = 0; //0 = off, 1 = x-axis, 2 = y-axis
+    __scrollWasClamped   = true;
     __scrollPauseCounter = 0;
     
     __blockTrim = 0;

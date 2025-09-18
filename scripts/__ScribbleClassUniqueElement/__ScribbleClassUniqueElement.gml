@@ -154,16 +154,16 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return __revealType;
     }
     
-    static reveal_blocks = function(_state = true)
+    static scroll_between_blocks = function(_state = true)
     {
-        __typistRevealBlocks = _state;
+        __scrollBetweenBlocks = _state;
         
         return self;
     }
     
     static get_reveal_blocks = function()
     {
-        return __typistRevealBlocks;
+        return __scrollBetweenBlocks;
     }
     
     
@@ -179,9 +179,11 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     __typistDynamicPositioning = false;
     __typistDynamicPositioningSmooth = false;
     __typistPauseOnOverflow    = false;
-    __typistRevealBlocks       = false;
+    __scrollBetweenBlocks      = false;
     
     __typistScrollTarget = 0;
+    __pageTarget = 0;
+    __pageSpeed = 1/40;
     
     __soundTagGain = 1;
     
@@ -444,6 +446,25 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         __typistManualPause = false;
         
         return self;
+    }
+    
+    static advance = function()
+    {
+        if (get_paused())
+        {
+            unpause();
+        }
+        else if (get_state() == 1)
+        {
+            if (not on_last_page())
+            {
+                __pageTarget = get_page()+1;
+            }
+        }
+        else
+        {
+            skip();
+        }
     }
     
     /// @param easeMethod
@@ -1023,12 +1044,23 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                     }
                 }
                 
-                if (_canMove && __typistRevealBlocks && (__scrollYArray[__page] != __typistScrollTarget))
+                if (_canMove)
+                {
+                    var _page = get_page();
+                    if (_page != __pageTarget)
+                    {
+                        _canMove = false;
+                        __SetPage(_page + clamp(__pageTarget - _page, -__pageSpeed, __pageSpeed));
+                        __typistScrollTarget = 0;
+                    }
+                }
+                
+                if (_canMove && __scrollBetweenBlocks && (__scrollYArray[__page] != __typistScrollTarget))
                 {
                     _canMove = false;
                     __scrollYArray[@ __page] += clamp(__typistScrollTarget - __scrollYArray[@ __page], -__scrollSpeed, __scrollSpeed);
                 }
-            
+                
                 ///////
                 // Move the head and collect events / sounds
                 ///////
@@ -1165,7 +1197,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                         
                         if (__revealType == SCRIBBLE_REVEAL_PER_CHAR)
                         {
-                            if (__typistRevealBlocks)
+                            if (__scrollBetweenBlocks)
                             {
                                 __typistScrollTarget = __GetBlockY(__GetGlyphBlock(_eventRevealIndex));
                             }
@@ -1176,7 +1208,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                         }
                         else if (__revealType == SCRIBBLE_REVEAL_PER_LINE)
                         {
-                            if (__typistRevealBlocks)
+                            if (__scrollBetweenBlocks)
                             {
                                 __typistScrollTarget = __GetBlockY(__GetLineBlock(_eventRevealIndex));
                             }

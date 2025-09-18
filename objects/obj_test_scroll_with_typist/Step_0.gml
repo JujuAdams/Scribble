@@ -10,5 +10,5 @@ if (mouse_check_button(mb_left))
 
 if (keyboard_check_pressed(vk_space))
 {
-    element.unpause();
+    element.advance();
 }
