@@ -1,4 +1,4 @@
-scribble("Draw GUI event\n" + text).clip().max_size(maxWidth, maxHeight).transform(1, 1, -10).draw(10, 210);
+scribble("Draw GUI event\n" + text).clip().max_size(maxWidth, maxHeight).transform(1, 1, -10).draw(100, 400);
 
 draw_rectangle(10, 10, 10 + maxWidth, 10 + maxHeight, true);
 

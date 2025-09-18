@@ -10,7 +10,7 @@
 /// @param rightPad                    "
 /// @param bottomPad                   "
 /// @param separationDelta             Change in every glyph's SCRIBBLE_GLYPH_SEPARATION value. For a shader that adds a outline of 2px around the entire glyph, this value should be 4px
-/// @param smooth                      Set to <true> to turn on linear interpolation
+/// @param smooth                      Set to `true` to turn on linear interpolation
 /// @param [surfaceSize=2048]          Size of the surface to use. Defaults to 2048x2048
 /// @param [markAsRasterEffect=false]
 

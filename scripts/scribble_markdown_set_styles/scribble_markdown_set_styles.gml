@@ -144,7 +144,7 @@ function scribble_markdown_set_styles(_rootStruct, _fastMode = false)
                             {
                                 if ((not is_bool(_childValue)) && (not is_undefined(_childValue)))
                                 {
-                                    __ScribbleError("Child struct property \"bold\" must be <true> or <false> (datatype=", typeof(_childValue), ", style=\"", _rootName, "\")");
+                                    __ScribbleError("Child struct property \"bold\" must be `true` or `false` (datatype=", typeof(_childValue), ", style=\"", _rootName, "\")");
                                     return false;
                                 }
                             }

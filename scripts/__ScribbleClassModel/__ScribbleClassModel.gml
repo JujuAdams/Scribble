@@ -143,9 +143,35 @@ function __ScribbleClassModel(_element) constructor
             
             if (_clip)
             {
-                //FIXME - Implement offsets for different h/v alignments
                 _usedClip = true;
-                shader_set_uniform_f(_u_vClip, 0, 0, __layoutMaxWidth, __layoutMaxHeight);
+                
+                if (__startingHAlign == fa_center)
+                {
+                    var _x = floor(-0.5*__width);
+                }
+                else if (__startingHAlign == fa_right)
+                {
+                    var _x = -__width;
+                }
+                else
+                {
+                    var _x = 0;
+                }
+                
+                if (__startingHAlign == fa_middle)
+                {
+                    var _y = floor(-0.5*__height);
+                }
+                else if (__startingHAlign == fa_bottom)
+                {
+                    var _y = -__height;
+                }
+                else
+                {
+                    var _y = 0;
+                }
+                
+                shader_set_uniform_f(_u_vClip, _x, _y, _x + __layoutMaxWidth, _y + __layoutMaxHeight);
             }
             else
             {
@@ -164,17 +190,41 @@ function __ScribbleClassModel(_element) constructor
             //Otherwise, draw the two pages that are visible
             
             _usedClip = true;
+                
+            if (__startingHAlign == fa_center)
+            {
+                var _x = floor(-0.5*__width);
+            }
+            else if (__startingHAlign == fa_right)
+            {
+                var _x = -__width;
+            }
+            else
+            {
+                var _x = 0;
+            }
+            
+            if (__startingHAlign == fa_middle)
+            {
+                var _y = floor(-0.5*__height);
+            }
+            else if (__startingHAlign == fa_bottom)
+            {
+                var _y = -__height;
+            }
+            else
+            {
+                var _y = 0;
+            }
             
             var _offset = frac(_page)*__layoutMaxHeight;
             _page = floor(_page);
             
-            //FIXME - Implement offsets for different h/v alignments
-            shader_set_uniform_f(_u_vClip, 0, 0, __layoutMaxWidth, __layoutMaxHeight - _offset);
+            shader_set_uniform_f(_u_vClip, _x, _y, _x + __layoutMaxWidth, _y + __layoutMaxHeight - _offset);
             shader_set_uniform_f(_u_vScroll, _scrollXArray[_page], _scrollYArray[_page] + _offset);
             __pagesArray[_page].__Submit(_doubleDraw);
             
-            //FIXME - Implement offsets for different h/v alignments
-            shader_set_uniform_f(_u_vClip, 0, __layoutMaxHeight - _offset, __layoutMaxWidth, __layoutMaxHeight);
+            shader_set_uniform_f(_u_vClip, _x, _y + __layoutMaxHeight - _offset, _x + __layoutMaxWidth, _y + __layoutMaxHeight);
             shader_set_uniform_f(_u_vScroll, _scrollXArray[_page+1], _scrollYArray[_page+1] + _offset - __layoutMaxHeight);
             __pagesArray[_page+1].__Submit(_doubleDraw);
         }

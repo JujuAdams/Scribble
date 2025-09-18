@@ -662,8 +662,8 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         static _tagDict = __ScribbleSystem().__tagDict;
         
         //This method processes events on the stack (which is filled by copying data from the target element in .__tick())
-        //We return <true> if there have been no pausing behaviours called i.e. [pause] and [delay]
-        //We return <false> immediately if we do run into pausing behaviours
+        //We return `true` if there have been no pausing behaviours called i.e. [pause] and [delay]
+        //We return `false` immediately if we do run into pausing behaviours
         
         repeat(array_length(__eventStack))
         {

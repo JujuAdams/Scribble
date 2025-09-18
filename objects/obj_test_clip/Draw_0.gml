@@ -1,4 +1,7 @@
-scribble("Draw event\n" + text).clip().max_size(maxWidth, maxHeight).transform(1, 1, -10).draw(10, 10);
+var _element = scribble(text).clip().max_size(maxWidth, maxHeight);
+_element.align(fa_left,   fa_top   ).draw(10, 10);
+_element.align(fa_center, fa_middle).draw(room_width div 2, room_height div 2);
+_element.align(fa_right,  fa_bottom).draw(room_width-10, room_height-10);
 
 draw_rectangle(10, 10, 10 + maxWidth, 10 + maxHeight, true);
 

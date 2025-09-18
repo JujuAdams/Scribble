@@ -1,6 +1,6 @@
 // Feather disable all
 
-maxWidth  = 216;
-maxHeight = 266;
+maxWidth  = 150;
+maxHeight = 100;
 
-text = "aaaaaaaaaa\nbbnnbbbbbb\ncccccccccc\ndddddddddd";
+text = "-------------\naaaaaaaaaa\nbbnnbbbbbb\ncccccccccc\ndddddddddd";

@@ -10,7 +10,7 @@
 /// @param shadowY          
 /// @param outlineMode      Type of outline, member of SCRIBBLE_OUTLINE
 /// @param separation       Additional separation to add between glyphs
-/// @param smooth           Whether or not to interpolate the effect. Set to <false> for pixel fonts, set to <true> for anti-aliased fonts
+/// @param smooth           Whether or not to interpolate the effect. Set to `false` for pixel fonts, set to `true` for anti-aliased fonts
 /// @param [textureSize]
 
 function scribble_font_bake_outline_and_shadow(_sourceFontName, _newFontName, _dX, _dY, _outlineMode, _separation, _smooth, _textureSize = undefined)

@@ -43,7 +43,7 @@ function __ScribbleSystem(_calledFromInitialize = false)
         {
             if (SCRIBBLE_RUNNING_FROM_IDE)
             {
-                __ScribbleTrace("Verbose mode is off, set SCRIBBLE_VERBOSE to <true> to see more information");
+                __ScribbleTrace("Verbose mode is off, set SCRIBBLE_VERBOSE to `true` to see more information");
             }
         }
         
