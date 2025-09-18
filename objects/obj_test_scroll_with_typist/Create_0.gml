@@ -22,5 +22,7 @@ text = string_copy(text, 1, string_length(text)-1);
 element = scribble_unique(text)
           .clip()
           .max_size(maxWidth, maxHeight)
+          .block_peek_lines(1)
+          .reveal_blocks()
           .pause_on_overflow()
           .in(0.5);

@@ -787,7 +787,7 @@ function __ScribbleClassElementParent(_text) constructor
         }
         else
         {
-            return 1 + ((_index - _linesVisible) div (_linesVisible - 1));
+            return 1 + ((_index - _linesVisible) div (_linesVisible - __blockPeekLines));
         }
     }
     

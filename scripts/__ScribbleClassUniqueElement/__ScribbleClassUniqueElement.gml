@@ -153,7 +153,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return __revealType;
     }
     
-    static reveal_blocks = function(_state)
+    static reveal_blocks = function(_state = true)
     {
         __typistRevealBlocks = _state;
         
@@ -179,6 +179,8 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     __typistDynamicPositioningSmooth = false;
     __typistPauseOnOverflow    = false;
     __typistRevealBlocks       = false;
+    
+    __typistScrollTarget = 0;
     
     __soundTagGain = 1;
     
@@ -1019,6 +1021,12 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                         _canMove = false;
                     }
                 }
+                
+                if (_canMove && __typistRevealBlocks && (__scrollYArray[__page] != __typistScrollTarget))
+                {
+                    _canMove = false;
+                    __scrollYArray[@ __page] += clamp(__typistScrollTarget - __scrollYArray[@ __page], -__scrollSpeed, __scrollSpeed);
+                }
             
                 ///////
                 // Move the head and collect events / sounds
@@ -1158,7 +1166,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                         {
                             if (__typistRevealBlocks)
                             {
-                                __scrollYArray[__page] = __GetBlockY(__GetGlyphBlock(_eventRevealIndex));
+                                __typistScrollTarget = __GetBlockY(__GetGlyphBlock(_eventRevealIndex));
                             }
                             else
                             {
@@ -1169,7 +1177,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                         {
                             if (__typistRevealBlocks)
                             {
-                                __scrollYArray[__page] = __GetBlockY(__GetLineBlock(_eventRevealIndex));
+                                __typistScrollTarget = __GetBlockY(__GetLineBlock(_eventRevealIndex));
                             }
                             else
                             {
