@@ -37,11 +37,10 @@
 //built from the layout information used to calculate glyph positions.
 #macro SCRIBBLE_DEFAULT_VISUAL_BBOXES  false
 
-#macro SCRIBBLE_DEFAULT_SCROLL_SPEED  1  //pixels per frame
+#macro SCRIBBLE_DEFAULT_SCROLL_SPEED  4  //pixels per frame
 
 #macro SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME  45  //frames
 
-#macro SCRIBBLE_DEFAULT_SERIAL_SPEED  2  //pixels per frame
 
 
 //Default rainbow frequency. Larger values create more colour changes over a certain number of

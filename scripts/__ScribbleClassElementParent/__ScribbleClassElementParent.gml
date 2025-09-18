@@ -76,7 +76,7 @@ function __ScribbleClassElementParent(_text) constructor
     __scrollWasClamped = true;
     __scrollPauseCounter = 0;
     
-    __blockPeekLines = 0;
+    blockTrim = 0;
     
     __scaleToBoxDirty    = true;
     __scaleToBoxWidth    = 0;
@@ -734,16 +734,16 @@ function __ScribbleClassElementParent(_text) constructor
         }
     }
     
-    static block_peek_lines = function(_value)
+    static block_trim = function(_value)
     {
-        __blockPeekLines = _value;
+        blockTrim = _value;
         
         return self;
     }
     
-    static get_block_peek_lines = function()
+    static get_block_trim = function()
     {
-        return __blockPeekLines;
+        return blockTrim;
     }
     
     static __GetGlyphLine = function(_index)
@@ -780,20 +780,20 @@ function __ScribbleClassElementParent(_text) constructor
     
     static __GetLineBlock = function(_index)
     {
-        var _linesVisible = get_lines_visible();
-        if (_index < _linesVisible)
+        var _blockSize = get_block_size();
+        if (_index < _blockSize)
         {
             return 0;
         }
         else
         {
-            return 1 + ((_index - _linesVisible) div (_linesVisible - __blockPeekLines));
+            return 1 + ((_index - _blockSize) div (_blockSize - blockTrim));
         }
     }
     
     static __GetBlockY = function(_index)
     {
-        return (_index*(get_lines_visible() - __blockPeekLines))*__EnsureModel().__lineHeight;
+        return (_index*(get_block_size() - blockTrim))*__EnsureModel().__lineHeight;
     }
     
     #endregion
@@ -1519,7 +1519,7 @@ function __ScribbleClassElementParent(_text) constructor
     }
     
     /// @param [page]
-    static get_lines_visible = function(_integer = true)
+    static get_block_size = function(_integer = true)
     {
         var _model = __EnsureModel();
         if (not is_struct(_model)) return 0;

@@ -530,7 +530,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return self;
     }
     
-    static pause_on_overflow = function(_state = true)
+    static pause_after_block = function(_state = true)
     {
         __typistPauseOnOverflow = _state;
         
