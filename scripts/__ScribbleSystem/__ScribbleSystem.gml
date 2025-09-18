@@ -205,11 +205,11 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __tagDict = {};
         
         //Pre-populated typist events
-        __ScribbleAddTag(__SCRIBBLE_PAUSE_COMMAND_TAG,   __SCRIBBLE_TAG_EVENT, undefined, true);
-        __ScribbleAddTag(__SCRIBBLE_DELAY_COMMAND_TAG,   __SCRIBBLE_TAG_EVENT, undefined, true);
-        __ScribbleAddTag(__SCRIBBLE_SYNC_COMMAND_TAG,    __SCRIBBLE_TAG_EVENT, undefined, true);
-        __ScribbleAddTag(__SCRIBBLE_SPEED_COMMAND_TAG,   __SCRIBBLE_TAG_EVENT, undefined, true);
-        __ScribbleAddTag(__SCRIBBLE_UNSPEED_COMMAND_TAG, __SCRIBBLE_TAG_EVENT, undefined, true);
+        __ScribbleAddTag(__SCRIBBLE_COMMAND_TAG_PAUSE,   __SCRIBBLE_TAG_EVENT, undefined, true);
+        __ScribbleAddTag(__SCRIBBLE_COMMAND_TAG_DELAY,   __SCRIBBLE_TAG_EVENT, undefined, true);
+        __ScribbleAddTag(__SCRIBBLE_COMMAND_TAG_SYNC,    __SCRIBBLE_TAG_EVENT, undefined, true);
+        __ScribbleAddTag(__SCRIBBLE_COMMAND_TAG_SPEED,   __SCRIBBLE_TAG_EVENT, undefined, true);
+        __ScribbleAddTag(__SCRIBBLE_COMMAND_TAG_UNSPEED, __SCRIBBLE_TAG_EVENT, undefined, true);
         
         __ScribbleAddTag("wave",   __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_WAVE,   true);
         __ScribbleAddTag("shake",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_SHAKE,  true);

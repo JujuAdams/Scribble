@@ -160,6 +160,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     __typistDrawnSinceSkip     = false;
     __typistDynamicPositioning = false;
     __typistDynamicPositioningSmooth = false;
+    __typistPauseOnOverflow    = false;
     
     __soundTagGain = 1;
     
@@ -509,6 +510,13 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return self;
     }
     
+    static pause_on_overflow = function(_state = true)
+    {
+        __typistPauseOnOverflow = _state;
+        
+        return self;
+    }
+    
     #endregion
     
     
@@ -676,7 +684,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             switch(_eventName)
             {
                 //Simple pause
-                case __SCRIBBLE_PAUSE_COMMAND_TAG:
+                case __SCRIBBLE_COMMAND_TAG_PAUSE:
                     if (((not __typistSkip) && (not __syncStarted)) || (not __typistSkipPaused))
                     {
                         if (SCRIBBLE_IGNORE_PAUSE_BEFORE_PAGEBREAK && (__typistEventRevealIndex >= __typistHeadLimitArray[0]) && (array_length(__eventStack) <= 0))
@@ -692,7 +700,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 break;
                 
                 //Time-related delay
-                case __SCRIBBLE_DELAY_COMMAND_TAG:
+                case __SCRIBBLE_COMMAND_TAG_DELAY:
                     if ((not __typistSkip) && (not __ignoreDelay) && (not __syncStarted))
                     {
                         if (not __typistDelayPause)
@@ -709,7 +717,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 break;
                 
                 //Audio playback synchronisation
-                case __SCRIBBLE_SYNC_COMMAND_TAG:
+                case __SCRIBBLE_COMMAND_TAG_SYNC:
                     if ((not __typistSkip) && __syncStarted)
                     {
                         if (not __typistDelayPause)
@@ -724,30 +732,30 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 break;
                 
                 //In-line speed setting
-                case __SCRIBBLE_SPEED_COMMAND_TAG:
+                case __SCRIBBLE_COMMAND_TAG_SPEED:
                     if (array_length(_eventData) >= 1)
                     {
                         __typistInlineSpeed = real(_eventData[0]);
                     }
                 break;
                 
-                case __SCRIBBLE_UNSPEED_COMMAND_TAG:
+                case __SCRIBBLE_COMMAND_TAG_UNSPEED:
                     __typistInlineSpeed = 1;
                 break;
                 
                 //Native audio playback feature
-                case __SCRIBBLE_AUDIO_COMMAND_TAG: //TODO - Add warning when adding a conflicting custom event
+                case __SCRIBBLE_COMMAND_TAG_AUDIO: //TODO - Add warning when adding a conflicting custom event
                     if ((not __typistSkip) && (array_length(_eventData) >= 1))
                     {
                         __ScribblePlaySound(_eventData[0], __soundTagGain, 1);
                     }
                 break;
                 
-                case __SCRIBBLE_TYPIST_SOUND_COMMAND_TAG: //TODO - Add warning when adding a conflicting custom event
+                case __SCRIBBLE_COMMAND_TAG_TYPIST_SOUND: //TODO - Add warning when adding a conflicting custom event
                     sound(__ScribbleParseSoundArrayString(_eventData[1]), real(_eventData[2]), real(_eventData[3]), real(_eventData[4]));
                 break;
                 
-                case __SCRIBBLE_TYPIST_SOUND_PER_CHAR_COMMAND_TAG: //TODO - Add warning when adding a conflicting custom event
+                case __SCRIBBLE_COMMAND_TAG_TYPIST_SOUND_PER_CHAR: //TODO - Add warning when adding a conflicting custom event
                     switch(array_length(_eventData))
                     {
                         case 4: sound_per_char(__ScribbleParseSoundArrayString(_eventData[1]), real(_eventData[2]), real(_eventData[3])); break;
@@ -1075,7 +1083,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                         
                                         if (_delay > 0)
                                         {
-                                            array_push(__eventStack, new __ScribbleClassEvent(__SCRIBBLE_DELAY_COMMAND_TAG, [_delay]));
+                                            array_push(__eventStack, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_DELAY, [_delay]));
                                         }
                                     }
                                 }
@@ -1084,6 +1092,25 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                 {
                                     //Copy our found array of events onto our stack
                                     array_copy(__eventStack, array_length(__eventStack), _foundEventsArray, 0, _foundEventsCount);
+                                }
+                                
+                                if (__typistPauseOnOverflow)
+                                {
+                                    if (__revealType == SCRIBBLE_REVEAL_PER_CHAR)
+                                    {
+                                        var _linesVisible = get_lines_visible();
+                                        if ((__GetGlyphLine(__typistEventRevealIndex) div _linesVisible) < (__GetGlyphLine(__typistEventRevealIndex+1) div _linesVisible))
+                                        {
+                                            array_push(__eventStack, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_PAUSE, undefined));
+                                        }
+                                    }
+                                    else if (__revealType == SCRIBBLE_REVEAL_PER_LINE)
+                                    {
+                                        if ((__typistEventRevealIndex div _linesVisible) < ((__typistEventRevealIndex+1) div _linesVisible))
+                                        {
+                                            array_push(__eventStack, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_PAUSE, undefined));
+                                        }
+                                    }
                                 }
                                 
                                 //Process the stack

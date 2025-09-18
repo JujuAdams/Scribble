@@ -95,14 +95,14 @@
 #macro __SCRIBBLE_PIN_BOTTOM           5
 #macro __SCRIBBLE_HEAD_COUNT           3
 
-#macro __SCRIBBLE_PAUSE_COMMAND_TAG                  "pause"
-#macro __SCRIBBLE_DELAY_COMMAND_TAG                  "delay"
-#macro __SCRIBBLE_SYNC_COMMAND_TAG                   "sync"
-#macro __SCRIBBLE_SPEED_COMMAND_TAG                  "speed"
-#macro __SCRIBBLE_UNSPEED_COMMAND_TAG                "/speed"
-#macro __SCRIBBLE_AUDIO_COMMAND_TAG                  "__scribble_audio_playback__"
-#macro __SCRIBBLE_TYPIST_SOUND_COMMAND_TAG           "__scribble_typist_sound__"
-#macro __SCRIBBLE_TYPIST_SOUND_PER_CHAR_COMMAND_TAG  "__scribble_typist_sound_per_char__"
+#macro __SCRIBBLE_COMMAND_TAG_PAUSE                  "pause"
+#macro __SCRIBBLE_COMMAND_TAG_DELAY                  "delay"
+#macro __SCRIBBLE_COMMAND_TAG_SYNC                   "sync"
+#macro __SCRIBBLE_COMMAND_TAG_SPEED                  "speed"
+#macro __SCRIBBLE_COMMAND_TAG_UNSPEED                "/speed"
+#macro __SCRIBBLE_COMMAND_TAG_AUDIO                  "__scribble_audio_playback__"
+#macro __SCRIBBLE_COMMAND_TAG_TYPIST_SOUND           "__scribble_typist_sound__"
+#macro __SCRIBBLE_COMMAND_TAG_TYPIST_SOUND_PER_CHAR  "__scribble_typist_sound_per_char__"
 
 #macro __SCRIBBLE_DEVANAGARI_OFFSET  0xFFFF //This won't work for any other value
 

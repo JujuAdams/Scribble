@@ -882,7 +882,7 @@ function __ScribbleGen2_Parser()
                             }
                             else
                             {
-                                array_push(_controlArray, new __ScribbleClassControlEvent(__SCRIBBLE_TYPIST_SOUND_COMMAND_TAG, _tagParameters));
+                                array_push(_controlArray, new __ScribbleClassControlEvent(__SCRIBBLE_COMMAND_TAG_TYPIST_SOUND, _tagParameters));
                                 ++_controlCount;
                             }
                         break;
@@ -894,7 +894,7 @@ function __ScribbleGen2_Parser()
                             }
                             else
                             {
-                                array_push(_controlArray, new __ScribbleClassControlEvent(__SCRIBBLE_TYPIST_SOUND_PER_CHAR_COMMAND_TAG, _tagParameters));
+                                array_push(_controlArray, new __ScribbleClassControlEvent(__SCRIBBLE_COMMAND_TAG_TYPIST_SOUND_PER_CHAR, _tagParameters));
                                 ++_controlCount;
                             }
                         break;
@@ -1156,14 +1156,14 @@ function __ScribbleGen2_Parser()
                                 }
                                 else if (asset_get_type(_tagCommandName) == asset_sound)
                                 {
-                                    array_push(_controlArray, new __ScribbleClassControlEvent(__SCRIBBLE_AUDIO_COMMAND_TAG, _tagParameters));
+                                    array_push(_controlArray, new __ScribbleClassControlEvent(__SCRIBBLE_COMMAND_TAG_AUDIO, _tagParameters));
                                     ++_controlCount;
                                 }
                                 else if (ds_map_exists(_externalSoundMap, _tagCommandName))
                                 {
                                     //External audio added via scribble_external_sound_add()
                                     
-                                    array_push(_controlArray, new __ScribbleClassControlEvent(__SCRIBBLE_AUDIO_COMMAND_TAG, [_externalSoundMap[? _tagCommandName]]));
+                                    array_push(_controlArray, new __ScribbleClassControlEvent(__SCRIBBLE_COMMAND_TAG_AUDIO, [_externalSoundMap[? _tagCommandName]]));
                                     ++_controlCount;
                                 }
                                 else

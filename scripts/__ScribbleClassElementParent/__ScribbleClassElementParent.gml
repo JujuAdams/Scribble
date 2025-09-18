@@ -738,6 +738,26 @@ function __ScribbleClassElementParent(_text) constructor
         }
     }
     
+    static __GetGlyphLine = function(_index)
+    {
+        var _model = __EnsureModel();
+        if (not is_struct(_model)) return 0;
+        
+        var _lineArray = _model.__pagesArray[__page].__lineDataArray;
+        var _i = 0;
+        repeat(array_length(_lineArray))
+        {
+            if ((_index >= _lineArray[_i].glyphStart) && (_index <= _lineArray[_i].glyphEnd))
+            {
+                return _i;
+            }
+            
+            ++_i;
+        }
+        
+        return array_length(_lineArray)-1;
+    }
+    
     #endregion
     
     

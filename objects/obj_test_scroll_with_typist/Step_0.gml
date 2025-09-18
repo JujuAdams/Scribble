@@ -7,3 +7,8 @@ if (mouse_check_button(mb_left))
     
     element.max_size(maxWidth, maxHeight);
 }
+
+if (keyboard_check_pressed(vk_space))
+{
+    element.unpause();
+}
