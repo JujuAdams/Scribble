@@ -9,15 +9,15 @@
 
 function __ScribbleGetMaterial(_fontName, _textureIndexOrPointer, _renderType, _sdfPxRange, _sdfThicknessOffset, _bilinear)
 {
-    static _material_map = __ScribbleSystem().__material_map;
+    static _materialMap = __ScribbleSystem().__materialMap;
     
     var _key = __ScribbleMakeMaterialKey(_textureIndexOrPointer, _renderType, _sdfPxRange, _sdfThicknessOffset, _bilinear);
     
-    var _material = _material_map[? _key];
+    var _material = _materialMap[? _key];
     if (_material == undefined)
     {
         _material = new __ScribbleClassMaterial(_key, _fontName, _textureIndexOrPointer, _renderType, _sdfPxRange, _sdfThicknessOffset, _bilinear);
-        _material_map[? _key] = _material;
+        _materialMap[? _key] = _material;
     }
     
     return _material;

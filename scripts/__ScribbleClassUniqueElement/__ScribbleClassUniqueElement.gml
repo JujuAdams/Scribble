@@ -977,9 +977,9 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     static get_reveal_count = function()
     {
-        var _pages_array = __EnsureModel().__pagesArray;
-        if (array_length(_pages_array) <= __page) return 0;
-        var _pageData = _pages_array[__page];
+        var _pagesArray = __EnsureModel().__pagesArray;
+        if (array_length(_pagesArray) <= __page) return 0;
+        var _pageData = _pagesArray[__page];
         
         return _pageData.__revealCount;
     }
@@ -1023,9 +1023,9 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         var _model = __EnsureModel();
         
         //Get page data
-        var _pages_array = _model.__pagesArray;
-        if (array_length(_pages_array) == 0) return;
-        var _pageData = _pages_array[__page];
+        var _pagesArray = _model.__pagesArray;
+        if (array_length(_pagesArray) == 0) return;
+        var _pageData = _pagesArray[__page];
         var _pageRevealCount = _pageData.__revealCount;
         
         var _functionScope = __typistOptions.__executionScope ?? _inExecutionScope;
@@ -1351,14 +1351,14 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         if (__typistOptions.__dynamicPositioning)
         {
-            var _pages_array = __EnsureModel().__pagesArray;
-            if (__page >= array_length(_pages_array))
+            var _pagesArray = __EnsureModel().__pagesArray;
+            if (__page >= array_length(_pagesArray))
             {
                 shader_set_uniform_f(_u_vTypewriterOffsetRange, 0, 0, 0);
             }
             else
             {
-                var _pageData = _pages_array[__page];
+                var _pageData = _pagesArray[__page];
                 
                 var _headPos      = __typistHeadArray[0];
                 var _headPosFloor = floor(_headPos);

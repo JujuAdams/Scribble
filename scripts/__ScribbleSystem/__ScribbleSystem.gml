@@ -159,7 +159,7 @@ function __ScribbleSystem(_calledFromInitialize = false)
         //Other caching maps
         __spriteTextureIndexMap    = ds_map_create();
         __spriteTextureMaterialMap = ds_map_create();
-        __material_map                = ds_map_create();
+        __materialMap              = ds_map_create();
         
         //Multi-use buffers
         __bufferA = buffer_create(1024, buffer_grow, 1);
