@@ -317,7 +317,6 @@
     {"name":"__ScribbleMakeMaterialKey","order":21,"path":"scripts/__ScribbleMakeMaterialKey/__ScribbleMakeMaterialKey.yy",},
     {"name":"__ScribbleMatrixInverse","order":6,"path":"scripts/__ScribbleMatrixInverse/__ScribbleMatrixInverse.yy",},
     {"name":"__ScribbleMergeColorOKLab","order":24,"path":"scripts/__ScribbleMergeColorOKLab/__ScribbleMergeColorOKLab.yy",},
-    {"name":"__ScribbleNoPreProcessing","order":13,"path":"scripts/__ScribbleNoPreProcessing/__ScribbleNoPreProcessing.yy",},
     {"name":"__ScribbleParseLineSpacing","order":14,"path":"scripts/__ScribbleParseLineSpacing/__ScribbleParseLineSpacing.yy",},
     {"name":"__ScribbleParseSoundArrayString","order":14,"path":"scripts/__ScribbleParseSoundArrayString/__ScribbleParseSoundArrayString.yy",},
     {"name":"__ScribblePlaySound","order":12,"path":"scripts/__ScribblePlaySound/__ScribblePlaySound.yy",},

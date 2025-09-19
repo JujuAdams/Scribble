@@ -199,8 +199,25 @@ function __ScribbleGen2_Parser()
     _startingFont = scribble_font_get_remap(_startingFont);
     var _fontName = _startingFont;
     
-    //Run the pre-processor
-    _elementText = ((__preprocessorFunc ?? _system.__defaultPreprocessorFunc)(_elementText)) ?? _elementText;
+    //Run the pre-processors
+    var _preprocessorArray = __preprocessorFunc ?? _system.__defaultPreprocessorFunc;
+    if (is_array(_preprocessorArray))
+    {
+        var _i = 0;
+        repeat(array_length(_preprocessorArray))
+        {
+            var _preprocessorFunc = _preprocessorArray[_i];
+            if (is_callable(_preprocessorFunc))
+            {
+                _elementText = _preprocessorFunc(_elementText);
+            }
+            ++_i;
+        }
+    }
+    else if (is_callable(_preprocessorFunc))
+    {
+        _elementText = _preprocessorArray(_elementText);
+    }
     
     //Place our input string into a buffer for quicker reading
     buffer_seek(_stringBuffer, buffer_seek_start, 0);
