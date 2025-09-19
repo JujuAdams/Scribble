@@ -1,0 +1,108 @@
+.typist_start()
+Starts running the typist. This function will do nothing if the typist has finished
+
+.typist_start_audio_sync()
+Starts running the typist, synchronised to an audio clip
+
+.typist_stop()
+Stops the typist after it finishes visually revealling the next character/line/section
+
+.typist_finish()
+Sets the position to the maximum, revealling all text
+
+.typist_get_state()
+SCRIBBLE_TYPIST_STOPPED
+SCRIBBLE_TYPIST_RUNNING
+SCRIBBLE_TYPIST_PAUSED
+SCRIBBLE_TYPIST_DELAYED
+SCRIBBLE_TYPIST_FINISHED
+
+.typist_get_started()
+(.typist_get_state() != SCRIBBLE_TYPIST_STOPPED) && (.typist_get_state() != SCRIBBLE_TYPIST_FINISHED)
+
+.typist_get_paused()
+(.typist_get_state() != SCRIBBLE_TYPIST_PAUSED)
+
+.typist_get_delayed()
+(.typist_get_state() != SCRIBBLE_TYPIST_DELAYED)
+
+.typist_get_finished()
+(.typist_get_state() == SCRIBBLE_TYPIST_FINISHED)
+
+.typist_get_position()
+Returns the current typist head position
+
+.typist_get_length()
+Returns the total number of reveal points in the entire model
+
+
+
+.typist_advance()
+Unpauses and continues typing, revealling the next block/page if necessary. If the typist is not paused, this method does nothing
+
+
+
+.typist_suspend(state)
+"Pauses" execution and ignores advance/skip
+
+.typist_get_suspended()
+(.typist_get_state() != SCRIBBLE_TYPIST_SUSPENDED)
+
+
+
+.typist_options_apply(struct)
+Applies a configuration struct:
+.appear = `true`
+.speed = `0.4`
+.smoothness = `0`
+.lineDelay = `0`
+.blockScrollSpeed = `4`
+.blockOverlap = `1`
+.blockDelay = `infinity`
+.pageScrollSpeed = `4`
+.pageDelay = `infinity`
+.sound = `undefined`
+.soundPitchMin = `1`
+.soundPitchMax = `1`
+.soundGain = `1`
+`soundOverlap = `0`
+.soundPerChar = `false`
+.soundPerCharInterrupts = `false`
+.soundPerCharException = `[]`
+`functionPerChar` = `undefined`
+`functionOnFinish` = `undefined`
+`eventScope` = `undefined`
+`characterDelay` = `[]`
+`dynamicPositioning` = `false`
+
+.typist_options_reset()
+Resets configuration
+
+.typist_options_get()
+Returns the current configuration
+
+
+
+.typist_skip(level)
+Skips some part of the reveal
+SCRIBBLE_SKIP_TO_EVENT: skips to the next custom event
+SCRIBBLE_SKIP_TO_DELAY: skips to the next delay or pause
+SCRIBBLE_SKIP_TO_PAUSE: skips to the next pause, ignoring delays
+SCRIBBLE_SKIP_TO_BLOCK: skips to the end of the current block (or next block if we're at the end of a block)
+SCRIBBLE_SKIP_TO_PAGE:  skips to the end of the current page (or next block if we're at the end of a block)
+SCRIBBLE_SKIP_TO_END:   skips to the end of the current text model
+
+
+
+.typist_ease(dX, dY, xScale, yScale, rotation, alphaDuration)
+Sets up reveal easing
+
+.typist_audio_set_gain(level)
+.typist_audio_get_gain()
+
+
+
+.get_events(position)
+.get_reveal_start(page = current)
+.get_reveal_end(page = current)
+.get_reveal_count(page = all)
