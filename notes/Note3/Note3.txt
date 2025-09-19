@@ -8,14 +8,13 @@ Starts running the typist, synchronised to an audio clip
 Stops the typist after it finishes visually revealling the next character/line/section
 
 .typist_finish()
-Sets the position to the maximum, revealling all text
+Sets the position to the maximum, revealing all text
 
 .typist_get_state()
 SCRIBBLE_TYPIST_STOPPED
 SCRIBBLE_TYPIST_RUNNING
 SCRIBBLE_TYPIST_PAUSED
 SCRIBBLE_TYPIST_DELAYED
-SCRIBBLE_TYPIST_FINISHED
 
 .typist_get_started()
 (.typist_get_state() != SCRIBBLE_TYPIST_STOPPED) && (.typist_get_state() != SCRIBBLE_TYPIST_FINISHED)

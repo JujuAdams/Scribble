@@ -124,86 +124,661 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return self;
     }
     
-    static page = function(_page)
+    
+    
+    static typist_start = function()
     {
-        if (_page != __page)
+        __typistRunning = true;
+        
+        return self;
+    }
+    
+    static typist_start_audio_sync = function(_voice)
+    {
+        __typistRunning = true;
+        //FIXME - Reimplement
+        
+        if (_voice < 400000)
         {
-            var _carrySkip = __typistSkip && (not __typistDrawnSinceSkip);
-            reset();
-            if (_carrySkip) __typistSkip = true;
+            __ScribbleError("Cannot synchronise to a sound asset. Please provide a sound instance (as returned by audio_play_sound())");
         }
         
-        //FIXME - Set typist head here
+        if (not audio_is_playing(_voice))
+        {
+            __ScribbleError("Voice ", _voice, " is not playing\nCannot sync to a stopped sound instance");
+        }
         
-        return __SetPage(_page);
+        __TypistSyncReset();
+        __typistRunning     = true;
+        __typistSyncStarted = true;
+        __typistSyncVoice   = _voice;
+        
+        return self;
+    }
+    
+    static __TypistSyncReset = function()
+    {
+        __typistSyncStarted  = false;
+        __typistSyncVoice    = undefined;
+        __typistSyncPaused   = false;
+        __typistSyncPauseEnd = infinity;
+    }
+    
+    static typist_stop = function()
+    {
+        __typistRunning = false;
+        
+        return self;
+    }
+    
+    static typist_finish = function()
+    {
+        typist_set_position(get_reveal_count());
+        typist_stop();
+        
+        return self;
+    }
+    
+    static typist_get_state = function()
+    {
+        return __typistState;
+    }
+    
+    static typist_get_running = function()
+    {
+        return __typistRunning;
+    }
+    
+    static typist_get_paused = function()
+    {
+        return __typistPaused;
+    }
+    
+    static typist_get_delayed = function()
+    {
+        return __typistDelayed;
+    }
+    
+    static typist_get_finished = function()
+    {
+        return (get_reveal() >= get_reveal_count());
+    }
+    
+    static typist_get_length = function()
+    {
+        return get_reveal_count(get_page_count()-1);
+    }
+    
+    static typist_advance = function()
+    {
+        if (typist_get_state() == SCRIBBLE_TYPIST_PAUSED)
+        {
+            __typistState = SCRIBBLE_TYPIST_RUNNING;
+        }
+        
+        return self;
+    }
+    
+    static typist_suspend = function(_state = true)
+    {
+        if (_state)
+        {
+            if (not __typistSuspended)
+            {
+                __typistSuspended = true;
+                __TypistStartNewHead(__typistEventRevealIndex);
+            }
+        }
+        else
+        {
+            __typistSuspend = false;
+        }
+        
+        return self;
+    }
+    
+    static typist_get_suspended = function()
+    {
+        return __typistSuspend;
     }
     
     static reveal_mode = function(_state)
     {
-        if (__revealMode != _state)
+        if (__typistRevealMode != _state)
         {
-            __revealMode = _state;
+            __typistRevealMode = _state;
             __modelDirty = true;
         }
         
         return self;
     }
     
-    static get_reveal_type = function()
+    static get_reveal_mode = function()
     {
-        return __revealMode;
+        return __typistRevealMode;
     }
     
-    static scroll_between_blocks = function(_state = true)
+    static typist_options_apply = function(_struct)
     {
-        __scrollBetweenBlocks = _state;
+        static _expectedNamesDict = {
+            appear:                   true,
+            speed:                    true,
+            smoothness:               true,
+            lineDelay:                true,
+            blockScrollSpeed:         true,
+            blockOverlap:             true,
+            blockDelay:               true,
+            pageScrollSpeed:          true,
+            pageDelay:                true,
+            sound:                    true,
+            soundPitchMin:            true,
+            soundPitchMax:            true,
+            soundGain:                true,
+            soundOverlap:             true,
+            soundPerChar:             true,
+            soundPerCharInterrupts:   true,
+            soundPerCharException:    true,
+            functionPerChar:          true,
+            functionOnFinish:         true,
+            eventScope:               true,
+            dynamicPositioning:       true,
+            dynamicPositioningSmooth: true,
+            
+            //TODO - Implement `backwards`
+        };
+        
+        //If we're running from the IDE, scan for unsupported option names and alert the user
+        if (SCRIBBLE_RUNNING_FROM_IDE)
+        {
+            var _namesArray = variable_struct_get_names(_struct);
+            var _i = 0;
+            repeat(_namesArray)
+            {
+                if (not variable_struct_exists(_expectedNamesDict, _namesArray[_i]))
+                {
+                    __ScribbleError($"Option name \"{_namesArray[_i]}\" not supported\nPlease refer to documentation");
+                }
+                
+                ++_i;
+            }
+        }
+        
+        with(__typistOptions)
+        {
+            var _newAppear = _struct[$ "appear"] ?? __appear;
+            if (_newAppear != __appear)
+            {
+                if (typist_get_state() != SCRIBBLE_TYPIST_STOPPED)
+                {
+                    __ScribbleTrace("Warning! Cannot change `appear` typist option whilst the typist is running");
+                }
+                else
+                {
+                    __appear = _newAppear;
+                }
+            }
+            
+            //TODO - Implement `backwards`
+            
+            var _oldSoundPerCharException = __soundPerCharException;
+            
+            __speed                    = _struct[$ "speed"                   ] ?? __speed;
+            __smoothness               = _struct[$ "smoothness"              ] ?? __smoothness;
+            __lineDelay                = _struct[$ "lineDelay"               ] ?? __lineDelay;
+            __blockScrollSpeed         = _struct[$ "blockScrollSpeed"        ] ?? __blockScrollSpeed;
+            __blockOverlap             = _struct[$ "blockOverlap"            ] ?? __blockOverlap;
+            __blockDelay               = _struct[$ "blockDelay"              ] ?? __blockDelay;
+            __pageScrollSpeed          = _struct[$ "pageScrollSpeed"         ] ?? __pageScrollSpeed;
+            __pageDelay                = _struct[$ "pageDelay"               ] ?? __pageDelay;
+            __soundArray               = _struct[$ "sound"                   ] ?? __soundArray;
+            __soundPitchMin            = _struct[$ "soundPitchMin"           ] ?? __soundPitchMin;
+            __soundPitchMax            = _struct[$ "soundPitchMax"           ] ?? __soundPitchMax;
+            __soundGain                = _struct[$ "soundGain"               ] ?? __soundGain;
+            __soundOverlap             = _struct[$ "soundOverlap"            ] ?? __soundOverlap;
+            __soundPerChar             = _struct[$ "soundPerChar"            ] ?? __soundPerChar;
+            __soundPerCharInterrupts   = _struct[$ "soundPerCharInterrupts"  ] ?? __soundPerCharInterrupts;
+            __soundPerCharException    = _struct[$ "soundPerCharException"   ] ?? __soundPerCharException;
+            __functionPerChar          = _struct[$ "functionPerChar"         ] ?? __functionPerChar;
+            __functionOnFinish         = _struct[$ "functionOnFinish"        ] ?? __functionOnFinish;
+            __eventScope               = _struct[$ "eventScope"              ] ?? __eventScope;
+            __dynamicPositioning       = _struct[$ "dynamicPositioning"      ] ?? __dynamicPositioning;
+            __dynamicPositioningSmooth = _struct[$ "dynamicPositioningSmooth"] ?? __dynamicPositioningSmooth;
+            
+            if (_oldSoundPerCharException != __soundPerCharException)
+            {
+                
+            }
+        }
+        
+        if (other.__dynamicPositioning)
+        {
+            allow_glyph_data_getter();
+        }
         
         return self;
     }
     
-    static get_reveal_blocks = function()
+    static typist_options_reset = function()
     {
-        return __scrollBetweenBlocks;
+        with(__typistOptions)
+        {
+            __appear                   = true;
+            __backwards                = false; //Unused
+            __speed                    = 0.4;
+            __smoothness               = 0;
+            __lineDelay                = 0;
+            __blockScrollSpeed         = 4;
+            __blockOverlap             = 0;
+            __blockDelay               = infinity;
+            __pageScrollSpeed          = 4;
+            __pageDelay                = infinity;
+            __soundArray               = undefined;
+            __soundPitchMin            = 1;
+            __soundPitchMax            = 1;
+            __soundGain                = 1;
+            __soundOverlap             = 0;
+            __soundPerChar             = false;
+            __soundPerCharInterrupts   = false;
+            __soundPerCharException    = [];
+            __functionPerChar          = undefined;
+            __functionOnFinish         = undefined;
+            __eventScope               = undefined;
+            __typistCharDelay          = [];
+            __dynamicPositioning       = false;
+            __DynamicPositioningSmooth = false;
+        }
+        
+        return self;
+    }
+    
+    static typist_options_get = function()
+    {
+        return __typistOptions;
+    }
+
+    static typist_skip = function(_level = SCRIBBLE_SKIP_TO_PAUSE)
+    {
+        if (_level == SCRIBBLE_SKIP_TO_EVENT)
+        {
+            
+        }
+        else if (_level == SCRIBBLE_SKIP_TO_DELAY)
+        {
+            
+        }
+        else if (_level == SCRIBBLE_SKIP_TO_PAUSE)
+        {
+            
+        }
+        else if (_level == SCRIBBLE_SKIP_TO_BLOCK)
+        {
+            
+        }
+        else if (_level == SCRIBBLE_SKIP_TO_PAGE)
+        {
+            
+        }
+        else if (_level == SCRIBBLE_SKIP_TO_END)
+        {
+            
+        }
+        
+        return self;
+    }
+    
+    /// @param easeMethod
+    /// @param dx
+    /// @param dy
+    /// @param xscale
+    /// @param yscale
+    /// @param rotation
+    /// @param alphaDuration
+    static typist_ease = function(_ease_method, _dx, _dy, _xScale, _yScale, _rotation, _alpha_duration)
+    {
+        __easeMethod         = _ease_method;
+        __easeDX             = _dx;
+        __easeDY             = _dy;
+        __easeXScale         = _xScale;
+        __easeYScale         = _yScale;
+        __easeRotation       = _rotation;
+        __easeAlphaDuration = _alpha_duration;
+        
+        return self;
+    }
+    
+    static typist_audio_gain = function()
+    {
+        __typistAudioGain = max(0, _value);
+        return self;
+    }
+    
+    static typist_audio_get_gain = function()
+    {
+        return __typistAudioGain;
+    }
+    
+    static character_delay_add = function(_character, _delay)
+    {
+        if (not __allowGlyphDataGetter)
+        {
+            __ScribbleTrace("Warning! `.character_delay_add()` automatically calling `.allow_glyph_data_getter()`");
+            allow_glyph_data_getter();
+        }
+        
+        var _char_1 = _character;
+        var _char_2 = 0;
+        
+        if (is_string(_character))
+        {
+            _char_1 = ord(string_char_at(_character, 1));
+            if (string_length(_character) >= 2) _char_2 = ord(string_char_at(_character, 2));
+        }
+        
+        var _code = _char_1 | (_char_2 << 32);
+        __typistCharDelay = true;
+        __typistCharDelayDict[$ _code] = _delay;
+        
+        return self;
+    }
+    
+    static character_delay_remove = function(_character)
+    {
+        var _char_1 = _character;
+        var _char_2 = 0;
+        
+        if (is_string(_character))
+        {
+            _char_1 = ord(string_char_at(_character, 1));
+            if (string_length(_character) >= 2) _char_2 = ord(string_char_at(_character, 2));
+        }
+        
+        var _code = _char_1 | (_char_2 << 32);
+        variable_struct_remove(__typistCharDelayDict, _code);
+        
+        return self;
+    }
+    
+    static character_delay_clear = function()
+    {
+        __typistCharDelay = false;
+        __typistCharDelayDict = {};
+        
+        return self;
+    }
+    
+    static __TypistStartNewHead = function(_pos)
+    {
+        //Bump the middle head down
+        __typistHeadArray[@      2] = __typistHeadArray[@      1];
+        __typistHeadLimitArray[@ 2] = __typistHeadLimitArray[@ 1];
+        
+        //Copy the current position for the typist into the middle head
+        __typistHeadArray[@      1] = _pos;
+        __typistHeadLimitArray[@ 1] = ceil(_pos);
+    }
+    
+    static __TypistProcessEventStack = function(_functionScope)
+    {
+        static _tagDict = __ScribbleSystem().__tagDict;
+        
+        //This method processes events on the stack (which is filled by copying data from the target element in .__tick())
+        //We return `true` if there have been no pausing behaviours called i.e. [pause] and [delay]
+        //We return `false` immediately if we do run into pausing behaviours
+        
+        repeat(array_length(__typistEventStack))
+        {
+            //Pop the first event from the stack
+            var _eventStruct = array_shift(__typistEventStack);
+            var _eventPosition = _eventStruct.revealIndex;
+            var _eventName     = _eventStruct.name;
+            var _eventData     = _eventStruct.data;
+            
+            switch(_eventName)
+            {
+                //Simple pause
+                case __SCRIBBLE_COMMAND_TAG_PAUSE:
+                    if (not __typistSyncStarted)
+                    {
+                        if (SCRIBBLE_IGNORE_PAUSE_BEFORE_PAGEBREAK && (__typistEventRevealIndex >= __typistHeadLimitArray[0]) && (array_length(__typistEventStack) <= 0))
+                        {
+                            __ScribbleTrace("Warning! Ignoring [pause] command before the end of a page");
+                        }
+                        else
+                        {
+                            pause();
+                            return false;
+                        }
+                    }
+                break;
+                
+                //Time-related delay
+                case __SCRIBBLE_COMMAND_TAG_DELAY:
+                    if (not __typistSyncStarted)
+                    {
+                        if (not __typistDelayed)
+                        {
+                            __TypistStartNewHead(__typistEventRevealIndex);
+                        }
+                        
+                        var _duration = (array_length(_eventData) >= 1)? real(_eventData[0]) : SCRIBBLE_DEFAULT_DELAY_DURATION;
+                        __typistDelayed = true;
+                        __typistDelayEnd   = current_time + _duration;
+                        
+                        return false;
+                    }
+                break;
+                
+                //Audio playback synchronisation
+                case __SCRIBBLE_COMMAND_TAG_SYNC:
+                    if (__typistSyncStarted)
+                    {
+                        if (not __typistDelayed)
+                        {
+                            __TypistStartNewHead(__typistEventRevealIndex);
+                        }
+                        
+                        __typistSyncPaused   = true;
+                        __typistSyncPauseEnd = real(_eventData[0]);
+                        return false;
+                    }
+                break;
+                
+                //In-line speed setting
+                case __SCRIBBLE_COMMAND_TAG_SPEED:
+                    if (array_length(_eventData) >= 1)
+                    {
+                        __typistInlineSpeed = real(_eventData[0]);
+                    }
+                break;
+                
+                case __SCRIBBLE_COMMAND_TAG_UNSPEED:
+                    __typistInlineSpeed = 1;
+                break;
+                
+                //Native audio playback feature
+                case __SCRIBBLE_COMMAND_TAG_AUDIO: //TODO - Add warning when adding a conflicting custom event
+                    if (array_length(_eventData) >= 1)
+                    {
+                        __ScribblePlaySound(_eventData[0], __typistAudioGain, 1);
+                    }
+                break;
+                
+                case __SCRIBBLE_COMMAND_TAG_TYPIST_SOUND: //TODO - Add warning when adding a conflicting custom event
+                    sound(__ScribbleParseSoundArrayString(_eventData[1]), real(_eventData[2]), real(_eventData[3]), real(_eventData[4]));
+                break;
+                
+                case __SCRIBBLE_COMMAND_TAG_TYPIST_SOUND_PER_CHAR: //TODO - Add warning when adding a conflicting custom event
+                    switch(array_length(_eventData))
+                    {
+                        case 4: sound_per_char(__ScribbleParseSoundArrayString(_eventData[1]), real(_eventData[2]), real(_eventData[3])); break;
+                        case 5: sound_per_char(__ScribbleParseSoundArrayString(_eventData[1]), real(_eventData[2]), real(_eventData[3]), _eventData[4]); break;
+                    }
+                break;
+                
+                //Probably a current event
+                default:
+                    //FIXME - We should not be passing the reveal index to external functions (should be the character index)
+                    
+                    //Otherwise try to find a custom event
+                    var _tagStruct = _tagDict[$ _eventName];
+                    if (is_struct(_tagStruct) && (_tagStruct.__type == __SCRIBBLE_TAG_EVENT))
+                    {
+                        var _function = _tagStruct.__data.__function;
+                        if (is_callable(_function))
+                        {
+                            with(_functionScope) _function(self, _eventData, _eventPosition);
+                        }
+                        else
+                        {
+                            __ScribbleTrace("Warning! Event [", _eventName, "] does not have a callable function attached");
+                        }
+                    }
+                    else
+                    {
+                        __ScribbleTrace("Warning! Event [", _eventName, "] not recognised");
+                    }
+
+                    if (__typistSuspended)
+                    {
+                        return false;
+                    }
+                break;
+            }
+        }
+        
+        return true;
+    }
+    
+    static __TypistPlaySound = function(_headPos, _character)
+    {
+        var _soundArray = __soundArray;
+        if (is_array(_soundArray) && (array_length(_soundArray) > 0))
+        {
+            var _playSound = false;
+            if (__soundPerReveal)
+            {
+                //Only play audio if a new character has been revealled
+                if (floor(_headPos + 0.0001) > floor(__prevAudioReveal))
+                {
+                    if (not __soundPerRevealException)
+                    {
+                        _playSound = true;
+                    }
+                    else if (not variable_struct_exists(__soundPerRevealExceptionDict, _character))
+                    {
+                        _playSound = true;
+                    }
+                    
+                    if (_playSound && __soundPerRevealInterrupt)
+                    {
+                        audio_stop_sound(__typistSoundVoice);
+                    }
+                }
+            }
+            else if (current_time >= __soundFinishTime) 
+            {
+                _playSound = true;
+            }
+            
+            if (_playSound)
+            {
+                __prevAudioReveal = _headPos;
+                
+                __typistSoundVoice = __ScribblePlaySound(_soundArray[floor(__ScribbleRandom()*array_length(_soundArray))],
+                                                         __typistOptions.__soundGain,
+                                                         lerp(__typistOptions.__soundPitchMin, __typistOptions.__soundPitchMax, __ScribbleRandom()));
+                if (__typistSoundVoice >= 0)
+                {
+                    __soundFinishTime = current_time + 1000*audio_sound_length(__typistSoundVoice) - __soundOverlap;
+                }
+            }
+        }
+    }
+    
+    static __TypistExecuteFunctionPerReveal = function(_functionScope)
+    {
+        if (is_callable(__functionPerReveal))
+        {
+            __functionPerReveal(_functionScope, __typistEventRevealIndex - 1, self);
+        }
+    }
+    
+    static __TypistExecuteFunctionOnComplete = function(_functionScope)
+    {
+        if (is_callable(__functionOnComplete))
+        {
+            __functionOnComplete(_functionScope, self);
+        }
+    }
+    
+    static __TypistUpdateFromDraw = function(_inFunctionScope)
+    {
+        //Don't move the typist if it's been less than a frame since we were last updated
+        if (_system.__frames <= __prevTickFrame) return undefined;
+        __prevTickFrame = _system.__frames;
+        
+        return __TypistMove(_inFunctionScope, __typistOptions.__speed*__typistInlineSpeed*_system.__tickSize);
     }
     
     
     
-    __typistAnim       = SCRIBBLE_TYPIST_ANIM_NONE;
-    __typistSpeed      = 1;
-    __typistSmoothness = 0;
-    __typistBackwards  = false;
     
-    __typistSkip               = false;
-    __typistSkipPaused         = false;
-    __typistDrawnSinceSkip     = false;
-    __typistDynamicPositioning = false;
-    __typistDynamicPositioningSmooth = false;
-    __typistPauseOnOverflow    = false;
-    __scrollBetweenBlocks      = false;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    static page = function(_page)
+    {
+        if (__typistRunning)
+        {
+            __ScribbleTrace("Cannot set page, typist is running");
+        }
+        else
+        {
+            __SetPage(_page);
+        }
+        
+        return self;
+    }
+    
+    static reveal_mode = function(_state)
+    {
+        if (__typistRevealMode != _state)
+        {
+            __typistRevealMode = _state;
+            __modelDirty = true;
+        }
+        
+        return self;
+    }
+    
+    static get_reveal_mode = function()
+    {
+        return __typistRevealMode;
+    }
+    
+    
     
     __typistScrollTarget = 0;
-    __pageTarget = 0;
-    __pageSpeed = 1/40;
+    __typistSoundVoice   = -1;
+    __pageTarget         = 0;
+    __pageSpeed          = 1/40;
     
-    __soundTagGain = 1;
-    
-    __soundArray                = undefined;
-    __soundVoice                = -1;
-    __soundOverlap              = 0;
-    __soundPitchMin             = 1;
-    __soundPitchMax             = 1;
-    __soundGain                 = 1;
-    __soundFinishTime           = current_time;
-    __soundPerReveal              = false;
-    __soundPerRevealException     = false;
-    __soundPerRevealExceptionDict = undefined;
-    __soundPerRevealInterrupt     = false;
-    
-    __ignoreDelay = false;
-    
-    __functionScope      = undefined;
-    __functionPerReveal  = undefined;
-    __functionOnComplete = undefined;
+    __typistAudioGain = 1;
     
     __easeMethod        = SCRIBBLE_EASE_LINEAR;
     __easeDX            = 0;
@@ -213,14 +788,26 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     __easeRotation      = 0;
     __easeAlphaDuration = 1.0;
     
-    __characterDelay     = false;
-    __characterDelayDict = {};
+    __typistSyncStarted  = false;
+    __typistSyncVoice    = undefined;
+    __typistSyncPaused   = false;
+    __typistSyncPauseEnd = infinity;
     
-    __syncStarted  = false;
-    __syncInstance = undefined;
-    __syncPaused   = false;
-    __syncPauseEnd = infinity;
+    __typistCharDelay     = false;
+    __typistCharDelayDict = {};
     
+    __soundArray                  = undefined;
+    __soundOverlap                = 0;
+    __soundFinishTime             = current_time;
+    __soundPerReveal              = false;
+    __soundPerRevealException     = false;
+    __soundPerRevealExceptionDict = undefined;
+    __soundPerRevealInterrupt     = false;
+    
+    __functionPerReveal  = undefined;
+    __functionOnComplete = undefined;
+    
+    typist_options_reset();
     reset();
     
     
@@ -237,80 +824,11 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         __typistHeadArray      = array_create(__SCRIBBLE_HEAD_COUNT, 0);
         __typistHeadLimitArray = [__SCRIBBLE_VERY_BIG, 0, 0]; //Must match `__SCRIBBLE_HEAD_COUNT`
         
-        __typistManualPause    = false;
-        __typistDelayPause     = false;
+        __typistSuspended      = false;
+        __typistDelayed        = false;
         __typistDelayEnd       = -1;
         __typistInlineSpeed    = 1;
-        __eventStack           = [];
-        __typistSkip           = false;
-        __typistDrawnSinceSkip = false;
-        
-        return self;
-    }
-    
-    /// @param speed
-    /// @param [smoothness=0]
-    static in = function(_speed, _smoothness = 0)
-    {
-        var _oldAnim = __typistAnim;
-        
-        __typistAnim       = SCRIBBLE_TYPIST_ANIM_APPEAR;
-        __typistBackwards  = false;
-        __typistSpeed      = _speed;
-        __typistSmoothness = _smoothness;
-        __typistSkip       = false;
-        
-        if (_oldAnim != SCRIBBLE_TYPIST_ANIM_APPEAR)
-        {
-            reset();
-        }
-        
-        return self;
-    }
-    
-    /// @param speed
-    /// @param [smoothness=0]
-    /// @param [backwards=false]
-    static out = function(_speed, _smoothness = 0, _backwards = false)
-    {
-        var _oldAnim = __typistAnim;
-        
-        __typistAnim       = SCRIBBLE_TYPIST_ANIM_DISAPPEAR;
-        __typistBackwards  = _backwards;
-        __typistSpeed      = _speed;
-        __typistSmoothness = _smoothness;
-        __typistSkip       = false;
-        
-        if (_oldAnim != SCRIBBLE_TYPIST_ANIM_DISAPPEAR)
-        {
-            reset();
-        }
-        
-        return self;
-    }
-    
-    static stop = function()
-    {
-        __typistAnim = SCRIBBLE_TYPIST_ANIM_NONE;
-        return self;
-    }
-    
-    static skip = function(_state = true)
-    {
-        __typistSkip           = _state;
-        __typistSkipPaused     = true;
-        __typistDrawnSinceSkip = false;
-        __typistDelayEnd       = -infinity;
-        
-        return self;
-    }
-    
-    static skip_to_pause = function(_state = true)
-    {
-        __typistSkip           = _state;
-        __typistSkipPaused     = false;
-        __typistDrawnSinceSkip = false;
-        __typistDelayEnd       = -infinity;
+        __typistEventStack     = [];
         
         return self;
     }
@@ -322,7 +840,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         if (_value >= __typistHeadLimitArray[0])
         {
             //Must match `__SCRIBBLE_HEAD_COUNT`
-            __typistHeadArray[@ 0] = _value + __typistSmoothness;
+            __typistHeadArray[@ 0] = _value + __typistOptions.__smoothness;
             __typistHeadArray[@ 1] = 0;
             __typistHeadArray[@ 2] = 0;
             
@@ -333,19 +851,12 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         {
             //Must match `__SCRIBBLE_HEAD_COUNT`
             __typistHeadArray[@ 0] = _value;
-            __typistHeadArray[@ 1] = _value + __typistSmoothness;
+            __typistHeadArray[@ 1] = _value + __typistOptions.__smoothness;
             __typistHeadArray[@ 2] = 0;
             
             __typistHeadLimitArray[@ 1] = _value;
             __typistHeadLimitArray[@ 2] = 0;
         }
-        
-        return self;
-    }
-    
-    static ignore_delay = function(_state = true)
-    {
-        __ignoreDelay = _state;
         
         return self;
     }
@@ -362,9 +873,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         __soundArray     = _soundArray;
         __soundOverlap   = _overlap;
-        __soundPitchMin  = _pitch_min;
-        __soundPitchMax  = _pitch_max;
-        __soundGain      = _gain;
         __soundPerReveal = false;
         
         return self;
@@ -381,10 +889,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         var _soundArray = _in_sound_array;
         if (not is_array(_soundArray)) _soundArray = [_soundArray];
         
-        __soundArray            = _soundArray;
-        __soundPitchMin         = _pitch_min;
-        __soundPitchMax         = _pitch_max;
-        __soundGain             = _gain;
+        __soundArray              = _soundArray;
         __soundPerReveal          = true;
         __soundPerRevealInterrupt = _interrupt;
         
@@ -418,32 +923,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     static function_on_complete = function(_function)
     {
         __functionOnComplete = _function;
-        
-        return self;
-    }
-    
-    static execution_scope = function(_scope)
-    {
-        __functionScope = _scope;
-        
-        return self;
-    }
-    
-    static pause = function()
-    {
-        if (not __typistManualPause)
-        {
-            __typistManualPause = true;
-            __StartNewHead(__typistEventRevealIndex);
-        }
-        
-        return self;
-    }
-    
-    static unpause = function()
-    {
-        __typistSkip = false;
-        __typistManualPause = false;
         
         return self;
     }
@@ -487,75 +966,9 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return self;
     }
     
-    static character_delay_add = function(_character, _delay)
-    {
-        if (not __allowGlyphDataGetter)
-        {
-            __ScribbleTrace("Warning! `.character_delay_add()` automatically calling `.allow_glyph_data_getter()`");
-            allow_glyph_data_getter();
-        }
-        
-        var _char_1 = _character;
-        var _char_2 = 0;
-        
-        if (is_string(_character))
-        {
-            _char_1 = ord(string_char_at(_character, 1));
-            if (string_length(_character) >= 2) _char_2 = ord(string_char_at(_character, 2));
-        }
-        
-        var _code = _char_1 | (_char_2 << 32);
-        __characterDelay = true;
-        __characterDelayDict[$ _code] = _delay;
-        
-        return self;
-    }
-    
-    static character_delay_remove = function(_character)
-    {
-        var _char_1 = _character;
-        var _char_2 = 0;
-        
-        if (is_string(_character))
-        {
-            _char_1 = ord(string_char_at(_character, 1));
-            if (string_length(_character) >= 2) _char_2 = ord(string_char_at(_character, 2));
-        }
-        
-        var _code = _char_1 | (_char_2 << 32);
-        variable_struct_remove(__characterDelayDict, _code);
-        
-        return self;
-    }
-    
-    static character_delay_clear = function()
-    {
-        __characterDelay = false;
-        __characterDelayDict = {};
-        
-        return self;
-    }
-    
     static newline_delay = function(_delay)
     {
         __newlineDelay = max(0, _delay);
-        return self;
-    }
-    
-    static dynamic_positioning = function(_smooth = undefined)
-    {
-        __typistDynamicPositioning       = true;
-        __typistDynamicPositioningSmooth = _smooth;
-        
-        allow_glyph_data_getter();
-        
-        return self;
-    }
-    
-    static pause_after_block = function(_state = true)
-    {
-        __typistPauseOnOverflow = _state;
-        
         return self;
     }
     
@@ -564,16 +977,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     
     #region Getters
-    
-    static get_skip = function()
-    {
-        return __typistSkip;
-    }
-    
-    static get_ignore_delay = function()
-    {
-        return __ignoreDelay;
-    }
     
     static get_reveal_count = function()
     {
@@ -592,11 +995,11 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         var _max = get_reveal_count();
         if (_max <= 0) return 2; //If we get an invalid
         
-        var _t = clamp(__typistHeadArray[0] / (_max + __typistSmoothness), 0, 1);
+        var _t = clamp(__typistHeadArray[0] / (_max + __typistOptions.__smoothness), 0, 1);
         
-        if (__typistAnim == SCRIBBLE_TYPIST_ANIM_APPEAR)
+        if (__typistOptions.__appear)
         {
-            if (__typistDelayPause || (array_length(__eventStack) > 0))
+            if (__typistDelayed || (array_length(__typistEventStack) > 0))
             {
                 //If we're waiting for a delay or there's something in our delay stack we need to process, limit our return value to just less than 1.0
                 return min(1 - 2*math_get_epsilon(), _t);
@@ -612,311 +1015,15 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         }
     }
     
-    static get_delay_paused = function()
-    {
-        return __typistDelayPause;
-    }
-    
-    static get_paused = function()
-    {
-        return __typistManualPause;
-    }
-    
-    static get_position = function()
-    {
-        return __typistHeadArray[0];
-    }
-    
-    static get_execution_scope = function()
-    {
-        return __functionScope;
-    }
-    
-    static get_newline_delay = function()
-    {
-        return __newlineDelay;
-    }
-    
-    #endregion
-    
-    
-    
-    #region Sync
-    
-    static sync_to_sound = function(_instance)
-    {
-        if (_instance < 400000)
-        {
-            __ScribbleError("Cannot synchronise to a sound asset. Please provide a sound instance (as returned by audio_play_sound())");
-        }
-        
-        if (not audio_is_playing(_instance))
-        {
-            __ScribbleError("Sound instance ", _instance, " is not playing\nCannot sync to a stopped sound instance");
-        }
-        
-        __typistManualPause = false;
-        __typistDelayPause  = false;
-        
-        __SyncReset();
-        __syncStarted  = true;
-        __syncInstance = _instance;
-        
-        return self;
-    }
-    
-    static __SyncReset = function()
-    {
-        __syncStarted  = false;
-        __syncInstance = undefined;
-        __syncPaused   = false;
-        __syncPauseEnd = infinity;
-    }
-    
-    #endregion
-    
-    
-    
-    #region Gain
-    
-    static set_sound_tag_gain = function(_gain)
-    {
-        __soundTagGain = _gain;
-        return self;
-    }
-    
-    static get_sound_tag_gain = function()
-    {
-        return __soundTagGain;
-    }
-    
     #endregion
     
     
     
     #region Private Methods
     
-    static __StartNewHead = function(_pos)
+    static __TypistMove = function(_inExecutionScope, _delta)
     {
-        //Bump the middle head down
-        __typistHeadArray[@      2] = __typistHeadArray[@      1];
-        __typistHeadLimitArray[@ 2] = __typistHeadLimitArray[@ 1];
-        
-        //Copy the current position for the typist into the middle head
-        __typistHeadArray[@      1] = _pos;
-        __typistHeadLimitArray[@ 1] = ceil(_pos);
-    }
-    
-    static __ProcessEventStack = function(_functionScope)
-    {
-        static _tagDict = __ScribbleSystem().__tagDict;
-        
-        //This method processes events on the stack (which is filled by copying data from the target element in .__tick())
-        //We return `true` if there have been no pausing behaviours called i.e. [pause] and [delay]
-        //We return `false` immediately if we do run into pausing behaviours
-        
-        repeat(array_length(__eventStack))
-        {
-            //Pop the first event from the stack
-            var _eventStruct = array_shift(__eventStack);
-            var _eventPosition = _eventStruct.revealIndex;
-            var _eventName     = _eventStruct.name;
-            var _eventData     = _eventStruct.data;
-            
-            switch(_eventName)
-            {
-                //Simple pause
-                case __SCRIBBLE_COMMAND_TAG_PAUSE:
-                    if (((not __typistSkip) && (not __syncStarted)) || (not __typistSkipPaused))
-                    {
-                        if (SCRIBBLE_IGNORE_PAUSE_BEFORE_PAGEBREAK && (__typistEventRevealIndex >= __typistHeadLimitArray[0]) && (array_length(__eventStack) <= 0))
-                        {
-                            __ScribbleTrace("Warning! Ignoring [pause] command before the end of a page");
-                        }
-                        else
-                        {
-                            pause();
-                            return false;
-                        }
-                    }
-                break;
-                
-                //Time-related delay
-                case __SCRIBBLE_COMMAND_TAG_DELAY:
-                    if ((not __typistSkip) && (not __ignoreDelay) && (not __syncStarted))
-                    {
-                        if (not __typistDelayPause)
-                        {
-                            __StartNewHead(__typistEventRevealIndex);
-                        }
-                        
-                        var _duration = (array_length(_eventData) >= 1)? real(_eventData[0]) : SCRIBBLE_DEFAULT_DELAY_DURATION;
-                        __typistDelayPause = true;
-                        __typistDelayEnd   = current_time + _duration;
-                        
-                        return false;
-                    }
-                break;
-                
-                //Audio playback synchronisation
-                case __SCRIBBLE_COMMAND_TAG_SYNC:
-                    if ((not __typistSkip) && __syncStarted)
-                    {
-                        if (not __typistDelayPause)
-                        {
-                            __StartNewHead(__typistEventRevealIndex);
-                        }
-                        
-                        __syncPaused   = true;
-                        __syncPauseEnd = real(_eventData[0]);
-                        return false;
-                    }
-                break;
-                
-                //In-line speed setting
-                case __SCRIBBLE_COMMAND_TAG_SPEED:
-                    if (array_length(_eventData) >= 1)
-                    {
-                        __typistInlineSpeed = real(_eventData[0]);
-                    }
-                break;
-                
-                case __SCRIBBLE_COMMAND_TAG_UNSPEED:
-                    __typistInlineSpeed = 1;
-                break;
-                
-                //Native audio playback feature
-                case __SCRIBBLE_COMMAND_TAG_AUDIO: //TODO - Add warning when adding a conflicting custom event
-                    if ((not __typistSkip) && (array_length(_eventData) >= 1))
-                    {
-                        __ScribblePlaySound(_eventData[0], __soundTagGain, 1);
-                    }
-                break;
-                
-                case __SCRIBBLE_COMMAND_TAG_TYPIST_SOUND: //TODO - Add warning when adding a conflicting custom event
-                    sound(__ScribbleParseSoundArrayString(_eventData[1]), real(_eventData[2]), real(_eventData[3]), real(_eventData[4]));
-                break;
-                
-                case __SCRIBBLE_COMMAND_TAG_TYPIST_SOUND_PER_CHAR: //TODO - Add warning when adding a conflicting custom event
-                    switch(array_length(_eventData))
-                    {
-                        case 4: sound_per_char(__ScribbleParseSoundArrayString(_eventData[1]), real(_eventData[2]), real(_eventData[3])); break;
-                        case 5: sound_per_char(__ScribbleParseSoundArrayString(_eventData[1]), real(_eventData[2]), real(_eventData[3]), _eventData[4]); break;
-                    }
-                break;
-                
-                //Probably a current event
-                default:
-                    //FIXME - We should not be passing the reveal index to external functions (should be the character index)
-                    
-                    //Otherwise try to find a custom event
-                    var _tagStruct = _tagDict[$ _eventName];
-                    if (is_struct(_tagStruct) && (_tagStruct.__type == __SCRIBBLE_TAG_EVENT))
-                    {
-                        var _function = _tagStruct.__data.__function;
-                        if (is_callable(_function))
-                        {
-                            with(_functionScope) _function(self, _eventData, _eventPosition);
-                        }
-                        else
-                        {
-                            __ScribbleTrace("Warning! Event [", _eventName, "] does not have a callable function attached");
-                        }
-                    }
-                    else
-                    {
-                        __ScribbleTrace("Warning! Event [", _eventName, "] not recognised");
-                    }
-
-                    if (__typistManualPause)
-                    {
-                        return false;
-                    }
-                break;
-            }
-        }
-        
-        return true;
-    }
-    
-    static __PlaySound = function(_headPos, _character)
-    {
-        var _soundArray = __soundArray;
-        if (is_array(_soundArray) && (array_length(_soundArray) > 0))
-        {
-            var _playSound = false;
-            if (__soundPerReveal)
-            {
-                //Only play audio if a new character has been revealled
-                if (floor(_headPos + 0.0001) > floor(__prevAudioReveal))
-                {
-                    if (not __soundPerRevealException)
-                    {
-                        _playSound = true;
-                    }
-                    else if (not variable_struct_exists(__soundPerRevealExceptionDict, _character))
-                    {
-                        _playSound = true;
-                    }
-                    
-                    if (_playSound && __soundPerRevealInterrupt)
-                    {
-                        audio_stop_sound(__soundVoice);
-                    }
-                }
-            }
-            else if (current_time >= __soundFinishTime) 
-            {
-                _playSound = true;
-            }
-            
-            if (_playSound)
-            {
-                __prevAudioReveal = _headPos;
-                
-                __soundVoice = __ScribblePlaySound(_soundArray[floor(__ScribbleRandom()*array_length(_soundArray))], __soundGain, lerp(__soundPitchMin, __soundPitchMax, __ScribbleRandom()));
-                if (__soundVoice >= 0)
-                {
-                    __soundFinishTime = current_time + 1000*audio_sound_length(__soundVoice) - __soundOverlap;
-                }
-            }
-        }
-    }
-    
-    static __ExecuteFunctionPerReveal = function(_functionScope)
-    {
-        if (is_callable(__functionPerReveal))
-        {
-            __functionPerReveal(_functionScope, __typistEventRevealIndex - 1, self);
-        }
-    }
-    
-    static __ExecuteFunctionOnComplete = function(_functionScope)
-    {
-        if (is_callable(__functionOnComplete))
-        {
-            __functionOnComplete(_functionScope, self);
-        }
-    }
-    
-    static __TypistUpdateFromDraw = function(_inFunctionScope)
-    {
-        if (__typistSkip)
-        {
-            __typistDrawnSinceSkip = true;
-        }
-        
-        //Don't move the typist if it's been less than a frame since we were last updated
-        if (_system.__frames <= __prevTickFrame) return undefined;
-        __prevTickFrame = _system.__frames;
-        
-        return __TypistMove(_inFunctionScope, __typistSpeed*__typistInlineSpeed*_system.__tickSize);
-    }
-    
-    static __TypistMove = function(_inFunctionScope, _delta)
-    {
-        //If __typistAnim hasn't been set yet (.in() / .out() haven't been set) then just nope out
-        if (__typistAnim == SCRIBBLE_TYPIST_ANIM_NONE) return;
+        if (not __typistRunning) return;
         
         //Find the model from the last element
         var _model = __EnsureModel();
@@ -928,41 +1035,29 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         var _pageData = _pages_array[__page];
         var _pageRevealCount = _pageData.__revealCount;
         
-        var _functionScope = __functionScope ?? _inFunctionScope;
-        
-        if (__typistSkip)
-        {
-            _delta = (_delta < 0)? (-__SCRIBBLE_VERY_BIG) : __SCRIBBLE_VERY_BIG; //Do not use `infinity` here
-        }
+        var _functionScope = __typistOptions.__executionScope ?? _inExecutionScope;
         
         //Ensure we unhook synchronisation if the audio instance stops playing
-        if (__syncStarted)
+        if (__typistSyncStarted)
         {
-            if ((__syncInstance == undefined) || not audio_is_playing(__syncInstance))
+            if ((__typistSyncVoice == undefined) || not audio_is_playing(__typistSyncVoice))
             {
-                __SyncReset();
+                __TypistSyncReset();
             }
         }
         
         var _glyphDataGetter = _model.__allowGlyphDataGetter;
-        var _perCharacter = (__revealMode == SCRIBBLE_REVEAL_PER_CHAR);
+        var _perCharacter = (__typistRevealMode == SCRIBBLE_REVEAL_PER_CHAR);
         
         __typistHeadLimitArray[@ 0] = _pageRevealCount; //TODO - Can we move this elsewhere?
         
-        if (__typistAnim == SCRIBBLE_TYPIST_ANIM_DISAPPEAR)
+        if (not __typistOptions.__appear)
         {
             ///////
             // Type out
             ///////
             
-            if (__typistSkip)
-            {
-                __typistHeadArray[@ 0] = _pageRevealCount + __typistSmoothness;
-            }
-            else
-            {
-                __typistHeadArray[@ 0] += _delta;
-            }
+            __typistHeadArray[@ 0] += _delta;
         }
         else
         {
@@ -972,20 +1067,10 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 // Type in, but backwards
                 ///////
                 
-                if (__typistSkip)
-                {
-                    // N.B. Must match `__SCRIBBLE_HEAD_COUNT`
-                    __typistHeadArray[@ 0] = 0;
-                    __typistHeadArray[@ 1] = 0;
-                    __typistHeadArray[@ 2] = 0;
-                }
-                else
-                {
-                    // N.B. Must match `__SCRIBBLE_HEAD_COUNT`
-                    __typistHeadArray[@ 0] += _delta;
-                    __typistHeadArray[@ 1] += _delta;
-                    __typistHeadArray[@ 2] += _delta;
-                }
+                // N.B. Must match `__SCRIBBLE_HEAD_COUNT`
+                __typistHeadArray[@ 0] += _delta;
+                __typistHeadArray[@ 1] += _delta;
+                __typistHeadArray[@ 2] += _delta;
             }
             else
             {
@@ -996,34 +1081,34 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 // Handle pausing
                 ///////
                 
-                if (__typistManualPause)
+                if (__typistSuspended)
                 {
                     _canMove = false;
                 }
-                else if (__typistDelayPause)
+                else if (__typistDelayed)
                 {
-                    if ((current_time > __typistDelayEnd) || __ignoreDelay)
+                    if (current_time > __typistDelayEnd)
                     {
                         //We've waited long enough, start showing more text
-                        __typistDelayPause = false;
+                        __typistDelayed = false;
                     }
                     else
                     {
                         _canMove = false;
                     }
                 }
-                else if (__syncStarted)
+                else if (__typistSyncStarted)
                 {
-                    if (audio_is_paused(__syncInstance))
+                    if (audio_is_paused(__typistSyncVoice))
                     {
                         _canMove = false;
                     }
-                    else if (__syncPaused)
+                    else if (__typistSyncPaused)
                     {
-                        if (audio_sound_get_track_position(__syncInstance) > __syncPauseEnd)
+                        if (audio_sound_get_track_position(__typistSyncVoice) > __typistSyncPauseEnd)
                         {
                             //If enough of the source audio has been played, start showing more text
-                            __syncPaused = false;
+                            __typistSyncPaused = false;
                         }
                         else
                         {
@@ -1036,9 +1121,9 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 // Pop the event stack
                 ///////
             
-                if (_canMove && (array_length(__eventStack) > 0))
+                if (_canMove && (array_length(__typistEventStack) > 0))
                 {
-                    if (not __ProcessEventStack(_functionScope))
+                    if (not __TypistProcessEventStack(_functionScope))
                     {
                         _canMove = false;
                     }
@@ -1046,19 +1131,18 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 
                 if (_canMove)
                 {
-                    var _page = get_page();
-                    if (_page != __pageTarget)
+                    if (__page != __pageTarget)
                     {
                         _canMove = false;
-                        __SetPage(_page + clamp(__pageTarget - _page, -__pageSpeed, __pageSpeed));
+                        __SetPage(__page + clamp(__pageTarget - __page, -__pageSpeed, __pageSpeed));
                         __typistScrollTarget = 0;
                     }
                 }
                 
-                if (_canMove && __scrollBetweenBlocks && (__scrollYArray[__page] != __typistScrollTarget))
+                if (_canMove && (not is_infinity(__typistOptions.__blockScrollSpeed)) && (__scrollYArray[__page] != __typistScrollTarget))
                 {
                     _canMove = false;
-                    __scrollYArray[@ __page] += clamp(__typistScrollTarget - __scrollYArray[@ __page], -__scrollSpeed, __scrollSpeed);
+                    __scrollYArray[@ __page] += clamp(__typistScrollTarget - __scrollYArray[@ __page], -__typistOptions.__blockScrollSpeed, __typistOptions.__blockScrollSpeed);
                 }
                 
                 ///////
@@ -1115,7 +1199,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                 ++__typistEventRevealIndex;
                                 _moved = true;
                                 
-                                __ExecuteFunctionPerReveal();
+                                __TypistExecuteFunctionPerReveal();
                                 
                                 //Get an array of events for this reveal index
                                 var _foundEventsArray = get_events(__typistEventRevealIndex, undefined);
@@ -1123,18 +1207,18 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                 
                                 //FIXME - Abstract out to a method
                                 //Only add a per-character delay if we have glyph data to work with
-                                if (_useGlyphData && (not __ignoreDelay) && __characterDelay) //Don't check character delay until we're on the first visible character (index=1)
+                                if (_useGlyphData && __typistCharDelay) //Don't check character delay until we're on the first visible character (index=1)
                                 {
                                     //Always delay the last character if we find events to execute at the end of the page
                                     if ((__typistEventRevealIndex < _pageRevealCount-1) || (_foundEventsCount > 0))
                                     {
                                         var _glyphOrd = _pageData.__glyphGrid[# __typistEventRevealIndex-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
-                                        var _delay = __characterDelayDict[$ _glyphOrd] ?? 0;
+                                        var _delay = __typistCharDelayDict[$ _glyphOrd] ?? 0;
                                         
                                         if (__typistEventRevealIndex >= 2)
                                         {
                                             _glyphOrd = (_glyphOrd << 32) | _pageData.__glyphGrid[# __typistEventRevealIndex-2, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
-                                            var _double_char_delay = __characterDelayDict[$ _glyphOrd];
+                                            var _double_char_delay = __typistCharDelayDict[$ _glyphOrd];
                                             _double_char_delay = (_double_char_delay == undefined)? 0 : _double_char_delay;
                                             
                                             _delay = max(_delay, _double_char_delay);
@@ -1142,7 +1226,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                         
                                         if (_delay > 0)
                                         {
-                                            array_push(__eventStack, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_DELAY, [_delay]));
+                                            array_push(__typistEventStack, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_DELAY, [_delay]));
                                         }
                                     }
                                 }
@@ -1150,40 +1234,35 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                 if (_foundEventsCount > 0)
                                 {
                                     //Copy our found array of events onto our stack
-                                    array_copy(__eventStack, array_length(__eventStack), _foundEventsArray, 0, _foundEventsCount);
+                                    array_copy(__typistEventStack, array_length(__typistEventStack), _foundEventsArray, 0, _foundEventsCount);
                                 }
                                 
-                                if (__typistPauseOnOverflow)
+                                if (is_infinity(__typistOptions.__blockDelay))
                                 {
-                                    if (__revealMode == SCRIBBLE_REVEAL_PER_CHAR)
+                                    if (__typistRevealMode == SCRIBBLE_REVEAL_PER_CHAR)
                                     {
                                         if (__GetGlyphBlock(__typistEventRevealIndex) < __GetGlyphBlock(__typistEventRevealIndex+1))
                                         {
-                                            array_push(__eventStack, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_PAUSE, undefined));
+                                            array_push(__typistEventStack, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_PAUSE, undefined));
                                         }
                                     }
-                                    else if (__revealMode == SCRIBBLE_REVEAL_PER_LINE)
+                                    else if (__typistRevealMode == SCRIBBLE_REVEAL_PER_LINE)
                                     {
                                         if (__GetLineBlock(__typistEventRevealIndex) < __GetLineBlock(__typistEventRevealIndex+1))
                                         {
-                                            array_push(__eventStack, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_PAUSE, undefined));
+                                            array_push(__typistEventStack, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_PAUSE, undefined));
                                         }
                                     }
                                 }
                                 
                                 //Process the stack
                                 //If we hit a [pause] or [delay] tag then the function returns `false` and we break out of the loop
-                                if (not __ProcessEventStack(_functionScope))
+                                if (not __TypistProcessEventStack(_functionScope))
                                 {
                                     _eventRevealIndex = __typistEventRevealIndex; //Lock our head position so we don't overstep
                                     break;
                                 }
                             }
-                        }
-                        
-                        if (__typistSkip)
-                        {
-                            _eventRevealIndex += __typistSmoothness;
                         }
                     }
                     
@@ -1195,41 +1274,38 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                     {
                         __typistHeadArray[@ 0] = _eventRevealIndex;
                         
-                        if (__revealMode == SCRIBBLE_REVEAL_PER_CHAR)
+                        if (__typistRevealMode == SCRIBBLE_REVEAL_PER_CHAR)
                         {
-                            if (__scrollBetweenBlocks)
-                            {
-                                __typistScrollTarget = __GetBlockY(__GetGlyphBlock(_eventRevealIndex));
-                            }
-                            else
+                            if (is_infinity(__typistOptions.__blockScrollSpeed))
                             {
                                 scroll_to_glyph(_eventRevealIndex);
                             }
-                        }
-                        else if (__revealMode == SCRIBBLE_REVEAL_PER_LINE)
-                        {
-                            if (__scrollBetweenBlocks)
+                            else
                             {
-                                __typistScrollTarget = __GetBlockY(__GetLineBlock(_eventRevealIndex));
+                                __typistScrollTarget = __GetBlockY(__GetGlyphBlock(_eventRevealIndex));
+                            }
+                        }
+                        else if (__typistRevealMode == SCRIBBLE_REVEAL_PER_LINE)
+                        {
+                            if (is_infinity(__typistOptions.__blockScrollSpeed))
+                            {
+                                scroll_to_line(_eventRevealIndex);
                             }
                             else
                             {
-                                scroll_to_line(_eventRevealIndex);
+                                __typistScrollTarget = __GetBlockY(__GetLineBlock(_eventRevealIndex));
                             }
                         }
                         
                         if (__typistEventRevealIndex <= _pageRevealCount)
                         {
-                            if (not __typistSkip)
-                            {
-                                //Only play sound once per frame if we're going reaaaally fast
-                                __PlaySound(_eventRevealIndex, _useGlyphData? (_pageData.__glyphGrid[# _eventRevealIndex-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE]) : 0);
-                            }
+                            //Only play sound once per frame if we're going reaaaally fast
+                            __TypistPlaySound(_eventRevealIndex, _useGlyphData? (_pageData.__glyphGrid[# _eventRevealIndex-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE]) : 0);
                         }
                         else
                         {
                             //Execute our on-complete callback when we finish
-                            __ExecuteFunctionOnComplete(_functionScope);
+                            __TypistExecuteFunctionOnComplete(_functionScope);
                         }
                     }
                 }
@@ -1243,8 +1319,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             __typistHeadArray[@ 1] += _delta;
             __typistHeadArray[@ 2] += _delta;
         }
-        
-        __typistSkip = false;
     }
     
     static __SetTypistShaderUniforms = function()
@@ -1259,15 +1333,14 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         static _u_fTypewriterAlphaDuration  = shader_get_uniform(__shdScribble, "u_fTypewriterAlphaDuration" );
         static _u_vTypewriterOffsetRange    = shader_get_uniform(__shdScribble, "u_vTypewriterOffsetRange"   );
         
-        //If __typistAnim hasn't been set yet (.in() / .out() haven't been set) then just nope out
-        if (__typistAnim == SCRIBBLE_TYPIST_ANIM_NONE)
+        if (not __typistRunning)
         {
             __SetRevealUniforms((__typistHeadArray[0] < __SCRIBBLE_VERY_BIG)? __typistHeadArray[0] : undefined);
             return;
         }
         
         var _method = __easeMethod;
-        if (__typistAnim == SCRIBBLE_TYPIST_ANIM_DISAPPEAR) _method += __SCRIBBLE_EASE_COUNT;
+        if (not __typistOptions.__appear) _method += __SCRIBBLE_EASE_COUNT;
         
         if (__typistBackwards)
         {
@@ -1275,7 +1348,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         }
         
         shader_set_uniform_i(_u_iTypewriterMethod,               _method);
-        shader_set_uniform_f(_u_fTypewriterSmoothness,           __typistSmoothness);
+        shader_set_uniform_f(_u_fTypewriterSmoothness,           __typistOptions.__smoothness);
         shader_set_uniform_f(_u_vTypewriterStartPos,             __easeDX, __easeDY);
         shader_set_uniform_f(_u_vTypewriterStartScale,           __easeXScale, __easeYScale);
         shader_set_uniform_f(_u_fTypewriterStartRotation,        __easeRotation);
@@ -1283,7 +1356,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         shader_set_uniform_f_array(_u_fTypewriterHeadArray,      __typistHeadArray);
         shader_set_uniform_f_array(_u_fTypewriterHeadLimitArray, __typistHeadLimitArray);
         
-        if (__typistDynamicPositioning)
+        if (__typistOptions.__dynamicPositioning)
         {
             var _model = __EnsureModel();
             if (not is_struct(_model)) return;
@@ -1300,7 +1373,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 var _headPos      = __typistHeadArray[0];
                 var _headPosFloor = floor(_headPos);
                 
-                if (not (__typistDynamicPositioningSmooth ?? (__typistSmoothness > 0)))
+                if (not (__typistOptions.__dynamicPositioningSmooth ?? (__typistOptions.__smoothness > 0)))
                 {
                     _headPos = _headPosFloor;
                 }
@@ -1311,7 +1384,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 }
                 else
                 {
-                    if (__revealMode != SCRIBBLE_REVEAL_PER_CHAR)
+                    if (__typistRevealMode != SCRIBBLE_REVEAL_PER_CHAR)
                     {
                         __ScribbleError("Must use `SCRIBBLE_REVEAL_PER_CHAR` with dynamic positioning");
                     }

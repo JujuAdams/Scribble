@@ -19,7 +19,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     
     //We define this for all text elements because it gets used in the model key builder
-    __revealMode = SCRIBBLE_DEFAULT_REVEAL_MODE;
+    __typistRevealMode = SCRIBBLE_DEFAULT_REVEAL_MODE;
     __spritesDontScale = true;
     
     __preprocessorArray      = undefined;
