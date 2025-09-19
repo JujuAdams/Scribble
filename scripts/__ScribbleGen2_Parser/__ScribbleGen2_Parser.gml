@@ -200,7 +200,7 @@ function __ScribbleGen2_Parser()
     var _fontName = _startingFont;
     
     //Run the pre-processors
-    var _preprocessorArray = __preprocessorFunc ?? _system.__defaultPreprocessorFunc;
+    var _preprocessorArray = __preprocessorArray ?? _system.__defaultPreprocessorFunc;
     if (is_array(_preprocessorArray))
     {
         var _i = 0;
@@ -214,7 +214,7 @@ function __ScribbleGen2_Parser()
             ++_i;
         }
     }
-    else if (is_callable(_preprocessorFunc))
+    else if (is_callable(_preprocessorArray))
     {
         _elementText = _preprocessorArray(_elementText);
     }

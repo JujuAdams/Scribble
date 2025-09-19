@@ -22,7 +22,9 @@ function __ScribbleClassElementParent(_text) constructor
     __revealMode = SCRIBBLE_DEFAULT_REVEAL_MODE;
     __spritesDontScale = true;
     
-    __preprocessorFunc = undefined;
+    __preprocessorArray      = undefined;
+    __preprocessorArrayDirty = true;
+    __preprocessorBakedArray = undefined;
     
     __startingFont   = _system.__state.__defaultFont;
     __startingColor  = __ScribbleProcessColor(SCRIBBLE_DEFAULT_COLOR);
@@ -1669,19 +1671,59 @@ function __ScribbleClassElementParent(_text) constructor
     
     #region Miscellaneous
     
-    static preprocessor = function(_function)
+    static preprocessor = function(_functionOrArray)
     {
-        if (_function != __preprocessorFunc)
+        __preprocessorArray = variable_clone(_functionOrArray);
+        __preprocessorArrayDirty = true;
+        
+        return self;
+    }
+    
+    static preprocessor_before = function(_functionOrArray)
+    {
+        if (__preprocessorArray == undefined)
         {
-            if ((_function != undefined) && (not script_exists(_function)))
-            {
-                __ScribbleError("Preprocessor functions must be stored in scripts in global scope");
-            }
-            
-            __modelDirty = true;
-            __preprocessorFunc = _function;
+            //If we don't have any preprocessor defined then presume we want to keep the default preprocessor around
+            __preprocessorArray = variable_clone(__defaultPreprocessorFunc);
         }
         
+        if (is_array(_functionOrArray))
+        {
+            //Add some dummy entries to the start
+            repeat(array_length(_functionOrArray))
+            {
+                array_insert(__preprocessorArray, 0, undefined);
+            }
+            
+            array_copy(__preprocessorArray, 0, _functionOrArray, 0, array_length(_functionOrArray));
+        }
+        else
+        {
+            array_insert(__preprocessorArray, 0, _functionOrArray);
+        }
+        
+        __preprocessorArrayDirty = true;
+        return self;
+    }
+    
+    static preprocessor_after = function(_functionOrArray)
+    {
+        if (__preprocessorArray == undefined)
+        {
+            //If we don't have any preprocessor defined then presume we want to keep the default preprocessor around
+            __preprocessorArray = variable_clone(__defaultPreprocessorFunc);
+        }
+        
+        if (is_array(_functionOrArray))
+        {
+            array_copy(__preprocessorArray, array_length(__preprocessorArray), _functionOrArray, 0, array_length(_functionOrArray));
+        }
+        else
+        {
+            array_push(__preprocessorArray, _functionOrArray);
+        }
+        
+        __preprocessorArrayDirty = true;
         return self;
     }
     
@@ -1840,6 +1882,17 @@ function __ScribbleClassElementParent(_text) constructor
     
     static __EnsureModel = function()
     {
+        if (__preprocessorArrayDirty)
+        {
+            __preprocessorArrayDirty = false;
+            
+            if (not array_equals(__preprocessorArray, __preprocessorBakedArray))
+            {
+                __modelDirty = true;
+                __preprocessorBakedArray = variable_clone(__preprocessorArray);
+            }
+        }
+        
         if (__modelDirty)
         {
             __modelDirty      = false;

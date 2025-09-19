@@ -47,9 +47,9 @@ function __ScribbleClassModel(_element) constructor
     __allowTextGetter      = _element.__allowTextGetter;
     __allowGlyphDataGetter = _element.__allowGlyphDataGetter;
     
-    __visualBboxes     = _element.__visualBboxes;
-    __revealMode       = _element.__revealMode;
-    __preprocessorFunc = _element.__preprocessorFunc;
+    __visualBboxes      = _element.__visualBboxes;
+    __revealMode        = _element.__revealMode;
+    __preprocessorArray = _element.__preprocessorBakedArray;
     
     __build();
     
