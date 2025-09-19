@@ -151,6 +151,7 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __gmMightRemoveUnusedAssets = (__gmVersionMajor >= 2025) || ((__gmVersionMajor == 2024) && ((__gmVersionMinor >= 1100) || (__gmVersionMinor == 11)));
         
         __defaultPreprocessorFunc = undefined;
+        __nullModel = new __ScribbleClassNullModel();
         
         //Main lookup for fonts
         __fontDataMap = ds_map_create();

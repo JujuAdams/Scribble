@@ -34,7 +34,8 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         __Refresh = function()
         {
-            if (__flushed) return undefined;
+            static _system = __ScribbleSystem();
+            if (__flushed) return _system.__nullModel;
             
             //Get rid of the existing model
             if (is_struct(__model))
@@ -73,10 +74,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             _y = floor(_y);
         }
         
-        //Get our model, and create one if needed
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return undefined;
-        
         //If enough time has elapsed since we drew this element then update our animation time
         if (__lastDrawn < _system.__frames)
         {
@@ -97,11 +94,11 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         //...aaaand set the matrix
         var _oldMatrix = matrix_get(matrix_world);
-        var _matrix = matrix_multiply(__UpdateMatrix(_model, _x, _y), _oldMatrix);
+        var _matrix = matrix_multiply(__UpdateMatrix(_x, _y), _oldMatrix);
         matrix_set(matrix_world, _matrix);
         
         //Submit the model
-        _model.__Draw(__page + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
+        __EnsureModel().__Draw(__page + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
         
         //Make sure we reset the world matrix
         matrix_set(matrix_world, _oldMatrix);
@@ -980,10 +977,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     static get_reveal_count = function()
     {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return 0;
-        
-        var _pages_array = _model.__pagesArray;
+        var _pages_array = __EnsureModel().__pagesArray;
         if (array_length(_pages_array) <= __page) return 0;
         var _pageData = _pages_array[__page];
         
@@ -1027,7 +1021,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         //Find the model from the last element
         var _model = __EnsureModel();
-        if (not is_struct(_model)) return;
         
         //Get page data
         var _pages_array = _model.__pagesArray;
@@ -1358,10 +1351,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         if (__typistOptions.__dynamicPositioning)
         {
-            var _model = __EnsureModel();
-            if (not is_struct(_model)) return;
-            
-            var _pages_array = _model.__pagesArray;
+            var _pages_array = __EnsureModel().__pagesArray;
             if (__page >= array_length(_pages_array))
             {
                 shader_set_uniform_f(_u_vTypewriterOffsetRange, 0, 0, 0);

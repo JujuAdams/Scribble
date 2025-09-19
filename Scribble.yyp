@@ -347,6 +347,7 @@
     {"id":{"name":"__ScribbleClassLine","path":"scripts/__ScribbleClassLine/__ScribbleClassLine.yy",},},
     {"id":{"name":"__ScribbleClassMaterial","path":"scripts/__ScribbleClassMaterial/__ScribbleClassMaterial.yy",},},
     {"id":{"name":"__ScribbleClassModel","path":"scripts/__ScribbleClassModel/__ScribbleClassModel.yy",},},
+    {"id":{"name":"__ScribbleClassNullModel","path":"scripts/__ScribbleClassNullModel/__ScribbleClassNullModel.yy",},},
     {"id":{"name":"__ScribbleClassPage","path":"scripts/__ScribbleClassPage/__ScribbleClassPage.yy",},},
     {"id":{"name":"__ScribbleClassTag","path":"scripts/__ScribbleClassTag/__ScribbleClassTag.yy",},},
     {"id":{"name":"__ScribbleClassUniqueElement","path":"scripts/__ScribbleClassUniqueElement/__ScribbleClassUniqueElement.yy",},},

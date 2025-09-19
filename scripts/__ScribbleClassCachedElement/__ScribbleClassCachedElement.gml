@@ -39,7 +39,8 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
         
         __Refresh = function()
         {
-            if (__flushed) return undefined;
+            static _system = __ScribbleSystem();
+            if (__flushed) return _system.__nullModel;
             
             //Get rid of the existing model
             if (is_struct(__model))
@@ -139,10 +140,6 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
             _y = floor(_y);
         }
         
-        //Get our model, and create one if needed
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return undefined;
-        
         //If enough time has elapsed since we drew this element then update our animation time
         if (__lastDrawn < _system.__frames)
         {
@@ -160,9 +157,9 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
         __SetStandardUniforms();
         __SetRevealUniforms(_revealIndex);
         
-        matrix_stack_push(__UpdateMatrix(_model, _x, _y));
+        matrix_stack_push(__UpdateMatrix(_x, _y));
         matrix_set(matrix_world, matrix_stack_top());
-        _model.__Draw(__page + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
+        __EnsureModel().__Draw(__page + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
         
         shader_reset();
         matrix_stack_pop();

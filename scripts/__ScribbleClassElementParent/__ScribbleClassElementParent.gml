@@ -465,7 +465,6 @@ function __ScribbleClassElementParent(_text) constructor
     static pan_to_glyph = function(_index)
     {
         var _model = __EnsureModel();
-        if (not is_struct(_model)) return undefined;
         
         if (not _model.__allowGlyphDataGetter)
         {
@@ -524,9 +523,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     static get_pan_max = function(_page = __page)
     {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return 0;
-        return _model.__GetScrollMaxX(_page);
+        return __EnsureModel().__GetScrollMaxX(_page);
     }
     
     static __AutoPan = function(_page = __page)
@@ -620,8 +617,6 @@ function __ScribbleClassElementParent(_text) constructor
     static scroll_to_glyph = function(_index)
     {
         var _model = __EnsureModel();
-        if (not is_struct(_model)) return self;
-        
         if (_model.__allowGlyphDataGetter)
         {
             var _glyphData = _model.__GetGlyphData(_index, __page);
@@ -648,7 +643,6 @@ function __ScribbleClassElementParent(_text) constructor
     static scroll_to_line = function(_index)
     {
         var _model = __EnsureModel();
-        if (not is_struct(_model)) return self;
         var _line_data = _model.__GetLineData(_index, __page);
         return scroll_to(_line_data.y, _line_data.y + _line_data.height-1);
     }
@@ -701,9 +695,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     static get_scroll_max = function(_page = __page)
     {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return 0;
-        return _model.__GetScrollMaxY(_page);
+        return __EnsureModel().__GetScrollMaxY(_page);
     }
     
     static __AutoScroll = function(_page = __page)
@@ -767,9 +759,6 @@ function __ScribbleClassElementParent(_text) constructor
     
     static __GetGlyphLine = function(_index)
     {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return 0;
-        
         if (_index <= 0)
         {
             return 0;
@@ -777,7 +766,7 @@ function __ScribbleClassElementParent(_text) constructor
         
         _index = floor(_index);
         
-        var _lineArray = _model.__pagesArray[__page].__lineDataArray;
+        var _lineArray = __EnsureModel().__pagesArray[__page].__lineDataArray;
         var _i = 0;
         repeat(array_length(_lineArray))
         {
@@ -1022,13 +1011,10 @@ function __ScribbleClassElementParent(_text) constructor
     
     static region_detect = function(_elementX, _elementY, _pointerX, _pointerY)
     {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return undefined;
-        
-        var _page        = _model.__pagesArray[__page];
+        var _page        = __EnsureModel().__pagesArray[__page];
         var _regionArray = _page.__regionArray;
         
-        var _matrix = __UpdateMatrix(_model, _elementX, _elementY);
+        var _matrix = __UpdateMatrix(_elementX, _elementY);
         
         if (__matrixInverse == undefined)
         {
@@ -1078,10 +1064,7 @@ function __ScribbleClassElementParent(_text) constructor
             return;
         }
         
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return undefined;
-        
-        var _page        = _model.__pagesArray[__page];
+        var _page        = __EnsureModel().__pagesArray[__page];
         var _regionArray = _page.__regionArray;
         
         var _i = 0;
@@ -1117,20 +1100,12 @@ function __ScribbleClassElementParent(_text) constructor
     
     static region_get_bboxes = function()
     {
-        static _emptyArray = [];
-        
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return _emptyArray;
-        
-        return _model.__pagesArray[__page].__regionArray;
+        return __EnsureModel().__pagesArray[__page].__regionArray;
     }
     
     static region_draw = function(_elementX, _elementY, _name, _padding = 0, _sprite = sprScribbleFallbackDot, _image = 0, _color = c_white, _alpha = 1)
     {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return undefined;
-        
-        var _page        = _model.__pagesArray[__page];
+        var _page        = __EnsureModel().__pagesArray[__page];
         var _regionArray = _page.__regionArray;
         
         var _i = 0;
@@ -1140,7 +1115,7 @@ function __ScribbleClassElementParent(_text) constructor
             if (_region.name == _name)
             {
                 var _oldMatrix = matrix_get(matrix_world); //FIXME - Use a stack here
-                var _matrix = matrix_multiply(__UpdateMatrix(_model, _elementX, _elementY), _oldMatrix);
+                var _matrix = matrix_multiply(__UpdateMatrix(_elementX, _elementY), _oldMatrix);
                 matrix_set(matrix_world, _matrix);
                 
                 //TODO - Make regions a class and move this code to a method?
@@ -1185,31 +1160,7 @@ function __ScribbleClassElementParent(_text) constructor
             __bboxDirty = false;
             var _bboxMatrix = __bboxMatrix;
             
-            var _model = __EnsureModel();
-            if (not is_struct(_model))
-            {
-                _bboxMatrix[@  0] = 1;
-                _bboxMatrix[@  1] = 0;
-                _bboxMatrix[@  4] = 0;
-                _bboxMatrix[@  5] = 1;
-                _bboxMatrix[@ 12] = -__originX;
-                _bboxMatrix[@ 13] = -__originY;
-                
-                __bboxAABBLeft   = 0;
-                __bboxAABBTop    = 0;
-                __bboxAABBRight  = 0;
-                __bboxAABBBottom = 0;
-                __bboxOOBx0      = 0;
-                __bboxOOBy0      = 0;
-                __bboxOOBx1      = 0;
-                __bboxOOBy1      = 0;
-                __bboxOOBx2      = 0;
-                __bboxOOBy2      = 0;
-                __bboxOOBx3      = 0;
-                __bboxOOBy3      = 0;
-                return;
-            }
-            
+            var _model  = __EnsureModel();
             var _xScale = __scaleToBoxScale*_model.__fitScale*__postXScale;
             var _yScale = __scaleToBoxScale*_model.__fitScale*__postYScale;
             
@@ -1349,30 +1300,12 @@ function __ScribbleClassElementParent(_text) constructor
         }
         
         var _model = __EnsureModel();
-        if (not is_struct(_model))
-        {
-            //No extant model, return an empty bounding box
-            return {
-                left:   _x,
-                top:    _y,
-                right:  _x,
-                bottom: _y,
-                
-                width:  1,
-                height: 1,
-                
-                x0: _x,  y0: _y,
-                x1: _x,  y1: _y,
-                x2: _x,  y2: _y,
-                x3: _x,  y3: _y
-            };
-        }
         
         if (_typist != undefined)
         {
             var _bbox = _model.__GetBboxRevealed(__page, 0, _revealIndex ?? __typistHeadArray[0], __paddingL, __paddingT, __paddingR, __paddingB);
         }
-        else if (__tw_reveal != undefined)
+        else if (__tw_reveal != undefined) //FIXME
         {
             var _bbox = _model.__GetBboxRevealed(__page, 0, __tw_reveal, __paddingL, __paddingT, __paddingR, __paddingB);
         }
@@ -1438,20 +1371,10 @@ function __ScribbleClassElementParent(_text) constructor
     static __SetPage = function(_page)
     {
         var _oldPage = __page;
+        _page = clamp(_page, 0, __EnsureModel().__GetPageCount()-1);
         
-        var _model = __EnsureModel();
-        if (is_struct(_model))
-        {
-            _page = clamp(_page, 0, _model.__GetPageCount()-1);
-            
-            __page = round(_page);
-            __pageFraction = _page - __page;
-        }
-        else
-        {
-            __page = 0;
-            __pageFraction = 0;
-        }
+        __page = round(_page);
+        __pageFraction = _page - __page;
         
         if (_oldPage != __page)
         {
@@ -1473,9 +1396,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     static get_page_count = function()
     {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return 0;
-        return _model.__GetPageCount();
+        return __EnsureModel().__GetPageCount();
     }
     
     static on_last_page = function()
@@ -1491,58 +1412,44 @@ function __ScribbleClassElementParent(_text) constructor
     
     static get_wrapped = function()
     {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return false;
-        return _model.__GetWrapped();
+        return __EnsureModel().__GetWrapped();
     }
     
     /// @param [page]
     static get_text = function(_page = __page)
     {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return "";
-        return _model.__GetText(_page);
+        return __EnsureModel().__GetText(_page);
     }
     
     /// @param [page]
     static get_line_data = function(_index, _page = __page)
     {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return undefined;
-        return _model.__GetLineData(_index, _page);
+        return __EnsureModel().__GetLineData(_index, _page);
     }
     
     /// @param index
     /// @param [page]
     static get_glyph_data = function(_index, _page = __page)
     {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return undefined;
-        return _model.__GetGlyphData(_index, _page);
+        return __EnsureModel().__GetGlyphData(_index, _page);
     }
     
     /// @param [page]
     static get_glyph_count = function(_page = __page)
     {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return 0;
-        return _model.__GetGlyphCount(_page);
+        return __EnsureModel().__GetGlyphCount(_page);
     }
     
     /// @param [page]
     static get_line_count = function(_page = __page)
     {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return 0;
-        return _model.__GetLineCount(_page);
+        return __EnsureModel().__GetLineCount(_page);
     }
     
     /// @param [page]
     static get_block_size = function(_integer = true)
     {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return 0;
-        return _model.__GetLinesVisible(_integer);
+        return __EnsureModel().__GetLinesVisible(_integer);
     }
     
     #endregion
@@ -1577,9 +1484,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     static is_animated = function()
     {
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return false;
-        return _model.__hasAnimation;
+        return __EnsureModel().__hasAnimation;
     }
     
     #endregion
@@ -1642,7 +1547,8 @@ function __ScribbleClassElementParent(_text) constructor
     static build = function(_freeze)
     {
         var _model = __EnsureModel();
-        if (_freeze && is_struct(_model))
+        
+        if (_freeze)
         {
             _model.__Freeze();
         }
@@ -1731,13 +1637,10 @@ function __ScribbleClassElementParent(_text) constructor
     {
         static _empty_array = [];
         
-        var _model = __EnsureModel();
-        if (not is_struct(_model)) return _empty_array;
+        var _page = __EnsureModel().__pagesArray[_pageIndex];
+        var _eventStruct = _page.__eventsDict;
         
-        var _page = _model.__pagesArray[_pageIndex];
-        var _event_struct = _page.__eventsDict;
-        
-        var _events = _event_struct[$ _position];
+        var _events = _eventStruct[$ _position];
         if (not is_array(_events)) return _empty_array;
         
         return _events;
@@ -2079,7 +1982,6 @@ function __ScribbleClassElementParent(_text) constructor
         __scaleToBoxDirty = false;
         
         var _model = __EnsureModel();
-        if (not is_struct(_model)) return undefined;
         
         var _xScale = 1.0;
         var _yScale = 1.0;
@@ -2097,12 +1999,14 @@ function __ScribbleClassElementParent(_text) constructor
         }
     }
     
-    static __UpdateMatrix = function(_model, _x, _y)
+    static __UpdateMatrix = function(_x, _y)
     {
         __UpdateScaleToBoxScale();
         
         if (__matrixDirty || (__matrixX != _x) || (__matrixY != _y))
         {
+            var _model = __EnsureModel();
+            
             __matrixDirty   = false;
             __matrixInverse = undefined;
             __matrixX       = _x;
