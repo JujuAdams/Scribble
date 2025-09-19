@@ -138,11 +138,11 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return __SetPage(_page);
     }
     
-    static reveal_type = function(_state)
+    static reveal_mode = function(_state)
     {
-        if (__revealType != _state)
+        if (__revealMode != _state)
         {
-            __revealType = _state;
+            __revealMode = _state;
             __modelDirty = true;
         }
         
@@ -151,7 +151,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     static get_reveal_type = function()
     {
-        return __revealType;
+        return __revealMode;
     }
     
     static scroll_between_blocks = function(_state = true)
@@ -945,7 +945,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         }
         
         var _glyphDataGetter = _model.__allowGlyphDataGetter;
-        var _perCharacter = (__revealType == SCRIBBLE_REVEAL_PER_CHAR);
+        var _perCharacter = (__revealMode == SCRIBBLE_REVEAL_PER_CHAR);
         
         __typistHeadLimitArray[@ 0] = _pageRevealCount; //TODO - Can we move this elsewhere?
         
@@ -1155,14 +1155,14 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                 
                                 if (__typistPauseOnOverflow)
                                 {
-                                    if (__revealType == SCRIBBLE_REVEAL_PER_CHAR)
+                                    if (__revealMode == SCRIBBLE_REVEAL_PER_CHAR)
                                     {
                                         if (__GetGlyphBlock(__typistEventRevealIndex) < __GetGlyphBlock(__typistEventRevealIndex+1))
                                         {
                                             array_push(__eventStack, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_PAUSE, undefined));
                                         }
                                     }
-                                    else if (__revealType == SCRIBBLE_REVEAL_PER_LINE)
+                                    else if (__revealMode == SCRIBBLE_REVEAL_PER_LINE)
                                     {
                                         if (__GetLineBlock(__typistEventRevealIndex) < __GetLineBlock(__typistEventRevealIndex+1))
                                         {
@@ -1195,7 +1195,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                     {
                         __typistHeadArray[@ 0] = _eventRevealIndex;
                         
-                        if (__revealType == SCRIBBLE_REVEAL_PER_CHAR)
+                        if (__revealMode == SCRIBBLE_REVEAL_PER_CHAR)
                         {
                             if (__scrollBetweenBlocks)
                             {
@@ -1206,7 +1206,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                 scroll_to_glyph(_eventRevealIndex);
                             }
                         }
-                        else if (__revealType == SCRIBBLE_REVEAL_PER_LINE)
+                        else if (__revealMode == SCRIBBLE_REVEAL_PER_LINE)
                         {
                             if (__scrollBetweenBlocks)
                             {
@@ -1311,7 +1311,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 }
                 else
                 {
-                    if (__revealType != SCRIBBLE_REVEAL_PER_CHAR)
+                    if (__revealMode != SCRIBBLE_REVEAL_PER_CHAR)
                     {
                         __ScribbleError("Must use `SCRIBBLE_REVEAL_PER_CHAR` with dynamic positioning");
                     }

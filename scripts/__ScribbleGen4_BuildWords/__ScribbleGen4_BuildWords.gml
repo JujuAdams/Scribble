@@ -56,8 +56,8 @@ function __ScribbleGen4_BuildWords()
         var _overallBidi = __overallBidi;
     }
     
-    var _charReveal  = (__revealType == SCRIBBLE_REVEAL_PER_CHAR) && (_sectionCount <= 0);
-    var _wordReveal  = (__revealType == SCRIBBLE_REVEAL_PER_WORD) && (_sectionCount <= 0);
+    var _charReveal  = (__revealMode == SCRIBBLE_REVEAL_PER_CHAR) && (_sectionCount <= 0);
+    var _wordReveal  = (__revealMode == SCRIBBLE_REVEAL_PER_WORD) && (_sectionCount <= 0);
     var _wrapPerChar = __layoutForcePerChar; //TODO - Optimize by checking outside the loop
     
     var _gridRegionWriteMax = _charReveal? __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX : __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX;

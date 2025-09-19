@@ -190,7 +190,7 @@ function __ScribbleGen6_BuildLines()
     var _lineSpacingAdd      = __lineSpacingAdd;
     var _lineSpacingMultiply = __lineSpacingMultiply;
     
-    var _line_reveal = (__revealType == SCRIBBLE_REVEAL_PER_LINE) && (_sectionCount <= 0);
+    var _line_reveal = (__revealMode == SCRIBBLE_REVEAL_PER_LINE) && (_sectionCount <= 0);
     
     var _failedFit = false;
     var _forcedBreak = true; //Start with a forced break because it's the first line!
