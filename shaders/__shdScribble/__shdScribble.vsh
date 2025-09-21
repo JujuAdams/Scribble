@@ -62,11 +62,10 @@ const float PI = 3.14159265359;
 // Attributes, Varyings, and Uniforms
 
 
-attribute vec3 in_Position;     //{X, Y, Animation index}
-attribute vec3 in_Normal;       //{Reveal index, Sprite data, Bitpacked effect flags}
-attribute vec4 in_Colour;       //Colour
-attribute vec2 in_TextureCoord; //UVs
-attribute vec2 in_Colour2;      //{dX, dY}
+attribute vec3 in_Position; //{X, Y, Animation index}
+attribute vec3 in_Normal;   //{Reveal index, Sprite data, Bitpacked effect flags}
+attribute vec4 in_Colour;   //Colour
+attribute vec4 in_Colour2;  //UVs, {dX, dY}
 
 varying vec2 v_vModelPosition;
 varying vec2 v_vTexcoord;
@@ -355,18 +354,18 @@ void main()
         centre = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
         
         vec2 orientation = bezierDerivative(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
-        v_vModelPosition = rotate_by_vector(centre - in_Colour2, centre, normalize(orientation));
+        v_vModelPosition = rotate_by_vector(centre - in_Colour2.zw, centre, normalize(orientation));
         
         vec2 perpendicular = normalize(vec2(-u_aBezier[2].y, u_aBezier[2].x));
         v_vModelPosition += in_Position.y*perpendicular;
     }
     else
     {
-        centre = v_vModelPosition + in_Colour2;
+        centre = v_vModelPosition + in_Colour2.zw;
     }
     
     v_vModelPosition += u_vSkew*centre.yx;
-    if (SLANT_FLAG > 0.5) v_vModelPosition.x += in_Colour2.y*SLANT_GRADIENT;
+    if (SLANT_FLAG > 0.5) v_vModelPosition.x += in_Colour2.w*SLANT_GRADIENT;
     
     
     
@@ -451,5 +450,5 @@ void main()
     
     
     //Texture
-    v_vTexcoord = in_TextureCoord;
+    v_vTexcoord = in_Colour2.xy;
 }
