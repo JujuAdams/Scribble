@@ -8,7 +8,7 @@ if (toggle)
 var _t = get_timer();
 if (not keyboard_check(vk_shift))
 {
-    scribble(test_text).max_size(500).layout(SCRIBBLE_LAYOUT_WRAP).draw(room_width div 2, room_height div 2);
+    scribble(test_text).max_size(500).layout_wrap().draw(room_width div 2, room_height div 2);
 }
 _t = get_timer() - _t;
 
