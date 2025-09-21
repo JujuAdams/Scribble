@@ -1789,7 +1789,15 @@ function __ScribbleClassElementParent(_text) constructor
         {
             __preprocessorArrayDirty = false;
             
-            if (not array_equals(__preprocessorArray, __preprocessorBakedArray))
+            if (is_array(__preprocessorArray) && is_array(__preprocessorBakedArray))
+            {
+                if (not array_equals(__preprocessorArray, __preprocessorBakedArray))
+                {
+                    __modelDirty = true;
+                    __preprocessorBakedArray = variable_clone(__preprocessorArray);
+                }
+            }
+            else if (__preprocessorArray != __preprocessorBakedArray)
             {
                 __modelDirty = true;
                 __preprocessorBakedArray = variable_clone(__preprocessorArray);
