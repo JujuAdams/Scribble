@@ -100,9 +100,12 @@
 #macro __SCRIBBLE_COMMAND_TAG_SYNC                   "sync"
 #macro __SCRIBBLE_COMMAND_TAG_SPEED                  "speed"
 #macro __SCRIBBLE_COMMAND_TAG_UNSPEED                "/speed"
-#macro __SCRIBBLE_COMMAND_TAG_AUDIO                  "__scribble_audio_playback__"
-#macro __SCRIBBLE_COMMAND_TAG_TYPIST_SOUND           "__scribble_typist_sound__"
-#macro __SCRIBBLE_COMMAND_TAG_TYPIST_SOUND_PER_CHAR  "__scribble_typist_sound_per_char__"
+#macro __SCRIBBLE_COMMAND_TAG_AUDIO                  "__ScribbleAudioPlayback__"
+#macro __SCRIBBLE_COMMAND_TAG_TYPIST_SOUND           "__ScribbleTypistSound__"
+#macro __SCRIBBLE_COMMAND_TAG_TYPIST_SOUND_PER_CHAR  "__ScribbleTypistSoundPerChar__"
+#macro __SCRIBBLE_COMMAND_TAG_NEXT_LINE              "__ScribbleNextLine__"
+#macro __SCRIBBLE_COMMAND_TAG_NEXT_BLOCK             "__ScribbleNextBlock__"
+#macro __SCRIBBLE_COMMAND_TAG_NEXT_PAGE              "__ScribbleNextPage__"
 
 #macro __SCRIBBLE_DEVANAGARI_OFFSET  0xFFFF //This won't work for any other value
 

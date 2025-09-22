@@ -36,7 +36,6 @@ function __ScribbleClassPage(_model) constructor
     __vertexBufferArray = [];
     __textureToVertexBufferDict = {};
     
-    __eventsDict  = {};
     __regionArray = [];
     
     static __Finalize = function(_pageEndLine)

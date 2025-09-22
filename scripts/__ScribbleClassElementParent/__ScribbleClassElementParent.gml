@@ -1585,48 +1585,54 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static get_events = function(_revealIndex, _pageIndex = __pageInteger)
+    static get_events = function(_revealIndex, _array = [])
     {
-        var _page = __EnsureModel().__pagesArray[_pageIndex];
-        var _eventStruct = _page.__eventsDict;
-        
-        var _eventsArray = _eventStruct[$ _revealIndex];
-        if (not is_array(_events))
+        //Copy events from the page
+        var _eventsArray = __EnsureModel().__eventsDict[$ _revealIndex];
+        if (is_array(_eventsArray))
         {
-            var _eventsArray = [];
+            array_copy(_array, array_length(_array), _eventsArray, 0, array_length(_eventsArray));
         }
+        
+        //Handle various typist features
+        var _delay = 0;
+        var _commandTag = undefined;
         
         if (__typistRevealMode == SCRIBBLE_REVEAL_PER_CHAR)
         {
-            var _delay = 0;
-            
             if (__GetLinebreakAfterGlyph(_revealIndex))
             {
                 _delay = max(_delay, __typistOptions.__lineDelay ?? infinity);
+                _commandTag = __SCRIBBLE_COMMAND_TAG_NEXT_LINE;
             }
             
             if (__GetBlockbreakAfterGlyph(_revealIndex))
             {
                 _delay = max(_delay, __typistOptions.__blockDelay ?? infinity);
+                _commandTag = __SCRIBBLE_COMMAND_TAG_NEXT_BLOCK;
             }
             
             if (__GetPagebreakAfterGlyph(_revealIndex))
             {
                 _delay = max(_delay, __typistOptions.__pageDelay ?? infinity);
+                _commandTag = __SCRIBBLE_COMMAND_TAG_NEXT_PAGE;
             }
         }
         else if (__typistRevealMode == SCRIBBLE_REVEAL_PER_LINE)
         {
-            var _delay = __typistOptions.__lineDelay ?? infinity;
+            _delay = __typistOptions.__lineDelay ?? infinity;
+            _commandTag = __SCRIBBLE_COMMAND_TAG_NEXT_LINE;
             
             if (__GetBlockbreakAfterLine(_revealIndex))
             {
                 _delay = max(_delay, __typistOptions.__blockDelay ?? infinity);
+                _commandTag = __SCRIBBLE_COMMAND_TAG_NEXT_BLOCK;
             }
             
             if (__GetPagebreakAfterLine(_revealIndex))
             {
                 _delay = max(_delay, __typistOptions.__pageDelay ?? infinity);
+                _commandTag = __SCRIBBLE_COMMAND_TAG_NEXT_PAGE;
             }
         }
         else
@@ -1636,17 +1642,25 @@ function __ScribbleClassElementParent(_text) constructor
         
         if (_delay > 0)
         {
+            //Add a pause or delay if required
             if (is_infinity(_delay))
             {
-                array_push(_eventsArray, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_PAUSE, undefined));
+                array_push(_array, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_PAUSE, undefined));
             }
             else
             {
-                array_push(_eventsArray, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_DELAY, _delay));
+                array_push(_array, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_DELAY, _delay));
             }
+            
         }
         
-        return _eventsArray;
+        if (_commandTag != undefined)
+        {
+            //Add an instruction for the typist to move to the next block or page
+            array_push(_array, new __ScribbleClassEvent(_commandTag, undefined));
+        }
+        
+        return _array;
     }
     
     /// @param templateFunction/Array
@@ -2244,8 +2258,7 @@ function __ScribbleClassElementParent(_text) constructor
         var _blockSize = get_block_size();
         var _line = _blockSize-1 + max(0, _index)*(_blockSize - __blockTrim);
         
-        var _model = __pagesArray[_page];
-        var _pageStruct = __EnsureModel().__pagesArray[clamp(_page, 0, _model.__GetPageCount())];
+        var _pageStruct = __EnsureModel().__GetPage(_page);
         _line = clamp(_line, 0, _pageStruct.__lineEnd);
         
         return _pageStruct.__lineDataArray[_line].glyphEnd;
@@ -2255,12 +2268,7 @@ function __ScribbleClassElementParent(_text) constructor
     {
         var _blockSize = get_block_size();
         var _line = _blockSize-1 + max(0, _index)*(_blockSize - __blockTrim);
-        
-        var _model = __pagesArray[_page];
-        var _pageStruct = __EnsureModel().__pagesArray[clamp(_page, 0, _model.__GetPageCount())];
-        _line = clamp(_line, 0, _pageStruct.__lineEnd);
-        
-        return _line;
+        return clamp(_line, 0, __EnsureModel().__GetPage(_page).__lineEnd);
     }
     
     #endregion

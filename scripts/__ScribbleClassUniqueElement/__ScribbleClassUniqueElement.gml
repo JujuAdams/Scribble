@@ -123,7 +123,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     
     
-    __typistAudioGain = 1;
     
     __easeMethod        = SCRIBBLE_EASE_LINEAR;
     __easeDX            = 0;
@@ -136,7 +135,11 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     __typistCharDelay     = false;
     __typistCharDelayDict = {};
     
+    __typistOptions   = {};
+    __typistAudioGain = 1;
+    
     typist_reset();
+    typist_options_reset();
     
     
     
@@ -150,11 +153,19 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         __typistSyncVoice    = undefined;
         __typistSyncPauseEnd = undefined;
         
-        __typistEventRevealIndex = -1;
-        __prevAudioReveal = 0;
+        __typistRevealIndex = -1;
+        __prevAudioReveal   = 0;
         
         __typistHeadArray      = array_create(__SCRIBBLE_HEAD_COUNT, 0);
         __typistHeadLimitArray = [__SCRIBBLE_VERY_BIG, 0, 0]; //Must match `__SCRIBBLE_HEAD_COUNT`
+        
+        __typistRevealIndex = -1;
+        __typistLineIndex   =  0;
+        __typistBlockIndex  =  0;
+        __typistPageIndex   =  0;
+        
+        __typistTargetScroll = 0;
+        __typistTargetPage   = 0;
         
         __typistSoundVoice = -1;
         
@@ -164,9 +175,11 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         __typistDelayEnd    = -1;
         __typistInlineSpeed = 1;
         __typistEventStack  = [];
+    }
     
-        __typistTargetScroll = 0;
-        __typistTargetPage   = 0;
+    static __TypistUpdateVariables = function()
+    {
+        __typistHeadLimitArray[@ 0] = __GetBlockGlyphEnd(__typistBlockIndex, __typistPageIndex);
     }
     
     static typist_start = function()
@@ -268,7 +281,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             if (not __typistSuspended)
             {
                 __typistSuspended = true;
-                __TypistStartNewHead(__typistEventRevealIndex);
+                __TypistStartNewHead(__typistRevealIndex);
             }
         }
         else
@@ -331,7 +344,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return self;
     }
     
-    static typist_options_apply = function(_struct)
+    static typist_options = function(_struct)
     {
         static _expectedNamesDict = {
             //Whether text is animating "in" (`true`) or "out" (`false`). Events will only execute when
@@ -423,7 +436,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         {
             var _namesArray = variable_struct_get_names(_struct);
             var _i = 0;
-            repeat(_namesArray)
+            repeat(array_length(_namesArray))
             {
                 if (not variable_struct_exists(_expectedNamesDict, _namesArray[_i]))
                 {
@@ -480,7 +493,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             }
         }
         
-        if (other.__dynamicPositioning)
+        if (__typistOptions.__dynamicPositioning)
         {
             allow_glyph_data_getter();
         }
@@ -488,7 +501,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return self;
     }
     
-    static typist_options_get = function()
+    static get_typist_options = function()
     {
         return __typistOptions;
     }
@@ -627,7 +640,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         repeat(array_length(__typistEventStack))
         {
             //Pop the first event from the stack
-            var _eventStruct = array_shift(__typistEventStack);
+            var _eventStruct   = array_shift(__typistEventStack);
             var _eventPosition = _eventStruct.revealIndex;
             var _eventName     = _eventStruct.name;
             var _eventData     = _eventStruct.data;
@@ -638,7 +651,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 case __SCRIBBLE_COMMAND_TAG_PAUSE:
                     if (not __typistSyncStarted)
                     {
-                        __TypistStartNewHead(__typistEventRevealIndex);
+                        __TypistStartNewHead(__typistRevealIndex);
                         __typistPaused = true;
                         
                         return false;
@@ -651,7 +664,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                     {
                         if (__typistDelayEnd == undefined) //Not delayed
                         {
-                            __TypistStartNewHead(__typistEventRevealIndex);
+                            __TypistStartNewHead(__typistRevealIndex);
                         }
                         
                         var _duration = (array_length(_eventData) >= 1)? real(_eventData[0]) : SCRIBBLE_DEFAULT_DELAY_DURATION;
@@ -667,7 +680,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                     {
                         if (__typistSyncPauseEnd == undefined) //Not delayed
                         {
-                            __TypistStartNewHead(__typistEventRevealIndex);
+                            __TypistStartNewHead(__typistRevealIndex);
                         }
                         
                         __typistSyncPauseEnd = real(_eventData[0]);
@@ -707,7 +720,40 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                     }
                 break;
                 
-                //Probably a current event
+                case __SCRIBBLE_COMMAND_TAG_NEXT_LINE:
+                    ++__typistLineIndex;
+                break;
+                
+                case __SCRIBBLE_COMMAND_TAG_NEXT_BLOCK:
+                    ++__typistLineIndex;
+                    ++__typistBlockIndex;
+                    
+                    //FIXME - Handle infinite speed here
+                    
+                    __typistTargetScroll = __GetBlockY(__typistBlockIndex);
+                    __typistTargetPage   = __typistPageIndex; //Cancel scrolling between pages
+                    
+                    __TypistUpdateVariables();
+                    
+                    return false;
+                break;
+                
+                case __SCRIBBLE_COMMAND_TAG_NEXT_PAGE:
+                    __typistLineIndex  = 0;
+                    __typistBlockIndex = 0;
+                    ++__typistPageIndex;
+                    
+                    //FIXME - Handle infinite speed here
+                    
+                    __typistTargetScroll = 0; //Cancel scrolling between blocks
+                    __typistTargetPage   = __typistPageIndex;
+                    
+                    __TypistUpdateVariables();
+                    
+                    return false;
+                break;
+                        
+                //Probably a custom event
                 default:
                     //FIXME - We should not be passing the reveal index to external functions (should be the character index)
                     
@@ -791,7 +837,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     {
         if (is_callable(__typistOptions.__methodPerReveal))
         {
-            __typistOptions.__methodPerReveal(_functionScope, __typistEventRevealIndex - 1, self);
+            __typistOptions.__methodPerReveal(_functionScope, __typistRevealIndex - 1, self);
         }
     }
     
@@ -874,6 +920,8 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     static set_position = function(_value)
     {
+        //FIXME - Reimplement
+        
         _value = max(0, _value);
         
         if (_value >= __typistHeadLimitArray[0])
@@ -958,13 +1006,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         {
             unpause();
         }
-        else if (get_state() == 1)
-        {
-            if (not on_last_page())
-            {
-                __typistTargetPage = get_page()+1;
-            }
-        }
         else
         {
             skip();
@@ -1047,6 +1088,12 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     {
         if (not __typistRunning) return;
         
+        //If we've recently reset the typist, update the head position
+        if (__typistRevealIndex < 0)
+        {
+            __TypistUpdateVariables();
+        }
+        
         //Ensure we unhook synchronisation if the audio instance stops playing
         if (__typistSyncStarted)
         {
@@ -1061,13 +1108,10 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         var _pagesArray = _model.__pagesArray;
         if (array_length(_pagesArray) == 0) return;
         var _pageData = _pagesArray[__pageInteger];
-        var _pageRevealEnd   = _pageData.__revealEnd;
         var _pageRevealCount = _pageData.__revealCount;
         
         var _glyphDataGetter = _model.__allowGlyphDataGetter;
         var _perCharacter = (__typistRevealMode == SCRIBBLE_REVEAL_PER_CHAR);
-        
-        __typistHeadLimitArray[@ 0] = 1 + __GetGlyphThisBlockGlyphEnd(__typistHeadArray[0]); //TODO - Can we move this elsewhere?
         
         if (not __typistOptions.__appear)
         {
@@ -1139,28 +1183,21 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 // Pop the event stack
                 ///////
             
-                if (_canMove && (array_length(__typistEventStack) > 0))
-                {
-                    if (not __TypistProcessEventStack(_functionScope))
-                    {
-                        _canMove = false;
-                    }
-                }
-                
-                if (_canMove)
-                {
-                    if (__pageInteger != __typistTargetPage)
-                    {
-                        _canMove = false;
-                        __SetPage(__pageInteger + clamp(__typistTargetPage - __pageInteger, -__typistPageSpeed, __typistPageSpeed));
-                        __typistTargetScroll = 0;
-                    }
-                }
-                
-                if (_canMove && (not is_infinity(__typistOptions.__blockScrollSpeed)) && (__scrollYArray[__pageInteger] != __typistTargetScroll))
+                if (_canMove && (not __TypistProcessEventStack(_functionScope)))
                 {
                     _canMove = false;
-                    __scrollYArray[@ __pageInteger] += clamp(__typistTargetScroll - __scrollYArray[@ __pageInteger], -__typistOptions.__blockScrollSpeed, __typistOptions.__blockScrollSpeed);
+                }
+                
+                if (_canMove && (__pageInteger != __typistTargetPage))
+                {
+                    _canMove = false;
+                    __SetPage(__pageInteger + clamp(__typistTargetPage - __pageInteger, -__typistPageSpeed, __typistPageSpeed));
+                }
+                
+                if (_canMove && (__scrollYArray[__pageInteger] != __typistTargetScroll))
+                {
+                    _canMove = false;
+                    __scrollYArray[@ __pageInteger] += clamp(__typistTargetScroll - __scrollYArray[__pageInteger], -__typistOptions.__blockScrollSpeed, __typistOptions.__blockScrollSpeed);
                 }
                 
                 ///////
@@ -1171,15 +1208,17 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 {
                     var _useGlyphData = _glyphDataGetter && _perCharacter;
                     
-                    var _eventRevealIndex = __typistHeadArray[0];
-                    var _remaining = min(1 + _pageRevealEnd - _eventRevealIndex, _delta);
-                    
-                    if (_remaining > 0)
+                    var _remaining = min(__typistHeadLimitArray[0] - __typistHeadArray[0], _delta);
+                    if (_remaining <= 0)
+                    {
+                        __typistHeadArray[@ 0] += _delta;
+                    }
+                    else
                     {
                         repeat(ceil(_remaining))
                         {
                             //Scan for events one character at a time
-                            _eventRevealIndex += min(1, _remaining);
+                            __typistHeadArray[@ 0] += min(1, _remaining);
                             _remaining -= 1;
                             
                             // CatDog
@@ -1212,30 +1251,28 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                             // Cat.[pause][/page]
                             // FIXME - figure out what's meant to happen here
                             
-                            if (floor(_eventRevealIndex) > __typistEventRevealIndex)
+                            if (floor(__typistHeadArray[0]) > __typistRevealIndex)
                             {
-                                ++__typistEventRevealIndex;
+                                ++__typistRevealIndex;
                                 _moved = true;
                                 
                                 __TypistExecuteFunctionPerReveal();
                                 
-                                //Get an array of events for this reveal index
-                                var _foundEventsArray = get_events(__typistEventRevealIndex, undefined);
-                                var _foundEventsCount = array_length(_foundEventsArray);
+                                //Find events and add them to the stack
+                                get_events(__typistRevealIndex, __typistEventStack);
                                 
-                                //FIXME - Abstract out to a method
                                 //Only add a per-character delay if we have glyph data to work with
                                 if (_useGlyphData && __typistCharDelay) //Don't check character delay until we're on the first visible character (index=1)
                                 {
                                     //Always delay the last character if we find events to execute at the end of the page
-                                    if ((__typistEventRevealIndex < _pageRevealCount-1) || (_foundEventsCount > 0))
+                                    if ((__typistRevealIndex < __typistHeadLimitArray[0]-1) || (array_length(__typistEventStack) > 0))
                                     {
-                                        var _glyphOrd = _pageData.__glyphGrid[# __typistEventRevealIndex-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
+                                        var _glyphOrd = _pageData.__glyphGrid[# __typistRevealIndex-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
                                         var _delay = __typistCharDelayDict[$ _glyphOrd] ?? 0;
                                         
-                                        if (__typistEventRevealIndex >= 2)
+                                        if (__typistRevealIndex >= 2)
                                         {
-                                            _glyphOrd = (_glyphOrd << 32) | _pageData.__glyphGrid[# __typistEventRevealIndex-2, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
+                                            _glyphOrd = (_glyphOrd << 32) | _pageData.__glyphGrid[# __typistRevealIndex-2, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
                                             var _double_char_delay = __typistCharDelayDict[$ _glyphOrd];
                                             _double_char_delay = (_double_char_delay == undefined)? 0 : _double_char_delay;
                                             
@@ -1244,56 +1281,35 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                         
                                         if (_delay > 0)
                                         {
-                                            array_push(__typistEventStack, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_DELAY, [_delay]));
+                                            array_insert(__typistEventStack, 0, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_DELAY, [_delay]));
                                         }
                                     }
                                 }
                                 
-                                if (_foundEventsCount > 0)
-                                {
-                                    //Copy our found array of events onto our stack
-                                    array_copy(__typistEventStack, array_length(__typistEventStack), _foundEventsArray, 0, _foundEventsCount);
-                                }
-                                
-                                //Process the stack
-                                //If we hit a [pause] or [delay] tag then the function returns `false` and we break out of the loop
+                                //Process the stack. This method returns `false` if there's some reaction to pause typist reveal
                                 if (not __TypistProcessEventStack(_functionScope))
                                 {
-                                    _eventRevealIndex = __typistEventRevealIndex; //Lock our head position so we don't overstep
+                                    __typistHeadArray[0] = __typistRevealIndex; //Lock our head position so we don't overstep
                                     break;
                                 }
                             }
                         }
                     }
                     
-                    if (not _moved)
-                    {
-                        __typistHeadArray[@ 0] += _delta;
-                    }
-                    else
-                    {
-                        __typistHeadArray[@ 0] = _eventRevealIndex;
-                        
-                        if (__typistRevealMode == SCRIBBLE_REVEAL_PER_CHAR)
-                        {
-                            __typistTargetScroll = __GetBlockY(__GetGlyphBlock(_eventRevealIndex));
-                        }
-                        else if (__typistRevealMode == SCRIBBLE_REVEAL_PER_LINE)
-                        {
-                            __typistTargetScroll = __GetBlockY(__GetLineBlock(_eventRevealIndex));
-                        }
-                        
-                        if (__typistEventRevealIndex <= _pageRevealCount)
-                        {
-                            //Only play sound once per frame if we're going reaaaally fast
-                            __TypistPlaySound(_eventRevealIndex, _useGlyphData? (_pageData.__glyphGrid[# _eventRevealIndex-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE]) : 0);
-                        }
-                        else
-                        {
-                            //Execute our on-complete callback when we finish
-                            __TypistExecuteFunctionOnFinish(_functionScope);
-                        }
-                    }
+                    //FIXME - Reimplement
+                    //if (_moved)
+                    //{
+                    //    if (__typistRevealIndex <= _pageRevealCount)
+                    //    {
+                    //        //Only play sound once per frame if we're going reaaaally fast
+                    //        __TypistPlaySound(__typistHeadArray[0], _useGlyphData? (_pageData.__glyphGrid[# __typistHeadArray[0]-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE]) : 0);
+                    //    }
+                    //    else
+                    //    {
+                    //        //Execute our on-complete callback when we finish
+                    //        __TypistExecuteFunctionOnFinish(_functionScope);
+                    //    }
+                    //}
                 }
             }
             
@@ -1328,10 +1344,11 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         var _method = __easeMethod;
         if (not __typistOptions.__appear) _method += __SCRIBBLE_EASE_COUNT;
         
-        if (__typistBackwards)
-        {
-            //FIXME - Reimplement
-        }
+        //FIXME - Reimplement
+        //if (__typistBackwards)
+        //{
+        //    
+        //}
         
         shader_set_uniform_i(_u_iTypewriterMethod,               _method);
         shader_set_uniform_f(_u_fTypewriterSmoothness,           __typistOptions.__smoothness);

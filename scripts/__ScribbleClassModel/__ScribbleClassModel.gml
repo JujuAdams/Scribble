@@ -91,6 +91,8 @@ function __ScribbleClassModel(_element) constructor
         __pagesArray = []; //Stores each page of text
         __dynamicMacroArray = [];
         
+        __eventsDict = {};
+        
         with(_generatorState)
         {
             __Reset();
@@ -456,7 +458,7 @@ function __ScribbleClassModel(_element) constructor
     
     static __GetLinesVisible = function(_integer)
     {
-        var _count = (__layoutMaxHeight + __lineSpacingAdd) / max(1, __lineHeight*__lineSpacingMultiply + __lineSpacingAdd);
+        var _count = (min(__layoutMaxHeight, __height) + __lineSpacingAdd) / max(1, __lineHeight*__lineSpacingMultiply + __lineSpacingAdd);
         return _integer? floor(_count) : _count;
     }
     
@@ -492,6 +494,11 @@ function __ScribbleClassModel(_element) constructor
         __pages++;
         
         return _pageData;
+    }
+    
+    static __GetPage = function(_index)
+    {
+        return __pagesArray[clamp(_index, 0, array_length(__pagesArray)-1)];
     }
     
     static __FinalizeVertexBuffers = function()

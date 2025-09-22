@@ -81,8 +81,9 @@ function __ScribbleGen10_WriteVBuffs()
         var _glyphCount   = __glyphCount;
     }
     
-    var _textGetter       = __allowTextGetter;
+    var _textGetter        = __allowTextGetter;
     var _glyph_data_getter = __allowGlyphDataGetter;
+    var _eventsDict        = __eventsDict;
     
     
     
@@ -179,7 +180,6 @@ function __ScribbleGen10_WriteVBuffs()
     repeat(__pages)
     {
         var _pageData       = __pagesArray[_pageIndex];
-        var _pageEventsDict = _pageData.__eventsDict;
         var _vbuff          = undefined;
         var _materialPrev   = undefined;
         var _animationIndex = 0;
@@ -251,12 +251,11 @@ function __ScribbleGen10_WriteVBuffs()
                         var _event = _controlStruct.__event;
                         _event.revealIndex = _revealIndex;
                         
-                        var _eventArray = _pageEventsDict[$ _revealIndex]; //Find the correct event array in the dictionary, creating a new one if needed
-                        
+                        var _eventArray = _eventsDict[$ _revealIndex]; //Find the correct event array in the dictionary, creating a new one if needed
                         if (not is_array(_eventArray))
                         {
                             var _eventArray = [];
-                            _pageEventsDict[$ _revealIndex] = _eventArray;
+                            _eventsDict[$ _revealIndex] = _eventArray;
                         }
                         
                         array_push(_eventArray, _event);
@@ -539,14 +538,11 @@ function __ScribbleGen10_WriteVBuffs()
             var _event = _controlStruct.__event;
             _event.revealIndex = _revealIndex;
             
-            
-            
-            var _eventArray = _pageEventsDict[$ _revealIndex]; //Find the correct event array in the diciontary, creating a new one if needed
-            
+            var _eventArray = _eventsDict[$ _revealIndex]; //Find the correct event array in the diciontary, creating a new one if needed
             if (not is_array(_eventArray))
             {
                 var _eventArray = [];
-                _pageEventsDict[$ _revealIndex] = _eventArray;
+                _eventsDict[$ _revealIndex] = _eventArray;
             }
             
             array_push(_eventArray, _event);
