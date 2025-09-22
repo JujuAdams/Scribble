@@ -159,7 +159,7 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
         
         matrix_stack_push(__UpdateMatrix(_x, _y));
         matrix_set(matrix_world, matrix_stack_top());
-        __EnsureModel().__Draw(__page + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
+        __EnsureModel().__Draw(__pageInteger + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
         
         shader_reset();
         matrix_stack_pop();

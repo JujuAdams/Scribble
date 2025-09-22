@@ -98,7 +98,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         matrix_set(matrix_world, _matrix);
         
         //Submit the model
-        __EnsureModel().__Draw(__page + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
+        __EnsureModel().__Draw(__pageInteger + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
         
         //Make sure we reset the world matrix
         matrix_set(matrix_world, _oldMatrix);
@@ -1011,8 +1011,8 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     static get_reveal_count = function()
     {
         var _pagesArray = __EnsureModel().__pagesArray;
-        if (array_length(_pagesArray) <= __page) return 0;
-        var _pageData = _pagesArray[__page];
+        if (array_length(_pagesArray) <= __pageInteger) return 0;
+        var _pageData = _pagesArray[__pageInteger];
         
         return _pageData.__revealCount;
     }
@@ -1058,7 +1058,8 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         //Get page data
         var _pagesArray = _model.__pagesArray;
         if (array_length(_pagesArray) == 0) return;
-        var _pageData = _pagesArray[__page];
+        var _pageData = _pagesArray[__pageInteger];
+        var _pageRevealEnd   = _pageData.__revealEnd;
         var _pageRevealCount = _pageData.__revealCount;
         
         var _functionScope = __typistOptions.__executionScope ?? _inExecutionScope;
@@ -1075,7 +1076,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         var _glyphDataGetter = _model.__allowGlyphDataGetter;
         var _perCharacter = (__typistRevealMode == SCRIBBLE_REVEAL_PER_CHAR);
         
-        __typistHeadLimitArray[@ 0] = _pageRevealCount; //TODO - Can we move this elsewhere?
+        __typistHeadLimitArray[@ 0] = _pageRevealEnd; //TODO - Can we move this elsewhere?
         
         if (not __typistOptions.__appear)
         {
@@ -1157,18 +1158,18 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 
                 if (_canMove)
                 {
-                    if (__page != __typistPageTarget)
+                    if (__pageInteger != __typistPageTarget)
                     {
                         _canMove = false;
-                        __SetPage(__page + clamp(__typistPageTarget - __page, -__typistPageSpeed, __typistPageSpeed));
+                        __SetPage(__pageInteger + clamp(__typistPageTarget - __pageInteger, -__typistPageSpeed, __typistPageSpeed));
                         __typistScrollTarget = 0;
                     }
                 }
                 
-                if (_canMove && (not is_infinity(__typistOptions.__blockScrollSpeed)) && (__scrollYArray[__page] != __typistScrollTarget))
+                if (_canMove && (not is_infinity(__typistOptions.__blockScrollSpeed)) && (__scrollYArray[__pageInteger] != __typistScrollTarget))
                 {
                     _canMove = false;
-                    __scrollYArray[@ __page] += clamp(__typistScrollTarget - __scrollYArray[@ __page], -__typistOptions.__blockScrollSpeed, __typistOptions.__blockScrollSpeed);
+                    __scrollYArray[@ __pageInteger] += clamp(__typistScrollTarget - __scrollYArray[@ __pageInteger], -__typistOptions.__blockScrollSpeed, __typistOptions.__blockScrollSpeed);
                 }
                 
                 ///////
@@ -1385,13 +1386,13 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         if (__typistOptions.__dynamicPositioning)
         {
             var _pagesArray = __EnsureModel().__pagesArray;
-            if (__page >= array_length(_pagesArray))
+            if (__pageInteger >= array_length(_pagesArray))
             {
                 shader_set_uniform_f(_u_vTypewriterOffsetRange, 0, 0, 0);
             }
             else
             {
-                var _pageData = _pagesArray[__page];
+                var _pageData = _pagesArray[__pageInteger];
                 
                 var _headPos      = __typistHeadArray[0];
                 var _headPosFloor = floor(_headPos);

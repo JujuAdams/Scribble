@@ -99,7 +99,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     __visualBboxes = SCRIBBLE_DEFAULT_VISUAL_BBOXES;
     
-    __page = 0;
+    __pageInteger = 0;
     __pageFraction = 0;
     
     __ignoreCommandTags = false;
@@ -471,11 +471,11 @@ function __ScribbleClassElementParent(_text) constructor
             __ScribbleError("Panning to a glyph requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
         }
         
-        var _glyphData = _model.__GetGlyphData(_index, __page);
+        var _glyphData = _model.__GetGlyphData(_index, __pageInteger);
         return pan_to(_glyphData.left, _glyphData.right);
     }
     
-    static pan = function(_x, _clamp = true, _page = __page)
+    static pan = function(_x, _clamp = true, _page = __pageInteger)
     {
         __EnsureModel();
         
@@ -487,7 +487,7 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static pan_to = function(_min, _max, _page = __page)
+    static pan_to = function(_min, _max, _page = __pageInteger)
     {
         __EnsureModel();
         
@@ -514,19 +514,19 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static get_pan = function(_page = __page)
+    static get_pan = function(_page = __pageInteger)
     {
         __EnsureModel();
         
         return __scrollXArray[_page];
     }
     
-    static get_pan_max = function(_page = __page)
+    static get_pan_max = function(_page = __pageInteger)
     {
         return __EnsureModel().__GetScrollMaxX(_page);
     }
     
-    static __AutoPan = function(_page = __page)
+    static __AutoPan = function(_page = __pageInteger)
     {
         if (__panAuto)
         {
@@ -619,12 +619,12 @@ function __ScribbleClassElementParent(_text) constructor
         var _model = __EnsureModel();
         if (_model.__allowGlyphDataGetter)
         {
-            var _glyphData = _model.__GetGlyphData(_index, __page);
+            var _glyphData = _model.__GetGlyphData(_index, __pageInteger);
             return scroll_to(_glyphData.top, _glyphData.bottom);
         }
         else
         {
-            var _lineArray = _model.__pagesArray[__page].__lineDataArray;
+            var _lineArray = _model.__pagesArray[__pageInteger].__lineDataArray;
             var _i = 0;
             repeat(array_length(_lineArray))
             {
@@ -643,11 +643,11 @@ function __ScribbleClassElementParent(_text) constructor
     static scroll_to_line = function(_index)
     {
         var _model = __EnsureModel();
-        var _line_data = _model.__GetLineData(_index, __page);
+        var _line_data = _model.__GetLineData(_index, __pageInteger);
         return scroll_to(_line_data.y, _line_data.y + _line_data.height-1);
     }
     
-    static scroll_to = function(_min, _max, _page = __page)
+    static scroll_to = function(_min, _max, _page = __pageInteger)
     {
         __EnsureModel();
         
@@ -674,7 +674,7 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static scroll = function(_y, _clamp = true, _page = __page)
+    static scroll = function(_y, _clamp = true, _page = __pageInteger)
     {
         __EnsureModel();
         
@@ -686,19 +686,19 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static get_scroll = function(_page = __page)
+    static get_scroll = function(_page = __pageInteger)
     {
         __EnsureModel();
         
         return __scrollYArray[_page];
     }
     
-    static get_scroll_max = function(_page = __page)
+    static get_scroll_max = function(_page = __pageInteger)
     {
         return __EnsureModel().__GetScrollMaxY(_page);
     }
     
-    static __AutoScroll = function(_page = __page)
+    static __AutoScroll = function(_page = __pageInteger)
     {
         if (__scrollAuto)
         {
@@ -964,7 +964,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     static region_detect = function(_elementX, _elementY, _pointerX, _pointerY)
     {
-        var _page        = __EnsureModel().__pagesArray[__page];
+        var _page        = __EnsureModel().__pagesArray[__pageInteger];
         var _regionArray = _page.__regionArray;
         
         var _matrix = __UpdateMatrix(_elementX, _elementY);
@@ -1017,7 +1017,7 @@ function __ScribbleClassElementParent(_text) constructor
             return;
         }
         
-        var _page        = __EnsureModel().__pagesArray[__page];
+        var _page        = __EnsureModel().__pagesArray[__pageInteger];
         var _regionArray = _page.__regionArray;
         
         var _i = 0;
@@ -1053,12 +1053,12 @@ function __ScribbleClassElementParent(_text) constructor
     
     static region_get_bboxes = function()
     {
-        return __EnsureModel().__pagesArray[__page].__regionArray;
+        return __EnsureModel().__pagesArray[__pageInteger].__regionArray;
     }
     
     static region_draw = function(_elementX, _elementY, _name, _padding = 0, _sprite = sprScribbleFallbackDot, _image = 0, _color = c_white, _alpha = 1)
     {
-        var _page        = __EnsureModel().__pagesArray[__page];
+        var _page        = __EnsureModel().__pagesArray[__pageInteger];
         var _regionArray = _page.__regionArray;
         
         var _i = 0;
@@ -1118,7 +1118,7 @@ function __ScribbleClassElementParent(_text) constructor
             var _yScale = __scaleToBoxScale*_model.__fitScale*__postYScale;
             
             //Left/top padding is baked into the model
-            var _bbox = _model.__GetBbox(SCRIBBLE_BOUNDING_BOX_USES_PAGE? __page : undefined, __paddingL, __paddingT, __paddingR, __paddingB);
+            var _bbox = _model.__GetBbox(SCRIBBLE_BOUNDING_BOX_USES_PAGE? __pageInteger : undefined, __paddingL, __paddingT, __paddingR, __paddingB);
             
             __bboxRawWidth  = 1 + _bbox.right - _bbox.left;
             __bboxRawHeight = 1 + _bbox.bottom - _bbox.top;
@@ -1256,11 +1256,11 @@ function __ScribbleClassElementParent(_text) constructor
         
         if (_typist != undefined)
         {
-            var _bbox = _model.__GetBboxRevealed(__page, 0, _revealIndex ?? __typistHeadArray[0], __paddingL, __paddingT, __paddingR, __paddingB);
+            var _bbox = _model.__GetBboxRevealed(__pageInteger, 0, _revealIndex ?? __typistHeadArray[0], __paddingL, __paddingT, __paddingR, __paddingB);
         }
         else if (__tw_reveal != undefined) //FIXME
         {
-            var _bbox = _model.__GetBboxRevealed(__page, 0, __tw_reveal, __paddingL, __paddingT, __paddingR, __paddingB);
+            var _bbox = _model.__GetBboxRevealed(__pageInteger, 0, __tw_reveal, __paddingL, __paddingT, __paddingR, __paddingB);
         }
         
         __UpdateBboxMatrix();
@@ -1323,13 +1323,13 @@ function __ScribbleClassElementParent(_text) constructor
     /// @param page
     static __SetPage = function(_page)
     {
-        var _oldPage = __page;
+        var _oldPage = __pageInteger;
         _page = clamp(_page, 0, __EnsureModel().__GetPageCount()-1);
         
-        __page = round(_page);
-        __pageFraction = _page - __page;
+        __pageInteger = round(_page);
+        __pageFraction = _page - __pageInteger;
         
-        if (_oldPage != __page)
+        if (_oldPage != __pageInteger)
         {
             __bboxDirty = true;
         }
@@ -1339,7 +1339,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     static get_page = function()
     {
-        return __page + __pageFraction;
+        return __pageInteger + __pageFraction;
     }
     
     static get_pages = function()
@@ -1369,32 +1369,32 @@ function __ScribbleClassElementParent(_text) constructor
     }
     
     /// @param [page]
-    static get_text = function(_page = __page)
+    static get_text = function(_page = __pageInteger)
     {
         return __EnsureModel().__GetText(_page);
     }
     
     /// @param [page]
-    static get_line_data = function(_index, _page = __page)
+    static get_line_data = function(_index, _page = __pageInteger)
     {
         return __EnsureModel().__GetLineData(_index, _page);
     }
     
     /// @param index
     /// @param [page]
-    static get_glyph_data = function(_index, _page = __page)
+    static get_glyph_data = function(_index, _page = __pageInteger)
     {
         return __EnsureModel().__GetGlyphData(_index, _page);
     }
     
     /// @param [page]
-    static get_glyph_count = function(_page = __page)
+    static get_glyph_count = function(_page = __pageInteger)
     {
         return __EnsureModel().__GetGlyphCount(_page);
     }
     
     /// @param [page]
-    static get_line_count = function(_page = __page)
+    static get_line_count = function(_page = __pageInteger)
     {
         return __EnsureModel().__GetLineCount(_page);
     }
@@ -1586,7 +1586,7 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static get_events = function(_position, _pageIndex = __page)
+    static get_events = function(_position, _pageIndex = __pageInteger)
     {
         static _empty_array = [];
         
@@ -2121,7 +2121,7 @@ function __ScribbleClassElementParent(_text) constructor
         
         _index = floor(_index);
         
-        var _lineArray = __EnsureModel().__pagesArray[__page].__lineDataArray;
+        var _lineArray = __EnsureModel().__pagesArray[__pageInteger].__lineDataArray;
         var _i = 0;
         repeat(array_length(_lineArray))
         {
