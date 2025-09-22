@@ -24,7 +24,7 @@ function __ScribbleClassPage(_model) constructor
     __lineEnd   = undefined;
     __lineCount = 0;
     
-    __lineDataArray = undefined; //Only set to an array if we're allowing the line data getter
+    __lineDataArray = undefined;
     
     __width  = 0;
     __height = 0;

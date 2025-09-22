@@ -37,7 +37,6 @@ function __ScribbleClassModel(_element) constructor
     __bidiHint           = _element.__bidiHint;
     __ignoreCommandTags  = _element.__ignoreCommandTags;
     __randomizeAnimation = _element.__randomizeAnimation;
-    __newlineDelay       = _element.__newlineDelay;
     
     __paddingL = _element.__paddingL;
     __paddingT = _element.__paddingT;

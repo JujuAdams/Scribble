@@ -577,23 +577,6 @@ function __ScribbleGen6_BuildLines()
         }
     }
     
-    if (__newlineDelay > 0)
-    {
-        var _i = 0;
-        repeat(array_length(_lineArray)-1)
-        {
-            var _lineGlyphEnd        = _wordGrid[# _lineArray[_i].wordEnd, __SCRIBBLE_GEN_WORD_GLYPH_END];
-            var _lineEndControlCount = _glyphGrid[# _lineGlyphEnd, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT];
-            
-            array_insert(_controlArray, _lineEndControlCount+1, new __ScribbleClassControlEvent(__SCRIBBLE_COMMAND_TAG_DELAY, [__newlineDelay]));
-            
-            var _lineGlyphStart = _wordGrid[# _lineArray[_i+1].wordStart, __SCRIBBLE_GEN_WORD_GLYPH_START];
-            ds_grid_add_region(_glyphGrid, _lineGlyphStart, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT, _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT, 1);
-            
-            ++_i;
-        }
-    }
-    
     with(_generatorState)
     {
         __wordCount = _wordCount;

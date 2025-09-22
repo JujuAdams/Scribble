@@ -40,7 +40,6 @@ function __ScribbleClassElementParent(_text) constructor
     __flashAlpha     = 0.0;
     
     __randomizeAnimation = false;
-    __newlineDelay       = 0; //Only relevant for unique text elements but needs to be available regardless
     
     __allowTextGetter      = SCRIBBLE_FORCE_TEXT_GETTER;
     __allowGlyphDataGetter = SCRIBBLE_FORCE_GLYPH_DATA_GETTER;
@@ -1586,17 +1585,68 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static get_events = function(_position, _pageIndex = __pageInteger)
+    static get_events = function(_revealIndex, _pageIndex = __pageInteger)
     {
-        static _empty_array = [];
-        
         var _page = __EnsureModel().__pagesArray[_pageIndex];
         var _eventStruct = _page.__eventsDict;
         
-        var _events = _eventStruct[$ _position];
-        if (not is_array(_events)) return _empty_array;
+        var _eventsArray = _eventStruct[$ _revealIndex];
+        if (not is_array(_events))
+        {
+            var _eventsArray = [];
+        }
         
-        return _events;
+        if (__typistRevealMode == SCRIBBLE_REVEAL_PER_CHAR)
+        {
+            var _delay = 0;
+            
+            if (__GetLinebreakAfterGlyph(_revealIndex))
+            {
+                _delay = max(_delay, __typistOptions.__lineDelay ?? infinity);
+            }
+            
+            if (__GetBlockbreakAfterGlyph(_revealIndex))
+            {
+                _delay = max(_delay, __typistOptions.__blockDelay ?? infinity);
+            }
+            
+            if (__GetPagebreakAfterGlyph(_revealIndex))
+            {
+                _delay = max(_delay, __typistOptions.__pageDelay ?? infinity);
+            }
+        }
+        else if (__typistRevealMode == SCRIBBLE_REVEAL_PER_LINE)
+        {
+            var _delay = __typistOptions.__lineDelay ?? infinity;
+            
+            if (__GetBlockbreakAfterLine(_revealIndex))
+            {
+                _delay = max(_delay, __typistOptions.__blockDelay ?? infinity);
+            }
+            
+            if (__GetPagebreakAfterLine(_revealIndex))
+            {
+                _delay = max(_delay, __typistOptions.__pageDelay ?? infinity);
+            }
+        }
+        else
+        {
+            //FIXME - Implement `SCRIBBLE_REVEAL_PER_WORD` and section reveal
+        }
+        
+        if (_delay > 0)
+        {
+            if (is_infinity(_delay))
+            {
+                array_push(_eventsArray, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_PAUSE, undefined));
+            }
+            else
+            {
+                array_push(_eventsArray, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_DELAY, _delay));
+            }
+        }
+        
+        return _eventsArray;
     }
     
     /// @param templateFunction/Array
@@ -2056,6 +2106,25 @@ function __ScribbleClassElementParent(_text) constructor
         return (__GetGlyphPage(_index) < __GetGlyphPage(_index+1));
     }
     
+    //Returns if there is a blockbreak after the target glyph
+    //Glyph indexes are 0-indexed for this function
+    static __GetBlockbreakAfterLine = function(_index)
+    {
+        if (__GetPagebreakAfterLine(_index))
+        {
+            return true;
+        }
+        
+        return (__GetLineBlock(_index) < __GetLineBlock(_index+1));
+    }
+    
+    //Returns if there is a blockbreak after the target glyph
+    //Glyph indexes are 0-indexed for this function
+    static __GetPagebreakAfterLine = function(_index, _page = __pageInteger)
+    {
+        return (_index+1 >= __EnsureModel().__pagesArray[_page].__lineCount);
+    }
+    
     //Returns which page a particular glyph is on
     //Glyph indexes are 0-indexed for this function
     //Glyph indexes are global across pages and are 0-indexed
@@ -2112,7 +2181,7 @@ function __ScribbleClassElementParent(_text) constructor
     //Returns which line a particular glyph is on on a page
     //Glyph indexes are 0-indexed for this function
     //Lines indexes are local per page and are 0-indexed
-    static __GetGlyphLine = function(_index)
+    static __GetGlyphLine = function(_index, _page = __pageInteger)
     {
         if (_index <= 0)
         {
@@ -2121,7 +2190,7 @@ function __ScribbleClassElementParent(_text) constructor
         
         _index = floor(_index);
         
-        var _lineArray = __EnsureModel().__pagesArray[__pageInteger].__lineDataArray;
+        var _lineArray = __EnsureModel().__pagesArray[_page].__lineDataArray;
         var _i = 0;
         repeat(array_length(_lineArray))
         {
@@ -2163,6 +2232,35 @@ function __ScribbleClassElementParent(_text) constructor
     static __GetBlockY = function(_index)
     {
         return (_index*(get_block_size() - __blockTrim))*__EnsureModel().__lineHeight;
+    }
+    
+    static __GetGlyphThisBlockGlyphEnd = function(_index, _page = __pageInteger)
+    {
+        return __GetBlockGlyphEnd(__GetLineBlock(__GetGlyphLine(_index, _page)), _page);
+    }
+    
+    static __GetBlockGlyphEnd = function(_index, _page = __pageInteger)
+    {
+        var _blockSize = get_block_size();
+        var _line = _blockSize-1 + max(0, _index)*(_blockSize - __blockTrim);
+        
+        var _model = __pagesArray[_page];
+        var _pageStruct = __EnsureModel().__pagesArray[clamp(_page, 0, _model.__GetPageCount())];
+        _line = clamp(_line, 0, _pageStruct.__lineEnd);
+        
+        return _pageStruct.__lineDataArray[_line].glyphEnd;
+    }
+    
+    static __GetBlockLineEnd = function(_index, _page = __pageInteger)
+    {
+        var _blockSize = get_block_size();
+        var _line = _blockSize-1 + max(0, _index)*(_blockSize - __blockTrim);
+        
+        var _model = __pagesArray[_page];
+        var _pageStruct = __EnsureModel().__pagesArray[clamp(_page, 0, _model.__GetPageCount())];
+        _line = clamp(_line, 0, _pageStruct.__lineEnd);
+        
+        return _line;
     }
     
     #endregion
