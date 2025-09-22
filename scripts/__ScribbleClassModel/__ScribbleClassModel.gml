@@ -17,7 +17,6 @@ function __ScribbleClassModel(_element) constructor
     
     __text              = _element.__text;
     __startingFont      = _element.__startingFont;
-    __startingColor     = _element.__startingColor;
     __startingHAlign    = _element.__startingHAlign;
     __startingVAlign    = _element.__startingVAlign;
     __preScale          = _element.__preScale;

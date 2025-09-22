@@ -226,6 +226,8 @@ function __ScribbleGen10_WriteVBuffs()
                     if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR)
                     {
                         _glyphColor = _controlStruct.__color;
+                        _glyphEffectFlags |= (1 << __SCRIBBLE_FLAG_COLOR);
+                        
                         var _writeColor = (__SCRIBBLE_FIX_ARGB? __ScribbleRGBToBGR(_glyphColor) : _glyphColor); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
                     }
                     else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT)

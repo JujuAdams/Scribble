@@ -187,7 +187,6 @@ function __ScribbleGen2_Parser()
     //Cache element properties locally
     var _spritesDontScale = __spritesDontScale;
     var _elementText      = __text;
-    var _startingColor    = __startingColor;
     var _starting_halign  = __startingHAlign;
     var _startingVAlign   = __startingVAlign;
     var _ignoreCommands   = __ignoreCommandTags;
@@ -252,7 +251,7 @@ function __ScribbleGen2_Parser()
     var _sectionCount = 0;
     
     var _stateEffectFlags        = 0;
-    var _stateColor              = 0xFF000000 | _startingColor; //Uses all four bytes
+    var _stateColor              = 0xFFFFFFFF;
     var _stateHAlign             = _starting_halign;
     var _stateCommandTagFlipflop = false;
     
@@ -266,9 +265,6 @@ function __ScribbleGen2_Parser()
     var _offsetDataArray = []; // start glyph, dX, dY
     
     array_push(_controlArray, new __ScribbleClassControlHAlign(_stateHAlign));
-    ++_controlCount;
-    
-    array_push(_controlArray, new __ScribbleClassControlColor(_stateColor));
     ++_controlCount;
     
     __SCRIBBLE_PARSER_SET_FONT;
@@ -361,13 +357,10 @@ function __ScribbleGen2_Parser()
                             }
                             
                             _stateEffectFlags = 0;
-                            _stateScale        = _preScale;
-                            _stateColor       = 0xFF000000 | _startingColor;
+                            _stateScale       = _preScale;
+                            _stateColor       = 0xFFFFFFFF;
                             
                             array_push(_controlArray, new __ScribbleClassControlEffect(0));
-                            ++_controlCount;
-                            
-                            array_push(_controlArray, new __ScribbleClassControlColor(_stateColor));
                             ++_controlCount;
                             
                             array_push(_controlArray, new __ScribbleClassControlCycle(-1));
@@ -388,9 +381,10 @@ function __ScribbleGen2_Parser()
                         // [/colour]
                         // [/c]
                         case 2:
-                            _stateColor = (_stateColor & 0xFF000000) | _startingColor;
+                            _stateColor = (_stateColor & 0xFF000000) | 0x00FFFFFF;
+                            _stateEffectFlags = ~((~_stateEffectFlags) | (1 << __SCRIBBLE_FLAG_COLOR));
                             
-                            array_push(_controlArray, new __ScribbleClassControlColor(_stateColor));
+                            array_push(_controlArray, new __ScribbleClassControlEffect(_stateEffectFlags));
                             ++_controlCount;
                         break;
                     
@@ -1007,6 +1001,7 @@ function __ScribbleGen2_Parser()
                                 if (_tagType == __SCRIBBLE_TAG_COLOR)
                                 {
                                     _stateColor = (_stateColor & 0xFF000000) | (_tagData & 0x00FFFFFF);
+                                    _stateEffectFlags |= (1 << __SCRIBBLE_FLAG_COLOR);
                                     
                                     array_push(_controlArray, new __ScribbleClassControlColor(_stateColor));
                                     ++_controlCount;
@@ -1190,22 +1185,29 @@ function __ScribbleGen2_Parser()
                                     {
                                         //Hex colour decoding
                                         //Crafty trick to quickly convert a hex string into a number
+                                        
+                                        var _decodedColor = undefined;
+                                        
                                         try
                                         {
-                                            var _decodedColor = real("0x" + string_delete(_tagCommandName, 1, 1));
+                                            _decodedColor = real("0x" + string_delete(_tagCommandName, 1, 1));
                                             _decodedColor = __ScribbleRGBToBGR(_decodedColor);
                                         }
                                         catch(_error)
                                         {
                                             __ScribbleTrace(_error);
                                             __ScribbleTrace("Error! \"", string_delete(_tagCommandName, 1, 2), "\" could not be converted into a hexcode");
-                                            _decodedColor = _startingColor;
+                                            _decodedColor = undefined;
                                         }
-                                
-                                        _stateColor = (_stateColor & 0xFF000000) | (_decodedColor & 0x00FFFFFF);
                                         
-                                        array_push(_controlArray, new __ScribbleClassControlColor(_stateColor));
-                                        ++_controlCount;
+                                        if (_decodedColor != undefined)
+                                        {
+                                            _stateColor = (_stateColor & 0xFF000000) | (_decodedColor & 0x00FFFFFF);
+                                            _stateEffectFlags |= (1 << __SCRIBBLE_FLAG_COLOR);
+                                            
+                                            array_push(_controlArray, new __ScribbleClassControlColor(_stateColor));
+                                            ++_controlCount;
+                                        }
                                     }
                                     else
                                     {
@@ -1214,6 +1216,8 @@ function __ScribbleGen2_Parser()
                                         &&  ((_secondChar == "$") || (_secondChar == "#")))
                                         {
                                             #region Decimal colour decoding
+                                            
+                                            var _decodedColor = undefined;
                                     
                                             try
                                             {
@@ -1223,13 +1227,17 @@ function __ScribbleGen2_Parser()
                                             {
                                                 __ScribbleTrace(_error);
                                                 __ScribbleTrace("Error! \"", string_delete(_tagCommandName, 1, 2), "\" could not be converted into a decimal");
-                                                _decodedColor = _startingColor;
+                                                _decodedColor = undefined;
                                             }
                                     
-                                            _stateColor = (_stateColor & 0xFF000000) | (_decodedColor & 0x00FFFFFF);
-                                            
-                                            array_push(_controlArray, new __ScribbleClassControlColor(_stateColor));
-                                            ++_controlCount;
+                                            if (_decodedColor != undefined)
+                                            {
+                                                _stateColor = (_stateColor & 0xFF000000) | (_decodedColor & 0x00FFFFFF);
+                                                _stateEffectFlags |= (1 << __SCRIBBLE_FLAG_COLOR);
+                                                
+                                                array_push(_controlArray, new __ScribbleClassControlColor(_stateColor));
+                                                ++_controlCount;
+                                            }
                                             
                                             #endregion
                                         }

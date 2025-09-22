@@ -114,14 +114,15 @@
 
 #macro __SCRIBBLE_FLAG_GRAPHIC      0
 #macro __SCRIBBLE_FLAG_ANIM_SPRITE  1
-#macro __SCRIBBLE_FLAG_WAVE         2
-#macro __SCRIBBLE_FLAG_SHAKE        3
-#macro __SCRIBBLE_FLAG_WOBBLE       4
-#macro __SCRIBBLE_FLAG_PULSE        5
-#macro __SCRIBBLE_FLAG_WHEEL        6
-#macro __SCRIBBLE_FLAG_CYCLE        7
-#macro __SCRIBBLE_FLAG_JITTER       8
-#macro __SCRIBBLE_FLAG_SLANT        9
+#macro __SCRIBBLE_FLAG_COLOR        2
+#macro __SCRIBBLE_FLAG_WAVE         3
+#macro __SCRIBBLE_FLAG_SHAKE        4
+#macro __SCRIBBLE_FLAG_WOBBLE       5
+#macro __SCRIBBLE_FLAG_PULSE        6
+#macro __SCRIBBLE_FLAG_WHEEL        7
+#macro __SCRIBBLE_FLAG_CYCLE        8
+#macro __SCRIBBLE_FLAG_JITTER       9
+#macro __SCRIBBLE_FLAG_SLANT       10
 
 #macro __SCRIBBLE_GLYPH_PROPR_CHARACTER      0
 #macro __SCRIBBLE_GLYPH_PROPR_UNICODE        1

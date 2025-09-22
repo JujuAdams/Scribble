@@ -27,10 +27,9 @@ function __ScribbleClassElementParent(_text) constructor
     __preprocessorBakedArray = undefined;
     
     __startingFont   = _system.__state.__defaultFont;
-    __startingColor  = __ScribbleProcessColor(SCRIBBLE_DEFAULT_COLOR);
     __startingHAlign = SCRIBBLE_DEFAULT_HALIGN;
     __startingVAlign = SCRIBBLE_DEFAULT_VALIGN;
-    __blendColor     = c_white;
+    __blendColor     = __ScribbleProcessColor(SCRIBBLE_DEFAULT_COLOR);
     __blendAlpha     = 1.0;
     __skewX          = 0;
     __skewY          = 0;
@@ -205,12 +204,19 @@ function __ScribbleClassElementParent(_text) constructor
         if (_in_colour != undefined)
         {
             var _color = __ScribbleProcessColor(_in_colour);
-            if ((_color != undefined) && (_color >= 0) && (_color != __startingColor))
+            if ((_color != undefined) && (_color >= 0))
             {
-                __modelDirty = true;
-                __startingColor = _color & 0xFFFFFF;
+                __blendColor = _color & 0xFFFFFF;
             }
         }
+        
+        return self;
+    }
+    
+    /// @param alpha
+    static alpha = function(_alpha)
+    {
+        __blendAlpha = clamp(_alpha, 0, 1);
         
         return self;
     }
@@ -240,18 +246,6 @@ function __ScribbleClassElementParent(_text) constructor
             
             __startingVAlign = _vAlign;
         }
-        
-        return self;
-    }
-    
-    /// @param colour
-    /// @param alpha
-    static blend = function(_color, _alpha)
-    {
-        _color = __ScribbleProcessColor(_color);
-        
-        if (_color != undefined) __blendColor = _color & 0xFFFFFF;
-        if (_alpha != undefined) __blendAlpha = clamp(_alpha, 0, 1);
         
         return self;
     }

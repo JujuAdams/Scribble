@@ -1,8 +1,6 @@
 //   @jujuadams   v10.0.0   2025-08-24
 precision highp float;
 
-#define BLEND_GRAPHICS true
-
 #define ANIMATION_INDEX      in_Position.z
 #define REVEAL_INDEX         in_Normal.x
 #define PACKED_SPRITE_DATA   in_Normal.y
@@ -10,17 +8,18 @@ precision highp float;
 
 const float CYCLE_TEXTURE_HEIGHT = 256.0;
 
-const int MAX_EFFECTS = 10;
-#define GRAPHIC_FLAG      flagArray[0]
-#define ANIM_SPRITE_FLAG  flagArray[1]
-#define WAVE_FLAG         flagArray[2]
-#define SHAKE_FLAG        flagArray[3]
-#define WOBBLE_FLAG       flagArray[4]
-#define PULSE_FLAG        flagArray[5]
-#define WHEEL_FLAG        flagArray[6]
-#define CYCLE_FLAG        flagArray[7]
-#define JITTER_FLAG       flagArray[8]
-#define SLANT_FLAG        flagArray[9]
+const int MAX_EFFECTS = 11;
+#define GRAPHIC_FLAG      flagArray[ 0]
+#define ANIM_SPRITE_FLAG  flagArray[ 1]
+#define COLOR_FLAG        flagArray[ 2]
+#define WAVE_FLAG         flagArray[ 3]
+#define SHAKE_FLAG        flagArray[ 4]
+#define WOBBLE_FLAG       flagArray[ 5]
+#define PULSE_FLAG        flagArray[ 6]
+#define WHEEL_FLAG        flagArray[ 7]
+#define CYCLE_FLAG        flagArray[ 8]
+#define JITTER_FLAG       flagArray[ 9]
+#define SLANT_FLAG        flagArray[10]
 
 const int MAX_ANIM_FIELDS = 16;
 #define WAVE_AMPLITUDE    u_aDataFields[ 0]
@@ -326,16 +325,17 @@ void main()
 {
     float flagValue = PACKED_EFFECT_FLAGS;
     float edge;
-    edge = step(512.0, flagValue); flagArray[9] = edge; flagValue -= 512.0*edge;
-    edge = step(256.0, flagValue); flagArray[8] = edge; flagValue -= 256.0*edge;
-    edge = step(128.0, flagValue); flagArray[7] = edge; flagValue -= 128.0*edge;
-    edge = step( 64.0, flagValue); flagArray[6] = edge; flagValue -=  64.0*edge;
-    edge = step( 32.0, flagValue); flagArray[5] = edge; flagValue -=  32.0*edge;
-    edge = step( 16.0, flagValue); flagArray[4] = edge; flagValue -=  16.0*edge;
-    edge = step(  8.0, flagValue); flagArray[3] = edge; flagValue -=   8.0*edge;
-    edge = step(  4.0, flagValue); flagArray[2] = edge; flagValue -=   4.0*edge;
-    edge = step(  2.0, flagValue); flagArray[1] = edge; flagValue -=   2.0*edge;
-    edge = step(  1.0, flagValue); flagArray[0] = edge; flagValue -=   1.0*edge;
+    edge = step(1024.0, flagValue); flagArray[10] = edge; flagValue -= 1024.0*edge;
+    edge = step( 512.0, flagValue); flagArray[ 9] = edge; flagValue -=  512.0*edge;
+    edge = step( 256.0, flagValue); flagArray[ 8] = edge; flagValue -=  256.0*edge;
+    edge = step( 128.0, flagValue); flagArray[ 7] = edge; flagValue -=  128.0*edge;
+    edge = step(  64.0, flagValue); flagArray[ 6] = edge; flagValue -=   64.0*edge;
+    edge = step(  32.0, flagValue); flagArray[ 5] = edge; flagValue -=   32.0*edge;
+    edge = step(  16.0, flagValue); flagArray[ 4] = edge; flagValue -=   16.0*edge;
+    edge = step(   8.0, flagValue); flagArray[ 3] = edge; flagValue -=    8.0*edge;
+    edge = step(   4.0, flagValue); flagArray[ 2] = edge; flagValue -=    4.0*edge;
+    edge = step(   2.0, flagValue); flagArray[ 1] = edge; flagValue -=    2.0*edge;
+    edge = step(   1.0, flagValue); flagArray[ 0] = edge; flagValue -=    1.0*edge;
     
     
     
@@ -371,29 +371,32 @@ void main()
     
     if (CYCLE_FLAG > 0.5)
     {
+        //If we have a cycle going on use the colour channel to tell us where to read colour information from the texture
         v_vCycle  = vec2(in_Colour.g*u_fTime - in_Colour.b*ANIMATION_INDEX, in_Colour.r + (0.5 / CYCLE_TEXTURE_HEIGHT));
         v_vColour = vec4(1.0);
     }
     else
     {
-        v_vCycle  = vec2(-1.0);
-        v_vColour = in_Colour;
+        v_vCycle = vec2(-1.0);
+        
+        if (COLOR_FLAG > 0.5)
+        {
+            //If this glyph has a colour override, use it
+            v_vColour = in_Colour;
+        }
+        else
+        {
+            //Otherwise use the global colour
+            v_vColour = vec4(u_vColourBlend.rgb, 1.0);
+        }
     }
+    
+    //Always apply alpha blend
+    v_vColour.a *= u_vColourBlend.a;
     
     //Apply the gradient effect
     if (v_vModelPosition.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
-    
-    if (!BLEND_GRAPHICS && (GRAPHIC_FLAG > 0.5))
-    {
-        //If we're not RGB blending sprites and this *is* a sprite then only modify the alpha channel
-        v_vColour.a *= u_vColourBlend.a;
-    }
-    else
-    {
-        //And then blend with the blend colour/alpha
-        v_vColour *= u_vColourBlend;
-    }
-    
+     
     if (ANIM_SPRITE_FLAG > 0.5) v_vColour.a *= filterAnimatedSprite(PACKED_SPRITE_DATA); //Use packed sprite data to filter out sprite frames that we don't want
     
     //Regions
