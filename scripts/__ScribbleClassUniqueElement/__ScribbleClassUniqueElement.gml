@@ -314,33 +314,122 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return __typistRevealMode;
     }
     
+    static typist_options_reset = function()
+    {
+        with(__typistOptions)
+        {
+            __appear                   = true;
+            __backwards                = false; //Unused
+            __speed                    = 0.5;
+            __smoothness               = 0;
+            __lineDelay                = 0;
+            __blockScrollSpeed         = 4;
+            __blockOverlap             = 0;
+            __blockDelay               = infinity;
+            __pageScrollSpeed          = 4;
+            __pageDelay                = infinity;
+            __soundArray               = undefined;
+            __soundPitchMin            = 1;
+            __soundPitchMax            = 1;
+            __soundGain                = 1;
+            __soundOverlap             = 0;
+            __soundPerChar             = true;
+            __soundPerCharInterrupts   = true;
+            __soundPerCharException    = [];
+            __methodPerReveal          = undefined;
+            __methodOnFinish           = undefined;
+            __dynamicPositioning       = false;
+            __DynamicPositioningSmooth = false;
+        }
+        
+        return self;
+    }
+    
     static typist_options_apply = function(_struct)
     {
         static _expectedNamesDict = {
-            appear:                   true,
-            speed:                    true,
-            smoothness:               true,
-            lineDelay:                true,
-            blockScrollSpeed:         true,
-            blockOverlap:             true,
-            blockDelay:               true,
-            pageScrollSpeed:          true,
-            pageDelay:                true,
-            sound:                    true,
-            soundPitchMin:            true,
-            soundPitchMax:            true,
-            soundGain:                true,
-            soundOverlap:             true,
-            soundPerChar:             true,
-            soundPerCharInterrupts:   true,
-            soundPerCharException:    true,
-            functionPerChar:          true,
-            functionOnFinish:         true,
-            eventScope:               true,
-            dynamicPositioning:       true,
-            dynamicPositioningSmooth: true,
+            //Whether text is animating "in" (`true`) or "out" (`false`). Events will only execute when
+            //animating in
+            appear: true, //Default: `true`
             
             //TODO - Implement `backwards`
+            
+            //How fast glyphs should appear. A value of `1` with a smoothness of `0` will make one full glyph
+            //start to appear every tick
+            speed: true, //default = `0.5`
+            
+            //How long it takes for each individual glyph to appear at a speed of `1`. A value of `10` will
+            //cause each glyph to take 10 ticks to appear. This value is multiplicative with the speed so that
+            //a speed of `0.5` will double how long it takes for a glyph to appear
+            smoothness: true, //default = `0`
+            
+            //Delay time at the end of each line, in ticks. Setting this value to `infinity` will pause at the
+            //end of every line
+            lineDelay: true, //default = `0`
+            
+            //How fast to scroll between blocks, in pixels per tick
+            blockScrollSpeed: true, //default = `4`
+            
+            //How many lines from the previous block that should be displayed at the top of the next block. A
+            //value of `1` will cause one line to be retained
+            blockOverlap: true, //default = `0`
+            
+            //Delay time between blocks, in ticks. Setting this value to `infinity` will pause at the end of
+            //every block
+            blockDelay: true, //default = `infinity`
+            
+            //How fast to scroll between pages, in pixels per tick
+            pageScrollSpeed: true, //default = `4`
+            
+            //Delay time between blocks, in ticks. Setting this value to `infinity` will pause at the end of
+            //every page
+            pageDelay: true, //default = `infinity`
+            
+            //Sound, or array of sounds, to play as text reveals. Set this to `undefined` to not play any sound
+            sound: true, //default = `undefined`
+            
+            //Minimum pitch multiplier to play a sound with. A value of `1` is "no changed", a value of `0.5` is
+            //slower and lower (down an octave) and a value of `2` is faster and higher (up an octave)
+            soundPitchMin: true, //default = `1`
+            
+            //Maximum pitch multiplier to play a sound with. A value of `1` is "no changed", a value of `0.5` is
+            //slower and lower (down an octave) and a value of `2` is faster and higher (up an octave)
+            soundPitchMax: true, //default = `1`
+            
+            //Gain for sound playback. A value of `1` is "no change", a value of `0.5` is half the amplitude and
+            //a value of `2` is twice the amplitude
+            soundGain: true, //default = `1`
+            
+            //Amount of overlap allowed between sounds, in milliseconds. This only applies when `soundPerChar`
+            //is set to `false`
+            soundOverlap: true, //default = `0`
+            
+            //Whether a sound should be played for every single glyph that appears (`true`) or continuously
+            //looped whilst text is appearing (`false`) without attempting to synchronize to glyph reveal
+            soundPerChar: true, //default = `true`
+            
+            //Whether per-character sound playback interrupts previously playing audio. This only applies when
+            //`soundPerChar` is set to `true`
+            soundPerCharInterrupts: true, //default = `true`
+            
+            //Array of glyphs exceptions that prevent per-character sound playback from triggering. This will
+            //only apply when `soundPerChar` is set to `true`
+            soundPerCharException: true, //default = `[]`
+            
+            //Method to execute per reveal (per glyph when reveal mode is set to `SCRIBBLE_REVEAL_PER_GLYPH`).
+            //Set this variable to `undefined` to call no method
+            methodPerReveal: true, //default = `undefined`
+            
+            //Method to execute when all text has finished being revealled. Set this variable to `undefined` to
+            //call no method
+            methodOnFinish: true, //default = `undefined`
+            
+            //Whether glyphs should horizontal shift into place as text is being revealled. This will only
+            //affect glyph positions when the line alignment is `fa_center` or `fa_right`
+            dynamicPositioning: true, //default = `false`
+            
+            //Whether glyph positioning should be smooth (`true`) or instant (`false`)
+            dynamicPositioningSmooth: true, //default = `false`
         };
         
         //If we're running from the IDE, scan for unsupported option names and alert the user
@@ -378,27 +467,26 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             
             var _oldSoundPerCharException = __soundPerCharException;
             
-            __speed                    = _struct[$ "speed"                   ] ?? __speed;
-            __smoothness               = _struct[$ "smoothness"              ] ?? __smoothness;
-            __lineDelay                = _struct[$ "lineDelay"               ] ?? __lineDelay;
-            __blockScrollSpeed         = _struct[$ "blockScrollSpeed"        ] ?? __blockScrollSpeed;
-            __blockOverlap             = _struct[$ "blockOverlap"            ] ?? __blockOverlap;
-            __blockDelay               = _struct[$ "blockDelay"              ] ?? __blockDelay;
-            __pageScrollSpeed          = _struct[$ "pageScrollSpeed"         ] ?? __pageScrollSpeed;
-            __pageDelay                = _struct[$ "pageDelay"               ] ?? __pageDelay;
-            __soundArray               = _struct[$ "sound"                   ] ?? __soundArray;
-            __soundPitchMin            = _struct[$ "soundPitchMin"           ] ?? __soundPitchMin;
-            __soundPitchMax            = _struct[$ "soundPitchMax"           ] ?? __soundPitchMax;
-            __soundGain                = _struct[$ "soundGain"               ] ?? __soundGain;
-            __soundOverlap             = _struct[$ "soundOverlap"            ] ?? __soundOverlap;
-            __soundPerChar             = _struct[$ "soundPerChar"            ] ?? __soundPerChar;
-            __soundPerCharInterrupts   = _struct[$ "soundPerCharInterrupts"  ] ?? __soundPerCharInterrupts;
-            __soundPerCharException    = _struct[$ "soundPerCharException"   ] ?? __soundPerCharException;
-            __functionPerChar          = _struct[$ "functionPerChar"         ] ?? __functionPerChar;
-            __functionOnFinish         = _struct[$ "functionOnFinish"        ] ?? __functionOnFinish;
-            __eventScope               = _struct[$ "eventScope"              ] ?? __eventScope;
-            __dynamicPositioning       = _struct[$ "dynamicPositioning"      ] ?? __dynamicPositioning;
-            __dynamicPositioningSmooth = _struct[$ "dynamicPositioningSmooth"] ?? __dynamicPositioningSmooth;
+            if (struct_exists(_struct, "speed"                   )) __speed                    = _struct.speed;
+            if (struct_exists(_struct, "smoothness"              )) __smoothness               = _struct.smoothness;
+            if (struct_exists(_struct, "lineDelay"               )) __lineDelay                = _struct.lineDelay;
+            if (struct_exists(_struct, "blockScrollSpeed"        )) __blockScrollSpeed         = _struct.blockScrollSpeed;
+            if (struct_exists(_struct, "blockOverlap"            )) __blockOverlap             = _struct.blockOverlap;
+            if (struct_exists(_struct, "blockDelay"              )) __blockDelay               = _struct.blockDelay;
+            if (struct_exists(_struct, "pageScrollSpeed"         )) __pageScrollSpeed          = _struct.pageScrollSpeed;
+            if (struct_exists(_struct, "pageDelay"               )) __pageDelay                = _struct.pageDelay;
+            if (struct_exists(_struct, "sound"                   )) __soundArray               = _struct.sound;
+            if (struct_exists(_struct, "soundPitchMin"           )) __soundPitchMin            = _struct.soundPitchMin;
+            if (struct_exists(_struct, "soundPitchMax"           )) __soundPitchMax            = _struct.soundPitchMax;
+            if (struct_exists(_struct, "soundGain"               )) __soundGain                = _struct.soundGain;
+            if (struct_exists(_struct, "soundOverlap"            )) __soundOverlap             = _struct.soundOverlap;
+            if (struct_exists(_struct, "soundPerChar"            )) __soundPerChar             = _struct.soundPerChar;
+            if (struct_exists(_struct, "soundPerCharInterrupts"  )) __soundPerCharInterrupts   = _struct.soundPerCharInterrupts;
+            if (struct_exists(_struct, "soundPerCharException"   )) __soundPerCharException    = _struct.soundPerCharException;
+            if (struct_exists(_struct, "methodPerReveal"         )) __methodPerReveal          = _struct.methodPerReveal;
+            if (struct_exists(_struct, "methodOnFinish"          )) __methodOnFinish           = _struct.methodOnFinish;
+            if (struct_exists(_struct, "dynamicPositioning"      )) __dynamicPositioning       = _struct.dynamicPositioning;
+            if (struct_exists(_struct, "dynamicPositioningSmooth")) __dynamicPositioningSmooth = _struct.dynamicPositioningSmooth;
             
             if (_oldSoundPerCharException != __soundPerCharException)
             {
@@ -409,39 +497,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         if (other.__dynamicPositioning)
         {
             allow_glyph_data_getter();
-        }
-        
-        return self;
-    }
-    
-    static typist_options_reset = function()
-    {
-        with(__typistOptions)
-        {
-            __appear                   = true;
-            __backwards                = false; //Unused
-            __speed                    = 0.4;
-            __smoothness               = 0;
-            __lineDelay                = 0;
-            __blockScrollSpeed         = 4;
-            __blockOverlap             = 0;
-            __blockDelay               = infinity;
-            __pageScrollSpeed          = 4;
-            __pageDelay                = infinity;
-            __soundArray               = undefined;
-            __soundPitchMin            = 1;
-            __soundPitchMax            = 1;
-            __soundGain                = 1;
-            __soundOverlap             = 0;
-            __soundPerChar             = false;
-            __soundPerCharInterrupts   = false;
-            __soundPerCharException    = [];
-            __functionPerChar          = undefined;
-            __functionOnFinish         = undefined;
-            __eventScope               = undefined;
-            __typistCharDelay          = [];
-            __dynamicPositioning       = false;
-            __DynamicPositioningSmooth = false;
         }
         
         return self;
@@ -748,17 +803,17 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     static __TypistExecuteFunctionPerReveal = function(_functionScope)
     {
-        if (is_callable(__typistOptions.__functionPerReveal))
+        if (is_callable(__typistOptions.__methodPerReveal))
         {
-            __typistOptions.__functionPerReveal(_functionScope, __typistEventRevealIndex - 1, self);
+            __typistOptions.__methodPerReveal(_functionScope, __typistEventRevealIndex - 1, self);
         }
     }
     
-    static __TypistExecuteFunctionOnComplete = function(_functionScope)
+    static __TypistExecuteFunctionOnFinish = function(_functionScope)
     {
-        if (is_callable(__typistOptions.__functionOnComplete))
+        if (is_callable(__typistOptions.__methodOnFinish))
         {
-            __typistOptions.__functionOnComplete(_functionScope, self);
+            __typistOptions.__methodOnFinish(_functionScope, self);
         }
     }
     
@@ -1285,7 +1340,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                         else
                         {
                             //Execute our on-complete callback when we finish
-                            __TypistExecuteFunctionOnComplete(_functionScope);
+                            __TypistExecuteFunctionOnFinish(_functionScope);
                         }
                     }
                 }
