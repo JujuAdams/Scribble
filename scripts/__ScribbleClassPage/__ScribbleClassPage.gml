@@ -129,11 +129,10 @@ function __ScribbleClassPage(_model) constructor
         // Set up the character indexes for the page, relative to the character index of the first glyph on the page
         var _pageRevealStart = _glyphGrid[# __glyphStart, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX];
         var _pageRevealEnd   = _glyphGrid[# __glyphEnd,   __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX];
+        __revealStart = _pageRevealStart;
+        __revealEnd   = _pageRevealEnd;
         __revealCount = 1 + _pageRevealEnd - _pageRevealStart;
-            
-        //Set up reveal indexes relative to the page
-        ds_grid_add_region(_glyphGrid, __glyphStart, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, __glyphEnd, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX, -_pageRevealStart);
-            
+        
         __lineDataArray = [];
         
         var _line = __lineStart;

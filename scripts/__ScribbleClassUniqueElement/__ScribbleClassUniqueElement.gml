@@ -136,14 +136,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     __typistCharDelay     = false;
     __typistCharDelayDict = {};
     
-    __soundArray                  = undefined;
-    __soundOverlap                = 0;
-    __soundFinishTime             = current_time;
-    __soundPerReveal              = false;
-    __soundPerRevealException     = false;
-    __soundPerRevealExceptionDict = undefined;
-    __soundPerRevealInterrupt     = false;
-    
     typist_reset();
     
     
@@ -152,34 +144,31 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     {
         __SetPage(0);
         
-        __typistRunning = false;
-        __typistPaused  = false;
-        __typistDelayed = false;
+        __prevTickFrame = -infinity;
         
         __typistSyncStarted  = false;
         __typistSyncVoice    = undefined;
         __typistSyncPaused   = false;
         __typistSyncPauseEnd = infinity;
-    
-        __typistScrollTarget = 0;
-        __typistSoundVoice   = -1;
-        __pageTarget         = 0;
-        __pageSpeed          = 1/40;
         
         __typistEventRevealIndex = -1;
         __prevAudioReveal = 0;
         
-        __prevTickFrame = -infinity;
-        
         __typistHeadArray      = array_create(__SCRIBBLE_HEAD_COUNT, 0);
         __typistHeadLimitArray = [__SCRIBBLE_VERY_BIG, 0, 0]; //Must match `__SCRIBBLE_HEAD_COUNT`
         
+        __typistSoundVoice = -1;
+        
+        __typistRunning     = false;
         __typistSuspended   = false;
         __typistPaused      = false;
         __typistDelayed     = false;
         __typistDelayEnd    = -1;
         __typistInlineSpeed = 1;
         __typistEventStack  = [];
+    
+        __typistScrollTarget = 0;
+        __typistPageTarget   = 0;
     }
     
     static typist_start = function()
@@ -333,13 +322,13 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             __soundPitchMax            = 1;
             __soundGain                = 1;
             __soundOverlap             = 0;
-            __soundPerChar             = true;
-            __soundPerCharInterrupts   = true;
+            __soundPerReveal           = true;
+            __soundPerRevealInterrupts = true;
             __soundPerCharException    = [];
             __methodPerReveal          = undefined;
             __methodOnFinish           = undefined;
             __dynamicPositioning       = false;
-            __DynamicPositioningSmooth = false;
+            __dynamicPositioningSmooth = false;
         }
         
         return self;
@@ -400,20 +389,20 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             //a value of `2` is twice the amplitude
             soundGain: true, //default = `1`
             
-            //Amount of overlap allowed between sounds, in milliseconds. This only applies when `soundPerChar`
+            //Amount of overlap allowed between sounds, in milliseconds. This only applies when `soundPerReveal`
             //is set to `false`
             soundOverlap: true, //default = `0`
             
-            //Whether a sound should be played for every single glyph that appears (`true`) or continuously
+            //Whether a sound should be played for every single reveal that appears (`true`) or continuously
             //looped whilst text is appearing (`false`) without attempting to synchronize to glyph reveal
-            soundPerChar: true, //default = `true`
+            soundPerReveal: true, //default = `true`
             
-            //Whether per-character sound playback interrupts previously playing audio. This only applies when
-            //`soundPerChar` is set to `true`
-            soundPerCharInterrupts: true, //default = `true`
+            //Whether per-reveal sound playback interrupts previously playing audio. This only applies when
+            //`soundPerReveal` is set to `true`
+            soundPerRevealInterrupts: true, //default = `true`
             
             //Array of glyphs exceptions that prevent per-character sound playback from triggering. This will
-            //only apply when `soundPerChar` is set to `true`
+            //only apply when `soundPerReveal` is set to `true` and when the reveal mode is set to per-character
             soundPerCharException: true, //default = `[]`
             
             //Method to execute per reveal (per glyph when reveal mode is set to `SCRIBBLE_REVEAL_PER_GLYPH`).
@@ -480,8 +469,8 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             if (struct_exists(_struct, "soundPitchMax"           )) __soundPitchMax            = _struct.soundPitchMax;
             if (struct_exists(_struct, "soundGain"               )) __soundGain                = _struct.soundGain;
             if (struct_exists(_struct, "soundOverlap"            )) __soundOverlap             = _struct.soundOverlap;
-            if (struct_exists(_struct, "soundPerChar"            )) __soundPerChar             = _struct.soundPerChar;
-            if (struct_exists(_struct, "soundPerCharInterrupts"  )) __soundPerCharInterrupts   = _struct.soundPerCharInterrupts;
+            if (struct_exists(_struct, "soundPerReveal"          )) __soundPerReveal           = _struct.soundPerReveal;
+            if (struct_exists(_struct, "soundPerRevealInterrupts")) __soundPerRevealInterrupts = _struct.soundPerRevealInterrupts;
             if (struct_exists(_struct, "soundPerCharException"   )) __soundPerCharException    = _struct.soundPerCharException;
             if (struct_exists(_struct, "methodPerReveal"         )) __methodPerReveal          = _struct.methodPerReveal;
             if (struct_exists(_struct, "methodOnFinish"          )) __methodOnFinish           = _struct.methodOnFinish;
@@ -509,6 +498,8 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
 
     static typist_skip = function(_level = SCRIBBLE_SKIP_TO_PAUSE)
     {
+        //FIXME
+        
         if (_level == SCRIBBLE_SKIP_TO_EVENT)
         {
             
@@ -976,7 +967,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         {
             if (not on_last_page())
             {
-                __pageTarget = get_page()+1;
+                __typistPageTarget = get_page()+1;
             }
         }
         else
@@ -1166,10 +1157,10 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 
                 if (_canMove)
                 {
-                    if (__page != __pageTarget)
+                    if (__page != __typistPageTarget)
                     {
                         _canMove = false;
-                        __SetPage(__page + clamp(__pageTarget - __page, -__pageSpeed, __pageSpeed));
+                        __SetPage(__page + clamp(__typistPageTarget - __page, -__typistPageSpeed, __typistPageSpeed));
                         __typistScrollTarget = 0;
                     }
                 }

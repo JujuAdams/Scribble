@@ -757,53 +757,6 @@ function __ScribbleClassElementParent(_text) constructor
         return __blockTrim;
     }
     
-    static __GetGlyphLine = function(_index)
-    {
-        if (_index <= 0)
-        {
-            return 0;
-        }
-        
-        _index = floor(_index);
-        
-        var _lineArray = __EnsureModel().__pagesArray[__page].__lineDataArray;
-        var _i = 0;
-        repeat(array_length(_lineArray))
-        {
-            if ((_index >= _lineArray[_i].glyphStart) && (_index <= _lineArray[_i].glyphEnd))
-            {
-                return _i;
-            }
-            
-            ++_i;
-        }
-        
-        return array_length(_lineArray)-1;
-    }
-    
-    static __GetGlyphBlock = function(_index)
-    {
-        return __GetLineBlock(__GetGlyphLine(_index));
-    }
-    
-    static __GetLineBlock = function(_index)
-    {
-        var _blockSize = get_block_size();
-        if (_index < _blockSize)
-        {
-            return 0;
-        }
-        else
-        {
-            return 1 + ((_index - _blockSize) div (_blockSize - __blockTrim));
-        }
-    }
-    
-    static __GetBlockY = function(_index)
-    {
-        return (_index*(get_block_size() - __blockTrim))*__EnsureModel().__lineHeight;
-    }
-    
     #endregion
     
     
@@ -2064,6 +2017,152 @@ function __ScribbleClassElementParent(_text) constructor
         }
         
         return __matrix;
+    }
+    
+    #endregion
+    
+    
+    
+    #region Line / Block / Page helper functions
+    
+    //Returns if there is a linebreak after the target glyph
+    //Glyph indexes are 0-indexed for this function
+    static __GetLinebreakAfterGlyph = function(_index)
+    {
+        if (__GetBlockbreakAfterGlyph(_index))
+        {
+            return true;
+        }
+        
+        return (__GetGlyphLine(_index) < __GetGlyphLine(_index+1));
+    }
+    
+    //Returns if there is a blockbreak after the target glyph
+    //Glyph indexes are 0-indexed for this function
+    static __GetBlockbreakAfterGlyph = function(_index)
+    {
+        if (__GetPagebreakAfterGlyph(_index))
+        {
+            return true;
+        }
+        
+        return (__GetGlyphBlock(_index) < __GetGlyphBlock(_index+1));
+    }
+    
+    //Returns if there is a pagebreak after the target glyph
+    //Glyph indexes are 0-indexed for this function
+    static __GetPagebreakAfterGlyph = function(_index)
+    {
+        return (__GetGlyphPage(_index) < __GetGlyphPage(_index+1));
+    }
+    
+    //Returns which page a particular glyph is on
+    //Glyph indexes are 0-indexed for this function
+    //Glyph indexes are global across pages and are 0-indexed
+    static __GetGlyphPage = function(_index)
+    {
+        if (_index <= 0)
+        {
+            return 0;
+        }
+        
+        _index = floor(_index);
+        
+        var _pageArray = __EnsureModel().__pagesArray;
+        var _i = 0;
+        repeat(array_length(_pageArray))
+        {
+            if (_index < _pageArray[_i].__glyphStart)
+            {
+                return _i-1;
+            }
+            
+            ++_i;
+        }
+        
+        return _i-1;
+    }
+    
+    //Returns which page a particular reveal index is on
+    //Reveal indexes are global across pages and are 0-indexed
+    static __GetRevealPage = function(_index)
+    {
+        if (_index <= 0)
+        {
+            return 0;
+        }
+        
+        _index = floor(_index);
+        
+        var _pageArray = __EnsureModel().__pagesArray;
+        var _i = 0;
+        repeat(array_length(_pageArray))
+        {
+            if (_index < _pageArray[_i].__revealStart)
+            {
+                return _i-1;
+            }
+            
+            ++_i;
+        }
+        
+        return _i-1;
+    }
+    
+    //Returns which line a particular glyph is on on a page
+    //Glyph indexes are 0-indexed for this function
+    //Lines indexes are local per page and are 0-indexed
+    static __GetGlyphLine = function(_index)
+    {
+        if (_index <= 0)
+        {
+            return 0;
+        }
+        
+        _index = floor(_index);
+        
+        var _lineArray = __EnsureModel().__pagesArray[__page].__lineDataArray;
+        var _i = 0;
+        repeat(array_length(_lineArray))
+        {
+            if ((_index >= _lineArray[_i].glyphStart) && (_index <= _lineArray[_i].glyphEnd))
+            {
+                return _i;
+            }
+            
+            ++_i;
+        }
+        
+        return array_length(_lineArray)-1;
+    }
+    
+    //Returns which block a particular glyph is in on a page
+    //Glyph indexes are 0-indexed for this function
+    //Block indexes are local per page and are 0-indexed
+    static __GetGlyphBlock = function(_index)
+    {
+        return __GetLineBlock(__GetGlyphLine(_index));
+    }
+    
+    //Returns which block a particular line is in on a page
+    //Block indexes are local per page and are 0-indexed
+    static __GetLineBlock = function(_index)
+    {
+        var _blockSize = get_block_size();
+        if (_index < _blockSize)
+        {
+            return 0;
+        }
+        else
+        {
+            return 1 + ((_index - _blockSize) div (_blockSize - __blockTrim));
+        }
+    }
+    
+    //Returns the y position of a block locally to a page
+    static __GetBlockY = function(_index)
+    {
+        return (_index*(get_block_size() - __blockTrim))*__EnsureModel().__lineHeight;
     }
     
     #endregion
