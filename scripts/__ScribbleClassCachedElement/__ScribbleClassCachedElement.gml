@@ -195,8 +195,11 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
         __ScribbleError("Cannot use typist functions on cached Scribble text elements\nPlease refer to documentation and use `scribble_unique()` instead");
     }
     
-    static reveal_mode = function(_state)
+    /// @param x
+    /// @param y
+    /// @param revealIndex
+    static get_bbox_revealed = function(_x, _y, _revealIndex)
     {
-        //FIXME
+        return __GetBboxRevealed(_x, _y, _revealIndex);
     }
 }

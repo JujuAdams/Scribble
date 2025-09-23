@@ -315,19 +315,18 @@ function __ScribbleClassModel(_element) constructor
         };
     }
     
-    /// @param page
-    /// @param startCharacter
-    /// @param endCharacter
-    static __GetBboxRevealed = function(_page, _inStart, _inEnd, _paddingL, _paddingT, _paddingR, _paddingB)
+    static __GetBboxRevealed = function(_page, _glyphIndex, _paddingL, _paddingT, _paddingR, _paddingB)
     {
         //TODO - Optimize by returning page bounds if the number of characters revealed is the same as the whole page
+        //FIXME - Implement for non-glyph reveal
         
         if (not __allowGlyphDataGetter) __ScribbleError("Getting the revealed glyph bounding box requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
         
+        var _pageStruct = __pagesArray[_page];
         var _glyphGrid = __GetGlyphDataGrid(_page);
         
-        var _start = _inStart-1;
-        var _end   = _inEnd-1;
+        var _start = _pageStruct.__glyphStart;
+        var _end   = _glyphIndex;
         
         if (_end < 0)
         {

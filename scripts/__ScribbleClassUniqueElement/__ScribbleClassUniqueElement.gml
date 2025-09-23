@@ -391,6 +391,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             __backwards                = false; //Unused
             __speed                    = 0.5;
             __smoothness               = 0;
+            __ignoreDelayTags          = false;
             __lineDelay                = 0;
             __blockScrollSpeed         = 4;
             __blockOverlap             = 0;
@@ -431,6 +432,9 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             //cause each glyph to take 10 ticks to appear. This value is multiplicative with the speed so that
             //a speed of `0.5` will double how long it takes for a glyph to appear
             smoothness: true, //default = `0`
+            
+            //Whether to ignore all delay tags
+            ignoreDelayTags: true, //default = `false`
             
             //Delay time at the end of each line, in ticks. Setting this value to `infinity` will pause at the
             //end of every line
@@ -538,6 +542,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             
             if (struct_exists(_struct, "speed"                   )) __speed                    = _struct.speed;
             if (struct_exists(_struct, "smoothness"              )) __smoothness               = _struct.smoothness;
+            if (struct_exists(_struct, "ignoreDelayTags"         )) __ignoreDelayTags          = _struct.ignoreDelayTags;
             if (struct_exists(_struct, "lineDelay"               )) __lineDelay                = _struct.lineDelay;
             if (struct_exists(_struct, "blockScrollSpeed"        )) __blockScrollSpeed         = _struct.blockScrollSpeed;
             if (struct_exists(_struct, "blockOverlap"            )) __blockOverlap             = _struct.blockOverlap;
@@ -648,16 +653,16 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return __typistAudioGain;
     }
     
-    static typist_set_position = function(_value)
+    static typist_set_position = function(_index)
     {
         //FIXME - Reimplement
         
-        _value = max(0, _value);
+        _index = max(0, _index);
         
-        if (_value >= __typistHeadLimitArray[0])
+        if (_index >= __typistHeadLimitArray[0])
         {
             //Must match `__SCRIBBLE_HEAD_COUNT`
-            __typistHeadArray[@ 0] = _value + __typistOptions.__smoothness;
+            __typistHeadArray[@ 0] = _index + __typistOptions.__smoothness;
             __typistHeadArray[@ 1] = 0;
             __typistHeadArray[@ 2] = 0;
             
@@ -667,15 +672,15 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         else
         {
             //Must match `__SCRIBBLE_HEAD_COUNT`
-            __typistHeadArray[@ 0] = _value;
-            __typistHeadArray[@ 1] = _value + __typistOptions.__smoothness;
+            __typistHeadArray[@ 0] = _index;
+            __typistHeadArray[@ 1] = _index + __typistOptions.__smoothness;
             __typistHeadArray[@ 2] = 0;
             
-            __typistHeadLimitArray[@ 1] = _value;
+            __typistHeadLimitArray[@ 1] = _index;
             __typistHeadLimitArray[@ 2] = 0;
         }
         
-        __typistRevealIndex = floor(_value);
+        __typistRevealIndex = floor(_index);
         
         //FIXME - Set line/block/page index here too
         
@@ -742,10 +747,26 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         __typistHeadLimitArray[@ 1] = ceil(_pos);
     }
     
-    static __TypistProcessEventStack = function(_functionScope)
+    static __TypistDelay = function(_duration)
     {
         static _system  = __ScribbleSystem();
-        static _tagDict = _system.__tagDict;
+        
+        if (not __typistSyncStarted)
+        {
+            if (__typistDelayEnd == undefined) //Not delayed
+            {
+                __TypistStartNewHead(__typistRevealIndex);
+            }
+            
+            __typistDelayEnd = _system.__milliseconds + _duration;
+            
+            return false;
+        }
+    }
+    
+    static __TypistProcessEventStack = function(_functionScope)
+    {
+        static _tagDict = __ScribbleSystem().__tagDict;
         
         //This method processes events on the stack (which is filled by copying data from the target element in .__tick())
         //We return `true` if there have been no pausing behaviours called i.e. [pause] and [delay]
@@ -772,20 +793,17 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                     }
                 break;
                 
-                //Time-related delay
-                case __SCRIBBLE_COMMAND_TAG_DELAY:
-                    if (not __typistSyncStarted)
+                //Delay tag
+                case __SCRIBBLE_COMMAND_TAG_DELAY_TAG:
+                    if (not __typistOptions.__ignoreDelayTags)
                     {
-                        if (__typistDelayEnd == undefined) //Not delayed
-                        {
-                            __TypistStartNewHead(__typistRevealIndex);
-                        }
-                        
-                        var _duration = (array_length(_eventData) >= 1)? real(_eventData[0]) : SCRIBBLE_DEFAULT_DELAY_DURATION;
-                        __typistDelayEnd = _system.__milliseconds + _duration;
-                        
-                        return false;
+                        __TypistDelay((array_length(_eventData) >= 1)? real(_eventData[0]) : SCRIBBLE_DEFAULT_DELAY_DURATION);
                     }
+                break;
+                
+                //System-generated delay
+                case __SCRIBBLE_EVENT_SYSTEM_DELAY:
+                    __TypistDelay((array_length(_eventData) >= 1)? real(_eventData[0]) : SCRIBBLE_DEFAULT_DELAY_DURATION);
                 break;
                 
                 //Audio playback synchronisation
@@ -815,18 +833,18 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 break;
                 
                 //Native audio playback feature
-                case __SCRIBBLE_COMMAND_TAG_AUDIO: //TODO - Add warning when adding a conflicting custom event
+                case __SCRIBBLE_EVENT_AUDIO: //TODO - Add warning when adding a conflicting custom event
                     if (array_length(_eventData) >= 1)
                     {
                         __ScribblePlaySound(_eventData[0], __typistAudioGain, 1);
                     }
                 break;
                 
-                case __SCRIBBLE_COMMAND_TAG_TYPIST_SOUND: //TODO - Add warning when adding a conflicting custom event
+                case __SCRIBBLE_EVENT_TYPIST_SOUND: //TODO - Add warning when adding a conflicting custom event
                     sound(__ScribbleParseSoundArrayString(_eventData[1]), real(_eventData[2]), real(_eventData[3]), real(_eventData[4]));
                 break;
                 
-                case __SCRIBBLE_COMMAND_TAG_TYPIST_SOUND_PER_CHAR: //TODO - Add warning when adding a conflicting custom event
+                case __SCRIBBLE_EVENT_TYPIST_SOUND_PER_CHAR: //TODO - Add warning when adding a conflicting custom event
                     switch(array_length(_eventData))
                     {
                         case 4: sound_per_char(__ScribbleParseSoundArrayString(_eventData[1]), real(_eventData[2]), real(_eventData[3])); break;
@@ -834,11 +852,11 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                     }
                 break;
                 
-                case __SCRIBBLE_COMMAND_TAG_NEXT_LINE:
+                case __SCRIBBLE_EVENT_NEXT_LINE:
                     ++__typistLineIndex;
                 break;
                 
-                case __SCRIBBLE_COMMAND_TAG_NEXT_BLOCK:
+                case __SCRIBBLE_EVENT_NEXT_BLOCK:
                     ++__typistLineIndex;
                     ++__typistBlockIndex;
                     
@@ -852,7 +870,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                     return false;
                 break;
                 
-                case __SCRIBBLE_COMMAND_TAG_NEXT_PAGE:
+                case __SCRIBBLE_EVENT_NEXT_PAGE:
                     __typistLineIndex  = 0;
                     __typistBlockIndex = 0;
                     ++__typistPageIndex;
@@ -988,6 +1006,14 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         }
         
         return self;
+    }
+    
+    /// @param x
+    /// @param y
+    static get_bbox_revealed = function(_x, _y, _revealIndex_UNUSED)
+    {
+        //FIXME - Fix for non-per-character reveal
+        return __GetBboxRevealed(_x, _y, __typistRevealIndex);
     }
     
     
@@ -1204,7 +1230,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                         if (_delay > 0)
                                         {
                                             //Character delay needs to happen before other events
-                                            array_insert(__typistEventStack, 0, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_DELAY, [_delay]));
+                                            array_insert(__typistEventStack, 0, new __ScribbleClassEvent(__SCRIBBLE_EVENT_SYSTEM_DELAY, [_delay]));
                                         }
                                     }
                                 }

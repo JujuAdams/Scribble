@@ -1240,79 +1240,6 @@ function __ScribbleClassElementParent(_text) constructor
         };
     }
     
-    /// @param x
-    /// @param y
-    /// @param [revealIndex]
-    static get_bbox_revealed = function(_x, _y, _revealIndex = undefined)
-    {
-        //Default to the entire bounding box
-        if ((_revealIndex == undefined) && (not is_instanceof(self, __ScribbleClassUniqueElement)))
-        {
-            return get_bbox(_x, _y);
-        }
-        
-        var _model = __EnsureModel();
-        
-        if (_typist != undefined) //FIXME - Fix up for non-unique use
-        {
-            var _bbox = _model.__GetBboxRevealed(__pageInteger, 0, _revealIndex ?? floor(__typistHeadArray[0]), __paddingL, __paddingT, __paddingR, __paddingB);
-        }
-        else if (__tw_reveal != undefined) //FIXME - Variable not used any more
-        {
-            var _bbox = _model.__GetBboxRevealed(__pageInteger, 0, __tw_reveal, __paddingL, __paddingT, __paddingR, __paddingB);
-        }
-        
-        __UpdateBboxMatrix();
-        var _xScale = __scaleToBoxScale*_model.__fitScale*__postXScale;
-        var _yScale = __scaleToBoxScale*_model.__fitScale*__postYScale;
-        
-        if ((_xScale == 1) && (_yScale == 1) && (__postAngle == 0))
-        {
-            //Avoid using matrices if we can
-            var _l = _x - __originX + _bbox.left;
-            var _t = _y - __originY + _bbox.top;
-            var _r = _x - __originX + _bbox.right;
-            var _b = _y - __originY + _bbox.bottom;
-                
-            var _x0 = _l;   var _y0 = _t;
-            var _x1 = _r;   var _y1 = _t;
-            var _x2 = _l;   var _y2 = _b;
-            var _x3 = _r;   var _y3 = _b;
-        }
-        else
-        {
-            var _l = _bbox.left;
-            var _t = _bbox.top;
-            var _r = _bbox.right;
-            var _b = _bbox.bottom;
-                
-            var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _t, 0); var _x0 = _x + _vertex[0]; var _y0 = _y + _vertex[1];
-            var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _t, 0); var _x1 = _x + _vertex[0]; var _y1 = _y + _vertex[1];
-            var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _b, 0); var _x2 = _x + _vertex[0]; var _y2 = _y + _vertex[1];
-            var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _b, 0); var _x3 = _x + _vertex[0]; var _y3 = _y + _vertex[1];
-                
-            var _l = min(_x0, _x1, _x2, _x3);
-            var _t = min(_y0, _y1, _y2, _y3);
-            var _r = max(_x0, _x1, _x2, _x3);
-            var _b = max(_y0, _y1, _y2, _y3);
-        }
-        
-        return {
-            left:   _l,
-            top:    _t,
-            right:  _r,
-            bottom: _b,
-            
-            width:  1 + _r - _l,
-            height: 1 + _b - _t,
-            
-            x0: _x0,  y0: _y0,
-            x1: _x1,  y1: _y1,
-            x2: _x2,  y2: _y2,
-            x3: _x3,  y3: _y3
-        };
-    }
-    
     #endregion
     
     
@@ -1360,12 +1287,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     
     
-    #region
-    
-    static reveal = function(_index)
-    {
-        //FIXME - Alias to `set_position()`?
-    }
+    #region Reveal
     
     static reveal_mode = function(_state)
     {
@@ -1395,7 +1317,6 @@ function __ScribbleClassElementParent(_text) constructor
     
     
     #region Other Getters
-    
     
     static get_wrapped = function()
     {
@@ -1638,36 +1559,36 @@ function __ScribbleClassElementParent(_text) constructor
             if (__GetLinebreakAfterGlyph(_revealIndex))
             {
                 _delay = max(_delay, __typistOptions.__lineDelay ?? infinity);
-                _commandTag = __SCRIBBLE_COMMAND_TAG_NEXT_LINE;
+                _commandTag = __SCRIBBLE_EVENT_NEXT_LINE;
             }
             
             if (__GetBlockbreakAfterGlyph(_revealIndex))
             {
                 _delay = max(_delay, __typistOptions.__blockDelay ?? infinity);
-                _commandTag = __SCRIBBLE_COMMAND_TAG_NEXT_BLOCK;
+                _commandTag = __SCRIBBLE_EVENT_NEXT_BLOCK;
             }
             
             if (__GetPagebreakAfterGlyph(_revealIndex))
             {
                 _delay = max(_delay, __typistOptions.__pageDelay ?? infinity);
-                _commandTag = __SCRIBBLE_COMMAND_TAG_NEXT_PAGE;
+                _commandTag = __SCRIBBLE_EVENT_NEXT_PAGE;
             }
         }
         else if (__revealMode == SCRIBBLE_REVEAL_PER_LINE)
         {
             _delay = __typistOptions.__lineDelay ?? infinity;
-            _commandTag = __SCRIBBLE_COMMAND_TAG_NEXT_LINE;
+            _commandTag = __SCRIBBLE_EVENT_NEXT_LINE;
             
             if (__GetBlockbreakAfterLine(_revealIndex))
             {
                 _delay = max(_delay, __typistOptions.__blockDelay ?? infinity);
-                _commandTag = __SCRIBBLE_COMMAND_TAG_NEXT_BLOCK;
+                _commandTag = __SCRIBBLE_EVENT_NEXT_BLOCK;
             }
             
             if (__GetPagebreakAfterLine(_revealIndex))
             {
                 _delay = max(_delay, __typistOptions.__pageDelay ?? infinity);
-                _commandTag = __SCRIBBLE_COMMAND_TAG_NEXT_PAGE;
+                _commandTag = __SCRIBBLE_EVENT_NEXT_PAGE;
             }
         }
         else
@@ -1684,7 +1605,7 @@ function __ScribbleClassElementParent(_text) constructor
             }
             else
             {
-                array_push(_array, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_DELAY, _delay));
+                array_push(_array, new __ScribbleClassEvent(__SCRIBBLE_EVENT_SYSTEM_DELAY, _delay));
             }
             
         }
@@ -2304,6 +2225,71 @@ function __ScribbleClassElementParent(_text) constructor
         var _blockSize = get_block_size();
         var _line = _blockSize-1 + max(0, _index)*(_blockSize - __blockTrim);
         return clamp(_line, 0, __EnsureModel().__GetPage(_page).__lineEnd);
+    }
+    
+    /// @param x
+    /// @param y
+    /// @param revealIndex
+    static __GetBboxRevealed = function(_x, _y, _revealIndex)
+    {
+        //Default to the entire bounding box
+        if (_revealIndex == undefined)
+        {
+            return get_bbox(_x, _y);
+        }
+        
+        var _model = __EnsureModel();
+        var _bbox = _model.__GetBboxRevealed(__GetRevealPage(_revealIndex), _revealIndex, __paddingL, __paddingT, __paddingR, __paddingB);
+        
+        __UpdateBboxMatrix();
+        var _xScale = __scaleToBoxScale*_model.__fitScale*__postXScale;
+        var _yScale = __scaleToBoxScale*_model.__fitScale*__postYScale;
+        
+        if ((_xScale == 1) && (_yScale == 1) && (__postAngle == 0))
+        {
+            //Avoid using matrices if we can
+            var _l = _x - __originX + _bbox.left;
+            var _t = _y - __originY + _bbox.top;
+            var _r = _x - __originX + _bbox.right;
+            var _b = _y - __originY + _bbox.bottom;
+                
+            var _x0 = _l;   var _y0 = _t;
+            var _x1 = _r;   var _y1 = _t;
+            var _x2 = _l;   var _y2 = _b;
+            var _x3 = _r;   var _y3 = _b;
+        }
+        else
+        {
+            var _l = _bbox.left;
+            var _t = _bbox.top;
+            var _r = _bbox.right;
+            var _b = _bbox.bottom;
+                
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _t, 0); var _x0 = _x + _vertex[0]; var _y0 = _y + _vertex[1];
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _t, 0); var _x1 = _x + _vertex[0]; var _y1 = _y + _vertex[1];
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _b, 0); var _x2 = _x + _vertex[0]; var _y2 = _y + _vertex[1];
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _b, 0); var _x3 = _x + _vertex[0]; var _y3 = _y + _vertex[1];
+                
+            var _l = min(_x0, _x1, _x2, _x3);
+            var _t = min(_y0, _y1, _y2, _y3);
+            var _r = max(_x0, _x1, _x2, _x3);
+            var _b = max(_y0, _y1, _y2, _y3);
+        }
+        
+        return {
+            left:   _l,
+            top:    _t,
+            right:  _r,
+            bottom: _b,
+            
+            width:  1 + _r - _l,
+            height: 1 + _b - _t,
+            
+            x0: _x0,  y0: _y0,
+            x1: _x1,  y1: _y1,
+            x2: _x2,  y2: _y2,
+            x3: _x3,  y3: _y3
+        };
     }
     
     #endregion

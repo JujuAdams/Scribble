@@ -1,15 +1,15 @@
 {
   "$GMObject":"",
-  "%Name":"obj_test_typewriter_manual",
+  "%Name":"obj_test_reveal",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_test_typewriter_manual",
+  "name":"obj_test_reveal",
   "overriddenProperties":[],
   "parent":{
-    "name":"Typewriter",
-    "path":"folders/Test Cases/Typewriter.yy",
+    "name":"Text Element Methods",
+    "path":"folders/Test Cases/Text Element Methods.yy",
   },
   "parentObjectId":null,
   "persistent":false,
