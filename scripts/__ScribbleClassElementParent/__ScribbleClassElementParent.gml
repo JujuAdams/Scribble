@@ -19,7 +19,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     
     //We define this for all text elements because it gets used in the model key builder
-    __typistRevealMode = SCRIBBLE_DEFAULT_REVEAL_MODE;
+    __revealMode = SCRIBBLE_DEFAULT_REVEAL_MODE;
     __spritesDontScale = true;
     
     __preprocessorArray      = undefined;
@@ -1253,11 +1253,11 @@ function __ScribbleClassElementParent(_text) constructor
         
         var _model = __EnsureModel();
         
-        if (_typist != undefined)
+        if (_typist != undefined) //FIXME - Fix up for non-unique use
         {
-            var _bbox = _model.__GetBboxRevealed(__pageInteger, 0, _revealIndex ?? __typistHeadArray[0], __paddingL, __paddingT, __paddingR, __paddingB);
+            var _bbox = _model.__GetBboxRevealed(__pageInteger, 0, _revealIndex ?? floor(__typistHeadArray[0]), __paddingL, __paddingT, __paddingR, __paddingB);
         }
-        else if (__tw_reveal != undefined) //FIXME
+        else if (__tw_reveal != undefined) //FIXME - Variable not used any more
         {
             var _bbox = _model.__GetBboxRevealed(__pageInteger, 0, __tw_reveal, __paddingL, __paddingT, __paddingR, __paddingB);
         }
@@ -1360,7 +1360,28 @@ function __ScribbleClassElementParent(_text) constructor
     
     
     
-    #region Other Getters
+    #region
+    
+    static reveal = function(_index)
+    {
+        //FIXME - Alias to `set_position()`?
+    }
+    
+    static reveal_mode = function(_state)
+    {
+        if (__revealMode != _state)
+        {
+            __revealMode = _state;
+            __modelDirty = true;
+        }
+        
+        return self;
+    }
+    
+    static get_reveal_mode = function()
+    {
+        return __revealMode;
+    }
     
     static get_reveal_count = function()
     {
@@ -1368,6 +1389,13 @@ function __ScribbleClassElementParent(_text) constructor
         if (array_length(_pagesArray) <= 0) return 0;
         return array_last(_pagesArray).__revealEnd;
     }
+    
+    #endregion
+    
+    
+    
+    #region Other Getters
+    
     
     static get_wrapped = function()
     {
@@ -1605,7 +1633,7 @@ function __ScribbleClassElementParent(_text) constructor
         var _delay = 0;
         var _commandTag = undefined;
         
-        if (__typistRevealMode == SCRIBBLE_REVEAL_PER_CHAR)
+        if (__revealMode == SCRIBBLE_REVEAL_PER_CHAR)
         {
             if (__GetLinebreakAfterGlyph(_revealIndex))
             {
@@ -1625,7 +1653,7 @@ function __ScribbleClassElementParent(_text) constructor
                 _commandTag = __SCRIBBLE_COMMAND_TAG_NEXT_PAGE;
             }
         }
-        else if (__typistRevealMode == SCRIBBLE_REVEAL_PER_LINE)
+        else if (__revealMode == SCRIBBLE_REVEAL_PER_LINE)
         {
             _delay = __typistOptions.__lineDelay ?? infinity;
             _commandTag = __SCRIBBLE_COMMAND_TAG_NEXT_LINE;

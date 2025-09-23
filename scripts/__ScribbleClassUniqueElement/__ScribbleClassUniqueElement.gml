@@ -362,22 +362,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return __typistSuspend;
     }
     
-    static typist_reveal_mode = function(_state)
-    {
-        if (__typistRevealMode != _state)
-        {
-            __typistRevealMode = _state;
-            __modelDirty = true;
-        }
-        
-        return self;
-    }
-    
-    static typist_get_reveal_mode = function()
-    {
-        return __typistRevealMode;
-    }
-    
     static typist_options_reset = function()
     {
         with(__typistOptions)
@@ -1031,7 +1015,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         var _pageData = _pagesArray[__pageInteger];
         
         var _glyphDataGetter = _model.__allowGlyphDataGetter;
-        var _perCharacter = (__typistRevealMode == SCRIBBLE_REVEAL_PER_CHAR);
+        var _perCharacter = (__revealMode == SCRIBBLE_REVEAL_PER_CHAR);
         
         __TypistUpdateVariables();
         
@@ -1308,7 +1292,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 }
                 else
                 {
-                    if (__typistRevealMode != SCRIBBLE_REVEAL_PER_CHAR)
+                    if (__revealMode != SCRIBBLE_REVEAL_PER_CHAR)
                     {
                         __ScribbleError("Must use `SCRIBBLE_REVEAL_PER_CHAR` with dynamic positioning");
                     }
