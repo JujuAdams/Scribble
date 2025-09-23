@@ -250,7 +250,16 @@ function __scribble_system(_calledFromInitialize = false)
         //back in 2018 when working on The Swords Of Ditto in GameMaker Studio 1.4.
         __font_to_texture_group_map = ds_map_create();
         
-        var _tg_name_array = texturegroup_get_names();
+        try
+        {
+            var _tg_name_array = texturegroup_get_names();
+        }
+        catch(_error)
+        {
+            __scribble_trace($"Warning! GameMaker {GM_version} doesn't support `texturegroup_get_names()`. Please consider updating to 2024.8 or later");
+            var _tg_name_array = [];
+        }
+        
         var _i = 0;
         repeat(array_length(_tg_name_array))
         {

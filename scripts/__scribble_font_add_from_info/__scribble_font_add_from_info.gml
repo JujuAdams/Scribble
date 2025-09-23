@@ -53,7 +53,8 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
         
         var _texels_valid = true;
         
-        if (not __scribble_texture_group_get_ready(_texture_group))
+        //Texture group can be `undefined` if we have no font -> texture group information
+        if ((_texture_group != undefined) && (not __scribble_texture_group_get_ready(_texture_group)))
         {
             //Uhoh, let's check to see if we've gotten valid texture dimensions
             if ((texture_get_width(_texture_index) == 1)
