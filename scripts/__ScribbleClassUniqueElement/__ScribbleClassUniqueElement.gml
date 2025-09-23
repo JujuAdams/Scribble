@@ -147,13 +147,13 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     {
         __SetPage(0);
         
-        __prevTickFrame = -infinity;
+        __typistPrevTickFrame = -infinity;
         
         __typistSyncStarted  = false;
         __typistSyncVoice    = undefined;
         __typistSyncPauseEnd = undefined;
         
-        __prevAudioReveal = 0;
+        __typistPrevAudioReveal = 0;
         
         __typistHeadArray      = array_create(__SCRIBBLE_HEAD_COUNT, 0);
         __typistHeadLimitArray = [__SCRIBBLE_VERY_BIG, 0, 0]; //Must match `__SCRIBBLE_HEAD_COUNT`
@@ -168,6 +168,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         __typistSoundVoice = -1;
         
+        __typistFinished    = false;
         __typistRunning     = false;
         __typistSuspended   = false;
         __typistPaused      = false;
@@ -183,6 +184,12 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     static typist_start = function()
     {
+        if (__typistFinished)
+        {
+            __ScribbleTrace("Cannot start typist, it has already finished. Please call `.typist_reset()` to play again");
+            return;
+        }
+        
         __typistRunning = true;
         
         return self;
@@ -190,7 +197,14 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     static typist_start_audio_sync = function(_voice)
     {
+        if (__typistFinished)
+        {
+            __ScribbleTrace("Cannot start typist, it has already finished. Please call `.typist_reset()` to play again");
+            return;
+        }
+        
         __typistRunning = true;
+        
         //FIXME - Reimplement
         
         if (_voice < 400000)
@@ -220,22 +234,43 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     static typist_stop = function()
     {
-        __typistRunning = false;
+        __typistRunning      = false;
+        __typistPaused       = false;
+        __typistDelayEnd     = undefined;
+        __typistSyncPauseEnd = undefined;
         
         return self;
     }
     
-    static typist_finish = function()
+    static typist_finish = function(_functionScope = other)
     {
         typist_set_position(get_reveal_count());
-        typist_stop();
+        
+        __typistRunning      = false;
+        __typistPaused       = false;
+        __typistDelayEnd     = undefined;
+        __typistSyncPauseEnd = undefined;
+        
+        if (not __typistFinished)
+        {
+            __typistFinished = true;
+            
+            if (is_callable(__typistOptions.__methodOnFinish))
+            {
+                __typistOptions.__methodOnFinish(_functionScope, self);
+            }
+        }
         
         return self;
     }
     
     static typist_get_state = function()
     {
-        if (not __typistRunning)
+        if (__typistFinished)
+        {
+            return SCRIBBLE_TYPIST_STOPPED;
+        }
+        else if (not __typistRunning)
         {
             return SCRIBBLE_TYPIST_STOPPED;
         }
@@ -275,12 +310,17 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     static typist_get_finished = function()
     {
-        return (get_reveal() >= get_reveal_count());
+        return __typistFinished;
     }
     
-    static typist_get_length = function()
+    static typist_unpause = function()
     {
-        return get_reveal_count(get_page_count()-1);
+        if (typist_get_state() == SCRIBBLE_TYPIST_PAUSED)
+        {
+            __typistState = SCRIBBLE_TYPIST_RUNNING;
+        }
+        
+        return self;
     }
     
     static typist_advance = function()
@@ -288,6 +328,10 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         if (typist_get_state() == SCRIBBLE_TYPIST_PAUSED)
         {
             __typistState = SCRIBBLE_TYPIST_RUNNING;
+        }
+        else
+        {
+            typist_skip();
         }
         
         return self;
@@ -353,7 +397,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             __soundOverlap             = 0;
             __soundPerReveal           = true;
             __soundPerRevealInterrupts = true;
-            __soundPerCharException    = [];
+            __soundPerCharException    = "";
             __methodPerReveal          = undefined;
             __methodOnFinish           = undefined;
             __dynamicPositioning       = false;
@@ -506,9 +550,18 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             if (struct_exists(_struct, "dynamicPositioning"      )) __dynamicPositioning       = _struct.dynamicPositioning;
             if (struct_exists(_struct, "dynamicPositioningSmooth")) __dynamicPositioningSmooth = _struct.dynamicPositioningSmooth;
             
-            if (_oldSoundPerCharException != __soundPerCharException)
+        }
+        
+        if (_oldSoundPerCharException != __typistOptions.__soundPerCharException)
+        {
+            __typistSoundPerCharExceptionDict = {};
+            
+            var _string = __typistOptions.__soundPerCharException;
+            var _i = 1;
+            repeat(string_length(_string))
             {
-                
+                __typistSoundPerCharExceptionDict[$ ord(string_char_at(_string, _i))] = true;
+                ++_i;
             }
         }
         
@@ -525,7 +578,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return __typistOptions;
     }
 
-    static typist_skip = function(_level = SCRIBBLE_SKIP_TO_PAUSE)
+    static typist_skip = function(_level = SCRIBBLE_SKIP_TO_BLOCK)
     {
         //FIXME
         
@@ -808,25 +861,21 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     static __TypistPlaySound = function(_headPos, _character)
     {
-        var _soundArray = __soundArray;
+        var _soundArray = __typistOptions.__soundArray;
         if (is_array(_soundArray) && (array_length(_soundArray) > 0))
         {
             var _playSound = false;
-            if (__soundPerReveal)
+            if (__typistOptions.__soundPerReveal)
             {
                 //Only play audio if a new character has been revealled
-                if (floor(_headPos + 0.0001) > floor(__prevAudioReveal))
+                if (_headPos > __typistPrevAudioReveal)
                 {
-                    if (not __soundPerRevealException)
-                    {
-                        _playSound = true;
-                    }
-                    else if (not variable_struct_exists(__soundPerRevealExceptionDict, _character))
+                    if (not variable_struct_exists(__typistSoundPerCharExceptionDict, _character))
                     {
                         _playSound = true;
                     }
                     
-                    if (_playSound && __soundPerRevealInterrupt)
+                    if (_playSound && __typistOptions.__soundPerRevealInterrupt)
                     {
                         audio_stop_sound(__typistSoundVoice);
                     }
@@ -839,40 +888,24 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             
             if (_playSound)
             {
-                __prevAudioReveal = _headPos;
+                __typistPrevAudioReveal = _headPos;
                 
                 __typistSoundVoice = __ScribblePlaySound(_soundArray[floor(__ScribbleRandom()*array_length(_soundArray))],
                                                          __typistOptions.__soundGain,
                                                          lerp(__typistOptions.__soundPitchMin, __typistOptions.__soundPitchMax, __ScribbleRandom()));
                 if (__typistSoundVoice >= 0)
                 {
-                    __soundFinishTime = current_time + 1000*audio_sound_length(__typistSoundVoice) - __soundOverlap;
+                    __soundFinishTime = current_time + 1000*audio_sound_length(__typistSoundVoice) - __typistOptions.__soundOverlap;
                 }
             }
-        }
-    }
-    
-    static __TypistExecuteFunctionPerReveal = function(_functionScope)
-    {
-        if (is_callable(__typistOptions.__methodPerReveal))
-        {
-            __typistOptions.__methodPerReveal(_functionScope, __typistRevealIndex - 1, self);
-        }
-    }
-    
-    static __TypistExecuteFunctionOnFinish = function(_functionScope)
-    {
-        if (is_callable(__typistOptions.__methodOnFinish))
-        {
-            __typistOptions.__methodOnFinish(_functionScope, self);
         }
     }
     
     static __TypistUpdateFromDraw = function(_inFunctionScope)
     {
         //Don't move the typist if it's been less than a frame since we were last updated
-        if (_system.__frames <= __prevTickFrame) return undefined;
-        __prevTickFrame = _system.__frames;
+        if (_system.__frames <= __typistPrevTickFrame) return undefined;
+        __typistPrevTickFrame = _system.__frames;
         
         return __TypistMove(_inFunctionScope, __typistOptions.__speed*__typistInlineSpeed*_system.__tickSize);
     }
@@ -937,7 +970,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     #region Setters
     
-    static set_position = function(_value)
+    static typist_set_position = function(_value)
     {
         //FIXME - Reimplement
         
@@ -964,71 +997,11 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             __typistHeadLimitArray[@ 2] = 0;
         }
         
-        return self;
-    }
-    
-    /// @param soundArray
-    /// @param overlap
-    /// @param pitchMin
-    /// @param pitchMax
-    /// @param [gain=1]
-    static sound = function(_in_sound_array, _overlap, _pitch_min, _pitch_max, _gain = 1)
-    {
-        var _soundArray = _in_sound_array;
-        if (not is_array(_soundArray)) _soundArray = [_soundArray];
+        __typistRevealIndex = floor(_value);
         
-        __soundArray     = _soundArray;
-        __soundOverlap   = _overlap;
-        __soundPerReveal = false;
+        //FIXME - Set line/block/page index here too
         
         return self;
-    }
-    
-    /// @param soundArray
-    /// @param pitchMin
-    /// @param pitchMax
-    /// @param [exceptionString]
-    /// @param [gain=1]
-    /// @param [interrupt=false]
-    static sound_per_char = function(_in_sound_array, _pitch_min, _pitch_max, _exception_string, _gain = 1, _interrupt = false)
-    {
-        var _soundArray = _in_sound_array;
-        if (not is_array(_soundArray)) _soundArray = [_soundArray];
-        
-        __soundArray              = _soundArray;
-        __soundPerReveal          = true;
-        __soundPerRevealInterrupt = _interrupt;
-        
-        if (is_string(_exception_string))
-        {
-            __soundPerRevealException = true;
-            __soundPerRevealExceptionDict = {};
-            
-            var _i = 1;
-            repeat(string_length(_exception_string))
-            {
-                __soundPerRevealExceptionDict[$ ord(string_char_at(_exception_string, _i))] = true;
-                ++_i;
-            }
-        }
-        else
-        {
-            __soundPerRevealException = false;
-        }
-        
-        return self;
-    }
-    
-    static advance = function()
-    {
-        if (get_paused())
-        {
-            unpause();
-        }
-        else
-        {
-            skip();
-        }
     }
     
     /// @param easeMethod
@@ -1127,7 +1100,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         var _pagesArray = _model.__pagesArray;
         if (array_length(_pagesArray) == 0) return;
         var _pageData = _pagesArray[__pageInteger];
-        var _pageRevealCount = _pageData.__revealCount;
         
         var _glyphDataGetter = _model.__allowGlyphDataGetter;
         var _perCharacter = (__typistRevealMode == SCRIBBLE_REVEAL_PER_CHAR);
@@ -1234,12 +1206,9 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                     {
                         __typistHeadArray[@ 0] += _delta;
                         
-                        if (__pageInteger >= array_length(_pagesArray)-1)
+                        if ((__pageInteger >= array_length(_pagesArray)-1) && (__typistHeadArray[0] >= _pageData.__glyphEnd + __typistOptions.__smoothness))
                         {
-                            if (__typistHeadArray[0] >= _pageData.__glyphEnd + __typistOptions.__smoothness)
-                            {
-                                typist_stop();
-                            }
+                            typist_finish(_functionScope);
                         }
                     }
                     else
@@ -1285,7 +1254,11 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                 ++__typistRevealIndex;
                                 _moved = true;
                                 
-                                __TypistExecuteFunctionPerReveal();
+                                //Call the per-reveal method if we have one
+                                if (is_callable(__typistOptions.__methodPerReveal))
+                                {
+                                    __typistOptions.__methodPerReveal(_functionScope, __typistRevealIndex, self);
+                                }
                                 
                                 //Find events and add them to the stack
                                 get_events(__typistRevealIndex, __typistEventStack);
@@ -1302,10 +1275,10 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                         if (__typistRevealIndex >= 2)
                                         {
                                             _glyphOrd = (_glyphOrd << 32) | _pageData.__glyphGrid[# __typistRevealIndex-2, __SCRIBBLE_GLYPH_LAYOUT_UNICODE];
-                                            var _double_char_delay = __typistCharDelayDict[$ _glyphOrd];
-                                            _double_char_delay = (_double_char_delay == undefined)? 0 : _double_char_delay;
+                                            var _doubleCharDelay = __typistCharDelayDict[$ _glyphOrd];
+                                            _doubleCharDelay = (_doubleCharDelay == undefined)? 0 : _doubleCharDelay;
                                             
-                                            _delay = max(_delay, _double_char_delay);
+                                            _delay = max(_delay, _doubleCharDelay);
                                         }
                                         
                                         if (_delay > 0)
@@ -1325,20 +1298,12 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                         }
                     }
                     
-                    //FIXME - Reimplement
-                    //if (_moved)
-                    //{
-                    //    if (__typistRevealIndex <= _pageRevealCount)
-                    //    {
-                    //        //Only play sound once per frame if we're going reaaaally fast
-                    //        __TypistPlaySound(__typistHeadArray[0], _useGlyphData? (_pageData.__glyphGrid[# __typistHeadArray[0]-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE]) : 0);
-                    //    }
-                    //    else
-                    //    {
-                    //        //Execute our on-complete callback when we finish
-                    //        __TypistExecuteFunctionOnFinish(_functionScope);
-                    //    }
-                    //}
+                    if (_moved)
+                    {
+                        //Only play sound once per frame if we're going reaaaally fast
+                        var _glyphIndex = _useGlyphData? (_pageData.__glyphGrid[# __typistHeadArray[0]-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE]) : 0;
+                        __TypistPlaySound(__typistRevealIndex, _glyphIndex);
+                    }
                 }
             }
             
