@@ -35,6 +35,6 @@ function draw_text_scribble(_x, _y, _string, _reveal = undefined)
     .align(draw_get_halign(), draw_get_valign())
     .font(_font)
     .blend(draw_get_color(), draw_get_alpha())
-    .reveal_mode(SCRIBBLE_REVEAL_PER_CHAR)
+    .typist_reveal_mode(SCRIBBLE_REVEAL_PER_CHAR)
     .draw(_x, _y, _reveal);
 }

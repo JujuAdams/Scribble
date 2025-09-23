@@ -1362,6 +1362,13 @@ function __ScribbleClassElementParent(_text) constructor
     
     #region Other Getters
     
+    static get_reveal_count = function()
+    {
+        var _pagesArray = __EnsureModel().__pagesArray;
+        if (array_length(_pagesArray) <= 0) return 0;
+        return array_last(_pagesArray).__revealEnd;
+    }
+    
     static get_wrapped = function()
     {
         return __EnsureModel().__GetWrapped();

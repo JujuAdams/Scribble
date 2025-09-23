@@ -37,6 +37,6 @@ function draw_text_scribble_ext(_x, _y, _string, _width, _reveal = undefined)
     .font(_font)
     .blend(draw_get_color(), draw_get_alpha())
     .layout(SCRIBBLE_LAYOUT_WRAP)
-    .reveal_mode(SCRIBBLE_REVEAL_PER_CHAR)
+    .typist_reveal_mode(SCRIBBLE_REVEAL_PER_CHAR)
     .draw(_x, _y, _reveal);
 }

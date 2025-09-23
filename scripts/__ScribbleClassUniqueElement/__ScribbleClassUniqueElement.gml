@@ -124,13 +124,15 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     
     
-    __easeMethod        = SCRIBBLE_EASE_LINEAR;
-    __easeDX            = 0;
-    __easeDY            = 0;
-    __easeXScale        = 1;
-    __easeYScale        = 1;
-    __easeRotation      = 0;
-    __easeAlphaDuration = 1.0;
+    __typistEaseMethod        = SCRIBBLE_EASE_LINEAR;
+    __typistEaseDX            = 0;
+    __typistEaseDY            = 0;
+    __typistEaseXScale        = 1;
+    __typistEaseYScale        = 1;
+    __typistEaseRotation      = 0;
+    __typistEaseAlphaDuration = 1.0;
+    
+    __typistSoundPerCharExceptionDict = {};
     
     __typistCharDelay     = false;
     __typistCharDelayDict = {};
@@ -172,7 +174,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         __typistRunning     = false;
         __typistSuspended   = false;
         __typistPaused      = false;
-        __typistDelayEnd    = -1;
+        __typistDelayEnd    = undefined;
         __typistInlineSpeed = 1;
         __typistEventStack  = get_events(0, []); //Pre-fill the event stack
     }
@@ -360,7 +362,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return __typistSuspend;
     }
     
-    static reveal_mode = function(_state)
+    static typist_reveal_mode = function(_state)
     {
         if (__typistRevealMode != _state)
         {
@@ -371,7 +373,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return self;
     }
     
-    static get_reveal_mode = function()
+    static typist_get_reveal_mode = function()
     {
         return __typistRevealMode;
     }
@@ -619,13 +621,13 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     /// @param alphaDuration
     static typist_ease = function(_ease_method, _dx, _dy, _xScale, _yScale, _rotation, _alpha_duration)
     {
-        __easeMethod         = _ease_method;
-        __easeDX             = _dx;
-        __easeDY             = _dy;
-        __easeXScale         = _xScale;
-        __easeYScale         = _yScale;
-        __easeRotation       = _rotation;
-        __easeAlphaDuration = _alpha_duration;
+        __typistEaseMethod         = _ease_method;
+        __typistEaseDX             = _dx;
+        __typistEaseDY             = _dy;
+        __typistEaseXScale         = _xScale;
+        __typistEaseYScale         = _yScale;
+        __typistEaseRotation       = _rotation;
+        __typistEaseAlphaDuration = _alpha_duration;
         
         return self;
     }
@@ -639,6 +641,60 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     static typist_audio_get_gain = function()
     {
         return __typistAudioGain;
+    }
+    
+    static typist_set_position = function(_value)
+    {
+        //FIXME - Reimplement
+        
+        _value = max(0, _value);
+        
+        if (_value >= __typistHeadLimitArray[0])
+        {
+            //Must match `__SCRIBBLE_HEAD_COUNT`
+            __typistHeadArray[@ 0] = _value + __typistOptions.__smoothness;
+            __typistHeadArray[@ 1] = 0;
+            __typistHeadArray[@ 2] = 0;
+            
+            __typistHeadLimitArray[@ 1] = 0;
+            __typistHeadLimitArray[@ 2] = 0;
+        }
+        else
+        {
+            //Must match `__SCRIBBLE_HEAD_COUNT`
+            __typistHeadArray[@ 0] = _value;
+            __typistHeadArray[@ 1] = _value + __typistOptions.__smoothness;
+            __typistHeadArray[@ 2] = 0;
+            
+            __typistHeadLimitArray[@ 1] = _value;
+            __typistHeadLimitArray[@ 2] = 0;
+        }
+        
+        __typistRevealIndex = floor(_value);
+        
+        //FIXME - Set line/block/page index here too
+        
+        return self;
+    }
+    
+    /// @param easeMethod
+    /// @param dx
+    /// @param dy
+    /// @param xscale
+    /// @param yscale
+    /// @param rotation
+    /// @param alphaDuration
+    static typist_ease = function(_ease_method, _dx, _dy, _xScale, _yScale, _rotation, _alpha_duration)
+    {
+        __typistEaseMethod        = _ease_method;
+        __typistEaseDX            = _dx;
+        __typistEaseDY            = _dy;
+        __typistEaseXScale        = _xScale;
+        __typistEaseYScale        = _yScale;
+        __typistEaseRotation      = _rotation;
+        __typistEaseAlphaDuration = _alpha_duration;
+        
+        return self;
     }
     
     static character_delay_add = function(_character, _delay)
@@ -945,133 +1001,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return self;
     }
     
-    static reveal_mode = function(_state)
-    {
-        if (__typistRevealMode != _state)
-        {
-            __typistRevealMode = _state;
-            __modelDirty = true;
-        }
-        
-        return self;
-    }
-    
-    static get_reveal_mode = function()
-    {
-        return __typistRevealMode;
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    #region Setters
-    
-    static typist_set_position = function(_value)
-    {
-        //FIXME - Reimplement
-        
-        _value = max(0, _value);
-        
-        if (_value >= __typistHeadLimitArray[0])
-        {
-            //Must match `__SCRIBBLE_HEAD_COUNT`
-            __typistHeadArray[@ 0] = _value + __typistOptions.__smoothness;
-            __typistHeadArray[@ 1] = 0;
-            __typistHeadArray[@ 2] = 0;
-            
-            __typistHeadLimitArray[@ 1] = 0;
-            __typistHeadLimitArray[@ 2] = 0;
-        }
-        else
-        {
-            //Must match `__SCRIBBLE_HEAD_COUNT`
-            __typistHeadArray[@ 0] = _value;
-            __typistHeadArray[@ 1] = _value + __typistOptions.__smoothness;
-            __typistHeadArray[@ 2] = 0;
-            
-            __typistHeadLimitArray[@ 1] = _value;
-            __typistHeadLimitArray[@ 2] = 0;
-        }
-        
-        __typistRevealIndex = floor(_value);
-        
-        //FIXME - Set line/block/page index here too
-        
-        return self;
-    }
-    
-    /// @param easeMethod
-    /// @param dx
-    /// @param dy
-    /// @param xscale
-    /// @param yscale
-    /// @param rotation
-    /// @param alphaDuration
-    static ease = function(_ease_method, _dx, _dy, _xScale, _yScale, _rotation, _alpha_duration)
-    {
-        __easeMethod         = _ease_method;
-        __easeDX             = _dx;
-        __easeDY             = _dy;
-        __easeXScale         = _xScale;
-        __easeYScale         = _yScale;
-        __easeRotation       = _rotation;
-        __easeAlphaDuration = _alpha_duration;
-        
-        return self;
-    }
-    
-    static newline_delay = function(_delay)
-    {
-        __lineDelay = max(0, _delay);
-        return self;
-    }
-    
-    #endregion
-    
-    
-    
-    #region Getters
-    
-    static get_reveal_count = function()
-    {
-        var _pagesArray = __EnsureModel().__pagesArray;
-        if (array_length(_pagesArray) <= __pageInteger) return 0;
-        var _pageData = _pagesArray[__pageInteger];
-        
-        return _pageData.__revealCount;
-    }
-    
-    static get_state = function()
-    {
-        var _max = get_reveal_count();
-        if (_max <= 0) return 2; //If we get an invalid
-        
-        var _t = clamp(__typistHeadArray[0] / (_max + __typistOptions.__smoothness), 0, 1);
-        
-        if (__typistOptions.__appear)
-        {
-            if ((__typistDelayEnd != undefined) || (array_length(__typistEventStack) > 0))
-            {
-                //If we're waiting for a delay or there's something in our delay stack we need to process, limit our return value to just less than 1.0
-                return min(1 - 2*math_get_epsilon(), _t);
-            }
-            else
-            {
-                return _t;
-            }
-        }
-        else
-        {
-            return _t + 1;
-        }
-    }
-    
-    #endregion
-    
     
     
     #region Private Methods
@@ -1219,36 +1148,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                             __typistHeadArray[@ 0] += min(1, _remaining);
                             _remaining -= 1;
                             
-                            // CatDog
-                            // Reveal index is 0-indexed. If C is partially visible, the reveal index is greater than 0
-                            // 
-                            // Cat[event]Dog
-                            // Index 3. We expect [event] to execute immediately before D is animated
-                            // 
-                            // CatDog[event]
-                            // Index 6. We expect [event] to execute immediately before an imaginery null character, placed after g, is animated
-                            // 
-                            // [event]Cat
-                            // Stored at index 0. We expected [event] to execute immediately upon drawing the text
-                            //
-                            // Cat. Dog
-                            // We expect the delay to be applied before the space at reveal index 4
-                            // 
-                            // Cat Dog.
-                            // We do not expect a delay because the . is the last character
-                            // 
-                            // Cat.[/page]
-                            // We do not expect a delay because the . is the last character
-                            // 
-                            // Cat Dog.[event]
-                            // We expect the delay to be applied before the space at reveal index 8 because there is a subsequent event
-                            // 
-                            // Cat.[event]Dog.
-                            // We expect the event to execute after the character delay and before D appears
-                            // 
-                            // Cat.[pause][/page]
-                            // FIXME - figure out what's meant to happen here
-                            
                             if (floor(__typistHeadArray[0]) > __typistRevealIndex)
                             {
                                 ++__typistRevealIndex;
@@ -1262,6 +1161,36 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                 
                                 //Find events and add them to the stack
                                 get_events(__typistRevealIndex, __typistEventStack);
+                                
+                                // CatDog
+                                // Reveal index is 0-indexed. If C is partially visible, the reveal index is greater than 0
+                                // 
+                                // Cat[event]Dog
+                                // Index 3. We expect [event] to execute immediately before D is animated
+                                // 
+                                // CatDog[event]
+                                // Index 6. We expect [event] to execute immediately before an imaginery null character, placed after g, is animated
+                                // 
+                                // [event]Cat
+                                // Stored at index 0. We expected [event] to execute immediately upon drawing the text
+                                //
+                                // Cat. Dog
+                                // We expect the delay to be applied before the space at reveal index 4
+                                // 
+                                // Cat Dog.
+                                // We do not expect a delay because the . is the last character
+                                // 
+                                // Cat.[/page]
+                                // We do not expect a delay because the . is the last character
+                                // 
+                                // Cat Dog.[event]
+                                // We expect the delay to be applied before the space at reveal index 8 because there is a subsequent event
+                                // 
+                                // Cat.[event]Dog.
+                                // We expect the event to execute after the character delay and before D appears
+                                // 
+                                // Cat.[pause][/page]
+                                // FIXME - figure out what's meant to happen here
                                 
                                 //Only add a per-character delay if we have glyph data to work with
                                 if (_useGlyphData && __typistCharDelay) //Don't check character delay until we're on the first visible character (index=1)
@@ -1283,6 +1212,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                         
                                         if (_delay > 0)
                                         {
+                                            //Character delay needs to happen before other events
                                             array_insert(__typistEventStack, 0, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_DELAY, [_delay]));
                                         }
                                     }
@@ -1335,7 +1265,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             return;
         }
         
-        var _method = __easeMethod;
+        var _method = __typistEaseMethod;
         if (not __typistOptions.__appear) _method += __SCRIBBLE_EASE_COUNT;
         
         //FIXME - Reimplement
@@ -1346,10 +1276,10 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         shader_set_uniform_i(_u_iTypewriterMethod,               _method);
         shader_set_uniform_f(_u_fTypewriterSmoothness,           __typistOptions.__smoothness);
-        shader_set_uniform_f(_u_vTypewriterStartPos,             __easeDX, __easeDY);
-        shader_set_uniform_f(_u_vTypewriterStartScale,           __easeXScale, __easeYScale);
-        shader_set_uniform_f(_u_fTypewriterStartRotation,        __easeRotation);
-        shader_set_uniform_f(_u_fTypewriterAlphaDuration,        __easeAlphaDuration);
+        shader_set_uniform_f(_u_vTypewriterStartPos,             __typistEaseDX, __typistEaseDY);
+        shader_set_uniform_f(_u_vTypewriterStartScale,           __typistEaseXScale, __typistEaseYScale);
+        shader_set_uniform_f(_u_fTypewriterStartRotation,        __typistEaseRotation);
+        shader_set_uniform_f(_u_fTypewriterAlphaDuration,        __typistEaseAlphaDuration);
         shader_set_uniform_f_array(_u_fTypewriterHeadArray,      __typistHeadArray);
         shader_set_uniform_f_array(_u_fTypewriterHeadLimitArray, __typistHeadLimitArray);
         

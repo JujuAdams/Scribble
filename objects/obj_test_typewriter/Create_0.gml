@@ -3,4 +3,4 @@
 
 element = scribble_unique("here's some [wave]cute text[/wave]! [spr_large_coin]");
 element.in(0.2, 10);
-element.ease(SCRIBBLE_EASE_BOUNCE, 0, -40, 1, 1, 0, 0.1);
+element.typist_ease(SCRIBBLE_EASE_BOUNCE, 0, -40, 1, 1, 0, 0.1);
