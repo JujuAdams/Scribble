@@ -63,10 +63,6 @@
 #macro SCRIBBLE_GLYPH_SEPARATION   __SCRIBBLE_GLYPH_PROPR_SEPARATION
 #macro SCRIBBLE_GLYPH_LEFT_OFFSET  __SCRIBBLE_GLYPH_PROPR_LEFT_OFFSET
 
-#macro SCRIBBLE_TYPIST_ANIM_NONE       0
-#macro SCRIBBLE_TYPIST_ANIM_APPEAR     1
-#macro SCRIBBLE_TYPIST_ANIM_DISAPPEAR  2
-
 #macro SCRIBBLE_LAYOUT_NONE           0 //No layout logic is applied
 #macro SCRIBBLE_LAYOUT_WRAP           1 //Text is wrapped with no other behaviour. This mode ignores the maximum height
 #macro SCRIBBLE_LAYOUT_TRIM           2 //Text is wrapped. Any text that overflows the bottom is trimmed

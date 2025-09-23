@@ -1,7 +1,7 @@
-element = scribble_unique("abcdefghijklmnopqrstuvwxyz012345689")
+element = scribble_unique("123456789")
 .typist_options({
-    speed: 0.1,
-    smoothness: 0,
+    speed: 0.01,
+    smoothness: 1,
     methodPerReveal: function(_element, _position)
         {
             //Example function to manually control text sound playback behaviour
