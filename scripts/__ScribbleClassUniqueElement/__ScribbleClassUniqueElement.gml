@@ -319,7 +319,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     {
         if (typist_get_state() == SCRIBBLE_TYPIST_PAUSED)
         {
-            __typistState = SCRIBBLE_TYPIST_RUNNING;
+            __typistPaused = false;
         }
         
         return self;
@@ -329,7 +329,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     {
         if (typist_get_state() == SCRIBBLE_TYPIST_PAUSED)
         {
-            __typistState = SCRIBBLE_TYPIST_RUNNING;
+            __typistPaused = false;
         }
         else
         {
@@ -603,15 +603,15 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     /// @param yscale
     /// @param rotation
     /// @param alphaDuration
-    static typist_ease = function(_ease_method, _dx, _dy, _xScale, _yScale, _rotation, _alpha_duration)
+    static typist_ease = function(_easeMethod, _dx, _dy, _xScale, _yScale, _rotation, _alphaDuration)
     {
-        __typistEaseMethod         = _ease_method;
-        __typistEaseDX             = _dx;
-        __typistEaseDY             = _dy;
-        __typistEaseXScale         = _xScale;
-        __typistEaseYScale         = _yScale;
-        __typistEaseRotation       = _rotation;
-        __typistEaseAlphaDuration = _alpha_duration;
+        __typistEaseMethod        = _easeMethod;
+        __typistEaseDX            = _dx;
+        __typistEaseDY            = _dy;
+        __typistEaseXScale        = _xScale;
+        __typistEaseYScale        = _yScale;
+        __typistEaseRotation      = _rotation;
+        __typistEaseAlphaDuration = _alphaDuration;
         
         return self;
     }
@@ -657,26 +657,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         __typistRevealIndex = floor(_value);
         
         //FIXME - Set line/block/page index here too
-        
-        return self;
-    }
-    
-    /// @param easeMethod
-    /// @param dx
-    /// @param dy
-    /// @param xscale
-    /// @param yscale
-    /// @param rotation
-    /// @param alphaDuration
-    static typist_ease = function(_ease_method, _dx, _dy, _xScale, _yScale, _rotation, _alpha_duration)
-    {
-        __typistEaseMethod        = _ease_method;
-        __typistEaseDX            = _dx;
-        __typistEaseDY            = _dy;
-        __typistEaseXScale        = _xScale;
-        __typistEaseYScale        = _yScale;
-        __typistEaseRotation      = _rotation;
-        __typistEaseAlphaDuration = _alpha_duration;
         
         return self;
     }
