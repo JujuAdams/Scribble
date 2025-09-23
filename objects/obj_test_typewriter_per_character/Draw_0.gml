@@ -1,5 +1,3 @@
-element.draw(10, 50);
+element.draw(10, 10);
 
-draw_set_font(fntScribbleFallback);
-draw_text(10, 10, element.typist_get_state());
-draw_text(10, 30, element.typist_get_position());
+draw_text(10, element.get_height() + 20, element.typist_get_debug_info());

@@ -270,7 +270,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     {
         if (__typistFinished)
         {
-            return SCRIBBLE_TYPIST_STOPPED;
+            return SCRIBBLE_TYPIST_FINISHED;
         }
         else if (not __typistRunning)
         {
@@ -288,6 +288,27 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         {
             return SCRIBBLE_TYPIST_RUNNING;
         }
+    }
+    
+    static typist_get_debug_info = function(_delimiter = "\n")
+    {
+        static _array = [];
+        array_resize(_array, 0);
+        
+        array_push(_array,
+            $"system ms = {scribble_get_time()}",
+            $"state = {typist_get_state()}",
+            $"suspended = {__typistSuspended? "true" : "false"}",
+            $"running = {__typistRunning? "true" : "false"}",
+            $"paused = {__typistPaused? "true" : "false"}",
+            $"delay end = {__typistDelayEnd}",
+            $"finished = {__typistFinished? "true" : "false"}",
+            $"position = {__typistRevealIndex}",
+            $"head = {__typistHeadArray}",
+            $"limit = {__typistHeadLimitArray}",
+        );
+        
+        return (_delimiter != undefined)? string_join_ext(_delimiter, _array) : _array;
     }
     
     static typist_get_position = function()
