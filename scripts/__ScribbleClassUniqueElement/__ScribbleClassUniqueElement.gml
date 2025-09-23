@@ -585,7 +585,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         return self;
     }
     
-    static get_typist_options = function()
+    static typist_get_options = function()
     {
         return __typistOptions;
     }
@@ -657,7 +657,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     {
         //FIXME - Reimplement
         
-        _index = max(0, _index);
+        _index = max(0, floor(_index));
         
         if (_index >= __typistHeadLimitArray[0])
         {
@@ -680,7 +680,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             __typistHeadLimitArray[@ 2] = 0;
         }
         
-        __typistRevealIndex = floor(_index);
+        __typistRevealIndex = _index;
         
         //FIXME - Set line/block/page index here too
         
@@ -760,8 +760,10 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             
             __typistDelayEnd = _system.__milliseconds + _duration;
             
-            return false;
+            return true;
         }
+        
+        return false;
     }
     
     static __TypistProcessEventStack = function(_functionScope)
@@ -797,13 +799,19 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 case __SCRIBBLE_COMMAND_TAG_DELAY_TAG:
                     if (not __typistOptions.__ignoreDelayTags)
                     {
-                        __TypistDelay((array_length(_eventData) >= 1)? real(_eventData[0]) : SCRIBBLE_DEFAULT_DELAY_DURATION);
+                        if (__TypistDelay((array_length(_eventData) >= 1)? real(_eventData[0]) : SCRIBBLE_DEFAULT_DELAY_DURATION))
+                        {
+                            return false;
+                        }
                     }
                 break;
                 
                 //System-generated delay
                 case __SCRIBBLE_EVENT_SYSTEM_DELAY:
-                    __TypistDelay((array_length(_eventData) >= 1)? real(_eventData[0]) : SCRIBBLE_DEFAULT_DELAY_DURATION);
+                    if (__TypistDelay((array_length(_eventData) >= 1)? real(_eventData[0]) : SCRIBBLE_DEFAULT_DELAY_DURATION))
+                    {
+                        return false;
+                    }
                 break;
                 
                 //Audio playback synchronisation
@@ -841,10 +849,12 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 break;
                 
                 case __SCRIBBLE_EVENT_TYPIST_SOUND: //TODO - Add warning when adding a conflicting custom event
+                    //FIXME - Reimplement
                     sound(__ScribbleParseSoundArrayString(_eventData[1]), real(_eventData[2]), real(_eventData[3]), real(_eventData[4]));
                 break;
                 
                 case __SCRIBBLE_EVENT_TYPIST_SOUND_PER_CHAR: //TODO - Add warning when adding a conflicting custom event
+                    //FIXME - Reimplement
                     switch(array_length(_eventData))
                     {
                         case 4: sound_per_char(__ScribbleParseSoundArrayString(_eventData[1]), real(_eventData[2]), real(_eventData[3])); break;
@@ -1309,6 +1319,8 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             }
             else
             {
+                //FIXME - Getting some slight glitching at the end of lines
+                
                 var _pageData = _pagesArray[__pageInteger];
                 
                 var _headPos      = __typistHeadArray[0];
@@ -1355,7 +1367,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                         {
                             var _glyphDataStart = get_glyph_data(_lineData.glyphStart);
                             var _glyphDataA     = get_glyph_data(_headPosFloor-1);
-                            var _glyphDataB     = get_glyph_data(min(_lineData.glyph_end, _headPosFloor+1)-1);
+                            var _glyphDataB     = get_glyph_data(min(_lineData.glyphEnd, _headPosFloor+1)-1);
                             var _offsetA = -0.5*(_glyphDataStart.left + _glyphDataA.right);
                             var _offsetB = -0.5*(_glyphDataStart.left + _glyphDataB.right);
                             var _offset = lerp(_offsetA, _offsetB, frac(_headPos));
@@ -1368,7 +1380,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                         else if ((_hAlign == fa_right) || (_hAlign == __SCRIBBLE_PIN_RIGHT))
                         {
                             var _glyphDataA = get_glyph_data(_headPosFloor-1);
-                            var _glyphDataB = get_glyph_data(min(_lineData.glyph_end, _headPosFloor+1)-1);
+                            var _glyphDataB = get_glyph_data(min(_lineData.glyphEnd, _headPosFloor+1)-1);
                             var _offset = -lerp(_glyphDataA.right, _glyphDataB.right, frac(_headPos));
                             
                             if (_hAlign == __SCRIBBLE_PIN_RIGHT)

@@ -1307,6 +1307,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     static get_reveal_count = function()
     {
+        //FIXME - This value appears to be wrong when using section reveal
         var _pagesArray = __EnsureModel().__pagesArray;
         if (array_length(_pagesArray) <= 0) return 0;
         return array_last(_pagesArray).__revealEnd;

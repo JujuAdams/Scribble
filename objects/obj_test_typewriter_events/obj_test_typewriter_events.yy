@@ -10,8 +10,8 @@
   "name":"obj_test_typewriter_events",
   "overriddenProperties":[],
   "parent":{
-    "name":"Events",
-    "path":"folders/Test Cases/Typewriter/Events.yy",
+    "name":"Typewriter",
+    "path":"folders/Test Cases/Typewriter.yy",
   },
   "parentObjectId":null,
   "persistent":false,
