@@ -1,5 +1,5 @@
 //TODO - Expose as a config macro?
-#macro __SCRIBBLE_REFERENCE_FRAME_TIME  (1000/60)  //microseconds
+#macro __SCRIBBLE_REFERENCE_FRAME_TIME  (1_000/60)  //microseconds
 
 #macro __SCRIBBLE_GLYPH_LAYOUT_UNICODE   0
 #macro __SCRIBBLE_GLYPH_LAYOUT_LEFT      1

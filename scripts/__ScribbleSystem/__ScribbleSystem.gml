@@ -88,14 +88,14 @@ function __ScribbleSystem(_calledFromInitialize = false)
                 
                 if ((not SCRIBBLE_LOCK_OUT_OF_FOCUS) || _windowHasFocus)
                 {
+                    __milliseconds += delta_time/1000;
+                    
                     //Allow delta_time values for greater than 20 FPS. Anything longer than that is probably
                     //a window drag or other loss of focus
-                    var _deltaTimeClamped = min(delta_time, 1000/20); //TODO - Expose as a config macro?
-                    
-                    __tickSize = __userTickSize ?? _deltaTimeClamped / __SCRIBBLE_REFERENCE_FRAME_TIME; //TODO - Expose as a config macro?
+                    var _deltaTimeClamped = min(delta_time/1000, 1_000/20); //TODO - Expose as a config macro?
+                    __tickSize = __userTickSize ?? (_deltaTimeClamped / __SCRIBBLE_REFERENCE_FRAME_TIME); //TODO - Expose as a config macro?
                     
                     ++__frames;
-                    __milliseconds += _deltaTimeClamped;
                     __ticks += __tickSize;
                 }
                 else
