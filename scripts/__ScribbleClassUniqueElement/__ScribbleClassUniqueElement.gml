@@ -723,7 +723,8 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     static __TypistProcessEventStack = function(_functionScope)
     {
-        static _tagDict = __ScribbleSystem().__tagDict;
+        static _system  = __ScribbleSystem();
+        static _tagDict = _system.__tagDict;
         
         //This method processes events on the stack (which is filled by copying data from the target element in .__tick())
         //We return `true` if there have been no pausing behaviours called i.e. [pause] and [delay]
@@ -760,7 +761,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                         }
                         
                         var _duration = (array_length(_eventData) >= 1)? real(_eventData[0]) : SCRIBBLE_DEFAULT_DELAY_DURATION;
-                        __typistDelayEnd = current_time + _duration;
+                        __typistDelayEnd = _system.__milliseconds + _duration;
                         
                         return false;
                     }
@@ -881,6 +882,8 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     static __TypistPlaySound = function(_headPos, _character)
     {
+        static _system = __ScribbleSystem();
+        
         var _soundArray = __typistOptions.__soundArray;
         if (is_array(_soundArray) && (array_length(_soundArray) > 0))
         {
@@ -901,7 +904,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                     }
                 }
             }
-            else if (current_time >= __soundFinishTime) 
+            else if (current_time >= __soundFinishTime) //Use wall time here because audio is on a separate thread
             {
                 _playSound = true;
             }
@@ -915,6 +918,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                                          lerp(__typistOptions.__soundPitchMin, __typistOptions.__soundPitchMax, __ScribbleRandom()));
                 if (__typistSoundVoice >= 0)
                 {
+                    //Use wall time here because audio is on a separate thread
                     __soundFinishTime = current_time + 1000*audio_sound_length(__typistSoundVoice) - __typistOptions.__soundOverlap;
                 }
             }
@@ -971,6 +975,8 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     
     static __TypistMove = function(_functionScope, _delta)
     {
+        static _system = __ScribbleSystem();
+        
         if (not __typistRunning) return;
         
         //If we've recently reset the typist, update the head position
@@ -1035,7 +1041,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 }
                 else if (__typistDelayEnd != undefined)
                 {
-                    if (current_time > __typistDelayEnd)
+                    if (_system.__milliseconds > __typistDelayEnd)
                     {
                         //We've waited long enough, start showing more text
                         __typistDelayEnd = undefined;
