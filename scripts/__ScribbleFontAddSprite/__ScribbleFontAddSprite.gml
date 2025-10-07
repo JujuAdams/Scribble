@@ -49,7 +49,7 @@ function __scribble_font_add_sprite_common(_sprite, _spritefont, _proportional, 
     var _spriteXOffset = 0;
     var _spriteYOffset = 0;
     
-    if (not sCRIBBLE_SPRITEFONT_IGNORE_ORIGIN)
+    if (not SCRIBBLE_SPRITEFONT_IGNORE_ORIGIN)
     {
         _spriteXOffset += sprite_get_xoffset(_sprite);
         _spriteYOffset += sprite_get_yoffset(_sprite);
