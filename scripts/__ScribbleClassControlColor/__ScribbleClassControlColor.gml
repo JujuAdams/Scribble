@@ -1,8 +1,8 @@
 // Feather disable all
 
-function __ScribbleClassControlColor(_color) constructor
+function __ScribbleClassControlColor(_paletteIndex) constructor
 {
     static __type = __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR;
     
-    __color = _color;
+    __paletteIndex = _paletteIndex;
 }

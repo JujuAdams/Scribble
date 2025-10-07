@@ -20,6 +20,10 @@
 #macro SCRIBBLE_CYCLE_TEXTURE_WIDTH   256
 #macro SCRIBBLE_CYCLE_TEXTURE_HEIGHT  256 //Tied to constant in vertex shader
 
+#macro SCRIBBLE_PALETTE_SIZE  16 //Tied to constant in fragment shader
+
+#macro SCRIBBLE_PALETTE_NO_COLOR  -1 //Tied to constant in fragment shader
+
 #macro SCRIBBLE_EASE_NONE      0
 #macro SCRIBBLE_EASE_LINEAR    1
 #macro SCRIBBLE_EASE_QUAD      2

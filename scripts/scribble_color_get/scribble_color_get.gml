@@ -12,7 +12,7 @@ function scribble_color_get(_name)
     var _tagStruct = _tagDict[$ _name];
     if (is_struct(_tagStruct) && (_tagStruct.__type == __SCRIBBLE_TAG_COLOR))
     {
-        return _tagStruct.__data;
+        return _tagStruct.__data.__color;
     }
     else
     {

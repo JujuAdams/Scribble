@@ -11,15 +11,15 @@ const float CYCLE_TEXTURE_HEIGHT = 256.0;
 const int MAX_EFFECTS = 11;
 #define GRAPHIC_FLAG      flagArray[ 0]
 #define ANIM_SPRITE_FLAG  flagArray[ 1]
-#define COLOR_FLAG        flagArray[ 2]
-#define WAVE_FLAG         flagArray[ 3]
-#define SHAKE_FLAG        flagArray[ 4]
-#define WOBBLE_FLAG       flagArray[ 5]
-#define PULSE_FLAG        flagArray[ 6]
-#define WHEEL_FLAG        flagArray[ 7]
-#define CYCLE_FLAG        flagArray[ 8]
-#define JITTER_FLAG       flagArray[ 9]
-#define SLANT_FLAG        flagArray[10]
+#define WAVE_FLAG         flagArray[ 2]
+#define SHAKE_FLAG        flagArray[ 3]
+#define WOBBLE_FLAG       flagArray[ 4]
+#define PULSE_FLAG        flagArray[ 5]
+#define WHEEL_FLAG        flagArray[ 6]
+#define CYCLE_FLAG        flagArray[ 7]
+#define JITTER_FLAG       flagArray[ 8]
+#define SLANT_FLAG        flagArray[ 9]
+#define GRADIENT_FLAG     flagArray[10]
 
 const int MAX_ANIM_FIELDS = 16;
 #define WAVE_AMPLITUDE    u_aDataFields[ 0]
@@ -63,16 +63,16 @@ const float PI = 3.14159265359;
 
 attribute vec3 in_Position; //{X, Y, Animation index}
 attribute vec3 in_Normal;   //{Reveal index, Sprite data, Bitpacked effect flags}
-attribute vec4 in_Colour;   //Colour
+attribute vec4 in_Colour;   //{Base colour, gradient colour, outline colour, alpha}
 attribute vec4 in_Colour2;  //UVs, {dX, dY}
 
-varying vec2 v_vModelPosition;
-varying vec2 v_vTexcoord;
-varying vec4 v_vColour;
-varying vec2 v_vCycle;
+varying vec2  v_vModelPosition;
+varying vec2  v_vTexcoord;
+varying vec4  v_vColourIndexes;
+varying vec2  v_vCycle;
+varying float v_fGradient;
+varying float v_fCycleOffset;
 
-uniform vec4  u_vColourBlend;                  //4
-uniform vec4  u_vGradient;                     //4
 uniform vec2  u_vSkew;                         //2
 uniform vec2  u_vRegionActive;                 //2 //FIXME - This will break when not revealing per char
 uniform vec4  u_vRegionColour;                 //4
@@ -372,35 +372,21 @@ void main()
     if (CYCLE_FLAG > 0.5)
     {
         //If we have a cycle going on use the colour channel to tell us where to read colour information from the texture
-        v_vCycle  = vec2(in_Colour.g*u_fTime - in_Colour.b*ANIMATION_INDEX, in_Colour.r + (0.5 / CYCLE_TEXTURE_HEIGHT));
-        v_vColour = vec4(1.0);
+        v_vCycle = vec2(in_Colour.g*u_fTime - in_Colour.b*ANIMATION_INDEX, in_Colour.r + (0.5 / CYCLE_TEXTURE_HEIGHT));
+        v_vColourIndexes = vec4(0.0, 0.0, 0.0, 1.0);
     }
     else
     {
         v_vCycle = vec2(-1.0);
-        
-        if (COLOR_FLAG > 0.5)
-        {
-            //If this glyph has a colour override, use it
-            v_vColour = in_Colour;
-        }
-        else
-        {
-            //Otherwise use the global colour
-            v_vColour = vec4(u_vColourBlend.rgb, 1.0);
-        }
+        v_vColourIndexes = in_Colour;
     }
     
-    //Always apply alpha blend
-    v_vColour.a *= u_vColourBlend.a;
+    v_fCycleOffset = 0.0; //TODO
     
-    //Apply the gradient effect
-    if (v_vModelPosition.y > centre.y) v_vColour.rgb = mix(v_vColour.rgb, u_vGradient.rgb, u_vGradient.a);
-     
-    if (ANIM_SPRITE_FLAG > 0.5) v_vColour.a *= filterAnimatedSprite(PACKED_SPRITE_DATA); //Use packed sprite data to filter out sprite frames that we don't want
+    if (ANIM_SPRITE_FLAG > 0.5) v_vColourIndexes.a *= filterAnimatedSprite(PACKED_SPRITE_DATA); //Use packed sprite data to filter out sprite frames that we don't want
     
-    //Regions
-    if ((REVEAL_INDEX >= u_vRegionActive.x) && (REVEAL_INDEX <= u_vRegionActive.y)) v_vColour.rgb = mix(v_vColour.rgb, u_vRegionColour.rgb, u_vRegionColour.a);
+    ////Regions
+    //if ((REVEAL_INDEX >= u_vRegionActive.x) && (REVEAL_INDEX <= u_vRegionActive.y)) v_vColour.rgb = mix(v_vColour.rgb, u_vRegionColour.rgb, u_vRegionColour.a);
     
     
     
@@ -419,7 +405,7 @@ void main()
     if (easeMethod > EASE_NONE)
     {
         float time = FadeIn(u_fTypewriterHeadArray, u_fTypewriterHeadLimitArray, u_fTypewriterSmoothness, REVEAL_INDEX + 1.0, fadeOut);
-        v_vColour.a *= clamp(time / max(0.00001, u_fTypewriterAlphaDuration), 0.0, 1.0); //Use linear time for alpha
+        v_vColourIndexes.a *= clamp(time / max(0.00001, u_fTypewriterAlphaDuration), 0.0, 1.0); //Use linear time for alpha
         
              if (easeMethod == EASE_QUADRATIC  ) { time = 1.0 - easeQuad(   1.0 - time); }
         else if (easeMethod == EASE_CUBIC      ) { time = 1.0 - easeCubic(  1.0 - time); }
@@ -454,4 +440,7 @@ void main()
     
     //Texture
     v_vTexcoord = in_Colour2.xy;
+    
+    //Gradient
+    v_fGradient = (v_vModelPosition.y > centre.y)? GRADIENT_FLAG : 0.0; //TODO - Replace with step()
 }

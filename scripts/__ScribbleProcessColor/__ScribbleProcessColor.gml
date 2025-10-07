@@ -12,7 +12,7 @@ function __ScribbleProcessColor(_value)
             __ScribbleError("Colour \"", _value, "\" not recognised");
         }
         
-        return (_tagStruct.__data & 0xFFFFFF);
+        return (_tagStruct.__data.__color & 0xFFFFFF);
     }
     else
     {

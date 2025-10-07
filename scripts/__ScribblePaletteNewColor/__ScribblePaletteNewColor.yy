@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"__ScribblePaletteNewColor",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"__ScribblePaletteNewColor",
+  "parent":{
+    "name":"(System)",
+    "path":"folders/Scribble/(System).yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

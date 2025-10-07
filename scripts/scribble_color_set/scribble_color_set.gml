@@ -17,6 +17,8 @@
 
 function scribble_color_set(_name, _color)
 {
+    static _tagDict = __ScribbleSystem().__tagDict;
+    
     if (_color == undefined)
     {
         __ScribbleRemoveTag(_name);
@@ -28,5 +30,18 @@ function scribble_color_set(_name, _color)
         __ScribbleError("Colour values should be 24-bit BGR values");
     }
     
-    __ScribbleAddTag(_name, __SCRIBBLE_TAG_COLOR, _color, false);
+    var _tagStruct = _tagDict[$ _name];
+    if (is_struct(_tagStruct) && (_tagStruct.__type == __SCRIBBLE_TAG_COLOR))
+    {
+        if (_color != _tagStruct.__data.__color)
+        {
+            _tagStruct.__data.__color = _color;
+            __ScribblePaletteReplaceIndex(_tagStruct.__data.__index, _color);
+        }
+    }
+    else
+    {
+        var _index = __ScribblePaletteNewColor(_color);
+        __ScribbleAddTag(_name, __SCRIBBLE_TAG_COLOR, { __color: _color, __index: _index }, false);
+    }
 }

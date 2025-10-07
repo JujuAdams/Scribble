@@ -1,20 +1,27 @@
 //   @jujuadams   v10.0.0   2025-08-24
 precision highp float;
 
+#define PALETTE_SIZE  16.0
+
 #define REACTIVE_SDF_RANGE true
 #define PREMULTIPLY_ALPHA false
 #define USE_ALPHA_FOR_DISTANCE true
 
-varying vec2 v_vModelPosition;
-varying vec2 v_vTexcoord;
-varying vec4 v_vColour;
-varying vec2 v_vCycle;
+varying vec2  v_vModelPosition;
+varying vec2  v_vTexcoord;
+varying vec4  v_vColourIndexes;
+varying vec2  v_vCycle;
+varying float v_fGradient;
+varying float v_fCycleOffset;
 
 uniform sampler2D u_sCycle;
+uniform sampler2D u_sPalette;
 
 uniform float u_fRenderType;
 uniform vec4  u_vFlash;
 
+uniform vec4  u_vColourBlend;
+uniform vec4  u_vGradientColour;
 uniform vec4  u_vShadowColour;
 uniform vec3  u_vOutlineColour;
 uniform float u_fSecondDraw;
@@ -33,6 +40,16 @@ float SDFValue(vec2 texcoord)
     return (USE_ALPHA_FOR_DISTANCE? sample.a : max(sample.r, max(sample.g, sample.b))) + u_fSDFThicknessOffset;
 }
 
+vec4 PaletteColour(float index)
+{
+    return texture2D(u_sPalette, vec2((mod(index, PALETTE_SIZE) + 0.5) / PALETTE_SIZE, (floor(index / PALETTE_SIZE) + 0.5) / PALETTE_SIZE));
+}
+
+vec3 OutlineColour()
+{
+    return (v_vColourIndexes.y <= 0.0)? u_vOutlineColour : PaletteColour(v_vColourIndexes.z).rgb;
+}
+
 void main()
 {
     vec2 inside = step(u_vClip.zw, v_vModelPosition) - step(u_vClip.xy, v_vModelPosition);
@@ -41,17 +58,43 @@ void main()
         discard;
     }
     
-    //Handle cycle colour
+    //Handle base colour
     vec4 colour;
     if (v_vCycle.y >= 0.0)
     {
         colour = texture2D(u_sCycle, v_vCycle);
-        colour.a *= v_vColour.a;
+    }
+    else if (v_vColourIndexes.x < 0.0) //SCRIBBLE_PALETTE_NO_COLOR
+    {
+        colour = vec4(1.0);
+    }
+    else if (v_vColourIndexes.x == 0.0)
+    {
+        colour = vec4(u_vColourBlend.rgb, 1.0);
     }
     else
     {
-        colour = v_vColour;
+        colour = PaletteColour(v_vColourIndexes.x);
     }
+    
+    //Apply gradient if required
+    vec4 gradientColour;
+    if (v_fGradient > 0.0)
+    {
+        if (v_vColourIndexes.y == 0.0)
+        {
+            gradientColour = u_vGradientColour;
+        }
+        else
+        {
+            gradientColour = PaletteColour(v_vColourIndexes.y);
+        }
+        
+        colour.rgb = mix(colour.rgb, gradientColour.rgb, pow(v_fGradient*gradientColour.a, 2.0));
+    }
+    
+    //Apply alpha
+    colour.a *= v_vColourIndexes.a*u_vColourBlend.a;
     
     if (u_fRenderType == 0.0)
     {
@@ -67,7 +110,7 @@ void main()
         if (u_fSecondDraw < 0.5)
         {
             float outAlpha = gl_FragColor.a + sample.g*(1.0 - gl_FragColor.a);
-            gl_FragColor.rgb = (gl_FragColor.rgb*gl_FragColor.a + u_vOutlineColour*sample.g*(1.0 - gl_FragColor.a)) / outAlpha;
+            gl_FragColor.rgb = (gl_FragColor.rgb*gl_FragColor.a + OutlineColour()*sample.g*(1.0 - gl_FragColor.a)) / outAlpha;
             gl_FragColor.a = outAlpha;
             
             if (u_vShadowColour.a > 0.0)
@@ -105,7 +148,7 @@ void main()
             
             if (u_fOutlineThickness > 0.0)
             {
-                gl_FragColor.rgb = mix(u_vOutlineColour, gl_FragColor.rgb, gl_FragColor.a);
+                gl_FragColor.rgb = mix(OutlineColour(), gl_FragColor.rgb, gl_FragColor.a);
                 gl_FragColor.a = max(gl_FragColor.a, smoothstep(0.5 - smoothness*spread, 0.5 + smoothness*spread, baseDist + outlineOffset));
             }
             

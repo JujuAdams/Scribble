@@ -248,16 +248,36 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __ScribbleAddTag("/JITTER", __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_JITTER, true);
         __ScribbleAddTag("/SLANT",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_SLANT,  true);
         
+        //Set up the palette surface and color tags
+        __paletteSurface  = -1;
+        __paletteBuffer   = buffer_create(4*SCRIBBLE_PALETTE_SIZE*SCRIBBLE_PALETTE_SIZE, buffer_fixed, 1);
+        __paletteIndexMap = ds_map_create();
+        __paletteUsageMap = ds_map_create();
+        __paletteCount    = 0;
+        __paletteDirty    = false;
+        
+        //Clear the whole palette buffer with white pixels
+        buffer_fill(__paletteBuffer, 0, buffer_u32, 0xFFFFFFFF, 4*SCRIBBLE_PALETTE_SIZE*SCRIBBLE_PALETTE_SIZE);
+        __ScribblePaletteNewColor(c_white); // = 0, magic number for "use the blend colour"
+        
+        //Add color definitions
         var _colorStruct = __scribble_config_colors();
         var _namesArray = variable_struct_get_names(_colorStruct);
         var _i = 0;
         repeat(array_length(_namesArray))
         {
-            var _name = _namesArray[_i];
-            __ScribbleAddTag(_name, __SCRIBBLE_TAG_COLOR, _colorStruct[$ _name], false);
+            var _name  = _namesArray[_i];
+            var _color = _colorStruct[$ _name];
+            
+            var _index = __ScribblePaletteNewColor(_color);
+            __ScribbleAddTag(_name, __SCRIBBLE_TAG_COLOR, { __color: _color, __index: _index }, false);
+            
             ++_i;
         }
         
+        __ScribblePaletteEnsureSurfaceClean();
+        
+        //Set up cycle surface and the basic [rainbow] cycle
         __cycleSurface = -1;
         __cycleDataOpenArray = [];
         __cycleDataMap = ds_map_create();

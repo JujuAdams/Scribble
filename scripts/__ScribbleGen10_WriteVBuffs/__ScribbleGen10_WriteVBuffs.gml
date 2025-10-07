@@ -53,12 +53,12 @@
                                          _quadB = _quadCY;\
                                      }\
                                      \
-                                     vertex_position_3d(_vbuff, _quadL, _quadT, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_argb(_vbuff, _writeColor); vertex_float4(_vbuff, _quadU0, _quadV0,  _halfW,  _halfH);\
-                                     vertex_position_3d(_vbuff, _quadR, _quadB, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_argb(_vbuff, _writeColor); vertex_float4(_vbuff, _quadU1, _quadV1, -_halfW, -_halfH);\
-                                     vertex_position_3d(_vbuff, _quadL, _quadB, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_argb(_vbuff, _writeColor); vertex_float4(_vbuff, _quadU0, _quadV1,  _halfW, -_halfH);\
-                                     vertex_position_3d(_vbuff, _quadR, _quadB, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_argb(_vbuff, _writeColor); vertex_float4(_vbuff, _quadU1, _quadV1, -_halfW, -_halfH);\
-                                     vertex_position_3d(_vbuff, _quadL, _quadT, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_argb(_vbuff, _writeColor); vertex_float4(_vbuff, _quadU0, _quadV0,  _halfW,  _halfH);\
-                                     vertex_position_3d(_vbuff, _quadR, _quadT, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_argb(_vbuff, _writeColor); vertex_float4(_vbuff, _quadU1, _quadV0, -_halfW,  _halfH);
+                                     vertex_position_3d(_vbuff, _quadL, _quadT, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU0, _quadV0,  _halfW,  _halfH);\
+                                     vertex_position_3d(_vbuff, _quadR, _quadB, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU1, _quadV1, -_halfW, -_halfH);\
+                                     vertex_position_3d(_vbuff, _quadL, _quadB, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU0, _quadV1,  _halfW, -_halfH);\
+                                     vertex_position_3d(_vbuff, _quadR, _quadB, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU1, _quadV1, -_halfW, -_halfH);\
+                                     vertex_position_3d(_vbuff, _quadL, _quadT, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU0, _quadV0,  _halfW,  _halfH);\
+                                     vertex_position_3d(_vbuff, _quadR, _quadT, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU1, _quadV0, -_halfW,  _halfH);
 
 
 
@@ -113,11 +113,13 @@ function __ScribbleGen10_WriteVBuffs()
         _bezierDo = false;
     }
     
-    var _glyphColor       = 0xFFFFFFFF;
-    var _glyphCycle       = 0x00000000;
-    var _glyphEffectFlags = 0;
-    var _glyphSpriteData  = 0;
-    var _writeColor       = 0xFFFFFFFF;
+    var _glyphCycle        = 0x00000000;
+    var _glyphEffectFlags  = 0;
+    var _glyphSpriteData   = 0;
+    var _writeColorBase    = 0;
+    var _writeColorGrad    = -1;
+    var _writeColorOutline = -1;
+    var _writeAlpha        = 1;
     
     var _controlIndex = 0;
     var _regionName   = undefined;
@@ -225,10 +227,28 @@ function __ScribbleGen10_WriteVBuffs()
                     var _controlType = _controlStruct.__type;
                     if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR)
                     {
-                        _glyphColor = _controlStruct.__color;
-                        _glyphEffectFlags |= (1 << __SCRIBBLE_FLAG_COLOR);
+                        _writeColorBase = _controlStruct.__paletteIndex;
+                    }
+                    else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_GRADIENT)
+                    {
+                        _writeColorGrad = _controlStruct.__paletteIndex;
                         
-                        var _writeColor = (__SCRIBBLE_FIX_ARGB? __ScribbleRGBToBGR(_glyphColor) : _glyphColor); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
+                        if (_writeColorGrad < 0)
+                        {
+                            _glyphEffectFlags = ~((~_glyphEffectFlags) | (1 << __SCRIBBLE_FLAG_GRADIENT));
+                        }
+                        else
+                        {
+                            _glyphEffectFlags |= 1 << __SCRIBBLE_FLAG_GRADIENT;
+                        }
+                    }
+                    if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_OUTLINE)
+                    {
+                        _writeColorOutline = _controlStruct.__paletteIndex;
+                    }
+                    else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR)
+                    {
+                        _writeAlpha = _controlStruct.__alpha;
                     }
                     else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT)
                     {
@@ -236,16 +256,8 @@ function __ScribbleGen10_WriteVBuffs()
                     }
                     else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_CYCLE)
                     {
+                        //TODO - Reimplement this
                         _glyphCycle = _controlStruct.__value;
-                        
-                        if (_glyphCycle == -1)
-                        {
-                            _writeColor = (__SCRIBBLE_FIX_ARGB? __ScribbleRGBToBGR(_glyphColor) : _glyphColor); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
-                        }
-                        else
-                        {
-                            _writeColor = (__SCRIBBLE_FIX_ARGB? __ScribbleRGBToBGR(_glyphCycle) : _glyphCycle); //Fix for bug in vertex_argb() on OpenGL targets (2021-11-24  runtime 2.3.5.458)
-                        }
                     }
                     else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_EVENT)
                     {
@@ -341,8 +353,8 @@ function __ScribbleGen10_WriteVBuffs()
                     
                     if (not SCRIBBLE_COLORIZE_SPRITES)
                     {
-                        var _oldWriteColor = _writeColor;
-                        _writeColor = _glyphColor | 0xFFFFFF; //Make sure we use the general glyph alpha
+                        var _oldWriteColor = _writeColorBase;
+                        _writeColorBase = SCRIBBLE_PALETTE_NO_COLOR;
                         
                         _glyphEffectFlags = ~_glyphEffectFlags;
                         _glyphEffectFlags |= (1 << __SCRIBBLE_FLAG_CYCLE);
@@ -418,9 +430,13 @@ function __ScribbleGen10_WriteVBuffs()
                         _glyphSpriteData += _increment;
                     }
                     
-                    if (not SCRIBBLE_COLORIZE_SPRITES) _writeColor = _oldWriteColor;
+                    if (not SCRIBBLE_COLORIZE_SPRITES)
+                    {
+                        _writeColorBase = _oldWriteColor;
+                    }
+                    
                     _glyphEffectFlags = _oldGlyphEffectFlags;
-                    _glyphSpriteData = 0; //Reset this because every other type of glyph doesn't use this
+                    _glyphSpriteData = 0; //Reset this because every other type of glyph doesn't use it
                     
                     #endregion
                 }
@@ -439,8 +455,8 @@ function __ScribbleGen10_WriteVBuffs()
                     
                     if (not SCRIBBLE_COLORIZE_SPRITES)
                     {
-                        var _oldWriteColor = _writeColor;
-                        _writeColor = _writeColor | 0xFFFFFF;
+                        var _oldWriteColor = _writeColorBase;
+                        _writeColorBase = SCRIBBLE_PALETTE_NO_COLOR;
                         
                         _glyphEffectFlags = ~_glyphEffectFlags;
                         _glyphEffectFlags |= (1 << __SCRIBBLE_FLAG_CYCLE);
@@ -453,7 +469,7 @@ function __ScribbleGen10_WriteVBuffs()
                     
                     if (not SCRIBBLE_COLORIZE_SPRITES)
                     {
-                        _writeColor = _oldWriteColor;
+                        _writeColorBase = _oldWriteColor;
                     }
                     
                     _glyphEffectFlags = _oldGlyphEffectFlags;
@@ -559,4 +575,6 @@ function __ScribbleGen10_WriteVBuffs()
     
     //Ensure we've ended the vertex buffers we created
     __FinalizeVertexBuffers();
+    
+    __ScribblePaletteEnsureSurfaceClean();
 }
