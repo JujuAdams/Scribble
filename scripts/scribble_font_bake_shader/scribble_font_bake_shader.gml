@@ -11,10 +11,10 @@
 /// @param bottomPad                   "
 /// @param separationDelta             Change in every glyph's SCRIBBLE_GLYPH_SEPARATION value. For a shader that adds a outline of 2px around the entire glyph, this value should be 4px
 /// @param smooth                      Set to `true` to turn on linear interpolation
-/// @param [surfaceSize=2048]          Size of the surface to use. Defaults to 2048x2048
+/// @param [maxTextureSize=2048]       Maximum texture size to use. Defaults to 2048x2048
 /// @param [markAsRasterEffect=false]
 
-function scribble_font_bake_shader(_sourceFontName, _newFontName, _shader, _outline, _padL, _padT, _padR, _padB, _separation, _smooth, _textureSize = 2048, _markAsRasterEffect = false)
+function scribble_font_bake_shader(_sourceFontName, _newFontName, _shader, _outline, _padL, _padT, _padR, _padB, _separation, _smooth, _maxTextureSize = 2048, _markAsRasterEffect = false)
 {
     static _vertexFormat = (function()
     {
@@ -122,16 +122,16 @@ function scribble_font_bake_shader(_sourceFontName, _newFontName, _shader, _outl
         var _heightExt = _height + _outline + _padT + _padB;
         
         //Check to see if we have space on this texture page
-        if (_lineY + _heightExt >= _textureSize)
+        if (_lineY + _heightExt >= _maxTextureSize)
         {
-            __ScribbleError("No space left on ", _textureSize, "x", _textureSize, " texture page\nPlease increase the size of the texture page");
+            __ScribbleError("No space left on ", _maxTextureSize, "x", _maxTextureSize, " texture page\nPlease increase the size of the texture page");
             vertex_end(_vbuff);
             vertex_delete_buffer(_vbuff);
             return;
         }
         
         //Line wrap glyphs
-        if (_lineX + _widthExt >= _textureSize)
+        if (_lineX + _widthExt >= _maxTextureSize)
         {
             _lineX       = 0;
             _lineY      += _lineHeight;
@@ -180,8 +180,11 @@ function scribble_font_bake_shader(_sourceFontName, _newFontName, _shader, _outl
         ++_i;
     }
     
+    var _textureWidth  = ds_grid_get_max(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_U1, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_U1);
+    var _textureHeight = ds_grid_get_max(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_V1, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_V1);
+    
     //Draw the vertex buffers to a surface, then bake that surface into a sprite
-    var _surface0 = surface_create(_textureSize, _textureSize);
+    var _surface0 = surface_create(_textureWidth, _textureHeight);
     
     //Draw the source glyphs to a surface
     surface_set_target(_surface0);
@@ -204,7 +207,7 @@ function scribble_font_bake_shader(_sourceFontName, _newFontName, _shader, _outl
     }
     
     ds_map_destroy(_vbuffDataMap);
-    var _surface1 = surface_create(_textureSize, _textureSize);
+    var _surface1 = surface_create(_textureWidth, _textureHeight);
     
     gpu_set_blendenable(true);
     surface_reset_target();
@@ -231,7 +234,7 @@ function scribble_font_bake_shader(_sourceFontName, _newFontName, _shader, _outl
     surface_free(_surface0);
     
     //Make a sprite from the effect surface to make the texture stick
-    var _sprite = sprite_create_from_surface(_surface1, 0, 0, _textureSize, _textureSize, false, false, 0, 0);
+    var _sprite = sprite_create_from_surface(_surface1, 0, 0, _textureWidth, _textureHeight, false, false, 0, 0);
     _newFontData.__sourceSprite = _sprite;
     surface_free(_surface1);
     
@@ -254,7 +257,8 @@ function scribble_font_bake_shader(_sourceFontName, _newFontName, _shader, _outl
     var _spriteU1 = _spriteUVs[2];
     var _spriteV1 = _spriteUVs[3];
     
-    ds_grid_multiply_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_U0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_V1, 1/_textureSize);
+    ds_grid_multiply_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_U0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_U1, 1/_textureWidth);
+    ds_grid_multiply_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_V0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_V1, 1/_textureHeight);
     ds_grid_multiply_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_U0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_U1, _spriteU1 - _spriteU0); //Note we're adjusting U0 and U1 in the same pass
     ds_grid_multiply_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_V0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_V1, _spriteV1 - _spriteV0); //Note we're adjusting V0 and V1 in the same pass
     ds_grid_add_region(_newGlyphsGrid, 0, __SCRIBBLE_GLYPH_PROPR_U0, _glyphCount-1, __SCRIBBLE_GLYPH_PROPR_U1, _spriteU0); //Note we're adjusting U0 and U1 in the same pass
