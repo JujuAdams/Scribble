@@ -147,6 +147,9 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
             if (SCRIBBLE_SAFELY_WRAP_TIME) __animationTime = __animationTime mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
         }
         
+        //Fetch an updated model before we set the shader and apply transforms
+        var _model = __EnsureModel();
+        
         __lastDrawn = _system.__frames;
         __weakRef.__AddToCache();
         
@@ -159,7 +162,7 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
         
         matrix_stack_push(__UpdateMatrix(_x, _y));
         matrix_set(matrix_world, matrix_stack_top());
-        __EnsureModel().__Draw(__pageInteger + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
+        _model.__Draw(__pageInteger + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
         
         shader_reset();
         matrix_stack_pop();

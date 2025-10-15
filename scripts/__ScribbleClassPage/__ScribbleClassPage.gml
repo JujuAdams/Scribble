@@ -344,7 +344,7 @@ function __ScribbleClassPage(_model) constructor
         
         var _data = {
             __vertexBuffer: _vbuff,
-            __material:      _material,
+            __material:     _material,
         };
         
         array_push(__vertexBufferArray, _data);

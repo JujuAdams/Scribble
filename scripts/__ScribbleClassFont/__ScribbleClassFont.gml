@@ -39,6 +39,7 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
     __isKrutidev = false;
     __bilinear    = (__renderType == __SCRIBBLE_RENDER_SDF)? true : undefined;
     
+    __dynamic      = false;
     __superfont    = false;
     __runtime      = false;
     __sourceSprite = undefined;
@@ -56,11 +57,19 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
     __styleBoldItalic = undefined;
     
     //Variables used for the `font_add()` implementation
+    __dynFontAsset     = undefined;
+    __dynNextSlot      = 0;
+    __dynFreeSlotArray = undefined;
     __dynGlyphMap      = undefined;
     __dynUsageGrid     = undefined;
     __dynSurface       = undefined;
     __dynSurfaceWidth  = undefined;
     __dynSurfaceHeight = undefined;
+    __dynCellWidth     = undefined;
+    __dynCellHeight    = undefined;
+    __dynCellCountX    = undefined;
+    __dynCellCountY    = undefined;
+    __dynMaterial      = undefined;
     
     
     
@@ -184,6 +193,43 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
             __ScribbleTrace("Couldn't find \"missing character\" glyph data, character code ", ord(SCRIBBLE_MISSING_CHARACTER), " (", SCRIBBLE_MISSING_CHARACTER, ") in font \"", __name, "\"");
             __glyphsMap[? ord(SCRIBBLE_MISSING_CHARACTER)] = __glyphsMap[? SCRIBBLE_UNICODE_ZWSP];
         }
+    }
+    
+    static __EnsureGlyphUnsafe = function(_glyph)
+    {
+        var _glyphDataGrid = __glyphDataGrid;
+        
+        var _freeSlot = array_pop(__dynFreeSlotArray);
+        if (_freeSlot == undefined)
+        {
+            _freeSlot = __dynNextSlot;
+            ++__dynNextSlot;
+        }
+        
+        __dynGlyphMap[? _glyph] = _freeSlot;
+        var _cellX = _freeSlot mod __dynCellCountX;
+        var _cellY = _freeSlot div __dynCellCountY;
+        
+        var _gridIndex = __glyphsMap[? _glyph];
+        
+        var _left = 1 + _cellX*__dynCellWidth - _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_DYN_OFFSET];
+        var _top  = 1 + _cellY*__dynCellHeight;
+        
+        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_U0] = _left / __dynSurfaceWidth;
+        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_V0] = _top  / __dynSurfaceHeight;
+        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_U1] = (_left + _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_WIDTH ]) / __dynSurfaceWidth;
+        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_V1] = (_top  + _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_HEIGHT]) / __dynSurfaceHeight;
+        
+        //TODO - Defer text rendering until later
+        
+        surface_set_target(__dynSurface);
+        gpu_set_blendmode_ext(bm_one, bm_zero);
+        draw_sprite_stretched_ext(__ScribblePixel, 0, _left-1, _top-1, __dynCellWidth, __dynCellHeight, c_white, 1);
+        draw_text(_left, _top, chr(_glyph));
+        gpu_set_blendmode(bm_normal);
+        surface_reset_target();
+        
+        surface_save(__dynSurface, "test.png");
     }
     
     static __Destroy = function()

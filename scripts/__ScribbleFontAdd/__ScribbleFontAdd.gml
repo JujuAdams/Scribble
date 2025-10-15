@@ -18,6 +18,7 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
     var _isKrutidev = false;
     var _sdfPxRange = 0;
     var _sdfThicknessOffset = 0;
+    var _sdfHeightOffset = 0;
     
     var _dataPath = __ScribbleMakeFontDataPath(_inputName, _inputSize);
     
@@ -114,17 +115,17 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
     var _cellWidth  = 2 + _foundMaxWidth;
     var _cellHeight = 2 + _foundMaxHeight;
     
-    var _cellCountWidth  = floor(SCRIBBLE_FONT_ADD_TEXTURE_SIZE / _cellWidth);
-    var _cellCountHeight = min(ceil(_foundGlyphCount / _cellCountWidth), floor(SCRIBBLE_FONT_ADD_TEXTURE_SIZE / _cellHeight));
+    var _cellCountX = floor(SCRIBBLE_FONT_ADD_TEXTURE_SIZE / _cellWidth);
+    var _cellCountY = min(ceil(_foundGlyphCount / _cellCountX), floor(SCRIBBLE_FONT_ADD_TEXTURE_SIZE / _cellHeight));
     
-    var _glyphsPerPage = _cellCountWidth*_cellCountHeight;
-    var _surfaceWidth  = _cellCountWidth*_cellWidth;
-    var _surfaceHeight = _cellCountHeight*_cellHeight;
+    var _glyphsPerPage = _cellCountX*_cellCountY;
+    var _surfaceWidth  = _cellCountX*_cellWidth;
+    var _surfaceHeight = _cellCountY*_cellHeight;
     
     __ScribbleTrace($"- Font has {_foundGlyphCount} glyphs");
     __ScribbleTrace($"- Largest glyph is {_foundMaxWidth} x {_foundMaxHeight} px");
     __ScribbleTrace($"- Cell size is {_cellWidth} x {_cellHeight} px");
-    __ScribbleTrace($"- Grid size is {_cellCountWidth} x {_cellCountHeight}. Maximum concurrent glyphs is {_glyphsPerPage}");
+    __ScribbleTrace($"- Grid size is {_cellCountX} x {_cellCountY}. Maximum concurrent glyphs is {_glyphsPerPage}");
     __ScribbleTrace($"- Surface size is {_surfaceWidth} x {_surfaceHeight} px ({4*_surfaceWidth*_surfaceHeight / (1024*1024)} MB)");
     
     var _fontData = new __ScribbleClassFont(_scribbleName, _foundGlyphCount,
@@ -139,15 +140,31 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
         var _fontGlyphsMap     = __glyphsMap;
         var _fontKerningMap    = __kerningMap;
         
+        __dynamic          = true;
+        __dynFontAsset     = _nativeFont;
+        __dynFreeSlotArray = [];
         __dynGlyphMap      = ds_map_create();
-        __dynUsageGrid     = ds_grid_create(_cellCountWidth, _cellCountHeight);
+        __dynUsageGrid     = ds_grid_create(_cellCountX, _cellCountY);
         __dynSurface       = surface_create(_surfaceWidth, _surfaceHeight);
         __dynSurfaceWidth  = _surfaceWidth;
         __dynSurfaceHeight = _surfaceHeight;
+        __dynCellWidth     = _cellWidth;
+        __dynCellHeight    = _cellHeight;
+        __dynCellCountX    = _cellCountX;
+        __dynCellCountY    = _cellCountY;
+        
+        surface_set_target(__dynSurface);
+        draw_clear_alpha(c_white, 0);
+        surface_reset_target();
     }
     
     //Set some basic repeated values in bulk for a little speed boost
-    var _material = __ScribbleGetMaterial(_scribbleName, 0, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _sdfPxRange, _sdfThicknessOffset, true);
+    var _material = __ScribbleGetDynamicMaterial(_scribbleName, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _sdfPxRange, _sdfThicknessOffset, true);
+    _fontData.__dynMaterial = _material;
+    _material.__texture     = surface_get_texture(_fontData.__dynSurface);
+    _material.__texelWidth  = texture_get_texel_width(_material.__texture);
+    _material.__texelHeight = texture_get_texel_height(_material.__texture);
+    
     ds_grid_set_region(_fontGlyphDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT,  _foundGlyphCount-1, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT,  _lineHeight);
     ds_grid_set_region(_fontGlyphDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE,   _foundGlyphCount-1, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE,   1);
     ds_grid_set_region(_fontGlyphDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_MATERIAL,     _foundGlyphCount-1, __SCRIBBLE_GLYPH_PROPR_MATERIAL,     _material);
@@ -214,7 +231,7 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_CHARACTER   ] = chr(_unicode);
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_UNICODE     ] = _unicode;
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_BIDI        ] = _bidi;
-        _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_X_OFFSET    ] = _xOffset;
+        _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_X_OFFSET    ] = _xOffset + _pixelLeft;
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET    ] = _yOffset;
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_WIDTH       ] = _width;
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_HEIGHT      ] = _height;
@@ -242,6 +259,9 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
         var _delta    = buffer_read(_buffer, buffer_s8);
         _fontKerningMap[? _pairCode] = _delta;
     }
+    
+    _fontData.__height = _lineHeight + _sdfHeightOffset;
+    _fontData.__EnsureAdditionalCharacters();
     
     buffer_delete(_buffer);
     

@@ -81,6 +81,9 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             if (SCRIBBLE_SAFELY_WRAP_TIME) __animationTime = __animationTime mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
         }
         
+        //Fetch an updated model before we set the shader and apply transforms
+        var _model = __EnsureModel();
+        
         __lastDrawn = _system.__frames;
         
         __AutoPan();
@@ -98,7 +101,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         matrix_set(matrix_world, _matrix);
         
         //Submit the model
-        __EnsureModel().__Draw(__pageInteger + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
+        _model.__Draw(__pageInteger + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
         
         //Make sure we reset the world matrix
         matrix_set(matrix_world, _oldMatrix);

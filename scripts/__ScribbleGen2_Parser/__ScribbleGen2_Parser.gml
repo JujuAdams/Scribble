@@ -38,6 +38,12 @@
                                           __ScribbleTrace("Couldn't find glyph data for character code " + string(_glyphWrite) + " (" + chr(_glyphWrite) + ") in font \"" + string(_fontName) + "\"");\
                                           _dataIndex = _fontGlyphsMap[? ord(SCRIBBLE_MISSING_CHARACTER)];\
                                       }\
+                                      \
+                                      if (_fontDynamic && (_fontGlyphDataGrid[# _dataIndex, __SCRIBBLE_GLYPH_PROPR_U0] == undefined))\
+                                      {\
+                                          _fontData.__EnsureGlyphUnsafe(_glyphWrite);\
+                                      }\
+                                      \
                                       \//Add this glyph to our grid by copying from the font's own glyph data grid
                                       ds_grid_set_grid_region(_glyphGrid, _fontGlyphDataGrid, _dataIndex, __SCRIBBLE_GLYPH_PROPR_UNICODE, _dataIndex, __SCRIBBLE_GLYPH_PROPR_V1, _glyphCount, __SCRIBBLE_GEN_GLYPH_UNICODE);\
                                       _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;\ //FIXME - Use region function and control pop to make this more efficient
@@ -59,7 +65,9 @@
                                     _fontData.__EnsureTexelData();\
                                     if (_fontData.__superfont) _fontData.__EnsureAdditionalCharacters();\
                                     if (_fontData.__isKrutidev) __hasDevanagari = true;\
+                                    if (_fontData.__dynamic) draw_set_font(_fontData.__dynFontAsset);\
                                     \
+                                    var _fontDynamic           = _fontData.__dynamic;\
                                     var _fontGlyphDataGrid     = _fontData.__glyphDataGrid;\
                                     var _fontGlyphsMap         = _fontData.__glyphsMap;\
                                     var _fontKerningMap        = _fontData.__kerningMap;\
@@ -183,6 +191,14 @@ function __ScribbleGen2_Parser()
     
     static _glyphDataStruct = __ScribbleSystem().__glyphData;
     static _globalGlyphBidiMap = _glyphDataStruct.__bidiMap;
+    
+    //Set font draw state. This isn't usually used but does come up when handling `font_add()` fonts
+    var _oldFont   = draw_get_font();
+    var _oldHAlign = draw_get_halign();
+    var _oldVAlign = draw_get_valign();
+    
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
     
     //Cache element properties locally
     var _spritesDontScale = __spritesDontScale;
@@ -1799,4 +1815,8 @@ function __ScribbleGen2_Parser()
         __glyphCount   = _glyphCount+1;
         __sectionCount  = _sectionCount;
     }
+    
+    draw_set_font(_oldFont);
+    draw_set_halign(_oldHAlign);
+    draw_set_valign(_oldVAlign);
 }
