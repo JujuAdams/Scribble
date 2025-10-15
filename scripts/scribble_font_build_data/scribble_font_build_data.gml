@@ -133,7 +133,7 @@ function scribble_font_build_data(_font, _savePath = undefined)
     
     if (_savePath == undefined)
     {
-        _savePath = filename_dir(GM_project_filename) + "/datafiles/" + __ScribbleMakeFontDataPath(_fontName, _pointSize);
+        _savePath = filename_dir(GM_project_filename) + "/datafiles/" + __ScribbleMakeFontDataPath(_fontName, _pointSize, _info.bold, _info.italic);
         
         if (GM_is_sandboxed)
         {

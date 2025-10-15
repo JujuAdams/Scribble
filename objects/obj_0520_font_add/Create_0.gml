@@ -1,3 +1,3 @@
 // Feather disable all
 
-font = font_add("Candara.ttf", 14, false, false, 32, 127);
+dynamicFont = scribble_font_add("candara", "Candara.ttf", 14);

@@ -1,26 +1,28 @@
 // Feather disable all
 
-#macro font_add      __ScribbleFontAdd
-#macro __font_add__  font_add
+/// @param name
+/// @param path
+/// @param size
+/// @param [SDF=false]
+/// @param [bold=false]
+/// @param [italic=false]
+/// @param [krutidev=false]
 
-function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _inputFirst, _inputLast)
+function scribble_font_add(_scribbleName, _path, _inputSize, _sdf = false, _inputBold = false, _inputItalic = false, _isKrutidev = false)
 {
     var _globalGlyphBidiMap = __ScribbleSystem().__glyphData.__bidiMap;
     
-    //FIXME - Differentiate bold/italic fonts
-    var _nativeFont = __font_add__(_inputName, _inputSize, _inputBold, _inputItalic, _inputFirst, _inputLast);
+    var _nativeFont = font_add(_path, _inputSize, _inputBold, _inputItalic, 32, 127);
     
     var _timer = get_timer();
     
     //TODO - Reconsider all of this
-    var _sdf = false;
-    var _scribbleName = $"{_inputName} {_inputSize}pt";
-    var _isKrutidev = false;
+    //TODO - Implement Krutidev
     var _sdfPxRange = 0;
     var _sdfThicknessOffset = 0;
     var _sdfHeightOffset = 0;
     
-    var _dataPath = __ScribbleMakeFontDataPath(_inputName, _inputSize);
+    var _dataPath = __ScribbleMakeFontDataPath(_path, _inputSize, _inputBold, _inputItalic);
     
     if (not file_exists(_dataPath))
     {
@@ -28,7 +30,7 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
         {
             if (not __SCRIBBLE_ON_DESKTOP)
             {
-                __ScribbleError($"Font data not found (looked for \"{_dataPath}\"). Please call `scribble_font_build_data()` for this font");
+                __ScribbleError($"Font data not found (looked for \"{_dataPath}\")\nPlease call `scribble_font_build_data()` for this font");
             }
             else
             {
@@ -40,14 +42,14 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
         
         if (not __SCRIBBLE_ON_DESKTOP)
         {
-            __ScribbleError($"Font data not found (looked for \"{_dataPath}\"). Please re-run the game on the desktop platform you're using for your IDE");
+            __ScribbleError($"Font data not found (looked for \"{_dataPath}\")\nPlease re-run the game on the desktop platform you're using for your IDE");
             return _nativeFont;
         }
         
         __ScribbleTrace($"Warning! Font data not found (looked for \"{_dataPath}\")");
-        
         _dataPath = filename_dir(GM_project_filename) + "/datafiles/" + _dataPath;
-        __ScribbleTrace($"Changed file path to \"{_dataPath}\" and building font data automatically");
+        __ScribbleTrace($"Changed file path to \"{_dataPath}\"");
+        __ScribbleTrace($"Building font data automatically");
         
         scribble_font_build_data(_nativeFont, _dataPath);
         
@@ -91,9 +93,9 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
     }
     
     var _foundFontName = buffer_read(_buffer, buffer_string);
-    if (_inputName != _foundFontName)
+    if (_path != _foundFontName)
     {
-        __ScribbleTrace($"Warning! Font name mismatch. Found \"{_foundFontName}\", was expecting \"{_inputName}\"");
+        __ScribbleTrace($"Warning! Font name mismatch. Found \"{_foundFontName}\", was expecting \"{_path}\"");
     }
     
     var _foundPointSize = buffer_read(_buffer, buffer_f32);
@@ -133,6 +135,9 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
                                             false, true,
                                             __ScribbleCalculateUnderlineY(_inputSize, _ascender, _ascenderOffset),
                                             __ScribbleCalculateStrikeY(_inputSize, _ascender, _ascenderOffset));
+    
+    static _fontDataMap = __ScribbleSystem().__fontDataMap;
+    _fontDataMap[? font_get_name(_nativeFont)] = _fontData;
     
     with(_fontData)
     {
