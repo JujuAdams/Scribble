@@ -14,6 +14,7 @@ function __ScribbleFontAddFromBundle(_font)
     var _fontInfo   = font_get_info(_font);
     var _isKrutidev = __ScribbleAssetIsKrutidev(_font, asset_font);
     
+    //This is a bit silly but it seems to be the only way to reliably get an accurate line height
     var _old_font = draw_get_font();
     draw_set_font(_font);
     var _lineHeight = string_height(" ");

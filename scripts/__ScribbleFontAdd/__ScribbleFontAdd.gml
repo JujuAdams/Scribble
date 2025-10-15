@@ -102,15 +102,17 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
         return _nativeFont;
     }
     
-    var _foundNativeWidth  = buffer_read(_buffer, buffer_u8);
-    var _foundNativeHeight = buffer_read(_buffer, buffer_u8);
-    var _foundPixelWidth   = buffer_read(_buffer, buffer_u8);
-    var _foundPixelHeight  = buffer_read(_buffer, buffer_u8);
+    var _lineHeight     = buffer_read(_buffer, buffer_u8);
+    var _ascender       = buffer_read(_buffer, buffer_s8);
+    var _ascenderOffset = buffer_read(_buffer, buffer_s8);
+    
+    var _foundMaxWidth   = buffer_read(_buffer, buffer_u8);
+    var _foundMaxHeight  = buffer_read(_buffer, buffer_u8);
     
     var _foundGlyphCount = buffer_read(_buffer, buffer_u32);
     
-    var _cellWidth  = 2 + _foundPixelWidth;
-    var _cellHeight = 2 + _foundPixelHeight;
+    var _cellWidth  = 2 + _foundMaxWidth;
+    var _cellHeight = 2 + _foundMaxHeight;
     
     var _cellCountWidth  = floor(SCRIBBLE_FONT_ADD_TEXTURE_SIZE / _cellWidth);
     var _cellCountHeight = min(ceil(_foundGlyphCount / _cellCountWidth), floor(SCRIBBLE_FONT_ADD_TEXTURE_SIZE / _cellHeight));
@@ -120,13 +122,18 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
     var _surfaceHeight = _cellCountHeight*_cellHeight;
     
     __ScribbleTrace($"- Font has {_foundGlyphCount} glyphs");
-    __ScribbleTrace($"- Largest glyph is {_foundPixelWidth} x {_foundPixelHeight} px");
+    __ScribbleTrace($"- Largest glyph is {_foundMaxWidth} x {_foundMaxHeight} px");
     __ScribbleTrace($"- Cell size is {_cellWidth} x {_cellHeight} px");
     __ScribbleTrace($"- Grid size is {_cellCountWidth} x {_cellCountHeight}. Maximum concurrent glyphs is {_glyphsPerPage}");
     __ScribbleTrace($"- Surface size is {_surfaceWidth} x {_surfaceHeight} px ({4*_surfaceWidth*_surfaceHeight / (1024*1024)} MB)");
     
-    var _fontStruct = new __ScribbleClassFont(_scribbleName, _foundGlyphCount, __SCRIBBLE_RENDER_RASTER, false, true, 0, 0);
-    with(_fontStruct)
+    var _fontData = new __ScribbleClassFont(_scribbleName, _foundGlyphCount,
+                                            __SCRIBBLE_RENDER_RASTER,
+                                            false, true,
+                                            __ScribbleCalculateUnderlineY(_inputSize, _ascender, _ascenderOffset),
+                                            __ScribbleCalculateStrikeY(_inputSize, _ascender, _ascenderOffset));
+    
+    with(_fontData)
     {
         var _fontGlyphDataGrid = __glyphDataGrid;
         var _fontGlyphsMap     = __glyphsMap;
@@ -141,7 +148,7 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
     
     //Set some basic repeated values in bulk for a little speed boost
     var _material = __ScribbleGetMaterial(_scribbleName, 0, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _sdfPxRange, _sdfThicknessOffset, true);
-    ds_grid_set_region(_fontGlyphDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT,  _foundGlyphCount-1, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT,  0);
+    ds_grid_set_region(_fontGlyphDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT,  _foundGlyphCount-1, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT,  _lineHeight);
     ds_grid_set_region(_fontGlyphDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE,   _foundGlyphCount-1, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE,   1);
     ds_grid_set_region(_fontGlyphDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_MATERIAL,     _foundGlyphCount-1, __SCRIBBLE_GLYPH_PROPR_MATERIAL,     _material);
     ds_grid_set_region(_fontGlyphDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_U0,           _foundGlyphCount-1, __SCRIBBLE_GLYPH_PROPR_V1,           undefined);
@@ -151,12 +158,12 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
     repeat(_foundGlyphCount)
     {
         var _unicode      = buffer_read(_buffer, buffer_u32);
+        var _width        = buffer_read(_buffer, buffer_u8);
+        var _height       = buffer_read(_buffer, buffer_u8);
         var _xOffset      = buffer_read(_buffer, buffer_s8);
+        var _yOffset      = buffer_read(_buffer, buffer_s8);
         var _separation   = buffer_read(_buffer, buffer_s8);
         var _pixelLeft    = buffer_read(_buffer, buffer_s8);
-        var _pixelTop     = buffer_read(_buffer, buffer_s8);
-        var _pixelRight   = buffer_read(_buffer, buffer_s8);
-        var _pixelBottom  = buffer_read(_buffer, buffer_s8);
         
         if (ds_map_exists(_fontGlyphsMap, _unicode))
         {
@@ -208,9 +215,9 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_UNICODE     ] = _unicode;
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_BIDI        ] = _bidi;
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_X_OFFSET    ] = _xOffset;
-        _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET    ] = 0;
-        _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_WIDTH       ] = 1 + _pixelRight - _pixelLeft;
-        _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_HEIGHT      ] = 1 + _pixelBottom - _pixelTop;
+        _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET    ] = _yOffset;
+        _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_WIDTH       ] = _width;
+        _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_HEIGHT      ] = _height;
         //_fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT ] = 0;
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_SEPARATION  ] = _separation;
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_LEFT_OFFSET ] = -_xOffset;
@@ -221,6 +228,7 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
         //_fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_V0          ] = undefined;
         //_fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_V1          ] = undefined;
         //_fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = true;
+        _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_DYN_OFFSET  ] = _pixelLeft;
         
         ++_index;
     }

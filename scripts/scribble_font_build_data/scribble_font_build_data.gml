@@ -19,15 +19,20 @@ function scribble_font_build_data(_font, _savePath = undefined)
     
     __ScribbleTrace($"Building data for \"{_fontName}\" {_pointSize}pt ({_font})");
     
+    draw_set_font(_font);
+    draw_set_halign(fa_left);
+    draw_set_valign(fa_top);
+    
+    //This is a bit silly but it seems to be the only way to reliably get an accurate line height
+    var _lineHeight = string_height(" ");
+    
     var _buffer = buffer_create(1024, buffer_grow, 1);
     
     var _context = {
         __surface:      surface_create(__SCRIBBLE_FONT_DATA_SURFACE_SIZE, __SCRIBBLE_FONT_DATA_SURFACE_SIZE),
         __buffer:       _buffer,
-        __nativeWidth:  0,
-        __nativeHeight: 0,
-        __pixelWidth:   0,
-        __pixelHeight:  0,
+        __maxWidth:     0,
+        __maxHeight:    0,
         __kerningArray: [],
     };
     
@@ -35,10 +40,11 @@ function scribble_font_build_data(_font, _savePath = undefined)
     buffer_write(_buffer, buffer_string, __SCRIBBLE_FONT_DATA_VERSION);
     buffer_write(_buffer, buffer_string, _fontName);
     buffer_write(_buffer, buffer_f32,    _pointSize);
+    buffer_write(_buffer, buffer_u8,     _lineHeight);
+    buffer_write(_buffer, buffer_s8,     _info.ascender);
+    buffer_write(_buffer, buffer_s8,     _info.ascenderOffset);
     
     var _maxSizeTell = buffer_tell(_buffer);
-    buffer_write(_buffer, buffer_u8, 0);
-    buffer_write(_buffer, buffer_u8, 0);
     buffer_write(_buffer, buffer_u8, 0);
     buffer_write(_buffer, buffer_u8, 0);
     
@@ -46,10 +52,6 @@ function scribble_font_build_data(_font, _savePath = undefined)
     buffer_write(_buffer, buffer_u32, _glyphCount);
     
     __ScribbleTrace($"Font has {_glyphCount} glyphs, please wait...");
-    
-    draw_set_font(_font);
-    draw_set_halign(fa_left);
-    draw_set_valign(fa_top);
     
     struct_foreach(_info.glyphs, method(_context, function(_key, _value)
     {
@@ -68,30 +70,25 @@ function scribble_font_build_data(_font, _savePath = undefined)
             var _right  = _bbox.right  - __SCRIBBLE_FONT_DATA_SURFACE_CENTER;
             var _bottom = _bbox.bottom - __SCRIBBLE_FONT_DATA_SURFACE_CENTER;
             
-            __nativeWidth  = max(__nativeWidth,  _value.w);
-            __nativeHeight = max(__nativeHeight, _value.h);
-            
             var _glyphWidth  = 1 + _right - _left;
             var _glyphHeight = 1 + _bottom - _top;
-            __pixelWidth  = max(__pixelWidth,  _glyphWidth);
-            __pixelHeight = max(__pixelHeight, _glyphHeight);
+            
+            __maxWidth  = max(__maxWidth,  _glyphWidth);
+            __maxHeight = max(__maxHeight, _glyphHeight);
         }
         else
         {
-            var _left   = 0;
-            var _top    = 0;
-            var _right  = 0;
-            var _bottom = 0;
+            var _left = 0;
         }
         
         var _buffer = __buffer;
         buffer_write(_buffer, buffer_u32, _unicode);
+        buffer_write(_buffer, buffer_u8,  _value.w);
+        buffer_write(_buffer, buffer_u8,  _value.h);
         buffer_write(_buffer, buffer_s8,  _value.offset);
+        buffer_write(_buffer, buffer_s8,  _value.yoffset);
         buffer_write(_buffer, buffer_s8,  _value.shift);
         buffer_write(_buffer, buffer_s8,  _left);
-        buffer_write(_buffer, buffer_s8,  _top);
-        buffer_write(_buffer, buffer_s8,  _right);
-        buffer_write(_buffer, buffer_s8,  _bottom);
         
         var _kerningArray = _value[$ "kerning"];
         if (is_array(_kerningArray))
@@ -126,10 +123,8 @@ function scribble_font_build_data(_font, _savePath = undefined)
     
     //Go back and write found widths/heights
     buffer_seek(_buffer, buffer_seek_start, _maxSizeTell);
-    buffer_write(_buffer, buffer_u8, _context.__nativeWidth);
-    buffer_write(_buffer, buffer_u8, _context.__nativeHeight);
-    buffer_write(_buffer, buffer_u8, _context.__pixelWidth);
-    buffer_write(_buffer, buffer_u8, _context.__pixelHeight);
+    buffer_write(_buffer, buffer_u8, _context.__maxWidth);
+    buffer_write(_buffer, buffer_u8, _context.__maxHeight);
     
     surface_free(_context.__surface);
     

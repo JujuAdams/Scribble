@@ -113,18 +113,11 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
             var _sdfHeightOffset    = 0;
         }
         
-        var _ascender = _fontInfo.ascender;
-        
-        //Fix dodgy ascender values
-        if (_ascender <= 0)
-        {
-            _ascender = floor(_fontInfo.size * (4/3));
-        }
-        
-        var _underlineY = _ascender - _fontInfo.ascenderOffset;
-        var _strikeY    = ceil(0.666*_ascender) - _fontInfo.ascenderOffset;
-        
-        var _fontData = new __ScribbleClassFont(_name, _size, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _fromBundle, _texelsValid, _underlineY, _strikeY);
+        var _fontData = new __ScribbleClassFont(_name, _size,
+                                                _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER,
+                                                _fromBundle, _texelsValid,
+                                                __ScribbleCalculateUnderlineY(_fontInfo.size, _fontInfo.ascender, _fontInfo.ascenderOffset),
+                                                __ScribbleCalculateStrikeY(_fontInfo.size, _fontInfo.ascender, _fontInfo.ascenderOffset),);
         
         var _fontGlyphsMap   = _fontData.__glyphsMap;
         var _fontGlyphDataGrid = _fontData.__glyphDataGrid;
