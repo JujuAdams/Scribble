@@ -83,6 +83,7 @@
 #macro __SCRIBBLE_GLYPH_REPL_SURFACE  -2
 #macro __SCRIBBLE_GLYPH_REPL_TEXTURE  -3
 
+#macro __SCRIBBLE_ON_DESKTOP           ((os_type == os_windows) || (os_type == os_macosx) || (os_type == os_linux))
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_xboxseriesxs) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone) || (os_type == os_operagx))
 #macro __SCRIBBLE_ON_MOBILE            ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))
 #macro __SCRIBBLE_ON_WEB               (os_browser != browser_not_a_browser)
