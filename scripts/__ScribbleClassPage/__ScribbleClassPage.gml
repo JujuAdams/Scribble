@@ -193,6 +193,8 @@ function __ScribbleClassPage(_model) constructor
             var _data = __vertexBufferArray[_i];
             var _material = _data.__material;
             
+            var _texture = _material.__EnsureTexture();
+            
             var _bilinear = _material.__bilinear;
             if (_bilinear != undefined)
             {
@@ -203,7 +205,7 @@ function __ScribbleClassPage(_model) constructor
             if (_material.__renderType == __SCRIBBLE_RENDER_RASTER)
             {
                 shader_set_uniform_f(_u_fRenderType, __SCRIBBLE_RENDER_RASTER);
-                vertex_submit(_data.__vertexBuffer, pr_trianglelist, _material.__texture);
+                vertex_submit(_data.__vertexBuffer, pr_trianglelist, _texture);
             }
             else if (_material.__renderType == __SCRIBBLE_RENDER_SDF)
             {
@@ -213,24 +215,24 @@ function __ScribbleClassPage(_model) constructor
                 shader_set_uniform_f(_u_fSDFRange, (_material.__sdfPxRange ?? 0));
                 shader_set_uniform_f(_u_fSDFThicknessOffset, _system.__state.__sdfThicknessOffset + (_material.__sdfThicknessOffset ?? 0));
                 
-                vertex_submit(_data.__vertexBuffer, pr_trianglelist, _material.__texture);
+                vertex_submit(_data.__vertexBuffer, pr_trianglelist, _texture);
                 
                 if (_doubleDraw)
                 {
                     shader_set_uniform_f(_u_fSecondDraw, 1);
-                    vertex_submit(_data.__vertexBuffer, pr_trianglelist, _material.__texture);
+                    vertex_submit(_data.__vertexBuffer, pr_trianglelist, _texture);
                     shader_set_uniform_f(_u_fSecondDraw, 0);
                 }
             }
             else if (_material.__renderType == __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS)
             {
                 shader_set_uniform_f(_u_fRenderType, __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS);
-                vertex_submit(_data.__vertexBuffer, pr_trianglelist, _material.__texture);
+                vertex_submit(_data.__vertexBuffer, pr_trianglelist, _texture);
                 
                 if (_doubleDraw)
                 {
                     shader_set_uniform_f(_u_fSecondDraw, 1);
-                    vertex_submit(_data.__vertexBuffer, pr_trianglelist, _material.__texture);
+                    vertex_submit(_data.__vertexBuffer, pr_trianglelist, _texture);
                     shader_set_uniform_f(_u_fSecondDraw, 0);
                 }
             }

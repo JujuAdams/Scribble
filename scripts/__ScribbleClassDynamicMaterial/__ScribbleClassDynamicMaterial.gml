@@ -18,4 +18,16 @@ function __ScribbleClassDynamicMaterial(_key, _fontName, _renderType, _sdfPxRang
     __sdfPxRange         = _sdfPxRange;
     __sdfThicknessOffset = _sdfThicknessOffset;
     __bilinear           = _bilinear; //Can be `true`, `false`, or `undefined`
+    
+    static __EnsureTexture = function()
+    {
+        if (__fontData.__EnsureDynamicSurface())
+        {
+            __texture     = surface_get_texture(__fontData.__dynSurface);
+            __texelWidth  = texture_get_texel_width(__texture);
+            __texelHeight = texture_get_texel_height(__texture);
+        }
+        
+        return __texture;
+    }
 }

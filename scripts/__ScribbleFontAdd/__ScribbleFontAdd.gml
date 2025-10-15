@@ -152,6 +152,9 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
         __dynCellHeight    = _cellHeight;
         __dynCellCountX    = _cellCountX;
         __dynCellCountY    = _cellCountY;
+        __dynCellCount     = _glyphsPerPage;
+        __dynDirtyArray    = [];
+        __dynSurfaceDirty  = true;
         
         surface_set_target(__dynSurface);
         draw_clear_alpha(c_white, 0);
@@ -159,8 +162,10 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
     }
     
     //Set some basic repeated values in bulk for a little speed boost
-    var _material = __ScribbleGetDynamicMaterial(_scribbleName, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _sdfPxRange, _sdfThicknessOffset, true);
+    var _material = __ScribbleGetDynamicMaterial(_scribbleName, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _sdfPxRange, _sdfThicknessOffset, false);
     _fontData.__dynMaterial = _material;
+    _material.__fontData = _fontData;
+    
     _material.__texture     = surface_get_texture(_fontData.__dynSurface);
     _material.__texelWidth  = texture_get_texel_width(_material.__texture);
     _material.__texelHeight = texture_get_texel_height(_material.__texture);
@@ -231,7 +236,7 @@ function __ScribbleFontAdd(_inputName, _inputSize, _inputBold, _inputItalic, _in
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_CHARACTER   ] = chr(_unicode);
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_UNICODE     ] = _unicode;
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_BIDI        ] = _bidi;
-        _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_X_OFFSET    ] = _xOffset + _pixelLeft;
+        _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_X_OFFSET    ] = _xOffset;
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET    ] = _yOffset;
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_WIDTH       ] = _width;
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_HEIGHT      ] = _height;

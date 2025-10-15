@@ -25,4 +25,9 @@ function __ScribbleClassMaterial(_key, _fontName, _textureIndexOrPointer, _rende
         if (__bilinear == _bilinear) return self;
         return __ScribbleGetMaterial(__debugFontName, __texture, __renderType, __sdfPxRange, __sdfThicknessOffset, _bilinear);
     }
+    
+    static __EnsureTexture = function()
+    {
+        return __texture;
+    }
 }

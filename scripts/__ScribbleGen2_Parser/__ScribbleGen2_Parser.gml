@@ -36,7 +36,8 @@
                                       if (_dataIndex == undefined)\
                                       {\
                                           __ScribbleTrace("Couldn't find glyph data for character code " + string(_glyphWrite) + " (" + chr(_glyphWrite) + ") in font \"" + string(_fontName) + "\"");\
-                                          _dataIndex = _fontGlyphsMap[? ord(SCRIBBLE_MISSING_CHARACTER)];\
+                                          _glyphWrite = ord(SCRIBBLE_MISSING_CHARACTER);\
+                                          _dataIndex = _fontGlyphsMap[? _glyphWrite];\
                                       }\
                                       \
                                       if (_fontDynamic && (_fontGlyphDataGrid[# _dataIndex, __SCRIBBLE_GLYPH_PROPR_U0] == undefined))\
@@ -191,14 +192,6 @@ function __ScribbleGen2_Parser()
     
     static _glyphDataStruct = __ScribbleSystem().__glyphData;
     static _globalGlyphBidiMap = _glyphDataStruct.__bidiMap;
-    
-    //Set font draw state. This isn't usually used but does come up when handling `font_add()` fonts
-    var _oldFont   = draw_get_font();
-    var _oldHAlign = draw_get_halign();
-    var _oldVAlign = draw_get_valign();
-    
-    draw_set_halign(fa_left);
-    draw_set_valign(fa_top);
     
     //Cache element properties locally
     var _spritesDontScale = __spritesDontScale;
@@ -1815,8 +1808,4 @@ function __ScribbleGen2_Parser()
         __glyphCount   = _glyphCount+1;
         __sectionCount  = _sectionCount;
     }
-    
-    draw_set_font(_oldFont);
-    draw_set_halign(_oldHAlign);
-    draw_set_valign(_oldVAlign);
 }

@@ -444,6 +444,7 @@
     {"name":"spr_static_coin","order":5,"path":"sprites/spr_static_coin/spr_static_coin.yy",},
     {"name":"spr_vertical_spacing","order":6,"path":"sprites/spr_vertical_spacing/spr_vertical_spacing.yy",},
     {"name":"spr_white_coin","order":7,"path":"sprites/spr_white_coin/spr_white_coin.yy",},
+    {"name":"Sprite17","order":10,"path":"sprites/Sprite17/Sprite17.yy",},
     {"name":"sprScribbleFallbackBulletpoint","order":1,"path":"sprites/sprScribbleFallbackBulletpoint/sprScribbleFallbackBulletpoint.yy",},
     {"name":"sprScribbleFallbackDot","order":2,"path":"sprites/sprScribbleFallbackDot/sprScribbleFallbackDot.yy",},
   ],
