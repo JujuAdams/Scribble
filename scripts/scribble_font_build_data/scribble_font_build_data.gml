@@ -28,6 +28,7 @@ function scribble_font_build_data(_font, _savePath = undefined)
         __nativeHeight: 0,
         __pixelWidth:   0,
         __pixelHeight:  0,
+        __kerningArray: [],
     };
     
     buffer_write(_buffer, buffer_string, __SCRIBBLE_FONT_DATA_MAGIC_STRING);
@@ -52,6 +53,8 @@ function scribble_font_build_data(_font, _savePath = undefined)
     
     struct_foreach(_info.glyphs, method(_context, function(_key, _value)
     {
+        var _unicode = _value.char;
+        
         surface_set_target(__surface);
         draw_clear_alpha(c_white, 0);
         draw_text(__SCRIBBLE_FONT_DATA_SURFACE_CENTER, __SCRIBBLE_FONT_DATA_SURFACE_CENTER, _key);
@@ -82,19 +85,46 @@ function scribble_font_build_data(_font, _savePath = undefined)
         }
         
         var _buffer = __buffer;
-        buffer_write(_buffer, buffer_u32, _value.char);
-        buffer_write(_buffer, buffer_u8,  _value.w);      //Unsigned
-        buffer_write(_buffer, buffer_u8,  _value.h);      //Unsigned
-        buffer_write(_buffer, buffer_u8,  _value.offset); //Unsigned
-        buffer_write(_buffer, buffer_u8,  _value.shift);  //Unsigned
-        buffer_write(_buffer, buffer_s8,  _left);         //Signed
-        buffer_write(_buffer, buffer_s8,  _top);          //Signed
-        buffer_write(_buffer, buffer_s8,  _right);        //Signed
-        buffer_write(_buffer, buffer_s8,  _bottom);       //Signed
+        buffer_write(_buffer, buffer_u32, _unicode);
+        buffer_write(_buffer, buffer_s8,  _value.offset);
+        buffer_write(_buffer, buffer_s8,  _value.shift);
+        buffer_write(_buffer, buffer_s8,  _left);
+        buffer_write(_buffer, buffer_s8,  _top);
+        buffer_write(_buffer, buffer_s8,  _right);
+        buffer_write(_buffer, buffer_s8,  _bottom);
+        
+        var _kerningArray = _value[$ "kerning"];
+        if (is_array(_kerningArray))
+        {
+            var _j = 0;
+            repeat(array_length(_kerningArray) div 2)
+            {
+                var _first = _kerningArray[_j];
+                if (_first > 0)
+                {
+                    array_push(__kerningArray, ((_unicode & 0xFFFF) << 16) | (_first & 0xFFFF), _kerningArray[_j+1]);
+                }
+                
+                _j += 2;
+            }
+        }
     }));
+    
+    //Write kerning data
+    var _kerningArray = _context.__kerningArray;
+    buffer_write(_buffer, buffer_u32, array_length(_kerningArray) div 2);
+    
+    var _i = 0;
+    repeat(array_length(_kerningArray) div 2)
+    {
+        buffer_write(_buffer, buffer_u32, _kerningArray[_i  ]);
+        buffer_write(_buffer, buffer_s8,  _kerningArray[_i+1]);
+        _i += 2;
+    }
     
     var _finalTell = buffer_tell(_buffer);
     
+    //Go back and write found widths/heights
     buffer_seek(_buffer, buffer_seek_start, _maxSizeTell);
     buffer_write(_buffer, buffer_u8, _context.__nativeWidth);
     buffer_write(_buffer, buffer_u8, _context.__nativeHeight);

@@ -55,6 +55,13 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
     __styleItalic     = undefined;
     __styleBoldItalic = undefined;
     
+    //Variables used for the `font_add()` implementation
+    __dynGlyphMap      = undefined;
+    __dynUsageGrid     = undefined;
+    __dynSurface       = undefined;
+    __dynSurfaceWidth  = undefined;
+    __dynSurfaceHeight = undefined;
+    
     
     
     
