@@ -303,7 +303,6 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
         draw_set_halign(fa_left);
         draw_set_valign(fa_top);
         
-        shader_reset();
         gpu_set_blendmode_ext(bm_one, bm_zero);
         
         if (_wipeSurface)
@@ -327,6 +326,7 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
         }
         
         surface_set_target(__dynSurface);
+        shader_set(__shdScribblePassthrough);
         
         var _i = 0;
         repeat(array_length(_dynDirtyArray) div 2)
@@ -338,12 +338,17 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
             var _top  = round(_glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_V0] * _surfaceHeight);
             
             draw_sprite_stretched_ext(__ScribblePixel, 0, _left-1, _top-1, _cellWidth, _cellHeight, c_white, 0);
-            draw_text(_left - _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_DYN_OFFSET], _top, chr(_glyph));
+            draw_text(_left - _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_DYN_X],
+                      _top  - _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_DYN_Y],
+                      chr(_glyph));
             
             _i += 2;
         }
         
         surface_reset_target();
+        shader_reset();
+        
+        surface_save(__dynSurface, "test.png");
         
         draw_set_font(_oldFont);
         draw_set_halign(_oldHAlign);

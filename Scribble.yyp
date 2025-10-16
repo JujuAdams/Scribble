@@ -510,6 +510,7 @@
     {"id":{"name":"__shdScribbleBakeEffect8Dir","path":"shaders/__shdScribbleBakeEffect8Dir/__shdScribbleBakeEffect8Dir.yy",},},
     {"id":{"name":"__shdScribbleBakeEffect8Dir2px","path":"shaders/__shdScribbleBakeEffect8Dir2px/__shdScribbleBakeEffect8Dir2px.yy",},},
     {"id":{"name":"__shdScribbleBakeEffectNoOutline","path":"shaders/__shdScribbleBakeEffectNoOutline/__shdScribbleBakeEffectNoOutline.yy",},},
+    {"id":{"name":"__shdScribblePassthrough","path":"shaders/__shdScribblePassthrough/__shdScribblePassthrough.yy",},},
     {"id":{"name":"__shdScribbleVisualBbox","path":"shaders/__shdScribbleVisualBbox/__shdScribbleVisualBbox.yy",},},
     {"id":{"name":"snd_crank","path":"sounds/snd_crank/snd_crank.yy",},},
     {"id":{"name":"snd_switch","path":"sounds/snd_switch/snd_switch.yy",},},

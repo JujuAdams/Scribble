@@ -83,7 +83,7 @@ void main()
     else
     {
         //SDF rendering
-        float smoothness = 0.5;
+        float smoothness = 0.75;
         
         float baseDist = SDFValue(v_vTexcoord);
         float spread = max(fwidth(baseDist), 0.001);    
