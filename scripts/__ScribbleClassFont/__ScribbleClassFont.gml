@@ -384,10 +384,10 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
             _i += 2;
         }
         
+        array_resize(_dynDirtyArray, 0);
+        
         surface_reset_target();
         shader_reset();
-        
-        surface_save(__dynSurface, "test.png");
         
         draw_set_font(_oldFont);
         draw_set_halign(_oldHAlign);
