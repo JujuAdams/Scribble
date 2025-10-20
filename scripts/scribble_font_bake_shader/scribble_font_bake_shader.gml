@@ -40,7 +40,7 @@ function scribble_font_bake_shader(_sourceFontName, _newFontName, _shader, _outl
     if (_sourceFontName == _newFontName)
     {
         __ScribbleError("Source font and new font cannot share the same name");
-        return undefined;
+        return;
     }
 
     static _fontDataMap = __ScribbleSystem().__fontDataMap;
@@ -48,19 +48,25 @@ function scribble_font_bake_shader(_sourceFontName, _newFontName, _shader, _outl
     if (not is_struct(_srcFontData))
     {
         __ScribbleError("Source font \"", _sourceFontName, "\" not found\n\"", _newFontName, "\" will not be available");
-        return undefined;
+        return;
     }
     
     if (_srcFontData.__renderType == __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS)
     {
         __ScribbleError("Source font cannot already have effects baked into it");
-        return undefined;
+        return;
     }
     
     if (_srcFontData.__renderType == __SCRIBBLE_RENDER_SDF)
     {
         __ScribbleError("Source font cannot be an SDF font");
-        return undefined;
+        return;
+    }
+    
+    if (ScribbleFontExists(_new_font_name))
+    {
+        __ScribbleError($"A font called \"{_new_font_name}\" already exists");
+        return;
     }
     
     _srcFontData.__EnsureMaterialTexturesFetched();
