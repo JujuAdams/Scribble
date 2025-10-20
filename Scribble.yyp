@@ -263,6 +263,7 @@
     {"id":{"name":"obj_test_sprite_via_handle","path":"objects/obj_test_sprite_via_handle/obj_test_sprite_via_handle.yy",},},
     {"id":{"name":"obj_test_spritefont","path":"objects/obj_test_spritefont/obj_test_spritefont.yy",},},
     {"id":{"name":"obj_test_starting_format","path":"objects/obj_test_starting_format/obj_test_starting_format.yy",},},
+    {"id":{"name":"obj_test_stress_gc_font_add","path":"objects/obj_test_stress_gc_font_add/obj_test_stress_gc_font_add.yy",},},
     {"id":{"name":"obj_test_stress_gc","path":"objects/obj_test_stress_gc/obj_test_stress_gc.yy",},},
     {"id":{"name":"obj_test_stress_lots_of_text","path":"objects/obj_test_stress_lots_of_text/obj_test_stress_lots_of_text.yy",},},
     {"id":{"name":"obj_test_stress_multi","path":"objects/obj_test_stress_multi/obj_test_stress_multi.yy",},},

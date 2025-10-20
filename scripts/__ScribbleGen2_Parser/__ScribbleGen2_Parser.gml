@@ -44,7 +44,7 @@
                                       {\
                                           var _slot = _fontGlyphDataGrid[# _dataIndex, __SCRIBBLE_GLYPH_PROPR_DYN_SLOT];\
                                           if (_slot == undefined) _slot = _fontData.__EnsureGlyph(_glyphWrite);\
-                                          _dynamicFontUseGrid[# _slot, 0] = 1;\
+                                          if (_slot != undefined) _dynamicFontUseGrid[# _slot, 0] = 1;\
                                       }\ 
                                       \
                                       \//Add this glyph to our grid by copying from the font's own glyph data grid

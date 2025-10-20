@@ -281,6 +281,18 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
         }
     }
     
+    static __DebugFlushDynamicSurface = function()
+    {
+        ds_map_clear(__dynGlyphToSlotMap);
+        array_resize(__dynFreeSlotArray, 0);
+        __dynNextSlot = 0;
+        
+        ds_grid_set_region(__dynSlotDataGrid,   0, __SCRIBBLE_DYN_SLOT_DATA_USED_COUNT, __dynSlotCount-1, __SCRIBBLE_DYN_SLOT_DATA_USED_COUNT,   0);
+        ds_grid_set_region(__dynSlotDataGrid,   0, __SCRIBBLE_DYN_SLOT_DATA_GLYPH, __dynSlotCount-1, __SCRIBBLE_DYN_SLOT_DATA_GLYPH,   undefined);
+        
+        ds_grid_set_region(__glyphDataGrid,   0, __SCRIBBLE_GLYPH_PROPR_DYN_SLOT, ds_grid_width(__glyphDataGrid)-1, __SCRIBBLE_GLYPH_PROPR_DYN_SLOT,   undefined);
+    }
+    
     static __EnsureDynamicSurface = function()
     {
         static _identityMatrix = matrix_build_identity();
