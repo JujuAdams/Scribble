@@ -31,7 +31,7 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     if (_source_font_name == _new_font_name)
     {
         __scribble_error("Source font and new font cannot share the same name");
-        return undefined;
+        return;
     }
 
     static _font_data_map = __scribble_system().__font_data_map;
@@ -39,19 +39,25 @@ function scribble_font_bake_shader(_source_font_name, _new_font_name, _shader, _
     if (!is_struct(_src_font_data))
     {
         __scribble_error("Source font \"", _source_font_name, "\" not found\n\"", _new_font_name, "\" will not be available");
-        return undefined;
+        return;
     }
     
     if (_src_font_data.__render_type == __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS)
     {
         __scribble_error("Source font cannot already have effects baked into it");
-        return undefined;
+        return;
     }
     
     if (_src_font_data.__render_type == __SCRIBBLE_RENDER_SDF)
     {
         __scribble_error("Source font cannot be an SDF font");
-        return undefined;
+        return;
+    }
+    
+    if (scribble_font_exists(_new_font_name))
+    {
+        __scribble_error($"A font called \"{_new_font_name}\" already exists");
+        return;
     }
     
     _src_font_data.__ensure_material_textures_fetched();
