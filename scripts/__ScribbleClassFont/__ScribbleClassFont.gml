@@ -63,7 +63,6 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
     __dynNextSlot      = 0;
     __dynFreeSlotArray = undefined;
     __dynGlyphMap      = undefined;
-    __dynUsageGrid     = undefined;
     __dynSurface       = undefined;
     __dynSurfaceWidth  = undefined;
     __dynSurfaceHeight = undefined;
@@ -75,6 +74,9 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
     __dynMaterial      = undefined;
     __dynSurfaceDirty  = false;
     __dynDirtyArray    = undefined;
+    __dynGlyphUseGrid  = undefined;
+    __dynCleanUp       = 0;
+    __dynTimeSource    = undefined;
     
     
     
@@ -229,13 +231,16 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
         var _left = 1 + (_freeSlot mod __dynCellCountX)*__dynCellWidth;
         var _top  = 1 + (_freeSlot div __dynCellCountY)*__dynCellHeight;
         
-        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_U0] = _left / __dynSurfaceWidth;
-        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_V0] = _top  / __dynSurfaceHeight;
-        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_U1] = (_left + _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_WIDTH ]) / __dynSurfaceWidth;
-        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_V1] = (_top  + _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_HEIGHT]) / __dynSurfaceHeight;
+        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_U0      ] = _left / __dynSurfaceWidth;
+        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_V0      ] = _top  / __dynSurfaceHeight;
+        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_U1      ] = (_left + _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_WIDTH ]) / __dynSurfaceWidth;
+        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_V1      ] = (_top  + _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_HEIGHT]) / __dynSurfaceHeight;
+        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_DYN_SLOT] = _freeSlot;
         
         __dynSurfaceDirty = true;
         array_push(__dynDirtyArray, _glyph, _gridIndex);
+        
+        return _freeSlot;
     }
     
     static __Destroy = function()
@@ -251,6 +256,12 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
         {
             sprite_delete(__sourceSprite);
             __sourceSprite = undefined;
+        }
+        
+        if (__dynTimeSource != undefined)
+        {
+            time_source_stop(__dynTimeSource);
+            time_source_destroy(__dynTimeSource);
         }
     }
     
@@ -358,5 +369,10 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
         matrix_set(matrix_world, _oldWorldMatrix);
         
         return true;
+    }
+    
+    static __CreateUseGrid = function()
+    {
+        return ds_grid_create(__dynCellCount, 1);
     }
 }

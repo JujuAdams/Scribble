@@ -40,10 +40,12 @@
                                           _dataIndex = _fontGlyphsMap[? _glyphWrite];\
                                       }\
                                       \
-                                      if (_fontDynamic && (_fontGlyphDataGrid[# _dataIndex, __SCRIBBLE_GLYPH_PROPR_U0] == undefined))\
+                                      if (_fontDynamic)\
                                       {\
-                                          _fontData.__EnsureGlyphUnsafe(_glyphWrite);\
-                                      }\
+                                          var _slot = _fontGlyphDataGrid[# _dataIndex, __SCRIBBLE_GLYPH_PROPR_DYN_SLOT];\
+                                          if (_slot == undefined) _slot = _fontData.__EnsureGlyphUnsafe(_glyphWrite);\
+                                          _dynamicFontUseGrid[# _slot, 0] = 1;\
+                                      }\ 
                                       \
                                       \//Add this glyph to our grid by copying from the font's own glyph data grid
                                       ds_grid_set_grid_region(_glyphGrid, _fontGlyphDataGrid, _dataIndex, __SCRIBBLE_GLYPH_PROPR_UNICODE, _dataIndex, __SCRIBBLE_GLYPH_PROPR_V1, _glyphCount, __SCRIBBLE_GEN_GLYPH_UNICODE);\
@@ -66,7 +68,21 @@
                                     _fontData.__EnsureTexelData();\
                                     if (_fontData.__superfont) _fontData.__EnsureAdditionalCharacters();\
                                     if (_fontData.__isKrutidev) __hasDevanagari = true;\
-                                    if (_fontData.__dynamic) draw_set_font(_fontData.__dynFontAsset);\
+                                    if (_fontData.__dynamic)\
+                                    {\
+                                        var _dynamicFontUseGrid = _fontUseGridMap[? _fontName];\
+                                        if (_dynamicFontUseGrid == undefined)\
+                                        {\
+                                            _dynamicFontUseGrid =_fontData.__CreateUseGrid();\
+                                            array_push(_dynamicFontUseGridArray, {\
+                                                __grid: _dynamicFontUseGrid,\
+                                                __count: ds_grid_width(_dynamicFontUseGrid),\
+                                                __font: _fontData,\
+                                            });\
+                                        }\
+                                        \
+                                        draw_set_font(_fontData.__dynFontAsset);\
+                                    }\
                                     \
                                     var _fontDynamic           = _fontData.__dynamic;\
                                     var _fontGlyphDataGrid     = _fontData.__glyphDataGrid;\
@@ -192,6 +208,10 @@ function __ScribbleGen2_Parser()
     
     static _glyphDataStruct = __ScribbleSystem().__glyphData;
     static _globalGlyphBidiMap = _glyphDataStruct.__bidiMap;
+    
+    static _fontUseGridMap = ds_map_create();
+    ds_map_clear(_fontUseGridMap);
+    var _dynamicFontUseGridArray = __dynamicFontUseGridArray;
     
     //Cache element properties locally
     var _spritesDontScale = __spritesDontScale;
@@ -1784,6 +1804,17 @@ function __ScribbleGen2_Parser()
     
     //Set our vertical alignment if it hasn't been overrided
     if (__vAlign == undefined) __vAlign = _startingVAlign;
+    
+    var _i = 0;
+    repeat(array_length(_dynamicFontUseGridArray))
+    {
+        with(_dynamicFontUseGridArray[_i])
+        {
+            ds_grid_add_grid_region(__font.__dynGlyphUseGrid, __grid, 0, 0, __count, 0, 0, 0);
+        }
+        
+        ++_i;
+    }
     
     ///////
     // Tidy up loose ends

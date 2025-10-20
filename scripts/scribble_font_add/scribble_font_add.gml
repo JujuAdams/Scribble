@@ -166,6 +166,17 @@ function scribble_font_add(_scribbleName, _path, _inputSize, _sdf = false, _inpu
                                             __ScribbleCalculateUnderlineY(_inputSize, _ascender, _ascenderOffset),
                                             __ScribbleCalculateStrikeY(_inputSize, _ascender, _ascenderOffset));
     
+    with(_fontData)
+    {
+        __dynTimeSource = time_source_create(time_source_global, 1, time_source_units_frames, function()
+        {
+            if (__dynCleanUp <= 0) return;
+        },
+        [], -1);
+        
+        time_source_start(__dynTimeSource);
+    }
+    
     if (_isKrutidev) _fontData.__isKrutidev = true;
     
     static _fontDataMap = __ScribbleSystem().__fontDataMap;
@@ -181,7 +192,6 @@ function scribble_font_add(_scribbleName, _path, _inputSize, _sdf = false, _inpu
         __dynFontAsset     = _nativeFont;
         __dynFreeSlotArray = [];
         __dynGlyphMap      = ds_map_create();
-        __dynUsageGrid     = ds_grid_create(_cellCountX, _cellCountY);
         __dynSurface       = surface_create(_surfaceWidth, _surfaceHeight);
         __dynSurfaceWidth  = _surfaceWidth;
         __dynSurfaceHeight = _surfaceHeight;
@@ -191,6 +201,7 @@ function scribble_font_add(_scribbleName, _path, _inputSize, _sdf = false, _inpu
         __dynCellCountY    = _cellCountY;
         __dynCellCount     = _glyphsPerPage;
         __dynDirtyArray    = [];
+        __dynGlyphUseGrid  = ds_grid_create(__dynCellCount, 1);
         __dynSurfaceDirty  = true;
         
         surface_set_target(__dynSurface);
@@ -289,6 +300,7 @@ function scribble_font_add(_scribbleName, _path, _inputSize, _sdf = false, _inpu
         //_fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID] = true;      //Set above in bulk
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_DYN_X       ] = _pixelLeft + _sdfOffset;
         _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_DYN_Y       ] = _sdfOffset;
+        _fontGlyphDataGrid[# _index, __SCRIBBLE_GLYPH_PROPR_DYN_SLOT    ] = undefined;
         
         ++_index;
     }
