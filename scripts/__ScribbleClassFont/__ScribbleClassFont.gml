@@ -33,7 +33,7 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
     static _fontDataMap = __ScribbleSystem().__fontDataMap;
     _fontDataMap[? _name] = self;
     
-    __glyphDataGrid = ds_grid_create(_glyphCount, __SCRIBBLE_GLYPH_PROPR_COUNT);
+    __glyphDataGrid = ds_grid_create(_glyphCount, __SCRIBBLE_GLYPH_PROPR_SIZE);
     __glyphsMap     = ds_map_create();
     __kerningMap    = ds_map_create();
     __ligatureMap   = ds_map_create();
@@ -59,24 +59,24 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
     __styleBoldItalic = undefined;
     
     //Variables used for the `font_add()` implementation
-    __dynFontAsset     = undefined;
-    __dynNextSlot      = 0;
-    __dynFreeSlotArray = undefined;
-    __dynGlyphMap      = undefined;
-    __dynSurface       = undefined;
-    __dynSurfaceWidth  = undefined;
-    __dynSurfaceHeight = undefined;
-    __dynCellCount     = 0;
-    __dynCellWidth     = undefined;
-    __dynCellHeight    = undefined;
-    __dynCellCountX    = undefined;
-    __dynCellCountY    = undefined;
-    __dynMaterial      = undefined;
-    __dynSurfaceDirty  = false;
-    __dynDirtyArray    = undefined;
-    __dynGlyphUseGrid  = undefined;
-    __dynCleanUp       = 0;
-    __dynTimeSource    = undefined;
+    __dynFontAsset      = undefined;
+    __dynNextSlot       = 0;
+    __dynFreeSlotArray  = undefined;
+    __dynGlyphToSlotMap = undefined;
+    __dynSurface        = undefined;
+    __dynSurfaceWidth   = undefined;
+    __dynSurfaceHeight  = undefined;
+    __dynSlotCount      = 0;
+    __dynSlotWidth      = undefined;
+    __dynSlotHeight     = undefined;
+    __dynSlotCountX     = undefined;
+    __dynSlotCountY     = undefined;
+    __dynMaterial       = undefined;
+    __dynSurfaceDirty   = false;
+    __dynDirtyArray     = undefined;
+    __dynSlotDataGrid   = undefined;
+    __dynCleanUpIndex   = infinity;
+    __dynTimeSource     = undefined;
     
     
     
@@ -202,18 +202,32 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
         }
     }
     
-    static __EnsureGlyphUnsafe = function(_glyph)
+    static __EnsureGlyph = function(_glyph)
     {
         var _glyphDataGrid = __glyphDataGrid;
-        
+        var _dynGlyphToSlotMap = __dynGlyphToSlotMap;
         var _gridIndex = __glyphsMap[? _glyph];
+        
+        //Try to find a pre-existing slot that perhaps has fallen into disuse
+        var _existingSlot = _dynGlyphToSlotMap[? _glyph];
+        if (_existingSlot != undefined)
+        {
+            if (__dynSlotDataGrid[# _existingSlot, __SCRIBBLE_DYN_SLOT_DATA_GLYPH] == _glyph)
+            {
+                var _index = array_get_index(__dynFreeSlotArray, _existingSlot);
+                if (_index >= 0) array_delete(__dynFreeSlotArray, _index, 1);
+                
+                _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_DYN_SLOT] = _existingSlot;
+                return _existingSlot;
+            }
+        }
         
         var _freeSlot = array_pop(__dynFreeSlotArray);
         if (_freeSlot == undefined)
         {
             _freeSlot = __dynNextSlot;
             
-            if (_freeSlot >= __dynCellCount)
+            if (_freeSlot >= __dynSlotCount)
             {
                 __ScribbleTrace("Warning! Run out of space on font texture page");
                 _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_U0] = 0;
@@ -226,10 +240,12 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
             ++__dynNextSlot;
         }
         
-        __dynGlyphMap[? _glyph] = _freeSlot;
+        //Link glyph to slot and vice versa
+        _dynGlyphToSlotMap[? _glyph] = _freeSlot;
+        __dynSlotDataGrid[# _freeSlot, __SCRIBBLE_DYN_SLOT_DATA_GLYPH] = _glyph;
         
-        var _left = 1 + (_freeSlot mod __dynCellCountX)*__dynCellWidth;
-        var _top  = 1 + (_freeSlot div __dynCellCountY)*__dynCellHeight;
+        var _left = 1 + (_freeSlot mod __dynSlotCountX)*__dynSlotWidth;
+        var _top  = 1 + (_freeSlot div __dynSlotCountY)*__dynSlotHeight;
         
         _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_U0      ] = _left / __dynSurfaceWidth;
         _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_V0      ] = _top  / __dynSurfaceHeight;
@@ -296,8 +312,8 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
         var _surfaceWidth  = __dynSurfaceWidth;
         var _surfaceHeight = __dynSurfaceHeight;
         
-        var _cellWidth  = __dynCellWidth;
-        var _cellHeight = __dynCellHeight;
+        var _cellWidth  = __dynSlotWidth;
+        var _cellHeight = __dynSlotHeight;
         
         gpu_push_state();
         gpu_set_state(global.gpuBlank);
@@ -324,7 +340,7 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
             
             var _dynDirtyArray = __dynDirtyArray;
             var _glyphsMap     = __glyphsMap;
-            var _dynGlyphMap   = __dynGlyphMap;
+            var _dynGlyphMap   = __dynGlyphToSlotMap;
             
             array_resize(_dynDirtyArray, 0);
             
@@ -373,6 +389,6 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
     
     static __CreateUseGrid = function()
     {
-        return ds_grid_create(__dynCellCount, 1);
+        return ds_grid_create(__dynSlotCount, 1);
     }
 }

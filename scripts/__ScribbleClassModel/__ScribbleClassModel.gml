@@ -287,9 +287,11 @@ function __ScribbleClassModel(_element) constructor
         {
             with(_dynamicFontUseGridArray[_i])
             {
-                ds_grid_multiply_region(__grid, 0, 0, __count, 0, -1);
-                ds_grid_add_grid_region(__font.__dynGlyphUseGrid, __grid, 0, 0, __count, 0, 0, 0);
+                ds_grid_multiply_region(__grid, 0, 0, __count-1, 0, -1);
+                ds_grid_add_grid_region(__font.__dynSlotDataGrid, __grid,   0, 0, __count-1, 0,   0, __SCRIBBLE_DYN_SLOT_DATA_USED_COUNT);
                 ds_grid_destroy(__grid);
+                
+                __font.__dynCleanUpIndex = 0;
             }
             
             ++_i;

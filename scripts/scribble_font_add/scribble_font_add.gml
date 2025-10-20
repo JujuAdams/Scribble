@@ -134,26 +134,26 @@ function scribble_font_add(_scribbleName, _path, _inputSize, _sdf = false, _inpu
     
     var _foundGlyphCount = buffer_read(_buffer, buffer_u32);
     
-    var _cellWidth  = 2 + _foundMaxWidth;
-    var _cellHeight = 2 + _foundMaxHeight;
+    var _slotWidth  = 2 + _foundMaxWidth;
+    var _slotHeight = 2 + _foundMaxHeight;
     
     if (_sdf)
     {
-        _cellWidth  += 2*_sdfPxRange;
-        _cellHeight += 2*_sdfPxRange;
+        _slotWidth  += 2*_sdfPxRange;
+        _slotHeight += 2*_sdfPxRange;
     }
     
-    var _cellCountX = floor(SCRIBBLE_FONT_ADD_TEXTURE_SIZE / _cellWidth);
-    var _cellCountY = min(ceil(_foundGlyphCount / _cellCountX), floor(SCRIBBLE_FONT_ADD_TEXTURE_SIZE / _cellHeight));
+    var _slotCountX = floor(SCRIBBLE_FONT_ADD_TEXTURE_SIZE / _slotWidth);
+    var _slotCountY = min(ceil(_foundGlyphCount / _slotCountX), floor(SCRIBBLE_FONT_ADD_TEXTURE_SIZE / _slotHeight));
     
-    var _glyphsPerPage = _cellCountX*_cellCountY;
-    var _surfaceWidth  = _cellCountX*_cellWidth;
-    var _surfaceHeight = _cellCountY*_cellHeight;
+    var _concurrentGlyphs = _slotCountX*_slotCountY;
+    var _surfaceWidth     = _slotCountX*_slotWidth;
+    var _surfaceHeight    = _slotCountY*_slotHeight;
     
     __ScribbleTrace($"- Font has {_foundGlyphCount} glyphs");
     __ScribbleTrace($"- Largest glyph is {_foundMaxWidth} x {_foundMaxHeight} px");
-    __ScribbleTrace($"- Cell size is {_cellWidth} x {_cellHeight} px");
-    __ScribbleTrace($"- Grid size is {_cellCountX} x {_cellCountY}. Maximum concurrent glyphs is {_glyphsPerPage}");
+    __ScribbleTrace($"- Cell size is {_slotWidth} x {_slotHeight} px");
+    __ScribbleTrace($"- Grid size is {_slotCountX} x {_slotCountY}. Maximum concurrent glyphs is {_concurrentGlyphs}");
     __ScribbleTrace($"- Surface size is {_surfaceWidth} x {_surfaceHeight} px ({4*_surfaceWidth*_surfaceHeight / (1024*1024)} MB)");
     
     ///////
@@ -166,17 +166,6 @@ function scribble_font_add(_scribbleName, _path, _inputSize, _sdf = false, _inpu
                                             __ScribbleCalculateUnderlineY(_inputSize, _ascender, _ascenderOffset),
                                             __ScribbleCalculateStrikeY(_inputSize, _ascender, _ascenderOffset));
     
-    with(_fontData)
-    {
-        __dynTimeSource = time_source_create(time_source_global, 1, time_source_units_frames, function()
-        {
-            if (__dynCleanUp <= 0) return;
-        },
-        [], -1);
-        
-        time_source_start(__dynTimeSource);
-    }
-    
     if (_isKrutidev) _fontData.__isKrutidev = true;
     
     static _fontDataMap = __ScribbleSystem().__fontDataMap;
@@ -188,25 +177,48 @@ function scribble_font_add(_scribbleName, _path, _inputSize, _sdf = false, _inpu
         var _fontGlyphsMap     = __glyphsMap;
         var _fontKerningMap    = __kerningMap;
         
-        __dynamic          = true;
-        __dynFontAsset     = _nativeFont;
-        __dynFreeSlotArray = [];
-        __dynGlyphMap      = ds_map_create();
-        __dynSurface       = surface_create(_surfaceWidth, _surfaceHeight);
-        __dynSurfaceWidth  = _surfaceWidth;
-        __dynSurfaceHeight = _surfaceHeight;
-        __dynCellWidth     = _cellWidth;
-        __dynCellHeight    = _cellHeight;
-        __dynCellCountX    = _cellCountX;
-        __dynCellCountY    = _cellCountY;
-        __dynCellCount     = _glyphsPerPage;
-        __dynDirtyArray    = [];
-        __dynGlyphUseGrid  = ds_grid_create(__dynCellCount, 1);
-        __dynSurfaceDirty  = true;
+        __dynamic           = true;
+        __dynFontAsset      = _nativeFont;
+        __dynFreeSlotArray  = [];
+        __dynGlyphToSlotMap = ds_map_create();
+        __dynSurface        = surface_create(_surfaceWidth, _surfaceHeight);
+        __dynSurfaceWidth   = _surfaceWidth;
+        __dynSurfaceHeight  = _surfaceHeight;
+        __dynSlotWidth      = _slotWidth;
+        __dynSlotHeight     = _slotHeight;
+        __dynSlotCountX     = _slotCountX;
+        __dynSlotCountY     = _slotCountY;
+        __dynSlotCount      = _concurrentGlyphs;
+        __dynSlotDataGrid   = ds_grid_create(_concurrentGlyphs, __SCRIBBLE_DYN_SLOT_DATA_SIZE);
+        __dynDirtyArray     = [];
+        __dynSurfaceDirty   = true;
+        
+        ds_grid_set_region(__dynSlotDataGrid, 0, __SCRIBBLE_DYN_SLOT_DATA_GLYPH, _concurrentGlyphs-1, __SCRIBBLE_DYN_SLOT_DATA_GLYPH, undefined);
         
         surface_set_target(__dynSurface);
         draw_clear_alpha(c_white, 0);
         surface_reset_target();
+        
+        __dynTimeSource = time_source_create(time_source_global, 1, time_source_units_frames, function()
+        {
+            var _dynCleanUpIndex = __dynCleanUpIndex++;
+            if (_dynCleanUpIndex < __dynSlotCount)
+            {
+                var _glyph = __dynSlotDataGrid[# _dynCleanUpIndex, __SCRIBBLE_DYN_SLOT_DATA_GLYPH];
+                if ((_glyph != undefined) && (__dynSlotDataGrid[# _dynCleanUpIndex, __SCRIBBLE_DYN_SLOT_DATA_USED_COUNT] <= 0))
+                {
+                    var _glyphIndex = __glyphsMap[? _glyph];
+                    if (_glyphIndex != undefined)
+                    {
+                        __glyphDataGrid[# _glyphIndex, __SCRIBBLE_GLYPH_PROPR_DYN_SLOT] = undefined;
+                        array_push(__dynFreeSlotArray, _dynCleanUpIndex);
+                    }
+                }
+            }
+        },
+        [], -1);
+        
+        time_source_start(__dynTimeSource);
     }
     
     //Set some basic repeated values in bulk for a little speed boost

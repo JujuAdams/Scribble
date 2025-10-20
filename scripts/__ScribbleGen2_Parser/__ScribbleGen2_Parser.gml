@@ -43,7 +43,7 @@
                                       if (_fontDynamic)\
                                       {\
                                           var _slot = _fontGlyphDataGrid[# _dataIndex, __SCRIBBLE_GLYPH_PROPR_DYN_SLOT];\
-                                          if (_slot == undefined) _slot = _fontData.__EnsureGlyphUnsafe(_glyphWrite);\
+                                          if (_slot == undefined) _slot = _fontData.__EnsureGlyph(_glyphWrite);\
                                           _dynamicFontUseGrid[# _slot, 0] = 1;\
                                       }\ 
                                       \
@@ -1810,7 +1810,7 @@ function __ScribbleGen2_Parser()
     {
         with(_dynamicFontUseGridArray[_i])
         {
-            ds_grid_add_grid_region(__font.__dynGlyphUseGrid, __grid, 0, 0, __count, 0, 0, 0);
+            ds_grid_add_grid_region(__font.__dynSlotDataGrid, __grid,   0, 0, __count-1, 0,   0, __SCRIBBLE_DYN_SLOT_DATA_USED_COUNT);
         }
         
         ++_i;
