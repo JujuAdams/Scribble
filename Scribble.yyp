@@ -1,8 +1,8 @@
 {
-  "$GMProject":"",
+  "$GMProject":"v1",
   "%Name":"Scribble",
   "AudioGroups":[
-    {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"v1","%Name":"audiogroup_default","exportDir":"","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
   ],
   "configs":{
     "children":[],
@@ -61,11 +61,12 @@
     {"$GMFolder":"","%Name":"Typewriter","folderPath":"folders/Test Cases/Typewriter.yy","name":"Typewriter","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Audio & Sync","folderPath":"folders/Test Cases/Typewriter/Audio & Sync.yy","name":"Audio & Sync","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Delay","folderPath":"folders/Test Cases/Typewriter/Delay.yy","name":"Delay","resourceType":"GMFolder","resourceVersion":"2.0",},
-    {"$GMFolder":"","%Name":"Position","folderPath":"folders/Test Cases/Typewriter/Position.yy","name":"Position","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Not checked yet","folderPath":"folders/Test Cases/Typewriter/Not checked yet.yy","name":"Not checked yet","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"Position","folderPath":"folders/Test Cases/Typewriter/Position.yy","name":"Position","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Skip","folderPath":"folders/Test Cases/Typewriter/Skip.yy","name":"Skip","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Wrapping","folderPath":"folders/Test Cases/Wrapping.yy","name":"Wrapping","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
+  "ForcedPrefabProjectReferences":[],
   "IncludedFiles":[
     {"$GMIncludedFile":"","%Name":"blip.ogg","CopyToMask":-1,"filePath":"datafiles","name":"blip.ogg","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"fnt_font_awesome.png","CopyToMask":-1,"filePath":"datafiles","name":"fnt_font_awesome.png","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
@@ -76,7 +77,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.11.0.179",
+    "IDEVersion":"2024.1400.0.911",
   },
   "name":"Scribble",
   "resources":[
