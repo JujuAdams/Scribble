@@ -68,6 +68,9 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     /// @param y
     static draw = function(_x, _y)
     {
+        static _oldMatrix = matrix_build_identity();
+        static _newMatrix = matrix_build_identity();
+        
         if (SCRIBBLE_FLOOR_DRAW_COORDINATES)
         {
             _x = floor(_x);
@@ -77,32 +80,34 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         //If enough time has elapsed since we drew this element then update our animation time
         if (__lastDrawn < _system.__frames)
         {
-            __animationTime += __animationSpeed*_system.__tickSize;
-            if (SCRIBBLE_SAFELY_WRAP_TIME) __animationTime = __animationTime mod 16383; //Cheeky wrapping to prevent GPUs with low accuracy flipping out
+            __lastDrawn = _system.__frames;
+            
+            if (SCRIBBLE_SAFELY_WRAP_TIME)
+            {
+                //Cheeky wrapping to prevent GPUs with low accuracy flipping out
+                __animationTime = (__animationTime + __animationSpeed*_system.__tickSize) mod 16383;
+            }
+            else
+            {
+                __animationTime += __animationSpeed*_system.__tickSize;
+            }
         }
-        
-        __lastDrawn = _system.__frames;
         
         __AutoPan();
         __AutoScroll();
         
+        matrix_get(matrix_world, _oldMatrix);
+        matrix_multiply(_oldMatrix, __UpdateMatrix(_x, _y), _newMatrix);
+        matrix_set(matrix_world, _newMatrix);
+        
         shader_set(__shdScribble);
         __SetStandardUniforms();
-        
         __TypistUpdateFromDraw(other);
         __SetTypistShaderUniforms();
-        
-        //...aaaand set the matrix
-        var _oldMatrix = matrix_get(matrix_world);
-        var _matrix = matrix_multiply(__UpdateMatrix(_x, _y), _oldMatrix);
-        matrix_set(matrix_world, _matrix);
-        
-        //Submit the model
         __EnsureModel().__Draw(__pageInteger + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
-        
-        //Make sure we reset the world matrix
-        matrix_set(matrix_world, _oldMatrix);
         shader_reset();
+        
+        matrix_set(matrix_world, _oldMatrix);
         
         if (SCRIBBLE_SHOW_WRAP_BOUNDARY) debug_draw_bbox(_x, _y);
     }
