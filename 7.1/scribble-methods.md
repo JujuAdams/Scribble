@@ -37,7 +37,7 @@ Scribble allows for many kinds of inline formatting tags. Please read the [Text 
 
 # The Methods
 
-Text element methods are broken down into several categories. There's a lot here; feel free to swing by the [Discord server](https://discord.gg/8krYCqr) if you'd like some pointers on what to use and when. As noted above, **be careful when adjusting regenerator methods** as it's easy to cause to performance problems.
+Text element methods are broken down into several categories. There's a lot here; feel free to swing by the [Discord server](https://discord.gg/hwgWpnsNw2) if you'd like some pointers on what to use and when. As noted above, **be careful when adjusting regenerator methods** as it's easy to cause to performance problems.
 
 ## Basics
 
