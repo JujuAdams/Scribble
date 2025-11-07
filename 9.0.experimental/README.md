@@ -57,7 +57,7 @@ Great! Please make a [feature request](https://github.com/JujuAdams/scribble/iss
 
 **I found a bug, and it both scares and mildly annoys me. What is the best way to get the problem solved?**
 
-Please make a [bug report](https://github.com/JujuAdams/scribble/issues). Juju checks GitHub every day and bug fixes usually go out a couple days after that. You can also grab me on the [Discord server](https://discord.gg/8krYCqr), but that's not a replacement for a nice clear bug report.
+Please make a [bug report](https://github.com/JujuAdams/scribble/issues). Juju checks GitHub every day and bug fixes usually go out a couple days after that. You can also grab me on the [Discord server](https://discord.gg/hwgWpnsNw2), but that's not a replacement for a nice clear bug report.
 
 &nbsp;
 

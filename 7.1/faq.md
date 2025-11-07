@@ -40,7 +40,7 @@ Great! Please make a [feature request](https://github.com/JujuAdams/scribble/iss
 
 ### I found a bug, and it both scares and mildly annoys me. What is the best way to get the problem solved?
 
-Please make a [bug report](https://github.com/JujuAdams/scribble/issues). Juju checks GitHub every day and bug fixes usually go out a couple days after that. You can also grab me on the [Discord server](https://discord.gg/8krYCqr), but that's not a replacement for a nice clear bug report.
+Please make a [bug report](https://github.com/JujuAdams/scribble/issues). Juju checks GitHub every day and bug fixes usually go out a couple days after that. You can also grab me on the [Discord server](https://discord.gg/hwgWpnsNw2), but that's not a replacement for a nice clear bug report.
 
 &nbsp;
 
@@ -62,7 +62,7 @@ The fix is simple: *Update your .yy file whenever you see glitched text!*
 
 ### How do I fix weird spacing on the left hand side when my font wraps to the next line?
 
-I've not yet found a really good solution for this bug, but I did make a workaround. Set the `SCRIBBLE_SPRITEFONT_ALIGN_GLYPHS_LEFT` macro to `true` and this should solve your problems. If it doesn't, please file a [bug report](https://github.com/JujuAdams/scribble/issues) and/or yell at me on the [Discord server](https://discord.gg/8krYCqr).
+I've not yet found a really good solution for this bug, but I did make a workaround. Set the `SCRIBBLE_SPRITEFONT_ALIGN_GLYPHS_LEFT` macro to `true` and this should solve your problems. If it doesn't, please file a [bug report](https://github.com/JujuAdams/scribble/issues) and/or yell at me on the [Discord server](https://discord.gg/hwgWpnsNw2).
 
 &nbsp;
 
