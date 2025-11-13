@@ -149,11 +149,11 @@ function __ScribbleClassModel(_element) constructor
                 //Clipping is relative to the model
                 if (__startingHAlign == fa_center)
                 {
-                    var _x = floor(-0.5*__width);
+                    var _x = floor(-0.5*__layoutMaxWidth);
                 }
                 else if (__startingHAlign == fa_right)
                 {
-                    var _x = -__width;
+                    var _x = -__layoutMaxWidth;
                 }
                 else
                 {
@@ -162,11 +162,11 @@ function __ScribbleClassModel(_element) constructor
                 
                 if (__startingVAlign == fa_middle)
                 {
-                    var _y = floor(-0.5*__height);
+                    var _y = floor(-0.5*__layoutMaxHeight);
                 }
                 else if (__startingVAlign == fa_bottom)
                 {
-                    var _y = -__height;
+                    var _y = -__layoutMaxHeight;
                 }
                 else
                 {
@@ -196,11 +196,11 @@ function __ScribbleClassModel(_element) constructor
             //Clipping is relative to the model
             if (__startingHAlign == fa_center)
             {
-                var _x = floor(-0.5*__width);
+                var _x = floor(-0.5*__layoutMaxWidth);
             }
             else if (__startingHAlign == fa_right)
             {
-                var _x = -__width;
+                var _x = -__layoutMaxWidth;
             }
             else
             {
@@ -209,11 +209,11 @@ function __ScribbleClassModel(_element) constructor
             
             if (__startingVAlign == fa_middle)
             {
-                var _y = floor(-0.5*__height);
+                var _y = floor(-0.5*__layoutMaxHeight);
             }
             else if (__startingVAlign == fa_bottom)
             {
-                var _y = -__height;
+                var _y = -__layoutMaxHeight;
             }
             else
             {
