@@ -385,13 +385,13 @@ function __ScribbleClassModel(_element) constructor
         };
     }
     
-    /// @page
+    /// @param page
     static __GetWidth = function(_page)
     {
         return __fitScale*__width;
     }
     
-    /// @page
+    /// @param page
     static __GetHeight = function(_page)
     {
         return __fitScale*__height;

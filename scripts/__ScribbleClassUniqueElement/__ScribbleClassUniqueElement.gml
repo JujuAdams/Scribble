@@ -904,10 +904,10 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 }
                 
                 // Handle moving between pages
-                if (_canMove && (__pageInteger != __typistTargetPage))
+                if (_canMove && ((__pageInteger != __typistTargetPage) || (__pageFraction != 0)))
                 {
                     _canMove = false;
-                    __SetPage(__pageInteger + clamp(__typistTargetPage - __pageInteger, -_typistOptions.__pageScrollSpeed, _typistOptions.__pageScrollSpeed));
+                    __SetPage(__pageInteger + __pageFraction + clamp(__typistTargetPage - __pageInteger, -_typistOptions.__pageScrollSpeed, _typistOptions.__pageScrollSpeed) / _model.__GetHeight(SCRIBBLE_BOUNDING_BOX_USES_PAGE? __pageInteger : undefined));
                 }
                 
                 // Handle scrolling inside pages
