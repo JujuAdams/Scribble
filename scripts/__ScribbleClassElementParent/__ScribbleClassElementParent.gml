@@ -71,17 +71,17 @@ function __ScribbleClassElementParent(_text) constructor
     __scrollXArray = [];
     __scrollYArray = [];
     
-    __panState        = 0;
+    __panState        = SCRIBBLE_AUTO_START;
     __panSpeed        = SCRIBBLE_DEFAULT_PAN_SPEED;
     __panPause        = SCRIBBLE_DEFAULT_AUTOPAN_PAUSE_TIME;
-    __panAuto         = 0; //0 = off, 1 = x-axis, 2 = y-axis
+    __panAuto         = false;
     __panWasClamped   = true;
     __panPauseCounter = 0;
     
-    __scrollState        = 0;
+    __scrollState        = SCRIBBLE_AUTO_START;
     __scrollSpeed        = SCRIBBLE_DEFAULT_SCROLL_SPEED;
     __scrollPause        = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME;
-    __scrollAuto         = 0; //0 = off, 1 = x-axis, 2 = y-axis
+    __scrollAuto         = false;
     __scrollWasClamped   = true;
     __scrollPauseCounter = 0;
     
@@ -443,13 +443,13 @@ function __ScribbleClassElementParent(_text) constructor
         //Skip the pause if we're starting autoscroll
         if (not __panAuto)
         {
-            if (__panState == 1)
+            if (__panState == SCRIBBLE_AUTO_MOVE_TO_END)
             {
-                __panState = 2;
+                __panState = SCRIBBLE_AUTO_END;
             }
-            else if (__panState == 3)
+            else if (__panState == SCRIBBLE_AUTO_MOVE_TO_START)
             {
-                __panState = 0;
+                __panState = SCRIBBLE_AUTO_START;
             }
         }
         
@@ -529,7 +529,7 @@ function __ScribbleClassElementParent(_text) constructor
     {
         if (__panAuto)
         {
-            if (__panState == 0)
+            if (__panState == SCRIBBLE_AUTO_START)
             {
                 __scrollXArray[@ _page] += __panSpeed*_system.__tickSize;
                 
@@ -537,19 +537,19 @@ function __ScribbleClassElementParent(_text) constructor
                 {
                     __scrollXArray[@ _page] = get_pan_max();
                     __panPauseCounter = 0;
-                    __panState = 1;
+                    __panState = SCRIBBLE_AUTO_MOVE_TO_END;
                 }
             }
-            else if (__panState == 1)
+            else if (__panState == SCRIBBLE_AUTO_MOVE_TO_END)
             {
                 __panPauseCounter += _system.__tickSize
                 
                 if (__panPauseCounter >= __panPause)
                 {
-                    __panState = 2;
+                    __panState = SCRIBBLE_AUTO_END;
                 }
             }
-            else if (__panState == 2)
+            else if (__panState == SCRIBBLE_AUTO_END)
             {
                 __scrollXArray[@ _page] -= __panSpeed*_system.__tickSize;
                 
@@ -557,16 +557,16 @@ function __ScribbleClassElementParent(_text) constructor
                 {
                     __scrollXArray[@ _page] = 0;
                     __panPauseCounter = 0;
-                    __panState = 3;
+                    __panState = SCRIBBLE_AUTO_MOVE_TO_START;
                 }
             }
-            else if (__panState == 3)
+            else if (__panState == SCRIBBLE_AUTO_MOVE_TO_START)
             {
                 __panPauseCounter += _system.__tickSize
                 
                 if (__panPauseCounter >= ___panPause)
                 {
-                    __panState = 0;
+                    __panState = SCRIBBLE_AUTO_START;
                 }
             }
         }
@@ -595,13 +595,13 @@ function __ScribbleClassElementParent(_text) constructor
         //Skip the pause if we're starting autoscroll
         if (not __scrollAuto)
         {
-            if (__scrollState == 1)
+            if (__scrollState == SCRIBBLE_AUTO_MOVE_TO_END)
             {
-                __scrollState = 2;
+                __scrollState = SCRIBBLE_AUTO_END;
             }
-            else if (__scrollState == 3)
+            else if (__scrollState == SCRIBBLE_AUTO_MOVE_TO_START)
             {
-                __scrollState = 0;
+                __scrollState = SCRIBBLE_AUTO_START;
             }
         }
         
@@ -701,7 +701,7 @@ function __ScribbleClassElementParent(_text) constructor
     {
         if (__scrollAuto)
         {
-            if (__scrollState == 0)
+            if (__scrollState == SCRIBBLE_AUTO_START)
             {
                 __scrollYArray[@ _page] += __scrollSpeed*_system.__tickSize;
                 
@@ -709,19 +709,19 @@ function __ScribbleClassElementParent(_text) constructor
                 {
                     __scrollYArray[@ _page] = get_scroll_max();
                     __scrollPauseCounter = 0;
-                    __scrollState = 1;
+                    __scrollState = SCRIBBLE_AUTO_MOVE_TO_END;
                 }
             }
-            else if (__scrollState == 1)
+            else if (__scrollState == SCRIBBLE_AUTO_MOVE_TO_END)
             {
                 __scrollPauseCounter += _system.__tickSize
                 
                 if (__scrollPauseCounter >= __scrollPause)
                 {
-                    __scrollState = 2;
+                    __scrollState = SCRIBBLE_AUTO_END;
                 }
             }
-            else if (__scrollState == 2)
+            else if (__scrollState == SCRIBBLE_AUTO_END)
             {
                 __scrollYArray[@ _page] -= __scrollSpeed*_system.__tickSize;
                 
@@ -729,16 +729,16 @@ function __ScribbleClassElementParent(_text) constructor
                 {
                     __scrollYArray[@ _page] = 0;
                     __scrollPauseCounter = 0;
-                    __scrollState = 3;
+                    __scrollState = SCRIBBLE_AUTO_MOVE_TO_START;
                 }
             }
-            else if (__scrollState == 3)
+            else if (__scrollState == SCRIBBLE_AUTO_MOVE_TO_START)
             {
                 __scrollPauseCounter += _system.__tickSize
                 
                 if (__scrollPauseCounter >= __scrollPause)
                 {
-                    __scrollState = 0;
+                    __scrollState = SCRIBBLE_AUTO_START;
                 }
             }
         }
