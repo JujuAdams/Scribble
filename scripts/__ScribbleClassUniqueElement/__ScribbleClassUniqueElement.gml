@@ -77,6 +77,8 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             _y = floor(_y);
         }
         
+        var _model = __EnsureModel();
+        
         //If enough time has elapsed since we drew this element then update our animation time and typist
         var _systemFrames = _system.__frames;
         if (_systemFrames > __lastDrawn)
@@ -107,7 +109,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         shader_set(__shdScribble);
         __SetStandardUniforms();
         __SetTypistShaderUniforms();
-        __EnsureModel().__Draw(__pageInteger + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
+        _model.__Draw(__pageInteger + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
         shader_reset();
         
         matrix_set(matrix_world, _oldMatrix);

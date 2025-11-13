@@ -143,6 +143,8 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
             _y = floor(_y);
         }
         
+        var _model = __EnsureModel();
+        
         //If enough time has elapsed since we drew this element then update our animation time
         var _systemFrames = _system.__frames;
         if (__lastDrawn < _systemFrames)
@@ -172,7 +174,7 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
         shader_set(__shdScribble);
         __SetStandardUniforms();
         __SetRevealUniforms(_revealIndex);
-        __EnsureModel().__Draw(__pageInteger + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
+        _model.__Draw(__pageInteger + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
         shader_reset();
         
         matrix_set(matrix_world, _oldMatrix);
