@@ -147,6 +147,7 @@ function __ScribbleClassModel(_element) constructor
                 _usedClip = true;
                 
                 //Clipping is relative to the model
+                
                 if (__startingHAlign == fa_center)
                 {
                     var _x = floor(-0.5*__layoutMaxWidth);
@@ -184,7 +185,33 @@ function __ScribbleClassModel(_element) constructor
                 }
             }
             
-            shader_set_uniform_f(_u_vScroll, _scrollXArray[_page], _scrollYArray[_page]);
+            if (__startingHAlign == fa_center)
+            {
+                var _scrollMinX = -0.5*__GetScrollMaxX(_page);
+            }
+            else if (__startingHAlign == fa_right)
+            {
+                var _scrollMinX = -__GetScrollMaxX(_page);
+            }
+            else
+            {
+                var _scrollMinX = 0;
+            }
+                
+            if (__startingVAlign == fa_middle)
+            {
+                var _scrollMinY = -0.5*__GetScrollMaxY(_page);
+            }
+            else if (__startingVAlign == fa_bottom)
+            {
+                var _scrollMinY = -__GetScrollMaxY(_page);
+            }
+            else
+            {
+                var _scrollMinY = 0;
+            }
+            
+            shader_set_uniform_f(_u_vScroll, _scrollMinX + _scrollXArray[_page], _scrollMinY + _scrollYArray[_page]);
             __pagesArray[_page].__Submit(_doubleDraw);
         }
         else
@@ -454,7 +481,7 @@ function __ScribbleClassModel(_element) constructor
             return 0;
         }
         
-        return max(0, __pagesArray[_page].__maxX - __layoutMaxWidth);
+        return max(0, __pagesArray[_page].__width - __layoutMaxWidth);
     }
     
     static __GetScrollMaxY = function(_page)
@@ -464,7 +491,7 @@ function __ScribbleClassModel(_element) constructor
             return 0;
         }
         
-        return max(0, __pagesArray[_page].__maxY - __layoutMaxHeight);
+        return max(0, __pagesArray[_page].__height - __layoutMaxHeight);
     }
     
     //TODO - These are unused
