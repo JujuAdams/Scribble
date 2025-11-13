@@ -294,7 +294,7 @@
     {"name":"__ScribbleFontAddFromInfo","order":10,"path":"scripts/__ScribbleFontAddFromInfo/__ScribbleFontAddFromInfo.yy",},
     {"name":"__ScribbleFontAddSprite","order":11,"path":"scripts/__ScribbleFontAddSprite/__ScribbleFontAddSprite.yy",},
     {"name":"__ScribbleGen10_WriteVBuffs","order":11,"path":"scripts/__ScribbleGen10_WriteVBuffs/__ScribbleGen10_WriteVBuffs.yy",},
-    {"name":"__ScribbleGen11_SetPaddingFlags","order":12,"path":"scripts/__ScribbleGen11_SetPaddingFlags/__ScribbleGen11_SetPaddingFlags.yy",},
+    {"name":"__ScribbleGen11_PaddingAndClipping","order":12,"path":"scripts/__ScribbleGen11_PaddingAndClipping/__ScribbleGen11_PaddingAndClipping.yy",},
     {"name":"__ScribbleGen12_DynamicMacros","order":13,"path":"scripts/__ScribbleGen12_DynamicMacros/__ScribbleGen12_DynamicMacros.yy",},
     {"name":"__ScribbleGen2_Parser","order":1,"path":"scripts/__ScribbleGen2_Parser/__ScribbleGen2_Parser.yy",},
     {"name":"__ScribbleGen2b_PostParse","order":2,"path":"scripts/__ScribbleGen2b_PostParse/__ScribbleGen2b_PostParse.yy",},

@@ -38,6 +38,13 @@ function __ScribbleClassPage(_model) constructor
     
     __regionArray = [];
     
+    __scrollOffsetX = 0;
+    __scrollOffsetY = 0;
+    __scrollMaxX = 0;
+    __scrollMaxY = 0;
+    
+    
+    
     static __Finalize = function(_pageEndLine)
     {
         static _animationRandomizeArray = [];
