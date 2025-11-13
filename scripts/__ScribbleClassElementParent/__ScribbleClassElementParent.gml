@@ -438,42 +438,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     #region Pan
     
-    static pan_auto = function(_speed = SCRIBBLE_DEFAULT_PAN_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOPAN_PAUSE_TIME)
-    {
-        //Skip the pause if we're starting autoscroll
-        if (not __panAuto)
-        {
-            if (__panState == SCRIBBLE_AUTO_MOVE_TO_END)
-            {
-                __panState = SCRIBBLE_AUTO_END;
-            }
-            else if (__panState == SCRIBBLE_AUTO_MOVE_TO_START)
-            {
-                __panState = SCRIBBLE_AUTO_START;
-            }
-        }
-        
-        __panAuto = true;
-        
-        __panSpeed = _speed;
-        __panPause = _pauseTime;
-        
-        return self;
-    }
-    
-    static pan_to_glyph = function(_index)
-    {
-        var _model = __EnsureModel();
-        
-        if (not _model.__allowGlyphDataGetter)
-        {
-            __ScribbleError("Panning to a glyph requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
-        }
-        
-        var _glyphData = _model.__GetGlyphData(_index, __pageInteger);
-        return pan_to(_glyphData.left, _glyphData.right);
-    }
-    
+    // Sets the panning x-offset immediately. This will disable automatic panning.
     static pan = function(_x, _clamp = true, _page = __pageInteger)
     {
         __EnsureModel();
@@ -486,6 +451,35 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
+    // Returns the current panning x-offset.
+    static get_pan = function(_page = __pageInteger)
+    {
+        __EnsureModel();
+        
+        return __scrollXArray[_page];
+    }
+    
+    // Returns the maximum panning offset.
+    static get_pan_max = function(_page = __pageInteger)
+    {
+        return __EnsureModel().__GetScrollMaxX(_page);
+    }
+    
+    // Pans immediately to ensure a particular glyph is visible.
+    static pan_to_glyph = function(_index, _page = __pageInteger)
+    {
+        var _model = __EnsureModel();
+        
+        if (not _model.__allowGlyphDataGetter)
+        {
+            __ScribbleError("Panning to a glyph requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
+        }
+        
+        var _glyphData = _model.__GetGlyphData(_index, _page);
+        return pan_to(_glyphData.left, _glyphData.right, _page);
+    }
+    
+    // Pans immediately to ensure a particular range of x values are visible.
     static pan_to = function(_min, _max, _page = __pageInteger)
     {
         __EnsureModel();
@@ -513,16 +507,28 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static get_pan = function(_page = __pageInteger)
+    // Sets up automatic ping-pong panning.
+    static pan_auto = function(_speed = SCRIBBLE_DEFAULT_PAN_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOPAN_PAUSE_TIME)
     {
-        __EnsureModel();
+        //Skip the pause if we're starting autopan
+        if (not __panAuto)
+        {
+            if (__panState == SCRIBBLE_AUTO_MOVE_TO_END)
+            {
+                __panState = SCRIBBLE_AUTO_END;
+            }
+            else if (__panState == SCRIBBLE_AUTO_MOVE_TO_START)
+            {
+                __panState = SCRIBBLE_AUTO_START;
+            }
+        }
         
-        return __scrollXArray[_page];
-    }
-    
-    static get_pan_max = function(_page = __pageInteger)
-    {
-        return __EnsureModel().__GetScrollMaxX(_page);
+        __panAuto = true;
+        
+        __panSpeed = _speed;
+        __panPause = _pauseTime;
+        
+        return self;
     }
     
     static __AutoPan = function(_page = __pageInteger)
