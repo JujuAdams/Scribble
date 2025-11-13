@@ -527,47 +527,46 @@ function __ScribbleClassElementParent(_text) constructor
     
     static __AutoPan = function(_page = __pageInteger)
     {
-        if (__panAuto)
+        //N.B. This is an *unsafe* method. Please check `__panAuto` prior to calling it
+        
+        if (__panState == SCRIBBLE_AUTO_START)
         {
-            if (__panState == SCRIBBLE_AUTO_START)
+            __scrollXArray[@ _page] += __panSpeed*_system.__tickSize;
+            
+            if (__scrollXArray[_page] >= get_pan_max())
             {
-                __scrollXArray[@ _page] += __panSpeed*_system.__tickSize;
-                
-                if (__scrollXArray[_page] >= get_pan_max())
-                {
-                    __scrollXArray[@ _page] = get_pan_max();
-                    __panPauseCounter = 0;
-                    __panState = SCRIBBLE_AUTO_MOVE_TO_END;
-                }
+                __scrollXArray[@ _page] = get_pan_max();
+                __panPauseCounter = 0;
+                __panState = SCRIBBLE_AUTO_MOVE_TO_END;
             }
-            else if (__panState == SCRIBBLE_AUTO_MOVE_TO_END)
+        }
+        else if (__panState == SCRIBBLE_AUTO_MOVE_TO_END)
+        {
+            __panPauseCounter += _system.__tickSize
+            
+            if (__panPauseCounter >= __panPause)
             {
-                __panPauseCounter += _system.__tickSize
-                
-                if (__panPauseCounter >= __panPause)
-                {
-                    __panState = SCRIBBLE_AUTO_END;
-                }
+                __panState = SCRIBBLE_AUTO_END;
             }
-            else if (__panState == SCRIBBLE_AUTO_END)
+        }
+        else if (__panState == SCRIBBLE_AUTO_END)
+        {
+            __scrollXArray[@ _page] -= __panSpeed*_system.__tickSize;
+            
+            if (__scrollXArray[_page] <= 0)
             {
-                __scrollXArray[@ _page] -= __panSpeed*_system.__tickSize;
-                
-                if (__scrollXArray[_page] <= 0)
-                {
-                    __scrollXArray[@ _page] = 0;
-                    __panPauseCounter = 0;
-                    __panState = SCRIBBLE_AUTO_MOVE_TO_START;
-                }
+                __scrollXArray[@ _page] = 0;
+                __panPauseCounter = 0;
+                __panState = SCRIBBLE_AUTO_MOVE_TO_START;
             }
-            else if (__panState == SCRIBBLE_AUTO_MOVE_TO_START)
+        }
+        else if (__panState == SCRIBBLE_AUTO_MOVE_TO_START)
+        {
+            __panPauseCounter += _system.__tickSize
+            
+            if (__panPauseCounter >= __panPause)
             {
-                __panPauseCounter += _system.__tickSize
-                
-                if (__panPauseCounter >= ___panPause)
-                {
-                    __panState = SCRIBBLE_AUTO_START;
-                }
+                __panState = SCRIBBLE_AUTO_START;
             }
         }
     }
@@ -699,47 +698,46 @@ function __ScribbleClassElementParent(_text) constructor
     
     static __AutoScroll = function(_page = __pageInteger)
     {
-        if (__scrollAuto)
+        //N.B. This is an *unsafe* method. Please check `__scrollAuto` prior to calling it
+        
+        if (__scrollState == SCRIBBLE_AUTO_START)
         {
-            if (__scrollState == SCRIBBLE_AUTO_START)
+            __scrollYArray[@ _page] += __scrollSpeed*_system.__tickSize;
+            
+            if (__scrollYArray[_page] >= get_scroll_max())
             {
-                __scrollYArray[@ _page] += __scrollSpeed*_system.__tickSize;
-                
-                if (__scrollYArray[_page] >= get_scroll_max())
-                {
-                    __scrollYArray[@ _page] = get_scroll_max();
-                    __scrollPauseCounter = 0;
-                    __scrollState = SCRIBBLE_AUTO_MOVE_TO_END;
-                }
+                __scrollYArray[@ _page] = get_scroll_max();
+                __scrollPauseCounter = 0;
+                __scrollState = SCRIBBLE_AUTO_MOVE_TO_END;
             }
-            else if (__scrollState == SCRIBBLE_AUTO_MOVE_TO_END)
+        }
+        else if (__scrollState == SCRIBBLE_AUTO_MOVE_TO_END)
+        {
+            __scrollPauseCounter += _system.__tickSize
+            
+            if (__scrollPauseCounter >= __scrollPause)
             {
-                __scrollPauseCounter += _system.__tickSize
-                
-                if (__scrollPauseCounter >= __scrollPause)
-                {
-                    __scrollState = SCRIBBLE_AUTO_END;
-                }
+                __scrollState = SCRIBBLE_AUTO_END;
             }
-            else if (__scrollState == SCRIBBLE_AUTO_END)
+        }
+        else if (__scrollState == SCRIBBLE_AUTO_END)
+        {
+            __scrollYArray[@ _page] -= __scrollSpeed*_system.__tickSize;
+            
+            if (__scrollYArray[_page] <= 0)
             {
-                __scrollYArray[@ _page] -= __scrollSpeed*_system.__tickSize;
-                
-                if (__scrollYArray[_page] <= 0)
-                {
-                    __scrollYArray[@ _page] = 0;
-                    __scrollPauseCounter = 0;
-                    __scrollState = SCRIBBLE_AUTO_MOVE_TO_START;
-                }
+                __scrollYArray[@ _page] = 0;
+                __scrollPauseCounter = 0;
+                __scrollState = SCRIBBLE_AUTO_MOVE_TO_START;
             }
-            else if (__scrollState == SCRIBBLE_AUTO_MOVE_TO_START)
+        }
+        else if (__scrollState == SCRIBBLE_AUTO_MOVE_TO_START)
+        {
+            __scrollPauseCounter += _system.__tickSize
+            
+            if (__scrollPauseCounter >= __scrollPause)
             {
-                __scrollPauseCounter += _system.__tickSize
-                
-                if (__scrollPauseCounter >= __scrollPause)
-                {
-                    __scrollState = SCRIBBLE_AUTO_START;
-                }
+                __scrollState = SCRIBBLE_AUTO_START;
             }
         }
     }

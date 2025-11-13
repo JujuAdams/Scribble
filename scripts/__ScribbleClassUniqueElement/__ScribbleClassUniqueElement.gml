@@ -97,8 +97,8 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                          __typistOptions.__speed * __typistInlineSpeed * _system.__tickSize);
         }
         
-        __AutoPan();
-        __AutoScroll();
+        if (__panAuto) __AutoPan();
+        if (__scrollAuto) __AutoScroll();
         
         matrix_get(matrix_world, _oldMatrix);
         matrix_multiply(_oldMatrix, __UpdateMatrix(_x, _y), _newMatrix);
