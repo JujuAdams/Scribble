@@ -891,17 +891,20 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 // Pop the event stack
                 ///////
             
+                // Handle [pause] and [delay]
                 if (_canMove && (not __TypistProcessEventStack(_functionScope)))
                 {
                     _canMove = false;
                 }
                 
+                // Handle moving between pages
                 if (_canMove && (__pageInteger != __typistTargetPage))
                 {
                     _canMove = false;
                     __SetPage(__pageInteger + clamp(__typistTargetPage - __pageInteger, -__typistPageSpeed, __typistPageSpeed));
                 }
                 
+                // Handle scrolling inside pages
                 if (_canMove && (__scrollYArray[__pageInteger] != __typistTargetScroll))
                 {
                     _canMove = false;

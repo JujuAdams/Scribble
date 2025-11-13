@@ -140,12 +140,13 @@ function __ScribbleClassModel(_element) constructor
         
         if (_page == floor(_page))
         {
-            //If we're not in serial mode then we can only draw one page at a time
+            //Only draw one page
             
             if (_clip)
             {
                 _usedClip = true;
                 
+                //Clipping is relative to the model
                 if (__startingHAlign == fa_center)
                 {
                     var _x = floor(-0.5*__width);
@@ -188,10 +189,11 @@ function __ScribbleClassModel(_element) constructor
         }
         else
         {
-            //Otherwise, draw the two pages that are visible
+            //Otherwise, draw the two pages that are visible. We always enable clipping here
             
             _usedClip = true;
-                
+            
+            //Clipping is relative to the model
             if (__startingHAlign == fa_center)
             {
                 var _x = floor(-0.5*__width);
@@ -219,15 +221,15 @@ function __ScribbleClassModel(_element) constructor
             }
             
             var _offset = frac(_page)*__layoutMaxHeight;
-            _page = floor(_page);
+            var _pageInteger = floor(_page);
             
             shader_set_uniform_f(_u_vClip, _x, _y, _x + __layoutMaxWidth, _y + __layoutMaxHeight - _offset);
-            shader_set_uniform_f(_u_vScroll, _scrollXArray[_page], _scrollYArray[_page] + _offset);
-            __pagesArray[_page].__Submit(_doubleDraw);
+            shader_set_uniform_f(_u_vScroll, _scrollXArray[_pageInteger], _scrollYArray[_pageInteger] + _offset);
+            __pagesArray[_pageInteger].__Submit(_doubleDraw);
             
             shader_set_uniform_f(_u_vClip, _x, _y + __layoutMaxHeight - _offset, _x + __layoutMaxWidth, _y + __layoutMaxHeight);
-            shader_set_uniform_f(_u_vScroll, _scrollXArray[_page+1], _scrollYArray[_page+1] + _offset - __layoutMaxHeight);
-            __pagesArray[_page+1].__Submit(_doubleDraw);
+            shader_set_uniform_f(_u_vScroll, _scrollXArray[_pageInteger+1], _scrollYArray[_pageInteger+1] + _offset - __layoutMaxHeight);
+            __pagesArray[_pageInteger+1].__Submit(_doubleDraw);
         }
     }
     
@@ -393,15 +395,17 @@ function __ScribbleClassModel(_element) constructor
         return max(0, __pagesArray[_page].__maxY - __layoutMaxHeight);
     }
     
-    static __GetSerialY = function(_page)
-    {
-        return __layoutMaxHeight*clamp(_page, 0, array_length(__pagesArray)-1);
-    }
-    
-    static __GetSerialMax = function()
-    {
-        return __layoutMaxHeight*max(0, array_length(__pagesArray)-1);
-    }
+    //TODO - These are unused
+    //
+    //static __GetSerialY = function(_page)
+    //{
+    //    return __layoutMaxHeight*clamp(_page, 0, array_length(__pagesArray)-1);
+    //}
+    //
+    //static __GetSerialMax = function()
+    //{
+    //    return __layoutMaxHeight*max(0, array_length(__pagesArray)-1);
+    //}
     
     /// @param page
     static __GetText = function(_page)

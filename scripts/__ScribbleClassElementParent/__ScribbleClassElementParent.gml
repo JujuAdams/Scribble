@@ -68,6 +68,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     __clip = false;
     
+    //Stores x/y offsets for panning and scrolling per page
     __scrollXArray = [];
     __scrollYArray = [];
     
@@ -445,7 +446,7 @@ function __ScribbleClassElementParent(_text) constructor
         
         __panAuto = false;
         
-        __panXArray[@ _page] = _clamp? clamp(_x, 0, get_pan_max()) : _x;
+        __panXArray[@ _page] = _clamp? clamp(_x, 0, get_pan_max(_page)) : _x;
         __panWasClamped = _clamp;
         
         return self;
@@ -581,54 +582,47 @@ function __ScribbleClassElementParent(_text) constructor
     
     
     
-    #region Clip & Scroll
+    #region Scroll
     
-    static clip = function(_state = true)
+    // Sets the scroll y-offset immediately. This will disable automatic scrolling.
+    static scroll = function(_y, _clamp = true, _page = __pageInteger)
     {
-        __clip = _state;
+        __EnsureModel();
+        
+        __scrollAuto = false;
+        
+        __scrollYArray[@ _page] = _clamp? clamp(_y, 0, get_scroll_max(_page)) : _y;
+        __scrollWasClamped = _clamp;
         
         return self;
     }
     
-    static get_clip = function()
+    // Returns the current scroll y-offset.
+    static get_scroll = function(_page = __pageInteger)
     {
-        return __clip;
+        __EnsureModel();
+        
+        return __scrollYArray[_page];
     }
     
-    static scroll_auto = function(_speed = SCRIBBLE_DEFAULT_SCROLL_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME)
+    // Returns the maximum scroll offset.
+    static get_scroll_max = function(_page = __pageInteger)
     {
-        //Skip the pause if we're starting autoscroll
-        if (not __scrollAuto)
-        {
-            if (__scrollState == SCRIBBLE_AUTO_MOVE_TO_END)
-            {
-                __scrollState = SCRIBBLE_AUTO_END;
-            }
-            else if (__scrollState == SCRIBBLE_AUTO_MOVE_TO_START)
-            {
-                __scrollState = SCRIBBLE_AUTO_START;
-            }
-        }
-        
-        __scrollAuto = true;
-        
-        __scrollSpeed = _speed;
-        __scrollPause = _pauseTime;
-        
-        return self;
+        return __EnsureModel().__GetScrollMaxY(_page);
     }
     
-    static scroll_to_glyph = function(_index)
+    // Scrolls immediately to ensure a particular glyph is visible.
+    static scroll_to_glyph = function(_index, _page = __pageInteger)
     {
         var _model = __EnsureModel();
         if (_model.__allowGlyphDataGetter)
         {
-            var _glyphData = _model.__GetGlyphData(_index, __pageInteger);
+            var _glyphData = _model.__GetGlyphData(_index, _page);
             return scroll_to(_glyphData.top, _glyphData.bottom);
         }
         else
         {
-            var _lineArray = _model.__pagesArray[__pageInteger].__lineDataArray;
+            var _lineArray = _model.__pagesArray[_page].__lineDataArray;
             var _i = 0;
             repeat(array_length(_lineArray))
             {
@@ -644,13 +638,15 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static scroll_to_line = function(_index)
+    // Scrolls immediately to ensure a particular line is visible.
+    static scroll_to_line = function(_index, _page = __pageInteger)
     {
         var _model = __EnsureModel();
-        var _line_data = _model.__GetLineData(_index, __pageInteger);
+        var _line_data = _model.__GetLineData(_index, _page);
         return scroll_to(_line_data.y, _line_data.y + _line_data.height-1);
     }
     
+    // Scrolls immediately to ensure a particular range of y values are visible.
     static scroll_to = function(_min, _max, _page = __pageInteger)
     {
         __EnsureModel();
@@ -678,28 +674,28 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static scroll = function(_y, _clamp = true, _page = __pageInteger)
+    // Sets up automatic ping-pong scroll.
+    static scroll_auto = function(_speed = SCRIBBLE_DEFAULT_SCROLL_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME)
     {
-        __EnsureModel();
+        //Skip the pause if we're starting autoscroll
+        if (not __scrollAuto)
+        {
+            if (__scrollState == SCRIBBLE_AUTO_MOVE_TO_END)
+            {
+                __scrollState = SCRIBBLE_AUTO_END;
+            }
+            else if (__scrollState == SCRIBBLE_AUTO_MOVE_TO_START)
+            {
+                __scrollState = SCRIBBLE_AUTO_START;
+            }
+        }
         
-        __scrollAuto = false;
+        __scrollAuto = true;
         
-        __scrollYArray[@ _page] = _clamp? clamp(_y, 0, get_scroll_max()) : _y;
-        __scrollWasClamped = _clamp;
+        __scrollSpeed = _speed;
+        __scrollPause = _pauseTime;
         
         return self;
-    }
-    
-    static get_scroll = function(_page = __pageInteger)
-    {
-        __EnsureModel();
-        
-        return __scrollYArray[_page];
-    }
-    
-    static get_scroll_max = function(_page = __pageInteger)
-    {
-        return __EnsureModel().__GetScrollMaxY(_page);
     }
     
     static __AutoScroll = function(_page = __pageInteger)
@@ -746,6 +742,24 @@ function __ScribbleClassElementParent(_text) constructor
                 __scrollState = SCRIBBLE_AUTO_START;
             }
         }
+    }
+    
+    #endregion
+    
+    
+    
+    #region Clip
+    
+    static clip = function(_state = true)
+    {
+        __clip = _state;
+        
+        return self;
+    }
+    
+    static get_clip = function()
+    {
+        return __clip;
     }
     
     static block_trim = function(_value)
@@ -977,6 +991,7 @@ function __ScribbleClassElementParent(_text) constructor
             __matrixInverse = __ScribbleMatrixInverse(matrix_multiply(_matrix, matrix_get(matrix_world)));
         }
         
+        // TODO - Optimise
         var _vector = matrix_transform_vertex(__matrixInverse, _pointerX, _pointerY, 0);
         var _x = _vector[0];
         var _y = _vector[1];
@@ -1167,6 +1182,7 @@ function __ScribbleClassElementParent(_text) constructor
                 var _r = _bbox.right;
                 var _b = _bbox.bottom;
                 
+                // TODO - Optimise
                 var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _t, 0); __bboxOOBx0 = _vertex[0]; __bboxOOBy0 = _vertex[1];
                 var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _t, 0); __bboxOOBx1 = _vertex[0]; __bboxOOBy1 = _vertex[1];
                 var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _b, 0); __bboxOOBx2 = _vertex[0]; __bboxOOBy2 = _vertex[1];
@@ -2269,7 +2285,8 @@ function __ScribbleClassElementParent(_text) constructor
             var _t = _bbox.top;
             var _r = _bbox.right;
             var _b = _bbox.bottom;
-                
+            
+            // TODO - Optimise
             var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _t, 0); var _x0 = _x + _vertex[0]; var _y0 = _y + _vertex[1];
             var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _t, 0); var _x1 = _x + _vertex[0]; var _y1 = _y + _vertex[1];
             var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _b, 0); var _x2 = _x + _vertex[0]; var _y2 = _y + _vertex[1];
