@@ -97,10 +97,10 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             
             __TypistMove(other, //Pass the scope that called this method to the typist
                          __typistOptions.__speed * __typistInlineSpeed * _system.__tickSize);
+            
+            if (__panAuto) __AutoPan();
+            if (__scrollAuto) __AutoScroll();
         }
-        
-        if (__panAuto) __AutoPan();
-        if (__scrollAuto) __AutoScroll();
         
         matrix_get(matrix_world, _oldMatrix);
         matrix_multiply(_oldMatrix, __UpdateMatrix(_x, _y), _newMatrix);

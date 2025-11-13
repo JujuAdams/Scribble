@@ -160,12 +160,12 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
             {
                 __animationTime += __animationSpeed*_system.__tickSize;
             }
+        
+            if (__panAuto) __AutoPan();
+            if (__scrollAuto) __AutoScroll();
         }
         
         __weakRef.__AddToCache();
-        
-        if (__panAuto) __AutoPan();
-        if (__scrollAuto) __AutoScroll();
         
         matrix_get(matrix_world, _oldMatrix);
         matrix_multiply(_oldMatrix, __UpdateMatrix(_x, _y), _newMatrix);
