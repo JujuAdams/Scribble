@@ -135,8 +135,6 @@ function __ScribbleClassElementParent(_text) constructor
     __regionColor      = c_black;
     __regionBlend      = 0.0;
     
-    
-    
     __bboxDirty      = true;
     __bboxMatrix     = matrix_build_identity();
     __bboxRawWidth   = 1;

@@ -178,6 +178,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         __typistSoundVoice = -1;
         
+        __typistApply       = false;
         __typistFinished    = false;
         __typistRunning     = false;
         __typistSuspended   = false;
@@ -200,6 +201,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             return;
         }
         
+        __typistApply   = true;
         __typistRunning = true;
         
         return self;
@@ -212,8 +214,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             __ScribbleTrace("Cannot start typist, it has already finished. Please call `.typist_reset()` to play again");
             return;
         }
-        
-        __typistRunning = true;
         
         //FIXME - Reimplement
         
@@ -228,6 +228,8 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         }
         
         __TypistSyncReset();
+        
+        __typistApply       = true;
         __typistRunning     = true;
         __typistSyncStarted = true;
         __typistSyncVoice   = _voice;
@@ -1288,9 +1290,15 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         static _u_fTypewriterAlphaDuration  = shader_get_uniform(__shdScribble, "u_fTypewriterAlphaDuration" );
         static _u_vTypewriterOffsetRange    = shader_get_uniform(__shdScribble, "u_vTypewriterOffsetRange"   );
         
+        if (not __typistApply)
+        {
+            __SetRevealUniforms(undefined);
+            return;
+        }
+        
         if (not __typistRunning)
         {
-            __SetRevealUniforms((__typistHeadArray[0] < __SCRIBBLE_VERY_BIG)? __typistHeadArray[0] : undefined);
+            __SetRevealUniforms(__typistHeadArray[0]);
             return;
         }
         
