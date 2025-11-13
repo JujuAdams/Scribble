@@ -215,7 +215,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         //FIXME - Reimplement
         
-        if (_voice < 400000)
+        if (real(_voice) < 400000)
         {
             __ScribbleError("Cannot synchronise to a sound asset. Please provide a voice (as returned by `audio_play_sound()`)");
         }
