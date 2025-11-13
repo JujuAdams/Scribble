@@ -147,10 +147,13 @@ function __ScribbleClassModel(_element) constructor
         {
             //Only draw one page
             
+            var _pageStruct = __pagesArray[_page];
+            
             if (_clip)
             {
                 _usedClip = true;
                 shader_set_uniform_f(_u_vClip, __clipLeft, __clipTop, __clipRight, __clipBottom);
+                shader_set_uniform_f(_u_vScroll, _pageStruct.__scrollOffsetX + _scrollXArray[_page], _pageStruct.__scrollOffsetY + _scrollYArray[_page]);
             }
             else
             {
@@ -159,10 +162,10 @@ function __ScribbleClassModel(_element) constructor
                     _usedClip = false;
                     shader_set_uniform_f(_u_vClip, -999999, -999999, 999999, 999999);
                 }
+                
+                shader_set_uniform_f(_u_vScroll, _scrollXArray[_page], _scrollYArray[_page]);
             }
             
-            var _pageStruct = __pagesArray[_page];
-            shader_set_uniform_f(_u_vScroll, _pageStruct.__scrollOffsetX + _scrollXArray[_page], _pageStruct.__scrollOffsetY + _scrollYArray[_page]);
             _pageStruct.__Submit(_doubleDraw);
         }
         else
