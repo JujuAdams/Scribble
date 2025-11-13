@@ -77,10 +77,11 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             _y = floor(_y);
         }
         
-        //If enough time has elapsed since we drew this element then update our animation time
-        if (__lastDrawn < _system.__frames)
+        //If enough time has elapsed since we drew this element then update our animation time and typist
+        var _systemFrames = _system.__frames;
+        if (_systemFrames > __lastDrawn)
         {
-            __lastDrawn = _system.__frames;
+            __lastDrawn = _systemFrames;
             
             if (SCRIBBLE_SAFELY_WRAP_TIME)
             {
@@ -91,6 +92,9 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             {
                 __animationTime += __animationSpeed*_system.__tickSize;
             }
+            
+            __TypistMove(other, //Pass the scope that called this method to the typist
+                         __typistOptions.__speed * __typistInlineSpeed * _system.__tickSize);
         }
         
         __AutoPan();
@@ -102,7 +106,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         shader_set(__shdScribble);
         __SetStandardUniforms();
-        __TypistUpdateFromDraw(other);
         __SetTypistShaderUniforms();
         __EnsureModel().__Draw(__pageInteger + __pageFraction, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
         shader_reset();
@@ -153,8 +156,6 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
     static typist_reset = function()
     {
         __SetPage(0);
-        
-        __typistPrevTickFrame = -infinity;
         
         __typistSyncStarted  = false;
         __typistSyncVoice    = undefined;
@@ -393,7 +394,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         with(__typistOptions)
         {
             __appear                   = true;
-            __backwards                = false; //Unused
+            __backwards                = false; //Unused for now
             __speed                    = 0.5;
             __smoothness               = 0;
             __ignoreDelayTags          = false;

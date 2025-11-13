@@ -144,9 +144,10 @@ function __ScribbleClassCachedElement(_text, _uniqueID) : __ScribbleClassElement
         }
         
         //If enough time has elapsed since we drew this element then update our animation time
-        if (__lastDrawn < _system.__frames)
+        var _systemFrames = _system.__frames;
+        if (__lastDrawn < _systemFrames)
         {
-            __lastDrawn = _system.__frames;
+            __lastDrawn = _systemFrames;
             
             if (SCRIBBLE_SAFELY_WRAP_TIME)
             {
