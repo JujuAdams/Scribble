@@ -752,7 +752,11 @@ function __ScribbleClassElementParent(_text) constructor
     
     static clip = function(_state = true)
     {
-        __clip = _state;
+        if (__clip != _state)
+        {
+            __bboxDirty = true;
+            __clip = _state;
+        }
         
         return self;
     }
@@ -1125,78 +1129,76 @@ function __ScribbleClassElementParent(_text) constructor
     static __UpdateBboxMatrix = function()
     {
         __UpdateScaleToBoxScale();
+        if (not __bboxDirty) return;
         
-        if (__bboxDirty)
+        __bboxDirty = false;
+        var _bboxMatrix = __bboxMatrix;
+        
+        var _model  = __EnsureModel();
+        var _xScale = __scaleToBoxScale*_model.__fitScale*__postXScale;
+        var _yScale = __scaleToBoxScale*_model.__fitScale*__postYScale;
+        
+        //Left/top padding is baked into the model
+        var _bbox = _model.__GetBbox(SCRIBBLE_BOUNDING_BOX_USES_PAGE? __pageInteger : undefined, __paddingL, __paddingT, __paddingR, __paddingB, __clip);
+        
+        __bboxRawWidth  = 1 + _bbox.right - _bbox.left;
+        __bboxRawHeight = 1 + _bbox.bottom - _bbox.top;
+        
+        if ((_xScale == 1) && (_yScale == 1) && (__postAngle == 0))
         {
-            __bboxDirty = false;
-            var _bboxMatrix = __bboxMatrix;
+            _bboxMatrix[@  0] = 1;
+            _bboxMatrix[@  1] = 0;
+            _bboxMatrix[@  4] = 0;
+            _bboxMatrix[@  5] = 1;
+            _bboxMatrix[@ 12] = -__originX;
+            _bboxMatrix[@ 13] = -__originY;
             
-            var _model  = __EnsureModel();
-            var _xScale = __scaleToBoxScale*_model.__fitScale*__postXScale;
-            var _yScale = __scaleToBoxScale*_model.__fitScale*__postYScale;
+            //Avoid using matrices if we can
+            __bboxAABBLeft   = -__originX + _bbox.left;
+            __bboxAABBTop    = -__originY + _bbox.top;
+            __bboxAABBRight  = -__originX + _bbox.right;
+            __bboxAABBBottom = -__originY + _bbox.bottom;
             
-            //Left/top padding is baked into the model
-            var _bbox = _model.__GetBbox(SCRIBBLE_BOUNDING_BOX_USES_PAGE? __pageInteger : undefined, __paddingL, __paddingT, __paddingR, __paddingB);
-            
-            __bboxRawWidth  = 1 + _bbox.right - _bbox.left;
-            __bboxRawHeight = 1 + _bbox.bottom - _bbox.top;
-            
-            if ((_xScale == 1) && (_yScale == 1) && (__postAngle == 0))
-            {
-                _bboxMatrix[@  0] = 1;
-                _bboxMatrix[@  1] = 0;
-                _bboxMatrix[@  4] = 0;
-                _bboxMatrix[@  5] = 1;
-                _bboxMatrix[@ 12] = -__originX;
-                _bboxMatrix[@ 13] = -__originY;
-                
-                //Avoid using matrices if we can
-                __bboxAABBLeft   = -__originX + _bbox.left;
-                __bboxAABBTop    = -__originY + _bbox.top;
-                __bboxAABBRight  = -__originX + _bbox.right;
-                __bboxAABBBottom = -__originY + _bbox.bottom;
-                
-                __bboxOOBx0 = __bboxAABBLeft;   __bboxOOBy0 = __bboxAABBTop;
-                __bboxOOBx1 = __bboxAABBRight;  __bboxOOBy1 = __bboxAABBTop;
-                __bboxOOBx2 = __bboxAABBLeft;   __bboxOOBy2 = __bboxAABBBottom;
-                __bboxOOBx3 = __bboxAABBRight;  __bboxOOBy3 = __bboxAABBBottom;
-            }
-            else
-            {
-                var  _sin = dsin(-__postAngle);
-                var  _cos = dcos(-__postAngle);
-                var _xSin = _xScale*_sin;
-                var _xCos = _xScale*_cos;
-                var _ySin = _yScale*_sin;
-                var _yCos = _yScale*_cos;
-                
-                _bboxMatrix[@  0] =  _xCos;
-                _bboxMatrix[@  1] =  _xSin;
-                _bboxMatrix[@  4] = -_ySin;
-                _bboxMatrix[@  5] =  _yCos;
-                _bboxMatrix[@ 12] = -(__originX*_xCos - __originY*_ySin);
-                _bboxMatrix[@ 13] = -(__originX*_xSin + __originY*_yCos);
-                
-                var _l = _bbox.left;
-                var _t = _bbox.top;
-                var _r = _bbox.right;
-                var _b = _bbox.bottom;
-                
-                // TODO - Optimise
-                var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _t, 0); __bboxOOBx0 = _vertex[0]; __bboxOOBy0 = _vertex[1];
-                var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _t, 0); __bboxOOBx1 = _vertex[0]; __bboxOOBy1 = _vertex[1];
-                var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _b, 0); __bboxOOBx2 = _vertex[0]; __bboxOOBy2 = _vertex[1];
-                var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _b, 0); __bboxOOBx3 = _vertex[0]; __bboxOOBy3 = _vertex[1];
-                
-                __bboxAABBLeft   = min(__bboxOOBx0, __bboxOOBx1, __bboxOOBx2, __bboxOOBx3);
-                __bboxAABBTop    = min(__bboxOOBy0, __bboxOOBy1, __bboxOOBy2, __bboxOOBy3);
-                __bboxAABBRight  = max(__bboxOOBx0, __bboxOOBx1, __bboxOOBx2, __bboxOOBx3);
-                __bboxAABBBottom = max(__bboxOOBy0, __bboxOOBy1, __bboxOOBy2, __bboxOOBy3);
-            }
-            
-            __bboxAABBWidth  = 1 + __bboxAABBRight - __bboxAABBLeft;
-            __bboxAABBHeight = 1 + __bboxAABBBottom - __bboxAABBTop;
+            __bboxOOBx0 = __bboxAABBLeft;   __bboxOOBy0 = __bboxAABBTop;
+            __bboxOOBx1 = __bboxAABBRight;  __bboxOOBy1 = __bboxAABBTop;
+            __bboxOOBx2 = __bboxAABBLeft;   __bboxOOBy2 = __bboxAABBBottom;
+            __bboxOOBx3 = __bboxAABBRight;  __bboxOOBy3 = __bboxAABBBottom;
         }
+        else
+        {
+            var  _sin = dsin(-__postAngle);
+            var  _cos = dcos(-__postAngle);
+            var _xSin = _xScale*_sin;
+            var _xCos = _xScale*_cos;
+            var _ySin = _yScale*_sin;
+            var _yCos = _yScale*_cos;
+            
+            _bboxMatrix[@  0] =  _xCos;
+            _bboxMatrix[@  1] =  _xSin;
+            _bboxMatrix[@  4] = -_ySin;
+            _bboxMatrix[@  5] =  _yCos;
+            _bboxMatrix[@ 12] = -(__originX*_xCos - __originY*_ySin);
+            _bboxMatrix[@ 13] = -(__originX*_xSin + __originY*_yCos);
+            
+            var _l = _bbox.left;
+            var _t = _bbox.top;
+            var _r = _bbox.right;
+            var _b = _bbox.bottom;
+            
+            // TODO - Optimise
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _t, 0); __bboxOOBx0 = _vertex[0]; __bboxOOBy0 = _vertex[1];
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _t, 0); __bboxOOBx1 = _vertex[0]; __bboxOOBy1 = _vertex[1];
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _b, 0); __bboxOOBx2 = _vertex[0]; __bboxOOBy2 = _vertex[1];
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _b, 0); __bboxOOBx3 = _vertex[0]; __bboxOOBy3 = _vertex[1];
+            
+            __bboxAABBLeft   = min(__bboxOOBx0, __bboxOOBx1, __bboxOOBx2, __bboxOOBx3);
+            __bboxAABBTop    = min(__bboxOOBy0, __bboxOOBy1, __bboxOOBy2, __bboxOOBy3);
+            __bboxAABBRight  = max(__bboxOOBx0, __bboxOOBx1, __bboxOOBx2, __bboxOOBx3);
+            __bboxAABBBottom = max(__bboxOOBy0, __bboxOOBy1, __bboxOOBy2, __bboxOOBy3);
+        }
+        
+        __bboxAABBWidth  = 1 + __bboxAABBRight - __bboxAABBLeft;
+        __bboxAABBHeight = 1 + __bboxAABBBottom - __bboxAABBTop;
     }
     
     static get_left = function(_x = 0)
@@ -2260,7 +2262,7 @@ function __ScribbleClassElementParent(_text) constructor
         }
         
         var _model = __EnsureModel();
-        var _bbox = _model.__GetBboxRevealed(__GetRevealPage(_revealIndex), _revealIndex, __paddingL, __paddingT, __paddingR, __paddingB);
+        var _bbox = _model.__GetBboxRevealed(__GetRevealPage(_revealIndex), _revealIndex, __paddingL, __paddingT, __paddingR, __paddingB, __clip);
         
         __UpdateBboxMatrix();
         var _xScale = __scaleToBoxScale*_model.__fitScale*__postXScale;

@@ -164,6 +164,7 @@ function __ScribbleClassModel(_element) constructor
                 {
                     var _y = floor(-0.5*__height);
                 }
+                else if (__startingVAlign == fa_bottom)
                 {
                     var _y = -__height;
                 }
@@ -282,7 +283,7 @@ function __ScribbleClassModel(_element) constructor
     }
     
     /// @param page
-    static __GetBbox = function(_page, _paddingL, _paddingT, _paddingR, _paddingB)
+    static __GetBbox = function(_page, _paddingL, _paddingT, _paddingR, _paddingB, _clip)
     {
         if (_page != undefined)
         {
@@ -303,6 +304,42 @@ function __ScribbleClassModel(_element) constructor
             var _bottom = __maxY;
         }
         
+        if (_clip)
+        {
+            //Clipping is relative to the model
+            if (__startingHAlign == fa_center)
+            {
+                _left  = max(floor(-0.5*__layoutMaxWidth), _left);
+                _right = min(floor( 0.5*__layoutMaxWidth), _right);
+            }
+            else if (__startingHAlign == fa_right)
+            {
+                _left  = max(-__layoutMaxWidth, _left);
+                _right = min(0, _right);
+            }
+            else
+            {
+                _left  = max(0, _left);
+                _right = min(__layoutMaxWidth, _right);
+            }
+        
+            if (__startingVAlign == fa_middle)
+            {
+                _top    = max(floor(-0.5*__layoutMaxHeight), _left);
+                _bottom = min(floor( 0.5*__layoutMaxHeight), _right);
+            }
+            else if (__startingVAlign == fa_bottom)
+            {
+                _top    = max(-__layoutMaxHeight, _top);
+                _bottom = min(0, _bottom);
+            }
+            else
+            {
+                _top    = max(0, _top);
+                _bottom = min(__layoutMaxHeight, _bottom);
+            }
+        }
+        
         if (__padBboxL) _left   -= _paddingL; else _right  += _paddingL;
         if (__padBboxT) _top    -= _paddingT; else _bottom += _paddingT;
         if (__padBboxR) _right  += _paddingR; else _left   -= _paddingR;
@@ -316,7 +353,7 @@ function __ScribbleClassModel(_element) constructor
         };
     }
     
-    static __GetBboxRevealed = function(_page, _glyphIndex, _paddingL, _paddingT, _paddingR, _paddingB)
+    static __GetBboxRevealed = function(_page, _glyphIndex, _paddingL, _paddingT, _paddingR, _paddingB, _clip)
     {
         //TODO - Optimize by returning page bounds if the number of characters revealed is the same as the whole page
         //FIXME - Implement for non-glyph reveal
@@ -342,6 +379,42 @@ function __ScribbleClassModel(_element) constructor
             var _top    = ds_grid_get_min(_glyphGrid, _start, __SCRIBBLE_GLYPH_LAYOUT_TOP,    _end, __SCRIBBLE_GLYPH_LAYOUT_TOP   );
             var _right  = ds_grid_get_max(_glyphGrid, _start, __SCRIBBLE_GLYPH_LAYOUT_RIGHT,  _end, __SCRIBBLE_GLYPH_LAYOUT_RIGHT );
             var _bottom = ds_grid_get_max(_glyphGrid, _start, __SCRIBBLE_GLYPH_LAYOUT_BOTTOM, _end, __SCRIBBLE_GLYPH_LAYOUT_BOTTOM);
+        }
+        
+        if (_clip)
+        {
+            //Clipping is relative to the model
+            if (__startingHAlign == fa_center)
+            {
+                _left  = max(floor(-0.5*__layoutMaxWidth), _left);
+                _right = min(floor( 0.5*__layoutMaxWidth), _right);
+            }
+            else if (__startingHAlign == fa_right)
+            {
+                _left  = max(-__layoutMaxWidth, _left);
+                _right = min(0, _right);
+            }
+            else
+            {
+                _left  = max(0, _left);
+                _right = min(__layoutMaxWidth, _right);
+            }
+        
+            if (__startingVAlign == fa_middle)
+            {
+                _top    = max(floor(-0.5*__layoutMaxHeight), _left);
+                _bottom = min(floor( 0.5*__layoutMaxHeight), _right);
+            }
+            else if (__startingVAlign == fa_bottom)
+            {
+                _top    = max(-__layoutMaxHeight, _top);
+                _bottom = min(0, _bottom);
+            }
+            else
+            {
+                _top    = max(0, _top);
+                _bottom = min(__layoutMaxHeight, _bottom);
+            }
         }
         
         if (__padBboxL) _left   -= _paddingL; else _right  += _paddingL;
