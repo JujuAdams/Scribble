@@ -160,11 +160,10 @@ function __ScribbleClassModel(_element) constructor
                     var _x = 0;
                 }
                 
-                if (__startingHAlign == fa_middle)
+                if (__startingVAlign == fa_middle)
                 {
                     var _y = floor(-0.5*__height);
                 }
-                else if (__startingHAlign == fa_bottom)
                 {
                     var _y = -__height;
                 }
@@ -207,11 +206,11 @@ function __ScribbleClassModel(_element) constructor
                 var _x = 0;
             }
             
-            if (__startingHAlign == fa_middle)
+            if (__startingVAlign == fa_middle)
             {
                 var _y = floor(-0.5*__height);
             }
-            else if (__startingHAlign == fa_bottom)
+            else if (__startingVAlign == fa_bottom)
             {
                 var _y = -__height;
             }

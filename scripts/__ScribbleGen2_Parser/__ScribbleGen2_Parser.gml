@@ -188,7 +188,7 @@ function __ScribbleGen2_Parser()
     var _spritesDontScale = __spritesDontScale;
     var _elementText      = __text;
     var _startingColor    = __startingColor;
-    var _starting_halign  = __startingHAlign;
+    var _startingHAlign   = __startingHAlign;
     var _startingVAlign   = __startingVAlign;
     var _ignoreCommands   = __ignoreCommandTags;
     var _preScale         = __preScale;
@@ -253,7 +253,7 @@ function __ScribbleGen2_Parser()
     
     var _stateEffectFlags        = 0;
     var _stateColor              = 0xFF000000 | _startingColor; //Uses all four bytes
-    var _stateHAlign             = _starting_halign;
+    var _stateHAlign             = _startingHAlign;
     var _stateCommandTagFlipflop = false;
     
     var _stateScale             = _preScale;
