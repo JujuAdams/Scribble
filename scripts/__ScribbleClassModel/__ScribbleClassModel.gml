@@ -325,8 +325,8 @@ function __ScribbleClassModel(_element) constructor
         
             if (__startingVAlign == fa_middle)
             {
-                _top    = max(floor(-0.5*__layoutMaxHeight), _left);
-                _bottom = min(floor( 0.5*__layoutMaxHeight), _right);
+                _top    = max(floor(-0.5*__layoutMaxHeight), _top);
+                _bottom = min(floor( 0.5*__layoutMaxHeight), _bottom);
             }
             else if (__startingVAlign == fa_bottom)
             {
