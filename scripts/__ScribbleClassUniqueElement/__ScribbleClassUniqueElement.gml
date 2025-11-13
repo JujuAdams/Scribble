@@ -799,6 +799,8 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         if (not __typistRunning) return;
         
+        var _typistOptions = __typistOptions;
+        
         //If we've recently reset the typist, update the head position
         if (__typistRevealIndex < 0)
         {
@@ -825,7 +827,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
         
         __TypistUpdateVariables();
         
-        if (not __typistOptions.__appear)
+        if (not _typistOptions.__appear)
         {
             ///////
             // Type out
@@ -905,14 +907,14 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                 if (_canMove && (__pageInteger != __typistTargetPage))
                 {
                     _canMove = false;
-                    __SetPage(__pageInteger + clamp(__typistTargetPage - __pageInteger, -__typistPageSpeed, __typistPageSpeed));
+                    __SetPage(__pageInteger + clamp(__typistTargetPage - __pageInteger, -_typistOptions.__pageScrollSpeed, _typistOptions.__pageScrollSpeed));
                 }
                 
                 // Handle scrolling inside pages
                 if (_canMove && (__scrollYArray[__pageInteger] != __typistTargetScroll))
                 {
                     _canMove = false;
-                    __scrollYArray[@ __pageInteger] += clamp(__typistTargetScroll - __scrollYArray[__pageInteger], -__typistOptions.__blockScrollSpeed, __typistOptions.__blockScrollSpeed);
+                    __scrollYArray[@ __pageInteger] += clamp(__typistTargetScroll - __scrollYArray[__pageInteger], -_typistOptions.__blockScrollSpeed, _typistOptions.__blockScrollSpeed);
                 }
                 
                 ///////
@@ -928,7 +930,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                     {
                         __typistHeadArray[@ 0] += _delta;
                         
-                        if ((__pageInteger >= array_length(_pagesArray)-1) && (__typistHeadArray[0] >= _pageData.__glyphEnd + __typistOptions.__smoothness))
+                        if ((__pageInteger >= array_length(_pagesArray)-1) && (__typistHeadArray[0] >= _pageData.__glyphEnd + _typistOptions.__smoothness))
                         {
                             typist_finish(_functionScope);
                         }
@@ -947,9 +949,9 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
                                 _moved = true;
                                 
                                 //Call the per-reveal method if we have one
-                                if (is_callable(__typistOptions.__methodPerReveal))
+                                if (is_callable(_typistOptions.__methodPerReveal))
                                 {
-                                    __typistOptions.__methodPerReveal(_functionScope, __typistRevealIndex, self);
+                                    _typistOptions.__methodPerReveal(_functionScope, __typistRevealIndex, self);
                                 }
                                 
                                 //Find events and add them to the stack
