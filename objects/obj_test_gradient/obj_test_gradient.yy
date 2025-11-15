@@ -8,8 +8,8 @@
   "name":"obj_test_gradient",
   "overriddenProperties":[],
   "parent":{
-    "name":"Basic",
-    "path":"folders/Test Cases/Basic.yy",
+    "name":"Color",
+    "path":"folders/Test Cases/Color.yy",
   },
   "parentObjectId":null,
   "persistent":false,

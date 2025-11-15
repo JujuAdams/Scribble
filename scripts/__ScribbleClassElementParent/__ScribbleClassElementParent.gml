@@ -1820,15 +1820,15 @@ function __ScribbleClassElementParent(_text) constructor
         static _u_sCycle   = shader_get_sampler_index(__shdScribble, "u_sCycle");
         static _u_sPalette = shader_get_sampler_index(__shdScribble, "u_sPalette");
         
-        static _u_fTime           = shader_get_uniform(__shdScribble, "u_fTime"        );
-        static _u_vColourBlend    = shader_get_uniform(__shdScribble, "u_vColourBlend" );
-        static _u_vGradientColour = shader_get_uniform(__shdScribble, "u_vGradientColour"    );
-        static _u_vSkew           = shader_get_uniform(__shdScribble, "u_vSkew"        );
-        static _u_vFlash          = shader_get_uniform(__shdScribble, "u_vFlash"       );
-        static _u_vRegionActive   = shader_get_uniform(__shdScribble, "u_vRegionActive");
-        static _u_vRegionColour   = shader_get_uniform(__shdScribble, "u_vRegionColour");
-        static _u_aDataFields     = shader_get_uniform(__shdScribble, "u_aDataFields"  );
-        static _u_aBezier         = shader_get_uniform(__shdScribble, "u_aBezier"      );
+        static _u_fTime           = shader_get_uniform(__shdScribble, "u_fTime"          );
+        static _u_vColourBlend    = shader_get_uniform(__shdScribble, "u_vColourBlend"   );
+        static _u_vGradientColour = shader_get_uniform(__shdScribble, "u_vGradientColour");
+        static _u_vSkew           = shader_get_uniform(__shdScribble, "u_vSkew"          );
+        static _u_vFlash          = shader_get_uniform(__shdScribble, "u_vFlash"         );
+        static _u_vRegionActive   = shader_get_uniform(__shdScribble, "u_vRegionActive"  );
+        static _u_vRegionColour   = shader_get_uniform(__shdScribble, "u_vRegionColour"  );
+        static _u_aDataFields     = shader_get_uniform(__shdScribble, "u_aDataFields"    );
+        static _u_aBezier         = shader_get_uniform(__shdScribble, "u_aBezier"        );
         
         static _u_vShadowOffsetAndSoftness = shader_get_uniform(__shdScribble, "u_vShadowOffsetAndSoftness");
         static _u_vShadowColour            = shader_get_uniform(__shdScribble, "u_vShadowColour"           );
