@@ -22,7 +22,7 @@ const int MAX_EFFECTS = 11;
 #define SLANT_FLAG        flagArray[ 9]
 #define GRADIENT_FLAG     flagArray[10]
 
-const int MAX_ANIM_FIELDS = 16;
+const int MAX_ANIM_FIELDS = 18;
 #define WAVE_AMPLITUDE    u_aDataFields[ 0]
 #define WAVE_FREQUENCY    u_aDataFields[ 1]
 #define WAVE_SPEED        u_aDataFields[ 2]
@@ -39,8 +39,8 @@ const int MAX_ANIM_FIELDS = 16;
 #define JITTER_MAXIMUM    u_aDataFields[13]
 #define JITTER_SPEED      u_aDataFields[14]
 #define SLANT_GRADIENT    u_aDataFields[15]
-#define CYCLE_SPEED       0.01
-#define CYCLE_FREQUENCY   0.02
+#define CYCLE_SPEED       u_aDataFields[16]
+#define CYCLE_FREQUENCY   u_aDataFields[17]
 
 #define EASE_NONE           0
 #define EASE_LINEAR         1

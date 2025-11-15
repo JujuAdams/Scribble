@@ -417,6 +417,7 @@
     {"id":{"name":"GlyphArrayBiDiReorder","path":"scripts/GlyphArrayBiDiReorder/GlyphArrayBiDiReorder.yy",},},
     {"id":{"name":"GlyphData","path":"scripts/GlyphData/GlyphData.yy",},},
     {"id":{"name":"scribble_add_macro","path":"scripts/scribble_add_macro/scribble_add_macro.yy",},},
+    {"id":{"name":"scribble_anim_cycle","path":"scripts/scribble_anim_cycle/scribble_anim_cycle.yy",},},
     {"id":{"name":"scribble_anim_disabled","path":"scripts/scribble_anim_disabled/scribble_anim_disabled.yy",},},
     {"id":{"name":"scribble_anim_get_disabled","path":"scripts/scribble_anim_get_disabled/scribble_anim_get_disabled.yy",},},
     {"id":{"name":"scribble_anim_jitter","path":"scripts/scribble_anim_jitter/scribble_anim_jitter.yy",},},
