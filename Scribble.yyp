@@ -319,7 +319,6 @@
     {"id":{"name":"rm_example","path":"rooms/rm_example/rm_example.yy",},},
     {"id":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
     {"id":{"name":"__scribble_config_behaviours","path":"scripts/__scribble_config_behaviours/__scribble_config_behaviours.yy",},},
-    {"id":{"name":"__scribble_config_colors","path":"scripts/__scribble_config_colors/__scribble_config_colors.yy",},},
     {"id":{"name":"__scribble_config_defaults","path":"scripts/__scribble_config_defaults/__scribble_config_defaults.yy",},},
     {"id":{"name":"__scribble_constants","path":"scripts/__scribble_constants/__scribble_constants.yy",},},
     {"id":{"name":"__ScribbleAddTag","path":"scripts/__ScribbleAddTag/__ScribbleAddTag.yy",},},

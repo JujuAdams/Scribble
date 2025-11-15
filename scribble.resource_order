@@ -257,7 +257,6 @@
     {"name":"obj_test_wrap","order":2,"path":"objects/obj_test_wrap/obj_test_wrap.yy",},
     {"name":"rm_example","order":3,"path":"rooms/rm_example/rm_example.yy",},
     {"name":"__scribble_config_behaviours","order":1,"path":"scripts/__scribble_config_behaviours/__scribble_config_behaviours.yy",},
-    {"name":"__scribble_config_colors","order":2,"path":"scripts/__scribble_config_colors/__scribble_config_colors.yy",},
     {"name":"__scribble_constants","order":3,"path":"scripts/__scribble_constants/__scribble_constants.yy",},
     {"name":"__ScribbleAddTag","order":25,"path":"scripts/__ScribbleAddTag/__ScribbleAddTag.yy",},
     {"name":"__ScribbleArrayFindIndex","order":3,"path":"scripts/__ScribbleArrayFindIndex/__ScribbleArrayFindIndex.yy",},

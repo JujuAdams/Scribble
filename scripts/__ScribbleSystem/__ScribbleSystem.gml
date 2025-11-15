@@ -274,22 +274,34 @@ function __ScribbleSystem(_calledFromInitialize = false)
         
         //Clear the whole palette buffer with white pixels
         buffer_fill(__paletteBuffer, 0, buffer_u32, 0xFFFFFFFF, 4*SCRIBBLE_PALETTE_SIZE*SCRIBBLE_PALETTE_SIZE);
-        __ScribblePaletteNewColor(c_white); // = 0, magic number for "use the blend colour"
         
-        //Add color definitions
-        var _colorStruct = __scribble_config_colors();
-        var _namesArray = variable_struct_get_names(_colorStruct);
-        var _i = 0;
-        repeat(array_length(_namesArray))
-        {
-            var _name  = _namesArray[_i];
-            var _color = _colorStruct[$ _name];
-            
-            var _index = __ScribblePaletteNewColor(_color);
-            __ScribbleAddTag(_name, __SCRIBBLE_TAG_COLOR, { __color: _color, __index: _index }, false);
-            
-            ++_i;
-        }
+        //Palette index = 0, magic number for "use the blend colour"
+        __ScribblePaletteNewColor(c_white);
+        
+        //Duplicate GM's native colour constants
+        scribble_color_set("c_aqua",    c_aqua);
+        scribble_color_set("c_black",   c_black);
+        scribble_color_set("c_blue",    c_blue);
+        scribble_color_set("c_dkgray",  c_dkgray);
+        scribble_color_set("c_dkgrey",  c_dkgrey);
+        scribble_color_set("c_fuchsia", c_fuchsia);
+        scribble_color_set("c_gray",    c_gray);
+        scribble_color_set("c_green",   c_green);
+        scribble_color_set("c_gray",    c_gray);
+        scribble_color_set("c_grey",    c_grey);
+        scribble_color_set("c_lime",    c_lime);
+        scribble_color_set("c_ltgray",  c_ltgray);
+        scribble_color_set("c_ltgrey",  c_ltgrey);
+        scribble_color_set("c_maroon",  c_maroon);
+        scribble_color_set("c_navy",    c_navy);
+        scribble_color_set("c_olive",   c_olive);
+        scribble_color_set("c_orange",  c_orange);
+        scribble_color_set("c_purple",  c_purple);
+        scribble_color_set("c_red",     c_red);
+        scribble_color_set("c_silver",  c_silver);
+        scribble_color_set("c_teal",    c_teal);
+        scribble_color_set("c_white",   c_white);
+        scribble_color_set("c_yellow",  c_yellow);
         
         __ScribblePaletteEnsureSurfaceClean();
         
