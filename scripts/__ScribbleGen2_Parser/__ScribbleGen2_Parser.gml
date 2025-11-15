@@ -999,7 +999,15 @@ function __ScribbleGen2_Parser()
                         case 52: // [outline] [ol]
                             if (array_length(_tagParameters) > 1)
                             {
-                                var _paletteIndex = (_tagParameters[1] == "none")? -1 : __ScribbleConvertColorToIndex(_tagParameters[1]);
+                                if (_tagParameters[1] == "none")
+                                {
+                                    var _paletteIndex = 0;
+                                }
+                                else
+                                {
+                                    var _paletteIndex = __ScribbleConvertColorToIndex(_tagParameters[1]);
+                                    __hasOutline = true;
+                                }
                             }
                             else
                             {

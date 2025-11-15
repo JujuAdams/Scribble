@@ -91,6 +91,7 @@ function __ScribbleClassModel(_element) constructor
         __hasDevanagari = false;
         __hasAnimation  = false;
         __hasCycle      = false;
+        __hasOutline    = false;
         
         __pagesArray = []; //Stores each page of text
         __dynamicMacroArray = [];
@@ -137,7 +138,7 @@ function __ScribbleClassModel(_element) constructor
         
         static _usedClip = true;
         
-        if (SCRIBBLE_ALWAYS_DOUBLE_DRAW || __hasArabic || __hasThai)
+        if (SCRIBBLE_ALWAYS_DOUBLE_DRAW || __hasArabic || __hasThai || __hasOutline)
         {
             _doubleDraw = true;
         }
