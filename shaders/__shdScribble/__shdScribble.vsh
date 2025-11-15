@@ -9,18 +9,17 @@ precision highp float;
 
 const float CYCLE_TEXTURE_HEIGHT = 256.0;
 
-const int MAX_EFFECTS = 11;
-#define GRAPHIC_FLAG      flagArray[ 0]
-#define ANIM_SPRITE_FLAG  flagArray[ 1]
-#define WAVE_FLAG         flagArray[ 2]
-#define SHAKE_FLAG        flagArray[ 3]
-#define WOBBLE_FLAG       flagArray[ 4]
-#define PULSE_FLAG        flagArray[ 5]
-#define WHEEL_FLAG        flagArray[ 6]
-#define CYCLE_FLAG        flagArray[ 7]
-#define JITTER_FLAG       flagArray[ 8]
-#define SLANT_FLAG        flagArray[ 9]
-#define GRADIENT_FLAG     flagArray[10]
+const int MAX_EFFECTS = 10;
+#define GRAPHIC_FLAG      flagArray[0]
+#define ANIM_SPRITE_FLAG  flagArray[1]
+#define WAVE_FLAG         flagArray[2]
+#define SHAKE_FLAG        flagArray[3]
+#define WOBBLE_FLAG       flagArray[4]
+#define PULSE_FLAG        flagArray[5]
+#define WHEEL_FLAG        flagArray[6]
+#define CYCLE_FLAG        flagArray[7]
+#define JITTER_FLAG       flagArray[8]
+#define SLANT_FLAG        flagArray[9]
 
 const int MAX_ANIM_FIELDS = 18;
 #define WAVE_AMPLITUDE    u_aDataFields[ 0]
@@ -327,17 +326,16 @@ void main()
 {
     float flagValue = PACKED_EFFECT_FLAGS;
     float edge;
-    edge = step(1024.0, flagValue); flagArray[10] = edge; flagValue -= 1024.0*edge;
-    edge = step( 512.0, flagValue); flagArray[ 9] = edge; flagValue -=  512.0*edge;
-    edge = step( 256.0, flagValue); flagArray[ 8] = edge; flagValue -=  256.0*edge;
-    edge = step( 128.0, flagValue); flagArray[ 7] = edge; flagValue -=  128.0*edge;
-    edge = step(  64.0, flagValue); flagArray[ 6] = edge; flagValue -=   64.0*edge;
-    edge = step(  32.0, flagValue); flagArray[ 5] = edge; flagValue -=   32.0*edge;
-    edge = step(  16.0, flagValue); flagArray[ 4] = edge; flagValue -=   16.0*edge;
-    edge = step(   8.0, flagValue); flagArray[ 3] = edge; flagValue -=    8.0*edge;
-    edge = step(   4.0, flagValue); flagArray[ 2] = edge; flagValue -=    4.0*edge;
-    edge = step(   2.0, flagValue); flagArray[ 1] = edge; flagValue -=    2.0*edge;
-    edge = step(   1.0, flagValue); flagArray[ 0] = edge; flagValue -=    1.0*edge;
+    edge = step(512.0, flagValue); flagArray[9] = edge; flagValue -= 512.0*edge;
+    edge = step(256.0, flagValue); flagArray[8] = edge; flagValue -= 256.0*edge;
+    edge = step(128.0, flagValue); flagArray[7] = edge; flagValue -= 128.0*edge;
+    edge = step( 64.0, flagValue); flagArray[6] = edge; flagValue -=  64.0*edge;
+    edge = step( 32.0, flagValue); flagArray[5] = edge; flagValue -=  32.0*edge;
+    edge = step( 16.0, flagValue); flagArray[4] = edge; flagValue -=  16.0*edge;
+    edge = step(  8.0, flagValue); flagArray[3] = edge; flagValue -=   8.0*edge;
+    edge = step(  4.0, flagValue); flagArray[2] = edge; flagValue -=   4.0*edge;
+    edge = step(  2.0, flagValue); flagArray[1] = edge; flagValue -=   2.0*edge;
+    edge = step(  1.0, flagValue); flagArray[0] = edge; flagValue -=   1.0*edge;
     
     
     

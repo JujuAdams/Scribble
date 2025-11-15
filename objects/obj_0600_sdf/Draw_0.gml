@@ -1,6 +1,6 @@
-var _element = scribble("[fa_center][fa_middle]the quick brown [scale,2]fox[/scale] jumped over the lazy dog") //\n\nSPHINX OF BLACK QUARTZ, JUDGE MY VOW")
+var _element = scribble("[fa_center][fa_middle]the quick brown [scale,1.2]fox[/scale] jumped over the lazy dog") //\n\nSPHINX OF BLACK QUARTZ, JUDGE MY VOW")
                .sdf_outline(c_navy, 5*mouse_y/room_height)
-               //.sdf_shadow(c_black, 0.3, 2, 2)
+               .sdf_shadow(c_black, 0.3, 2, 2)
                .max_size(551)
                .layout_wrap();
 
