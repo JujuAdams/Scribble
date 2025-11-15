@@ -1,4 +1,4 @@
-scribble("The Quick [rainbow]Brown[/c] [grad,c_red]Fox[/grad] [ol,c_red]Jumps[/ol] Over The Lazy Dog!")
+scribble("The Quick [rainbow]Brown[/c] [grad,c_red]Fox[/grad] [ol,c_red]Jumps[/ol] [ol,none]Over The Lazy Dog!")
 .scale(3)
 .outline(c_navy)
 .shadow(c_dkgray, 1, 0, 0, 0)

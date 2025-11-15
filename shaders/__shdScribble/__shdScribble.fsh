@@ -21,8 +21,8 @@ uniform vec4  u_vFlash;
 
 uniform vec4  u_vColourBlend;
 uniform vec4  u_vGradientColour;
-uniform vec4  u_vShadowColour;
 uniform vec4  u_vOutlineColour;
+uniform vec4  u_vShadowColour;
 uniform float u_fSecondDraw;
 uniform vec4  u_vClip;
 
@@ -64,9 +64,36 @@ vec4 BaseColour()
     }
 }
 
+vec4 GradientColour()
+{
+    if (v_vColourIndexes.y < 0.0)
+    {
+        return vec4(0.0);
+    }
+    else if (v_vColourIndexes.y > 0.0)
+    {
+        return PaletteColour(v_vColourIndexes.y);
+    }
+    else
+    {
+        return u_vGradientColour;
+    }
+}
+
 vec4 OutlineColour()
 {
-    return (v_vColourIndexes.z <= 0.0)? u_vOutlineColour : PaletteColour(v_vColourIndexes.z);
+    if (v_vColourIndexes.z < 0.0)
+    {
+        return vec4(0.0);
+    }
+    else if (v_vColourIndexes.z > 0.0)
+    {
+        return PaletteColour(v_vColourIndexes.z);
+    }
+    else
+    {
+        return u_vOutlineColour;
+    }
 }
 
 void main()
@@ -81,7 +108,7 @@ void main()
     vec4 colour = BaseColour();
     
     //Apply gradient if required
-    vec4 gradientColour = (v_vColourIndexes.y <= 0.0)? u_vGradientColour : PaletteColour(v_vColourIndexes.y);
+    vec4 gradientColour = GradientColour();
     colour.rgb = mix(colour.rgb, gradientColour.rgb, v_fGradient*gradientColour.a * v_fGradient*gradientColour.a);
     
     //Apply alpha

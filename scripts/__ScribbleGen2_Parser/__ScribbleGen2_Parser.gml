@@ -978,24 +978,40 @@ function __ScribbleGen2_Parser()
                         break;
                         
                         case 50: // [gradient] [grad]
-                            var _paletteIndex = __ScribbleConvertColorToIndex(_tagParameters[1]);
+                            if (array_length(_tagParameters) > 1)
+                            {
+                                var _paletteIndex = (_tagParameters[1] == "none")? -1 : __ScribbleConvertColorToIndex(_tagParameters[1]);
+                            }
+                            else
+                            {
+                                var _paletteIndex = 0;
+                            }
+                            
                             array_push(_controlArray, new __ScribbleClassControlGradient(_paletteIndex ?? 0));
                             ++_controlCount;
                         break;
                         
                         case 51: // [/gradient] [/grad]
-                            array_push(_controlArray, new __ScribbleClassControlGradient(-1));
+                            array_push(_controlArray, new __ScribbleClassControlGradient(0));
                             ++_controlCount;
                         break;
                         
-                        case 52: // [outline]
-                            var _paletteIndex = __ScribbleConvertColorToIndex(_tagParameters[1]);
+                        case 52: // [outline] [ol]
+                            if (array_length(_tagParameters) > 1)
+                            {
+                                var _paletteIndex = (_tagParameters[1] == "none")? -1 : __ScribbleConvertColorToIndex(_tagParameters[1]);
+                            }
+                            else
+                            {
+                                var _paletteIndex = 0;
+                            }
+                            
                             array_push(_controlArray, new __ScribbleClassControlOutline(_paletteIndex ?? 0));
                             ++_controlCount;
                         break;
                         
-                        case 53: // [/outline]
-                            array_push(_controlArray, new __ScribbleClassControlOutline(-1));
+                        case 53: // [/outline] [/ol]
+                            array_push(_controlArray, new __ScribbleClassControlOutline(0));
                             ++_controlCount;
                         break;
                         

@@ -120,9 +120,9 @@ function __ScribbleGen10_WriteVBuffs()
     var _glyphCycle       = -1; //Cycle index
     
     var _writeColorBase    = _glyphColorBase; //Sometimes this stores the base colour index, sometimes the cycle index
-    var _writeColorGrad    = -1;
-    var _writeColorOutline = -1;
-    var _writeAlpha        =  1;
+    var _writeColorGrad    = 0;
+    var _writeColorOutline = 0;
+    var _writeAlpha        = 1;
     
     var _controlIndex = 0;
     var _regionName   = undefined;
