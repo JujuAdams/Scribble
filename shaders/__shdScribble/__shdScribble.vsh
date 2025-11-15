@@ -74,7 +74,6 @@ varying vec2  v_vTexcoord;
 varying vec4  v_vColourIndexes;
 varying vec2  v_vCycle;
 varying float v_fGradient;
-varying float v_fCycleOffset;
 
 uniform vec2  u_vSkew;                         //2
 uniform vec2  u_vRegionActive;                 //2 //FIXME - This will break when not revealing per char
@@ -383,8 +382,6 @@ void main()
         v_vCycle = vec2(-1.0);
         v_vColourIndexes = in_Colour;
     }
-    
-    v_fCycleOffset = 0.0; //TODO
     
     if (ANIM_SPRITE_FLAG > 0.5) v_vColourIndexes.a *= filterAnimatedSprite(PACKED_SPRITE_DATA); //Use packed sprite data to filter out sprite frames that we don't want
     

@@ -12,7 +12,6 @@ varying vec2  v_vTexcoord;
 varying vec4  v_vColourIndexes;
 varying vec2  v_vCycle;
 varying float v_fGradient;
-varying float v_fCycleOffset;
 
 uniform sampler2D u_sCycle;
 uniform sampler2D u_sPalette;
@@ -23,7 +22,7 @@ uniform vec4  u_vFlash;
 uniform vec4  u_vColourBlend;
 uniform vec4  u_vGradientColour;
 uniform vec4  u_vShadowColour;
-uniform vec3  u_vOutlineColour;
+uniform vec4  u_vOutlineColour;
 uniform float u_fSecondDraw;
 uniform vec4  u_vClip;
 
@@ -45,9 +44,29 @@ vec4 PaletteColour(float index)
     return texture2D(u_sPalette, vec2((mod(index, PALETTE_SIZE) + 0.5) / PALETTE_SIZE, (floor(index / PALETTE_SIZE) + 0.5) / PALETTE_SIZE));
 }
 
-vec3 OutlineColour()
+vec4 BaseColour()
 {
-    return (v_vColourIndexes.z <= 0.0)? u_vOutlineColour : PaletteColour(v_vColourIndexes.z).rgb;
+    if (v_vCycle.y >= 0.0) //Cycle
+    {
+        return texture2D(u_sCycle, v_vCycle);
+    }
+    else if (v_vColourIndexes.x < 0.0) //SCRIBBLE_PALETTE_NO_COLOR is negative
+    {
+        return vec4(1.0); //Use white
+    }
+    else if (v_vColourIndexes.x == 0.0) //Use the blend colour
+    {
+        return vec4(u_vColourBlend.rgb, 1.0);
+    }
+    else
+    {
+        return PaletteColour(v_vColourIndexes.x); //Read a colour from the palette
+    }
+}
+
+vec4 OutlineColour()
+{
+    return (v_vColourIndexes.z <= 0.0)? u_vOutlineColour : PaletteColour(v_vColourIndexes.z);
 }
 
 void main()
@@ -59,23 +78,7 @@ void main()
     }
     
     //Handle base colour
-    vec4 colour;
-    if (v_vCycle.y >= 0.0) //Cycle
-    {
-        colour = texture2D(u_sCycle, v_vCycle);
-    }
-    else if (v_vColourIndexes.x < 0.0) //SCRIBBLE_PALETTE_NO_COLOR is negative
-    {
-        colour = vec4(1.0); //Use white
-    }
-    else if (v_vColourIndexes.x == 0.0) //Use the blend colour
-    {
-        colour = vec4(u_vColourBlend.rgb, 1.0);
-    }
-    else
-    {
-        colour = PaletteColour(v_vColourIndexes.x); //Read a colour from the palette
-    }
+    vec4 colour = BaseColour();
     
     //Apply gradient if required
     vec4 gradientColour = (v_vColourIndexes.y <= 0.0)? u_vGradientColour : PaletteColour(v_vColourIndexes.y);
@@ -97,8 +100,9 @@ void main()
         
         if (u_fSecondDraw < 0.5)
         {
-            float outAlpha = gl_FragColor.a + sample.g*(1.0 - gl_FragColor.a);
-            gl_FragColor.rgb = (gl_FragColor.rgb*gl_FragColor.a + OutlineColour()*sample.g*(1.0 - gl_FragColor.a)) / outAlpha;
+            vec4 outlineColor = OutlineColour();
+            float outAlpha = gl_FragColor.a + outlineColor.a*sample.g*(1.0 - gl_FragColor.a);
+            gl_FragColor.rgb = (gl_FragColor.rgb*gl_FragColor.a + outlineColor.rgb*outlineColor.a*sample.g*(1.0 - gl_FragColor.a)) / outAlpha;
             gl_FragColor.a = outAlpha;
             
             if (u_vShadowColour.a > 0.0)
@@ -136,7 +140,8 @@ void main()
             
             if (u_fOutlineThickness > 0.0)
             {
-                gl_FragColor.rgb = mix(OutlineColour(), gl_FragColor.rgb, gl_FragColor.a);
+                vec4 outlineColor = OutlineColour();
+                gl_FragColor.rgb = mix(outlineColor.rgb, gl_FragColor.rgb, gl_FragColor.a*outlineColor.a);
                 gl_FragColor.a = max(gl_FragColor.a, smoothstep(0.5 - smoothness*spread, 0.5 + smoothness*spread, baseDist + outlineOffset));
             }
             

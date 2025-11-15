@@ -122,6 +122,7 @@ function __ScribbleClassElementParent(_text) constructor
     __sdfShadowSoftness = 0;
     
     __sdfOutlineColor     = c_black;
+    __sdfOutlineAlpha     = 0;
     __sdfOutlineThickness = 0.0;
     
     __bidiHint = undefined;
@@ -1427,9 +1428,10 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static outline = function(_color)
+    static outline = function(_color, _alpha = 1)
     {
         __sdfOutlineColor     = _color;
+        __sdfOutlineAlpha     = _alpha;
         __sdfOutlineThickness = 0;
         
         return self;
@@ -1452,9 +1454,10 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static sdf_outline = function(_color, _thickness)
+    static sdf_outline = function(_color, _thickness, _alpha = 1)
     {
         __sdfOutlineColor     = _color;
+        __sdfOutlineAlpha     = _alpha;
         __sdfOutlineThickness = _thickness;
         
         return self;
@@ -1936,7 +1939,8 @@ function __ScribbleClassElementParent(_text) constructor
         
         shader_set_uniform_f(_u_vOutlineColour,colour_get_red(  __sdfOutlineColor)/255,
                                                colour_get_green(__sdfOutlineColor)/255,
-                                               colour_get_blue( __sdfOutlineColor)/255);
+                                               colour_get_blue( __sdfOutlineColor)/255,
+                                               __sdfOutlineAlpha);
         
         shader_set_uniform_f(_u_fOutlineThickness, __sdfOutlineThickness);
     }
