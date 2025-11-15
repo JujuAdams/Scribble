@@ -908,7 +908,7 @@
   "size":24.0,
   "styleName":"Regular",
   "tags":[
-    "Scribble",
+    "scribble",
   ],
   "textureGroupId":{
     "name":"Default",

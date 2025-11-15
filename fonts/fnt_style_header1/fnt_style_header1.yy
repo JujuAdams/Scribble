@@ -135,7 +135,7 @@
   "size":30.0,
   "styleName":"Bold Italic",
   "tags":[
-    "Scribble",
+    "scribble",
   ],
   "textureGroupId":{
     "name":"Default",

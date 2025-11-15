@@ -135,7 +135,7 @@
   "size":26.0,
   "styleName":"Bold",
   "tags":[
-    "Scribble",
+    "scribble",
   ],
   "textureGroupId":{
     "name":"Default",

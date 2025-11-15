@@ -2894,7 +2894,7 @@
   "size":35.0,
   "styleName":"Medium",
   "tags":[
-    "Scribble",
+    "scribble",
   ],
   "textureGroupId":{
     "name":"Default",

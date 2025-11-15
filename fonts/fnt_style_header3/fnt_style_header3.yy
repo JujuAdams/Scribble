@@ -3,7 +3,7 @@
   "%Name":"fnt_style_header3",
   "AntiAlias":1,
   "applyKerning":0,
-  "ascender":32,
+  "ascender":34,
   "ascenderOffset":0,
   "bold":true,
   "canGenerateBitmap":true,
@@ -115,7 +115,7 @@
   "italic":false,
   "kerningPairs":[],
   "last":0,
-  "lineHeight":0,
+  "lineHeight":44,
   "maintainGms1Font":false,
   "name":"fnt_style_header3",
   "parent":{
@@ -135,7 +135,7 @@
   "size":24.0,
   "styleName":"Italic",
   "tags":[
-    "Scribble",
+    "scribble",
   ],
   "textureGroupId":{
     "name":"Default",

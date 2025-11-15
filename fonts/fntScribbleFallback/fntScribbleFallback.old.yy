@@ -3,7 +3,7 @@
   "%Name":"fntScribbleFallback",
   "AntiAlias":1,
   "applyKerning":0,
-  "ascender":15,
+  "ascender":0,
   "ascenderOffset":0,
   "bold":false,
   "canGenerateBitmap":true,
@@ -115,7 +115,7 @@
   "italic":false,
   "kerningPairs":[],
   "last":0,
-  "lineHeight":19,
+  "lineHeight":0,
   "maintainGms1Font":false,
   "name":"fntScribbleFallback",
   "parent":{

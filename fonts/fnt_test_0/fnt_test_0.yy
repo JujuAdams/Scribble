@@ -311,7 +311,7 @@
   "size":12.0,
   "styleName":"Regular",
   "tags":[
-    "Scribble",
+    "scribble",
   ],
   "textureGroupId":{
     "name":"Default",

@@ -228,7 +228,7 @@
   "size":50.0,
   "styleName":"DemiBold",
   "tags":[
-    "Scribble",
+    "scribble",
   ],
   "textureGroupId":{
     "name":"Default",

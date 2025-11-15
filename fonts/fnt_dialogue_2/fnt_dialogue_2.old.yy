@@ -3,7 +3,7 @@
   "%Name":"fnt_dialogue_2",
   "AntiAlias":1,
   "applyKerning":0,
-  "ascender":17,
+  "ascender":0,
   "ascenderOffset":0,
   "bold":false,
   "canGenerateBitmap":true,
@@ -358,7 +358,7 @@
     {"amount":-1,"first":125,"second":730,},
   ],
   "last":0,
-  "lineHeight":23,
+  "lineHeight":0,
   "maintainGms1Font":false,
   "name":"fnt_dialogue_2",
   "parent":{
@@ -378,7 +378,7 @@
   "size":14.0,
   "styleName":"Regular",
   "tags":[
-    "scribble",
+    "Scribble",
   ],
   "textureGroupId":{
     "name":"Default",

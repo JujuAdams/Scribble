@@ -229,7 +229,7 @@
   "size":16.0,
   "styleName":"Regular",
   "tags":[
-    "Scribble",
+    "scribble",
   ],
   "textureGroupId":{
     "name":"Default",

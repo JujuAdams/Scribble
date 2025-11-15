@@ -1,9 +1,7 @@
 // Feather disable all
 
-//This causes a failure to compile in YYC in IDE v2024.11.0.179 / Runtime v2024.11.0.227
+//TODO
 //gml_pragma("MarkTagAsUsed", "scribble");
-
-
 
 if (SCRIBBLE_INITIALIZE_ON_BOOT)
 {
