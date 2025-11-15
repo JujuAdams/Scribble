@@ -1,2 +1,3 @@
-scribble_color_set("c_banana", #FAE7B5);
+// Feather disable all
+
 scribble_color_set("c_coquelicot", #ff3800);
