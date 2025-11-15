@@ -162,6 +162,10 @@ function __ScribbleGen2_Parser()
         _commandTagLookupAcceleratorMap[? "grad"              ] = 50;
         _commandTagLookupAcceleratorMap[? "/gradient"         ] = 51;
         _commandTagLookupAcceleratorMap[? "/grad"             ] = 51;
+        _commandTagLookupAcceleratorMap[? "outline"           ] = 52;
+        _commandTagLookupAcceleratorMap[? "ol"                ] = 52;
+        _commandTagLookupAcceleratorMap[? "/outline"          ] = 53;
+        _commandTagLookupAcceleratorMap[? "/ol"               ] = 53;
     }
     
     #endregion
@@ -975,11 +979,8 @@ function __ScribbleGen2_Parser()
                         
                         case 50: // [gradient] [grad]
                             var _paletteIndex = __ScribbleConvertColorToIndex(_tagParameters[1]);
-                            if (_paletteIndex != undefined)
-                            {
-                                array_push(_controlArray, new __ScribbleClassControlGradient(_paletteIndex));
-                                ++_controlCount;
-                            }
+                            array_push(_controlArray, new __ScribbleClassControlGradient(_paletteIndex ?? 0));
+                            ++_controlCount;
                         break;
                         
                         case 51: // [/gradient] [/grad]
@@ -989,11 +990,8 @@ function __ScribbleGen2_Parser()
                         
                         case 52: // [outline]
                             var _paletteIndex = __ScribbleConvertColorToIndex(_tagParameters[1]);
-                            if (_paletteIndex != undefined)
-                            {
-                                array_push(_controlArray, new __ScribbleClassControlOutline(_paletteIndex));
-                                ++_controlCount;
-                            }
+                            array_push(_controlArray, new __ScribbleClassControlOutline(_paletteIndex ?? 0));
+                            ++_controlCount;
                         break;
                         
                         case 53: // [/outline]

@@ -47,7 +47,7 @@ vec4 PaletteColour(float index)
 
 vec3 OutlineColour()
 {
-    return (v_vColourIndexes.y <= 0.0)? u_vOutlineColour : PaletteColour(v_vColourIndexes.z).rgb;
+    return (v_vColourIndexes.z <= 0.0)? u_vOutlineColour : PaletteColour(v_vColourIndexes.z).rgb;
 }
 
 void main()
@@ -78,20 +78,8 @@ void main()
     }
     
     //Apply gradient if required
-    vec4 gradientColour;
-    if (v_fGradient > 0.0)
-    {
-        if (v_vColourIndexes.y == 0.0)
-        {
-            gradientColour = u_vGradientColour;
-        }
-        else
-        {
-            gradientColour = PaletteColour(v_vColourIndexes.y);
-        }
-        
-        colour.rgb = mix(colour.rgb, gradientColour.rgb, pow(v_fGradient*gradientColour.a, 2.0));
-    }
+    vec4 gradientColour = (v_vColourIndexes.y <= 0.0)? u_vGradientColour : PaletteColour(v_vColourIndexes.y);
+    colour.rgb = mix(colour.rgb, gradientColour.rgb, v_fGradient*gradientColour.a * v_fGradient*gradientColour.a);
     
     //Apply alpha
     colour.a *= v_vColourIndexes.a*u_vColourBlend.a;

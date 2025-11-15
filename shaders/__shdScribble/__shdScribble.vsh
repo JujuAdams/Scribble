@@ -372,10 +372,10 @@ void main()
     
     
     
-    if (in_Colour.r <= PALETTE_ZEROTH_CYCLE)
+    if (in_Colour.x <= PALETTE_ZEROTH_CYCLE)
     {
         //If we have a cycle going on use the colour channel to tell us where to read colour information from the texture
-        v_vCycle = vec2(CYCLE_SPEED*u_fTime - CYCLE_FREQUENCY*ANIMATION_INDEX, ((PALETTE_ZEROTH_CYCLE - in_Colour.r) + 0.5) / CYCLE_TEXTURE_HEIGHT);
+        v_vCycle = vec2(CYCLE_SPEED*u_fTime - CYCLE_FREQUENCY*ANIMATION_INDEX, ((PALETTE_ZEROTH_CYCLE - in_Colour.x) + 0.5) / CYCLE_TEXTURE_HEIGHT);
         v_vColourIndexes = vec4(0.0, 0.0, 0.0, 1.0);
     }
     else
@@ -445,5 +445,5 @@ void main()
     v_vTexcoord = in_Colour2.xy;
     
     //Gradient
-    v_fGradient = (v_vModelPosition.y > centre.y)? GRADIENT_FLAG : 0.0; //TODO - Replace with step()
+    v_fGradient = step(centre.y, v_vModelPosition.y);
 }
