@@ -103,14 +103,12 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
             var _sdfPxRange         = 2*_fontInfo.sdfSpread;
             var _sdfThicknessOffset = 0;
             var _sdfOffset          = -_sdfPxRange;
-            var _sdfHeightOffset    = -_sdfPxRange + 2; //idk why
         }
         else
         {
             var _sdfPxRange         = undefined;
             var _sdfThicknessOffset = undefined;
             var _sdfOffset          = 0;
-            var _sdfHeightOffset    = 0;
         }
         
         var _ascender = _fontInfo.ascender;
@@ -235,7 +233,7 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
             _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET    ] = _yoffset - _ascenderOffset;
             _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_WIDTH       ] = _w;
             _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_HEIGHT      ] = _h;
-            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT ] = _lineHeight + _sdfHeightOffset;
+            _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT ] = _lineHeight;
             _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_SEPARATION  ] = _glyphDict.shift;
             _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_LEFT_OFFSET ] = -_glyphDict.offset;
             //_fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE  ] = 1; //Set above in bulk
@@ -258,7 +256,7 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
             _lineHeight = _fontGlyphDataGrid[# _spaceIndex, __SCRIBBLE_GLYPH_PROPR_HEIGHT];
         }
         
-        _fontData.__height = _lineHeight + _sdfHeightOffset;
+        _fontData.__height = _lineHeight;
         _fontData.__EnsureAdditionalCharacters();
         
         //Check to see if this texture has been resized during compile

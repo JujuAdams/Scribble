@@ -3,8 +3,8 @@ var _string = "the quick brown fox jumped over the lazy dog.\nSPHINX OF BLACK QU
 var _standard = scribble("[scale,2][fnt_industrydemi_control]" + _string);
 var _sdf      = scribble("[scale,2][fnt_industrydemi_sdf]" + _string);
 
-_standard.wrap(330).draw(10, 10);
-_sdf.wrap(330).draw(10, _standard.get_bbox(10, 10).bottom + 10);
+_standard.max_size(330).layout_wrap().draw(10, 10);
+_sdf.max_size(330).layout_wrap().draw(10, _standard.get_bbox(10, 10).bottom + 10);
 
 var _bbox = _standard.get_bbox(10, 10);
 draw_rectangle(_bbox.x0, _bbox.y0, _bbox.x3, _bbox.y3, true);
