@@ -63,9 +63,9 @@ function scribble_font_bake_shader(_sourceFontName, _newFontName, _shader, _outl
         return;
     }
     
-    if (ScribbleFontExists(_new_font_name))
+    if (scribble_font_exists(_newFontName))
     {
-        __ScribbleError($"A font called \"{_new_font_name}\" already exists");
+        __ScribbleError($"A font called \"{_newFontName}\" already exists");
         return;
     }
     
@@ -77,8 +77,8 @@ function scribble_font_bake_shader(_sourceFontName, _newFontName, _shader, _outl
     
     //Create a new font
     var _newFontData = new __ScribbleClassFont(_newFontName, _glyphCount, undefined, false, true,
-                                                 _srcFontData.__underlineY + _padT + _padB,
-                                                 _srcFontData.__strikeY    + _padT + _padB);
+                                               _srcFontData.__underlineY + _padT + _padB,
+                                               _srcFontData.__strikeY    + _padT + _padB);
     _newFontData.__bilinear = _smooth;
     _newFontData.__runtime  = true;
     _newFontData.__height   = _srcFontData.__height + _padT + _padB;
