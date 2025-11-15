@@ -8,8 +8,8 @@
   "name":"obj_test_anim_cycle",
   "overriddenProperties":[],
   "parent":{
-    "name":"Animation",
-    "path":"folders/Test Cases/Animation.yy",
+    "name":"Color",
+    "path":"folders/Test Cases/Color.yy",
   },
   "parentObjectId":null,
   "persistent":false,

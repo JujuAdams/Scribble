@@ -60,21 +60,21 @@ void main()
     
     //Handle base colour
     vec4 colour;
-    if (v_vCycle.y >= 0.0)
+    if (v_vCycle.y >= 0.0) //Cycle
     {
         colour = texture2D(u_sCycle, v_vCycle);
     }
-    else if (v_vColourIndexes.x < 0.0) //SCRIBBLE_PALETTE_NO_COLOR
+    else if (v_vColourIndexes.x < 0.0) //SCRIBBLE_PALETTE_NO_COLOR is negative
     {
-        colour = vec4(1.0);
+        colour = vec4(1.0); //Use white
     }
-    else if (v_vColourIndexes.x == 0.0)
+    else if (v_vColourIndexes.x == 0.0) //Use the blend colour
     {
         colour = vec4(u_vColourBlend.rgb, 1.0);
     }
     else
     {
-        colour = PaletteColour(v_vColourIndexes.x);
+        colour = PaletteColour(v_vColourIndexes.x); //Read a colour from the palette
     }
     
     //Apply gradient if required

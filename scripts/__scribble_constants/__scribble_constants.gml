@@ -22,7 +22,8 @@
 
 #macro SCRIBBLE_PALETTE_SIZE  16 //Tied to constant in fragment shader
 
-#macro SCRIBBLE_PALETTE_NO_COLOR  -1 //Tied to constant in fragment shader
+#macro SCRIBBLE_PALETTE_NO_COLOR      -1 //Tied to constant in fragment shader
+#macro SCRIBBLE_PALETTE_ZEROTH_CYCLE  -2 //Tied to constant in vertex shader
 
 #macro SCRIBBLE_EASE_NONE      0
 #macro SCRIBBLE_EASE_LINEAR    1

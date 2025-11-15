@@ -45,21 +45,12 @@
 
 
 
-//Default rainbow frequency. Larger values create more colour changes over a certain number of
-//characters. This value should be between 0 and 1.
-#macro SCRIBBLE_DEFAULT_RAINBOW_FREQUENCY  0.2
+//Default rainbow and cycle frequency. Larger values create more colour changes over a certain
+//number of characters. This value should be between 0 and 1.
+#macro SCRIBBLE_DEFAULT_CYCLE_FREQUENCY  0.02
 
-//Default rainbow speed. Larger numbers cause characters to change colour faster.
-#macro SCRIBBLE_DEFAULT_RAINBOW_SPEED  0.1
-
-
-
-//Default cycle frequency. Larger values create more colour changes over a certain number of
-//characters. This value should be between 0 and 1.
-#macro SCRIBBLE_DEFAULT_CYCLE_FREQUENCY  0.2
-
-//Default cycle speed. Larger numbers cause characters to change colour faster.
-#macro SCRIBBLE_DEFAULT_CYCLE_SPEED  0.1
+//Default rainbow and cycle speed. Larger numbers cause characters to change colour faster.
+#macro SCRIBBLE_DEFAULT_CYCLE_SPEED  0.01
 
 
 

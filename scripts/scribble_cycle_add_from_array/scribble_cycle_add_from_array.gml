@@ -2,10 +2,10 @@
 
 /// @param name
 /// @param rgbArray
-/// @param [smooth=true]
+/// @param smooth
 /// @param [legacyBlend=false]
 
-function scribble_cycle_add_from_array(_name, _rgbArray, _smooth = true, _legacyBlend = false)
+function scribble_cycle_add_from_array(_name, _rgbArray, _smooth, _legacyBlend = false)
 {
     static _dataOpenArray = __ScribbleSystem().__cycleDataOpenArray;
     static _dataMap       = __ScribbleSystem().__cycleDataMap;

@@ -681,9 +681,7 @@ function __ScribbleGen2_Parser()
                         case 41: // [rainbow]
                             if (_tagCommandName == "rainbow")
                             {
-                                var _cycleName  = "rainbow";
-                                var _cycleSpeed = (_tagParameterCount > 1)? real(_tagParameters[1]) : SCRIBBLE_DEFAULT_RAINBOW_SPEED;
-                                var _cycleFreq  = (_tagParameterCount > 2)? real(_tagParameters[2]) : SCRIBBLE_DEFAULT_RAINBOW_FREQUENCY;
+                                var _cycleName = SCRIBBLE_RAINBOW_CYCLE;
                             }
                             else
                             {
@@ -693,8 +691,6 @@ function __ScribbleGen2_Parser()
                                 }
                                 
                                 var _cycleName  = _tagParameters[1];
-                                var _cycleSpeed = (_tagParameterCount > 2)? real(_tagParameters[2]) : SCRIBBLE_DEFAULT_CYCLE_SPEED;
-                                var _cycleFreq  = (_tagParameterCount > 3)? real(_tagParameters[3]) : SCRIBBLE_DEFAULT_CYCLE_FREQUENCY;
                             }
                             
                             var _cycleData = _cycleDataMap[? _cycleName];
@@ -703,17 +699,7 @@ function __ScribbleGen2_Parser()
                                 __ScribbleError("Cycle \"", _cycleName, "\" not recognised");
                             }
                             
-                            _stateEffectFlags = _stateEffectFlags | (1 << __SCRIBBLE_FLAG_CYCLE);
-                            
-                            array_push(_controlArray, new __ScribbleClassControlEffect(_stateEffectFlags));
-                            ++_controlCount;
-                            
-                            var _ms = game_get_speed(gamespeed_microseconds) / 1000;
-                            var _cycleIndex = clamp(_cycleData.__index, 0, 255);
-                            var _cycleSpeed = clamp(255*_cycleSpeed/_ms, 1, 255);
-                            var _cycleFreq  = clamp(255*_cycleFreq/_ms, 0, 255);
-                            
-                            array_push(_controlArray, new __ScribbleClassControlCycle(_cycleIndex | (_cycleSpeed << 8) | (_cycleFreq << 16) | 0xFF000000));
+                            array_push(_controlArray, new __ScribbleClassControlCycle(_cycleData.__index));
                             ++_controlCount;
                             
                             __hasAnimation = true;
@@ -723,11 +709,6 @@ function __ScribbleGen2_Parser()
                         // [/rainbow]
                         // [/cycle]
                         case 23:
-                            _stateEffectFlags = ~((~_stateEffectFlags) | (1 << __SCRIBBLE_FLAG_CYCLE));
-                            
-                            array_push(_controlArray, new __ScribbleClassControlEffect(_stateEffectFlags));
-                            ++_controlCount;
-                            
                             array_push(_controlArray, new __ScribbleClassControlCycle(-1));
                             ++_controlCount;
                         break;

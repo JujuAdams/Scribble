@@ -1,10 +1,11 @@
 //   @jujuadams   v10.0.0   2025-08-24
 precision highp float;
 
-#define ANIMATION_INDEX      in_Position.z
-#define REVEAL_INDEX         in_Normal.x
-#define PACKED_SPRITE_DATA   in_Normal.y
-#define PACKED_EFFECT_FLAGS  in_Normal.z
+#define ANIMATION_INDEX       in_Position.z
+#define REVEAL_INDEX          in_Normal.x
+#define PACKED_SPRITE_DATA    in_Normal.y
+#define PACKED_EFFECT_FLAGS   in_Normal.z
+#define PALETTE_ZEROTH_CYCLE  -2.0
 
 const float CYCLE_TEXTURE_HEIGHT = 256.0;
 
@@ -38,6 +39,8 @@ const int MAX_ANIM_FIELDS = 16;
 #define JITTER_MAXIMUM    u_aDataFields[13]
 #define JITTER_SPEED      u_aDataFields[14]
 #define SLANT_GRADIENT    u_aDataFields[15]
+#define CYCLE_SPEED       0.01
+#define CYCLE_FREQUENCY   0.02
 
 #define EASE_NONE           0
 #define EASE_LINEAR         1
@@ -369,10 +372,10 @@ void main()
     
     
     
-    if (CYCLE_FLAG > 0.5)
+    if (in_Colour.r <= PALETTE_ZEROTH_CYCLE)
     {
         //If we have a cycle going on use the colour channel to tell us where to read colour information from the texture
-        v_vCycle = vec2(in_Colour.g*u_fTime - in_Colour.b*ANIMATION_INDEX, in_Colour.r + (0.5 / CYCLE_TEXTURE_HEIGHT));
+        v_vCycle = vec2(CYCLE_SPEED*u_fTime - CYCLE_FREQUENCY*ANIMATION_INDEX, ((PALETTE_ZEROTH_CYCLE - in_Colour.r) + 0.5) / CYCLE_TEXTURE_HEIGHT);
         v_vColourIndexes = vec4(0.0, 0.0, 0.0, 1.0);
     }
     else

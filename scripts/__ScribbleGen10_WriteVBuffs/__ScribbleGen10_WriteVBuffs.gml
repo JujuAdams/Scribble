@@ -114,10 +114,12 @@ function __ScribbleGen10_WriteVBuffs()
         _bezierDo = false;
     }
     
-    var _glyphCycle        = 0x00000000;
-    var _glyphEffectFlags  = 0;
-    var _glyphSpriteData   = 0;
-    var _writeColorBase    = 0;
+    var _glyphEffectFlags = 0;
+    var _glyphSpriteData  = 0;
+    var _glyphColorBase   = 0;
+    var _glyphCycle       = -1; //Cycle index
+    
+    var _writeColorBase    = _glyphColorBase; //Sometimes this stores the base colour index, sometimes the cycle index
     var _writeColorGrad    = -1;
     var _writeColorOutline = -1;
     var _writeAlpha        = 1;
@@ -227,7 +229,8 @@ function __ScribbleGen10_WriteVBuffs()
                     var _controlType = _controlStruct.__type;
                     if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR)
                     {
-                        _writeColorBase = _controlStruct.__paletteIndex;
+                        _glyphColorBase = _controlStruct.__paletteIndex;
+                        _writeColorBase = _glyphColorBase;
                     }
                     else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_GRADIENT)
                     {
@@ -256,8 +259,8 @@ function __ScribbleGen10_WriteVBuffs()
                     }
                     else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_CYCLE)
                     {
-                        //TODO - Reimplement this
                         _glyphCycle = _controlStruct.__value;
+                        _writeColorBase = (_glyphCycle < 0)? _glyphColorBase : (-_glyphCycle + SCRIBBLE_PALETTE_ZEROTH_CYCLE);
                     }
                     else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_EVENT)
                     {
@@ -354,10 +357,6 @@ function __ScribbleGen10_WriteVBuffs()
                     {
                         var _oldWriteColor = _writeColorBase;
                         _writeColorBase = SCRIBBLE_PALETTE_NO_COLOR;
-                        
-                        _glyphEffectFlags = ~_glyphEffectFlags;
-                        _glyphEffectFlags |= (1 << __SCRIBBLE_FLAG_CYCLE);
-                        _glyphEffectFlags = ~_glyphEffectFlags;
                     }
                     
                     _glyphEffectFlags |= (1 << __SCRIBBLE_FLAG_GRAPHIC); //Set the graphic flag bit
@@ -456,10 +455,6 @@ function __ScribbleGen10_WriteVBuffs()
                     {
                         var _oldWriteColor = _writeColorBase;
                         _writeColorBase = SCRIBBLE_PALETTE_NO_COLOR;
-                        
-                        _glyphEffectFlags = ~_glyphEffectFlags;
-                        _glyphEffectFlags |= (1 << __SCRIBBLE_FLAG_CYCLE);
-                        _glyphEffectFlags = ~_glyphEffectFlags;
                     }
                     
                     _glyphEffectFlags |= (1 << __SCRIBBLE_FLAG_GRAPHIC); //Set the graphic flag bit

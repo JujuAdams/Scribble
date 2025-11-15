@@ -101,11 +101,11 @@
 #macro __SCRIBBLE_PIN_BOTTOM           5
 #macro __SCRIBBLE_HEAD_COUNT           3
 
-#macro __SCRIBBLE_COMMAND_TAG_PAUSE                  "pause"
-#macro __SCRIBBLE_COMMAND_TAG_DELAY_TAG              "delay"
-#macro __SCRIBBLE_COMMAND_TAG_SYNC                   "sync"
-#macro __SCRIBBLE_COMMAND_TAG_SPEED                  "speed"
-#macro __SCRIBBLE_COMMAND_TAG_UNSPEED                "/speed"
+#macro __SCRIBBLE_COMMAND_TAG_PAUSE      "pause"
+#macro __SCRIBBLE_COMMAND_TAG_DELAY_TAG  "delay"
+#macro __SCRIBBLE_COMMAND_TAG_SYNC       "sync"
+#macro __SCRIBBLE_COMMAND_TAG_SPEED      "speed"
+#macro __SCRIBBLE_COMMAND_TAG_UNSPEED    "/speed"
 
 #macro __SCRIBBLE_EVENT_AUDIO                  "__ScribbleAudioPlayback__"
 #macro __SCRIBBLE_EVENT_TYPIST_SOUND           "__ScribbleTypistSound__"
@@ -130,7 +130,7 @@
 #macro __SCRIBBLE_FLAG_WOBBLE       4
 #macro __SCRIBBLE_FLAG_PULSE        5
 #macro __SCRIBBLE_FLAG_WHEEL        6
-#macro __SCRIBBLE_FLAG_CYCLE        7
+//#macro __SCRIBBLE_FLAG_CYCLE        7
 #macro __SCRIBBLE_FLAG_JITTER       8
 #macro __SCRIBBLE_FLAG_SLANT        9
 #macro __SCRIBBLE_FLAG_GRADIENT    10

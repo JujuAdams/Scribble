@@ -227,12 +227,16 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __ScribbleAddTag(__SCRIBBLE_COMMAND_TAG_SPEED,     __SCRIBBLE_TAG_EVENT, undefined, true);
         __ScribbleAddTag(__SCRIBBLE_COMMAND_TAG_UNSPEED,   __SCRIBBLE_TAG_EVENT, undefined, true);
         
+        __ScribbleAddTag("cycle",   __SCRIBBLE_TAG_EFFECT,       undefined, true);
+        __ScribbleAddTag("CYCLE",   __SCRIBBLE_TAG_EFFECT,       undefined, true);
+        __ScribbleAddTag("/cycle",  __SCRIBBLE_TAG_EFFECT_UNSET, undefined, true);
+        __ScribbleAddTag("/CYCLE",  __SCRIBBLE_TAG_EFFECT_UNSET, undefined, true);
+        
         __ScribbleAddTag("wave",   __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_WAVE,   true);
         __ScribbleAddTag("shake",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_SHAKE,  true);
         __ScribbleAddTag("wobble", __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_WOBBLE, true);
         __ScribbleAddTag("pulse",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_PULSE,  true);
         __ScribbleAddTag("wheel",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_WHEEL,  true);
-        __ScribbleAddTag("cycle",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_CYCLE,  true);
         __ScribbleAddTag("jitter", __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_JITTER, true);
         __ScribbleAddTag("slant",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_SLANT,  true);
         
@@ -241,7 +245,6 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __ScribbleAddTag("WOBBLE", __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_WOBBLE, true);
         __ScribbleAddTag("PULSE",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_PULSE,  true);
         __ScribbleAddTag("WHEEL",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_WHEEL,  true);
-        __ScribbleAddTag("CYCLE",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_CYCLE,  true);
         __ScribbleAddTag("JITTER", __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_JITTER, true);
         __ScribbleAddTag("SLANT",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_SLANT,  true);
         
@@ -250,7 +253,6 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __ScribbleAddTag("/wobble", __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_WOBBLE, true);
         __ScribbleAddTag("/pulse",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_PULSE,  true);
         __ScribbleAddTag("/wheel",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_WHEEL,  true);
-        __ScribbleAddTag("/cycle",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_CYCLE,  true);
         __ScribbleAddTag("/jitter", __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_JITTER, true);
         __ScribbleAddTag("/slant",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_SLANT,  true);
         
@@ -259,7 +261,6 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __ScribbleAddTag("/WOBBLE", __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_WOBBLE, true);
         __ScribbleAddTag("/PULSE",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_PULSE,  true);
         __ScribbleAddTag("/WHEEL",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_WHEEL,  true);
-        __ScribbleAddTag("/CYCLE",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_CYCLE,  true);
         __ScribbleAddTag("/JITTER", __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_JITTER, true);
         __ScribbleAddTag("/SLANT",  __SCRIBBLE_TAG_EFFECT_UNSET, __SCRIBBLE_FLAG_SLANT,  true);
         
@@ -296,7 +297,7 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __cycleSurface = -1;
         __cycleDataOpenArray = [];
         __cycleDataMap = ds_map_create();
-        scribble_cycle_add_from_array(SCRIBBLE_RAINBOW_CYCLE, [c_red, c_yellow, c_lime, c_aqua, c_blue, c_fuchsia], true, false);
+        scribble_cycle_add_from_array(SCRIBBLE_RAINBOW_CYCLE, [ #ff4444, #ffff44, #44ff44, #44ffff, #4444ff, #ff44ff], true, false);
         
         //Unpack texture group data into an easy-to-use dictionary. This should, of course, just be a native
         //feature of GameMaker. I, in fact, suggested such a feature (including sprites (and backgrounds!))
