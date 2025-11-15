@@ -11,8 +11,8 @@
 //                                                                        //
 ////////////////////////////////////////////////////////////////////////////
 
-#macro SCRIBBLE_VERSION  "9.6.6"
-#macro SCRIBBLE_DATE     "2025-09-04"
+#macro SCRIBBLE_VERSION  "9.6.6.1"
+#macro SCRIBBLE_DATE     "2025-09-23"
 
 #macro SCRIBBLE_RUNNING_FROM_IDE  (GM_build_type == "run")
 
@@ -99,3 +99,8 @@
 #macro SCRIBBLE_UNICODE_GREEK_QMARK  0x037E
 
 #macro SCRIBBLE_FONT_ADD_SDF_RANGE  5
+
+#macro SCRIBBLE_AUTO_START          0
+#macro SCRIBBLE_AUTO_MOVE_TO_END    1
+#macro SCRIBBLE_AUTO_END            2
+#macro SCRIBBLE_AUTO_MOVE_TO_START  3

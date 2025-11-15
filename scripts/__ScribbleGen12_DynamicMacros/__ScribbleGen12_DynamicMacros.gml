@@ -30,7 +30,7 @@ function __ScribbleGen12_DynamicMacros()
             if (_newResult != _data.__result)
             {
                 _data.__result = _newResult;
-                __weakRef.ref.__rebuild();
+                __weakRef.ref.__Rebuild();
                 break;
             }
             

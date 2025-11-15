@@ -1,5 +1,5 @@
 {
-  "$GMNotes":"",
+  "$GMNotes":"v1",
   "%Name":"Mallangche License",
   "name":"Mallangche License",
   "parent":{

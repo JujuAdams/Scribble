@@ -1,8 +1,8 @@
 {
-  "$GMProject":"",
+  "$GMProject":"v1",
   "%Name":"Scribble",
   "AudioGroups":[
-    {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"v1","%Name":"audiogroup_default","exportDir":"","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
   ],
   "configs":{
     "children":[],
@@ -66,6 +66,7 @@
     {"$GMFolder":"","%Name":"Skip","folderPath":"folders/Test Cases/Typewriter/Skip.yy","name":"Skip","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Wrapping","folderPath":"folders/Test Cases/Wrapping.yy","name":"Wrapping","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
+  "ForcedPrefabProjectReferences":[],
   "IncludedFiles":[
     {"$GMIncludedFile":"","%Name":"blip.ogg","CopyToMask":-1,"filePath":"datafiles","name":"blip.ogg","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"Candara.ttf","CopyToMask":-1,"filePath":"datafiles","name":"Candara.ttf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
@@ -79,7 +80,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.11.0.179",
+    "IDEVersion":"2024.14.0.207",
   },
   "name":"Scribble",
   "resources":[
@@ -178,6 +179,7 @@
     {"id":{"name":"obj_test_font_outline_4dir","path":"objects/obj_test_font_outline_4dir/obj_test_font_outline_4dir.yy",},},
     {"id":{"name":"obj_test_font_outline_8dir_2px","path":"objects/obj_test_font_outline_8dir_2px/obj_test_font_outline_8dir_2px.yy",},},
     {"id":{"name":"obj_test_font_outline_8dir","path":"objects/obj_test_font_outline_8dir/obj_test_font_outline_8dir.yy",},},
+    {"id":{"name":"obj_test_font_outline_and_shadow_family","path":"objects/obj_test_font_outline_and_shadow_family/obj_test_font_outline_and_shadow_family.yy",},},
     {"id":{"name":"obj_test_font_outline_and_shadow","path":"objects/obj_test_font_outline_and_shadow/obj_test_font_outline_and_shadow.yy",},},
     {"id":{"name":"obj_test_font_outline_stress_test","path":"objects/obj_test_font_outline_stress_test/obj_test_font_outline_stress_test.yy",},},
     {"id":{"name":"obj_test_font_rename","path":"objects/obj_test_font_rename/obj_test_font_rename.yy",},},
@@ -239,6 +241,7 @@
     {"id":{"name":"obj_test_scale_to_box_maximise","path":"objects/obj_test_scale_to_box_maximise/obj_test_scale_to_box_maximise.yy",},},
     {"id":{"name":"obj_test_scale_to_box_plus_transformation","path":"objects/obj_test_scale_to_box_plus_transformation/obj_test_scale_to_box_plus_transformation.yy",},},
     {"id":{"name":"obj_test_scale_to_box","path":"objects/obj_test_scale_to_box/obj_test_scale_to_box.yy",},},
+    {"id":{"name":"obj_test_scratch","path":"objects/obj_test_scratch/obj_test_scratch.yy",},},
     {"id":{"name":"obj_test_scroll_to_line","path":"objects/obj_test_scroll_to_line/obj_test_scroll_to_line.yy",},},
     {"id":{"name":"obj_test_scroll_with_typist","path":"objects/obj_test_scroll_with_typist/obj_test_scroll_with_typist.yy",},},
     {"id":{"name":"obj_test_scroll","path":"objects/obj_test_scroll/obj_test_scroll.yy",},},
@@ -367,7 +370,7 @@
     {"id":{"name":"__ScribbleFontAddSprite","path":"scripts/__ScribbleFontAddSprite/__ScribbleFontAddSprite.yy",},},
     {"id":{"name":"__ScribbleGen1_ModelLimitsAndBezierCurves","path":"scripts/__ScribbleGen1_ModelLimitsAndBezierCurves/__ScribbleGen1_ModelLimitsAndBezierCurves.yy",},},
     {"id":{"name":"__ScribbleGen10_WriteVBuffs","path":"scripts/__ScribbleGen10_WriteVBuffs/__ScribbleGen10_WriteVBuffs.yy",},},
-    {"id":{"name":"__ScribbleGen11_SetPaddingFlags","path":"scripts/__ScribbleGen11_SetPaddingFlags/__ScribbleGen11_SetPaddingFlags.yy",},},
+    {"id":{"name":"__ScribbleGen11_PaddingAndClipping","path":"scripts/__ScribbleGen11_PaddingAndClipping/__ScribbleGen11_PaddingAndClipping.yy",},},
     {"id":{"name":"__ScribbleGen12_DynamicMacros","path":"scripts/__ScribbleGen12_DynamicMacros/__ScribbleGen12_DynamicMacros.yy",},},
     {"id":{"name":"__ScribbleGen2_Parser","path":"scripts/__ScribbleGen2_Parser/__ScribbleGen2_Parser.yy",},},
     {"id":{"name":"__ScribbleGen2b_PostParse","path":"scripts/__ScribbleGen2b_PostParse/__ScribbleGen2b_PostParse.yy",},},

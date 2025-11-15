@@ -50,11 +50,11 @@ function __ScribbleClassModel(_element) constructor
     __revealMode        = _element.__revealMode;
     __preprocessorArray = _element.__preprocessorBakedArray;
     
-    __build();
+    __Build();
     
     
     
-    static __build = function()
+    static __Build = function()
     {
         //Record the start time so we can get a duration later
         if (SCRIBBLE_VERBOSE) var _timer_total = get_timer();
@@ -75,6 +75,11 @@ function __ScribbleClassModel(_element) constructor
         __padBboxT = false;
         __padBboxR = false;
         __padBboxB = false;
+        
+        __clipLeft   = -999999;
+        __clipTop    = -999999;
+        __clipRight  =  999999;
+        __clipBottom =  999999;
         
         var _result = __ScribbleParseLineSpacing(__lineSpacing);
         __lineSpacingAdd      = _result.__add;
@@ -112,7 +117,7 @@ function __ScribbleClassModel(_element) constructor
         __ScribbleGen8_PositionGlyphs();
         __ScribbleGen9_BuildVBuffGrids();
         __ScribbleGen10_WriteVBuffs();
-        __ScribbleGen11_SetPaddingFlags();
+        __ScribbleGen11_PaddingAndClipping();
         __ScribbleGen12_DynamicMacros();
         
         if (SCRIBBLE_VERBOSE)
@@ -122,10 +127,10 @@ function __ScribbleClassModel(_element) constructor
         }
     }
     
-    static __rebuild = function()
+    static __Rebuild = function()
     {
         __Reset();
-        __build();
+        __Build();
     }
     
     static __Draw = function(_page, _scrollXArray, _scrollYArray, _clip, _doubleDraw)
@@ -142,39 +147,15 @@ function __ScribbleClassModel(_element) constructor
         
         if (_page == floor(_page))
         {
-            //If we're not in serial mode then we can only draw one page at a time
+            //Only draw one page
+            
+            var _pageStruct = __pagesArray[_page];
             
             if (_clip)
             {
                 _usedClip = true;
-                
-                if (__startingHAlign == fa_center)
-                {
-                    var _x = floor(-0.5*__width);
-                }
-                else if (__startingHAlign == fa_right)
-                {
-                    var _x = -__width;
-                }
-                else
-                {
-                    var _x = 0;
-                }
-                
-                if (__startingHAlign == fa_middle)
-                {
-                    var _y = floor(-0.5*__height);
-                }
-                else if (__startingHAlign == fa_bottom)
-                {
-                    var _y = -__height;
-                }
-                else
-                {
-                    var _y = 0;
-                }
-                
-                shader_set_uniform_f(_u_vClip, _x, _y, _x + __layoutMaxWidth, _y + __layoutMaxHeight);
+                shader_set_uniform_f(_u_vClip, __clipLeft, __clipTop, __clipRight, __clipBottom);
+                shader_set_uniform_f(_u_vScroll, _pageStruct.__scrollOffsetX + _scrollXArray[_page], _pageStruct.__scrollOffsetY + _scrollYArray[_page]);
             }
             else
             {
@@ -183,53 +164,29 @@ function __ScribbleClassModel(_element) constructor
                     _usedClip = false;
                     shader_set_uniform_f(_u_vClip, -999999, -999999, 999999, 999999);
                 }
+                
+                shader_set_uniform_f(_u_vScroll, _scrollXArray[_page], _scrollYArray[_page]);
             }
             
-            shader_set_uniform_f(_u_vScroll, _scrollXArray[_page], _scrollYArray[_page]);
-            __pagesArray[_page].__Submit(_doubleDraw);
+            _pageStruct.__Submit(_doubleDraw);
         }
         else
         {
-            //Otherwise, draw the two pages that are visible
-            
+            //Otherwise, draw the two pages that are visible. We always enable clipping here
             _usedClip = true;
-                
-            if (__startingHAlign == fa_center)
-            {
-                var _x = floor(-0.5*__width);
-            }
-            else if (__startingHAlign == fa_right)
-            {
-                var _x = -__width;
-            }
-            else
-            {
-                var _x = 0;
-            }
-            
-            if (__startingHAlign == fa_middle)
-            {
-                var _y = floor(-0.5*__height);
-            }
-            else if (__startingHAlign == fa_bottom)
-            {
-                var _y = -__height;
-            }
-            else
-            {
-                var _y = 0;
-            }
             
             var _offset = frac(_page)*__layoutMaxHeight;
-            _page = floor(_page);
+            var _pageInteger = floor(_page);
             
-            shader_set_uniform_f(_u_vClip, _x, _y, _x + __layoutMaxWidth, _y + __layoutMaxHeight - _offset);
-            shader_set_uniform_f(_u_vScroll, _scrollXArray[_page], _scrollYArray[_page] + _offset);
-            __pagesArray[_page].__Submit(_doubleDraw);
+            var _pageStruct = __pagesArray[_pageInteger];
+            shader_set_uniform_f(_u_vClip, __clipLeft, __clipTop, __clipRight, __clipBottom - _offset);
+            shader_set_uniform_f(_u_vScroll, _pageStruct.__scrollOffsetX + _scrollXArray[_page], _pageStruct.__scrollOffsetY + _scrollYArray[_page] + _offset);
+            _pageStruct.__Submit(_doubleDraw);
             
-            shader_set_uniform_f(_u_vClip, _x, _y + __layoutMaxHeight - _offset, _x + __layoutMaxWidth, _y + __layoutMaxHeight);
-            shader_set_uniform_f(_u_vScroll, _scrollXArray[_page+1], _scrollYArray[_page+1] + _offset - __layoutMaxHeight);
-            __pagesArray[_page+1].__Submit(_doubleDraw);
+            var _pageStruct = __pagesArray[_pageInteger+1];
+            shader_set_uniform_f(_u_vClip, __clipLeft, __clipTop - _offset, __clipRight, __clipBottom);
+            shader_set_uniform_f(_u_vScroll, _pageStruct.__scrollOffsetX + _scrollXArray[_pageInteger+1], _pageStruct.__scrollOffsetY + _scrollYArray[_pageInteger+1] + _offset - __layoutMaxHeight);
+            _pageStruct.__Submit(_doubleDraw);
         }
     }
     
@@ -301,7 +258,7 @@ function __ScribbleClassModel(_element) constructor
     }
     
     /// @param page
-    static __GetBbox = function(_page, _paddingL, _paddingT, _paddingR, _paddingB)
+    static __GetBbox = function(_page, _paddingL, _paddingT, _paddingR, _paddingB, _clip)
     {
         if (_page != undefined)
         {
@@ -322,6 +279,42 @@ function __ScribbleClassModel(_element) constructor
             var _bottom = __maxY;
         }
         
+        if (_clip)
+        {
+            //Clipping is relative to the model
+            if (__startingHAlign == fa_center)
+            {
+                _left  = max(floor(-0.5*__layoutMaxWidth), _left);
+                _right = min(floor( 0.5*__layoutMaxWidth), _right);
+            }
+            else if (__startingHAlign == fa_right)
+            {
+                _left  = max(-__layoutMaxWidth, _left);
+                _right = min(0, _right);
+            }
+            else
+            {
+                _left  = max(0, _left);
+                _right = min(__layoutMaxWidth, _right);
+            }
+        
+            if (__startingVAlign == fa_middle)
+            {
+                _top    = max(floor(-0.5*__layoutMaxHeight), _top);
+                _bottom = min(floor( 0.5*__layoutMaxHeight), _bottom);
+            }
+            else if (__startingVAlign == fa_bottom)
+            {
+                _top    = max(-__layoutMaxHeight, _top);
+                _bottom = min(0, _bottom);
+            }
+            else
+            {
+                _top    = max(0, _top);
+                _bottom = min(__layoutMaxHeight, _bottom);
+            }
+        }
+        
         if (__padBboxL) _left   -= _paddingL; else _right  += _paddingL;
         if (__padBboxT) _top    -= _paddingT; else _bottom += _paddingT;
         if (__padBboxR) _right  += _paddingR; else _left   -= _paddingR;
@@ -335,7 +328,7 @@ function __ScribbleClassModel(_element) constructor
         };
     }
     
-    static __GetBboxRevealed = function(_page, _glyphIndex, _paddingL, _paddingT, _paddingR, _paddingB)
+    static __GetBboxRevealed = function(_page, _glyphIndex, _paddingL, _paddingT, _paddingR, _paddingB, _clip)
     {
         //TODO - Optimize by returning page bounds if the number of characters revealed is the same as the whole page
         //FIXME - Implement for non-glyph reveal
@@ -363,6 +356,42 @@ function __ScribbleClassModel(_element) constructor
             var _bottom = ds_grid_get_max(_glyphGrid, _start, __SCRIBBLE_GLYPH_LAYOUT_BOTTOM, _end, __SCRIBBLE_GLYPH_LAYOUT_BOTTOM);
         }
         
+        if (_clip)
+        {
+            //Clipping is relative to the model
+            if (__startingHAlign == fa_center)
+            {
+                _left  = max(floor(-0.5*__layoutMaxWidth), _left);
+                _right = min(floor( 0.5*__layoutMaxWidth), _right);
+            }
+            else if (__startingHAlign == fa_right)
+            {
+                _left  = max(-__layoutMaxWidth, _left);
+                _right = min(0, _right);
+            }
+            else
+            {
+                _left  = max(0, _left);
+                _right = min(__layoutMaxWidth, _right);
+            }
+        
+            if (__startingVAlign == fa_middle)
+            {
+                _top    = max(floor(-0.5*__layoutMaxHeight), _left);
+                _bottom = min(floor( 0.5*__layoutMaxHeight), _right);
+            }
+            else if (__startingVAlign == fa_bottom)
+            {
+                _top    = max(-__layoutMaxHeight, _top);
+                _bottom = min(0, _bottom);
+            }
+            else
+            {
+                _top    = max(0, _top);
+                _bottom = min(__layoutMaxHeight, _bottom);
+            }
+        }
+        
         if (__padBboxL) _left   -= _paddingL; else _right  += _paddingL;
         if (__padBboxT) _top    -= _paddingT; else _bottom += _paddingT;
         if (__padBboxR) _right  += _paddingR; else _left   -= _paddingR;
@@ -376,13 +405,13 @@ function __ScribbleClassModel(_element) constructor
         };
     }
     
-    /// @page
+    /// @param page
     static __GetWidth = function(_page)
     {
         return __fitScale*__width;
     }
     
-    /// @page
+    /// @param page
     static __GetHeight = function(_page)
     {
         return __fitScale*__height;
@@ -395,33 +424,25 @@ function __ScribbleClassModel(_element) constructor
     
     static __GetScrollMaxX = function(_page)
     {
-        if ((_page < 0) || (_page > array_length(__pagesArray)))
-        {
-            return 0;
-        }
-        
-        return max(0, __pagesArray[_page].__maxX - __layoutMaxWidth);
+        return ((_page < 0) || (_page > array_length(__pagesArray)))? 0 : __pagesArray[_page].__scrollMaxX;
     }
     
     static __GetScrollMaxY = function(_page)
     {
-        if ((_page < 0) || (_page > array_length(__pagesArray)))
-        {
-            return 0;
-        }
-        
-        return max(0, __pagesArray[_page].__maxY - __layoutMaxHeight);
+        return ((_page < 0) || (_page > array_length(__pagesArray)))? 0 : __pagesArray[_page].__scrollMaxY;
     }
     
-    static __GetSerialY = function(_page)
-    {
-        return __layoutMaxHeight*clamp(_page, 0, array_length(__pagesArray)-1);
-    }
-    
-    static __GetSerialMax = function()
-    {
-        return __layoutMaxHeight*max(0, array_length(__pagesArray)-1);
-    }
+    //TODO - These are unused
+    //
+    //static __GetSerialY = function(_page)
+    //{
+    //    return __layoutMaxHeight*clamp(_page, 0, array_length(__pagesArray)-1);
+    //}
+    //
+    //static __GetSerialMax = function()
+    //{
+    //    return __layoutMaxHeight*max(0, array_length(__pagesArray)-1);
+    //}
     
     /// @param page
     static __GetText = function(_page)
