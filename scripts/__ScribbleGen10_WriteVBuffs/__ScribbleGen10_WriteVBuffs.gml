@@ -242,13 +242,13 @@ function __ScribbleGen10_WriteVBuffs()
                             _glyphEffectFlags |= 1 << __SCRIBBLE_FLAG_GRADIENT;
                         }
                     }
-                    if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_OUTLINE)
+                    else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_OUTLINE)
                     {
                         _writeColorOutline = _controlStruct.__paletteIndex;
                     }
-                    else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_COLOUR)
+                    else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_ALPHA)
                     {
-                        _writeAlpha = _controlStruct.__alpha;
+                        _writeAlpha = _controlStruct.__value;
                     }
                     else if (_controlType == __SCRIBBLE_GEN_CONTROL_TYPE_EFFECT)
                     {
