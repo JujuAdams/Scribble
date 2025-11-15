@@ -4,16 +4,16 @@
 /// pack shadow and outline information into the green and blue channels whereas the "core" glyph
 /// will occupy the red channel.
 ///
-/// @param sourceFontName   Name, as a string, of the font to use as a basis for the effect
-/// @param newFontName      Name of the new font to create, as a string
-/// @param shadowX          
-/// @param shadowY          
-/// @param outlineMode      Type of outline, member of SCRIBBLE_OUTLINE
-/// @param separation       Additional separation to add between glyphs
-/// @param smooth           Whether or not to interpolate the effect. Set to `false` for pixel fonts, set to `true` for anti-aliased fonts
-/// @param [textureSize]
+/// @param sourceFontName         Name, as a string, of the font to use as a basis for the effect
+/// @param newFontName            Name of the new font to create, as a string
+/// @param shadowX                x-offset for the shadow
+/// @param shadowY                y-offset for the shadow
+/// @param outlineMode            Type of outline, member of SCRIBBLE_OUTLINE
+/// @param separation             Additional separation to add between glyphs
+/// @param smooth                 Whether or not to interpolate the effect. Set to `false` for pixel fonts, set to `true` for anti-aliased fonts
+/// @param [maxTextureSize=2048]  Maximum texture size. Defaults to 2048x2048
 
-function scribble_font_bake_outline_and_shadow(_sourceFontName, _newFontName, _dX, _dY, _outlineMode, _separation, _smooth, _textureSize = undefined)
+function scribble_font_bake_outline_and_shadow(_sourceFontName, _newFontName, _dX, _dY, _outlineMode, _separation, _smooth, _textureSize = 2048)
 {
     var _outlineSize = 0;
     var _shader = __shdScribbleBakeEffectNoOutline;

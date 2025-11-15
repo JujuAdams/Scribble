@@ -1,3 +1,6 @@
+//TODO - Expose as a config macro?
+#macro __SCRIBBLE_REFERENCE_FRAME_TIME  (1_000/60)  //microseconds
+
 #macro __SCRIBBLE_GLYPH_LAYOUT_UNICODE   0
 #macro __SCRIBBLE_GLYPH_LAYOUT_LEFT      1
 #macro __SCRIBBLE_GLYPH_LAYOUT_TOP       2
@@ -99,13 +102,18 @@
 #macro __SCRIBBLE_HEAD_COUNT           3
 
 #macro __SCRIBBLE_COMMAND_TAG_PAUSE                  "pause"
-#macro __SCRIBBLE_COMMAND_TAG_DELAY                  "delay"
+#macro __SCRIBBLE_COMMAND_TAG_DELAY_TAG              "delay"
 #macro __SCRIBBLE_COMMAND_TAG_SYNC                   "sync"
 #macro __SCRIBBLE_COMMAND_TAG_SPEED                  "speed"
 #macro __SCRIBBLE_COMMAND_TAG_UNSPEED                "/speed"
-#macro __SCRIBBLE_COMMAND_TAG_AUDIO                  "__scribble_audio_playback__"
-#macro __SCRIBBLE_COMMAND_TAG_TYPIST_SOUND           "__scribble_typist_sound__"
-#macro __SCRIBBLE_COMMAND_TAG_TYPIST_SOUND_PER_CHAR  "__scribble_typist_sound_per_char__"
+
+#macro __SCRIBBLE_EVENT_AUDIO                  "__ScribbleAudioPlayback__"
+#macro __SCRIBBLE_EVENT_TYPIST_SOUND           "__ScribbleTypistSound__"
+#macro __SCRIBBLE_EVENT_TYPIST_SOUND_PER_CHAR  "__ScribbleTypistSoundPerChar__"
+#macro __SCRIBBLE_EVENT_NEXT_LINE              "__ScribbleNextLine__"
+#macro __SCRIBBLE_EVENT_NEXT_BLOCK             "__ScribbleNextBlock__"
+#macro __SCRIBBLE_EVENT_NEXT_PAGE              "__ScribbleNextPage__"
+#macro __SCRIBBLE_EVENT_SYSTEM_DELAY           "__ScribbleSystemDelay__"
 
 #macro __SCRIBBLE_DEVANAGARI_OFFSET  0xFFFF //This won't work for any other value
 

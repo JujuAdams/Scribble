@@ -10,8 +10,8 @@
   "name":"obj_test_typewriter_in_reverse",
   "overriddenProperties":[],
   "parent":{
-    "name":"Position",
-    "path":"folders/Test Cases/Typewriter/Position.yy",
+    "name":"Not checked yet",
+    "path":"folders/Test Cases/Typewriter/Not checked yet.yy",
   },
   "parentObjectId":null,
   "persistent":false,

@@ -1,1 +1,1 @@
-scribble("[test]abcdefg[delay]hijklmnop").draw(x, y, typist);
+element.draw(10, 10);

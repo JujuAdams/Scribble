@@ -18,9 +18,7 @@ function scribble_set_tick_size(_value)
     {
         if (is_numeric(_value))
         {
-            _value = max(0, _value);
-            __userTickSize = _value;
-            __tickSize     = _value;
+            __userTickSize = max(0, _value);
         }
         else
         {

@@ -1,20 +1,23 @@
 if (keyboard_check_pressed(vk_space))
 {
-    if (element.get_paused())
+    if (element.typist_get_paused())
     {
-        element.unpause();
+        element.typist_unpause();
     }
     else
     {
-        if (element.get_state() == 1)
+        if (element.typist_get_finished())
         {
-            element.out(0.3, 10, true);
-            element.ease(SCRIBBLE_EASE_BACK, 0, 30, 1, 1, 0, 0.3);
-        }
-        else if (element.get_state() == 2)
-        {
-            element.in(0.3, 10);
-            element.ease(SCRIBBLE_EASE_BOUNCE, 0, -40, 1, 1, 0, 0.1);
+            if (element.typist_get_options().appear)
+            {
+                element.typist_options({ appear: false, speed: 0.3, smoothness: 10 });
+                element.typist_ease(SCRIBBLE_EASE_BACK, 0, 30, 1, 1, 0, 0.3);
+            }
+            else
+            {
+                element.typist_options({ appear: true, speed: 0.3, smoothness: 10 });
+                element.typist_ease(SCRIBBLE_EASE_BOUNCE, 0, -40, 1, 1, 0, 0.1);
+            }
         }
     }
 }

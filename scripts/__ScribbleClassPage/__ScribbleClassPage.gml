@@ -36,8 +36,14 @@ function __ScribbleClassPage(_model) constructor
     __vertexBufferArray = [];
     __textureToVertexBufferDict = {};
     
-    __eventsDict  = {};
     __regionArray = [];
+    
+    __scrollOffsetX = 0;
+    __scrollOffsetY = 0;
+    __scrollMaxX = 0;
+    __scrollMaxY = 0;
+    
+    
     
     static __Finalize = function(_pageEndLine)
     {

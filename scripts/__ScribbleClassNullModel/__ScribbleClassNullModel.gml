@@ -13,6 +13,8 @@ function __ScribbleClassNullModel() constructor
     __padBboxR = false;
     __padBboxB = false;
     
+    __eventsDict = {};
+    
     __pagesArray = [
         {
             __lineDataArray: [
@@ -22,7 +24,6 @@ function __ScribbleClassNullModel() constructor
             ],
             
             __regionArray: [],
-            __eventsDict: {},
             
             __revealCount: 0,
         },

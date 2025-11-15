@@ -1,6 +1,3 @@
-var _element = scribble("abcdefghijklmnopqrstuvwxyz012345689");
-_element.draw(10, 50, typist);
+element.draw(10, 10);
 
-draw_set_font(fntScribbleFallback);
-draw_text(10, 10, typist.get_state());
-draw_text(10, 30, typist.get_position());
+draw_text(10, element.get_height() + 20, element.typist_get_debug_info());

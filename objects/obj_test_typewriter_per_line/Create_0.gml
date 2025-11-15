@@ -2,8 +2,9 @@ var _string = "His manner was not effusive[sdm,effusive]. It seldom was; but he 
 
 element = scribble_unique(_string)
 .reveal_mode(SCRIBBLE_REVEAL_PER_LINE)
-.in(0.02, 1)
-.wrap(room_width/2);
+.max_size(room_width/2)
+.layout_wrap()
+.typist_options({speed: 0.02, smoothness: 1});
 
 scribble_typists_add_event("sdm", function(_element, _parameters)
 {

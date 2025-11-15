@@ -1,2 +1,5 @@
-element = scribble_unique("Farewell. - God knows when we shall meet again.[/section] I have a faint cold fear thrills through my veins that almost freezes up the heat of life. I'll call them back again to comfort me.[/section] - Nurse! -[/section] What should she do here? My dismal scene I needs must act alone.[/section] Come, vial.[/section] What if this mixture do not work at all? Shall I be married then tomorrow morning?[/section] No, no, this shall forbid it. Lie thou there.");
-element.in(0.02, 1);
+element = scribble_unique("Farewell. - God knows when we shall meet again.[/section] I have a faint cold fear thrills through my veins that almost freezes up the heat of life. I'll call them back again to comfort me.[/section] - Nurse! -[/section] What should she do here? My dismal scene I needs must act alone.[/section] Come, vial.[/section] What if this mixture do not work at all? Shall I be married then tomorrow morning?[/section] No, no, this shall forbid it. Lie thou there.")
+.max_size(400)
+.layout_wrap()
+.typist_options({ speed: 0.02, smoothness: 1 })
+.typist_start();

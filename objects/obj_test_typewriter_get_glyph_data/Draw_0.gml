@@ -1,9 +1,11 @@
-element.draw(x, y);
+var _x = 10;
+var _y = 10;
 
-var _data = element.get_glyph_data(element.get_position()-1);
-draw_rectangle(_data.left + x, _data.top + y,
-               _data.right + x, _data.bottom + y,
+element.draw(_x, _y);
+
+var _data = element.get_glyph_data(element.typist_get_position()-1);
+draw_rectangle(_data.left + _x, _data.top + _y,
+               _data.right + _x, _data.bottom + _y,
                true);
 
-draw_text(10, 100, element.get_position());
-draw_text(10, 120, element.get_glyph_count());
+draw_text(10, element.get_height() + 20, element.typist_get_debug_info());

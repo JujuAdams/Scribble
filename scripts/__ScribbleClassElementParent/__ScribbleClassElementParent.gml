@@ -19,7 +19,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     
     //We define this for all text elements because it gets used in the model key builder
-    __typistRevealMode = SCRIBBLE_DEFAULT_REVEAL_MODE;
+    __revealMode = SCRIBBLE_DEFAULT_REVEAL_MODE;
     __spritesDontScale = true;
     
     __preprocessorArray      = undefined;
@@ -67,20 +67,21 @@ function __ScribbleClassElementParent(_text) constructor
     
     __clip = false;
     
+    //Stores x/y offsets for panning and scrolling per page
     __scrollXArray = [];
     __scrollYArray = [];
     
-    __panState        = 0;
+    __panState        = SCRIBBLE_AUTO_START;
     __panSpeed        = SCRIBBLE_DEFAULT_PAN_SPEED;
     __panPause        = SCRIBBLE_DEFAULT_AUTOPAN_PAUSE_TIME;
-    __panAuto         = 0; //0 = off, 1 = x-axis, 2 = y-axis
+    __panAuto         = false;
     __panWasClamped   = true;
     __panPauseCounter = 0;
     
-    __scrollState        = 0;
+    __scrollState        = SCRIBBLE_AUTO_START;
     __scrollSpeed        = SCRIBBLE_DEFAULT_SCROLL_SPEED;
     __scrollPause        = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME;
-    __scrollAuto         = 0; //0 = off, 1 = x-axis, 2 = y-axis
+    __scrollAuto         = false;
     __scrollWasClamped   = true;
     __scrollPauseCounter = 0;
     
@@ -132,8 +133,6 @@ function __ScribbleClassElementParent(_text) constructor
     __regionGlyphEnd   = 0;
     __regionColor      = c_black;
     __regionBlend      = 0.0;
-    
-    
     
     __bboxDirty      = true;
     __bboxMatrix     = matrix_build_identity();
@@ -432,30 +431,35 @@ function __ScribbleClassElementParent(_text) constructor
     
     #region Pan
     
-    static pan_auto = function(_speed = SCRIBBLE_DEFAULT_PAN_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOPAN_PAUSE_TIME)
+    // Sets the panning x-offset immediately. This will disable automatic panning.
+    static pan = function(_x, _clamp = true, _page = __pageInteger)
     {
-        //Skip the pause if we're starting autoscroll
-        if (not __panAuto)
-        {
-            if (__panState == 1)
-            {
-                __panState = 2;
-            }
-            else if (__panState == 3)
-            {
-                __panState = 0;
-            }
-        }
+        __EnsureModel();
         
-        __panAuto = true;
+        __panAuto = false;
         
-        __panSpeed = _speed;
-        __panPause = _pauseTime;
+        __panXArray[@ _page] = _clamp? clamp(_x, 0, get_pan_max(_page)) : _x;
+        __panWasClamped = _clamp;
         
         return self;
     }
     
-    static pan_to_glyph = function(_index)
+    // Returns the current panning x-offset.
+    static get_pan = function(_page = __pageInteger)
+    {
+        __EnsureModel();
+        
+        return __scrollXArray[_page];
+    }
+    
+    // Returns the maximum panning offset.
+    static get_pan_max = function(_page = __pageInteger)
+    {
+        return __EnsureModel().__GetScrollMaxX(_page);
+    }
+    
+    // Pans immediately to ensure a particular glyph is visible.
+    static pan_to_glyph = function(_index, _page = __pageInteger)
     {
         var _model = __EnsureModel();
         
@@ -464,22 +468,11 @@ function __ScribbleClassElementParent(_text) constructor
             __ScribbleError("Panning to a glyph requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
         }
         
-        var _glyphData = _model.__GetGlyphData(_index, __pageInteger);
-        return pan_to(_glyphData.left, _glyphData.right);
+        var _glyphData = _model.__GetGlyphData(_index, _page);
+        return pan_to(_glyphData.left, _glyphData.right, _page);
     }
     
-    static pan = function(_x, _clamp = true, _page = __pageInteger)
-    {
-        __EnsureModel();
-        
-        __panAuto = false;
-        
-        __panXArray[@ _page] = _clamp? clamp(_x, 0, get_pan_max()) : _x;
-        __panWasClamped = _clamp;
-        
-        return self;
-    }
-    
+    // Pans immediately to ensure a particular range of x values are visible.
     static pan_to = function(_min, _max, _page = __pageInteger)
     {
         __EnsureModel();
@@ -507,61 +500,72 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static get_pan = function(_page = __pageInteger)
+    // Sets up automatic ping-pong panning.
+    static pan_auto = function(_speed = SCRIBBLE_DEFAULT_PAN_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOPAN_PAUSE_TIME)
     {
-        __EnsureModel();
+        //Skip the pause if we're starting autopan
+        if (not __panAuto)
+        {
+            if (__panState == SCRIBBLE_AUTO_MOVE_TO_END)
+            {
+                __panState = SCRIBBLE_AUTO_END;
+            }
+            else if (__panState == SCRIBBLE_AUTO_MOVE_TO_START)
+            {
+                __panState = SCRIBBLE_AUTO_START;
+            }
+        }
         
-        return __scrollXArray[_page];
-    }
-    
-    static get_pan_max = function(_page = __pageInteger)
-    {
-        return __EnsureModel().__GetScrollMaxX(_page);
+        __panAuto = true;
+        
+        __panSpeed = _speed;
+        __panPause = _pauseTime;
+        
+        return self;
     }
     
     static __AutoPan = function(_page = __pageInteger)
     {
-        if (__panAuto)
+        //N.B. This is an *unsafe* method. Please check `__panAuto` prior to calling it
+        
+        if (__panState == SCRIBBLE_AUTO_START)
         {
-            if (__panState == 0)
+            __scrollXArray[@ _page] += __panSpeed*_system.__tickSize;
+            
+            if (__scrollXArray[_page] >= get_pan_max())
             {
-                __scrollXArray[@ _page] += __panSpeed*_system.__tickSize;
-                
-                if (__scrollXArray[_page] >= get_pan_max())
-                {
-                    __scrollXArray[@ _page] = get_pan_max();
-                    __panPauseCounter = 0;
-                    __panState = 1;
-                }
+                __scrollXArray[@ _page] = get_pan_max();
+                __panPauseCounter = 0;
+                __panState = SCRIBBLE_AUTO_MOVE_TO_END;
             }
-            else if (__panState == 1)
+        }
+        else if (__panState == SCRIBBLE_AUTO_MOVE_TO_END)
+        {
+            __panPauseCounter += _system.__tickSize
+            
+            if (__panPauseCounter >= __panPause)
             {
-                __panPauseCounter += _system.__tickSize
-                
-                if (__panPauseCounter >= __panPause)
-                {
-                    __panState = 2;
-                }
+                __panState = SCRIBBLE_AUTO_END;
             }
-            else if (__panState == 2)
+        }
+        else if (__panState == SCRIBBLE_AUTO_END)
+        {
+            __scrollXArray[@ _page] -= __panSpeed*_system.__tickSize;
+            
+            if (__scrollXArray[_page] <= 0)
             {
-                __scrollXArray[@ _page] -= __panSpeed*_system.__tickSize;
-                
-                if (__scrollXArray[_page] <= 0)
-                {
-                    __scrollXArray[@ _page] = 0;
-                    __panPauseCounter = 0;
-                    __panState = 3;
-                }
+                __scrollXArray[@ _page] = 0;
+                __panPauseCounter = 0;
+                __panState = SCRIBBLE_AUTO_MOVE_TO_START;
             }
-            else if (__panState == 3)
+        }
+        else if (__panState == SCRIBBLE_AUTO_MOVE_TO_START)
+        {
+            __panPauseCounter += _system.__tickSize
+            
+            if (__panPauseCounter >= __panPause)
             {
-                __panPauseCounter += _system.__tickSize
-                
-                if (__panPauseCounter >= ___panPause)
-                {
-                    __panState = 0;
-                }
+                __panState = SCRIBBLE_AUTO_START;
             }
         }
     }
@@ -570,54 +574,47 @@ function __ScribbleClassElementParent(_text) constructor
     
     
     
-    #region Clip & Scroll
+    #region Scroll
     
-    static clip = function(_state = true)
+    // Sets the scroll y-offset immediately. This will disable automatic scrolling.
+    static scroll = function(_y, _clamp = true, _page = __pageInteger)
     {
-        __clip = _state;
+        __EnsureModel();
+        
+        __scrollAuto = false;
+        
+        __scrollYArray[@ _page] = _clamp? clamp(_y, 0, get_scroll_max(_page)) : _y;
+        __scrollWasClamped = _clamp;
         
         return self;
     }
     
-    static get_clip = function()
+    // Returns the current scroll y-offset.
+    static get_scroll = function(_page = __pageInteger)
     {
-        return __clip;
+        __EnsureModel();
+        
+        return __scrollYArray[_page];
     }
     
-    static scroll_auto = function(_speed = SCRIBBLE_DEFAULT_SCROLL_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME)
+    // Returns the maximum scroll offset.
+    static get_scroll_max = function(_page = __pageInteger)
     {
-        //Skip the pause if we're starting autoscroll
-        if (not __scrollAuto)
-        {
-            if (__scrollState == 1)
-            {
-                __scrollState = 2;
-            }
-            else if (__scrollState == 3)
-            {
-                __scrollState = 0;
-            }
-        }
-        
-        __scrollAuto = true;
-        
-        __scrollSpeed = _speed;
-        __scrollPause = _pauseTime;
-        
-        return self;
+        return __EnsureModel().__GetScrollMaxY(_page);
     }
     
-    static scroll_to_glyph = function(_index)
+    // Scrolls immediately to ensure a particular glyph is visible.
+    static scroll_to_glyph = function(_index, _page = __pageInteger)
     {
         var _model = __EnsureModel();
         if (_model.__allowGlyphDataGetter)
         {
-            var _glyphData = _model.__GetGlyphData(_index, __pageInteger);
+            var _glyphData = _model.__GetGlyphData(_index, _page);
             return scroll_to(_glyphData.top, _glyphData.bottom);
         }
         else
         {
-            var _lineArray = _model.__pagesArray[__pageInteger].__lineDataArray;
+            var _lineArray = _model.__pagesArray[_page].__lineDataArray;
             var _i = 0;
             repeat(array_length(_lineArray))
             {
@@ -633,13 +630,15 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static scroll_to_line = function(_index)
+    // Scrolls immediately to ensure a particular line is visible.
+    static scroll_to_line = function(_index, _page = __pageInteger)
     {
         var _model = __EnsureModel();
-        var _line_data = _model.__GetLineData(_index, __pageInteger);
+        var _line_data = _model.__GetLineData(_index, _page);
         return scroll_to(_line_data.y, _line_data.y + _line_data.height-1);
     }
     
+    // Scrolls immediately to ensure a particular range of y values are visible.
     static scroll_to = function(_min, _max, _page = __pageInteger)
     {
         __EnsureModel();
@@ -667,75 +666,96 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static scroll = function(_y, _clamp = true, _page = __pageInteger)
+    // Sets up automatic ping-pong scroll.
+    static scroll_auto = function(_speed = SCRIBBLE_DEFAULT_SCROLL_SPEED, _pauseTime = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME)
     {
-        __EnsureModel();
+        //Skip the pause if we're starting autoscroll
+        if (not __scrollAuto)
+        {
+            if (__scrollState == SCRIBBLE_AUTO_MOVE_TO_END)
+            {
+                __scrollState = SCRIBBLE_AUTO_END;
+            }
+            else if (__scrollState == SCRIBBLE_AUTO_MOVE_TO_START)
+            {
+                __scrollState = SCRIBBLE_AUTO_START;
+            }
+        }
         
-        __scrollAuto = false;
+        __scrollAuto = true;
         
-        __scrollYArray[@ _page] = _clamp? clamp(_y, 0, get_scroll_max()) : _y;
-        __scrollWasClamped = _clamp;
+        __scrollSpeed = _speed;
+        __scrollPause = _pauseTime;
         
         return self;
     }
     
-    static get_scroll = function(_page = __pageInteger)
-    {
-        __EnsureModel();
-        
-        return __scrollYArray[_page];
-    }
-    
-    static get_scroll_max = function(_page = __pageInteger)
-    {
-        return __EnsureModel().__GetScrollMaxY(_page);
-    }
-    
     static __AutoScroll = function(_page = __pageInteger)
     {
-        if (__scrollAuto)
+        //N.B. This is an *unsafe* method. Please check `__scrollAuto` prior to calling it
+        
+        if (__scrollState == SCRIBBLE_AUTO_START)
         {
-            if (__scrollState == 0)
+            __scrollYArray[@ _page] += __scrollSpeed*_system.__tickSize;
+            
+            if (__scrollYArray[_page] >= get_scroll_max())
             {
-                __scrollYArray[@ _page] += __scrollSpeed*_system.__tickSize;
-                
-                if (__scrollYArray[_page] >= get_scroll_max())
-                {
-                    __scrollYArray[@ _page] = get_scroll_max();
-                    __scrollPauseCounter = 0;
-                    __scrollState = 1;
-                }
-            }
-            else if (__scrollState == 1)
-            {
-                __scrollPauseCounter += _system.__tickSize
-                
-                if (__scrollPauseCounter >= __scrollPause)
-                {
-                    __scrollState = 2;
-                }
-            }
-            else if (__scrollState == 2)
-            {
-                __scrollYArray[@ _page] -= __scrollSpeed*_system.__tickSize;
-                
-                if (__scrollYArray[_page] <= 0)
-                {
-                    __scrollYArray[@ _page] = 0;
-                    __scrollPauseCounter = 0;
-                    __scrollState = 3;
-                }
-            }
-            else if (__scrollState == 3)
-            {
-                __scrollPauseCounter += _system.__tickSize
-                
-                if (__scrollPauseCounter >= __scrollPause)
-                {
-                    __scrollState = 0;
-                }
+                __scrollYArray[@ _page] = get_scroll_max();
+                __scrollPauseCounter = 0;
+                __scrollState = SCRIBBLE_AUTO_MOVE_TO_END;
             }
         }
+        else if (__scrollState == SCRIBBLE_AUTO_MOVE_TO_END)
+        {
+            __scrollPauseCounter += _system.__tickSize
+            
+            if (__scrollPauseCounter >= __scrollPause)
+            {
+                __scrollState = SCRIBBLE_AUTO_END;
+            }
+        }
+        else if (__scrollState == SCRIBBLE_AUTO_END)
+        {
+            __scrollYArray[@ _page] -= __scrollSpeed*_system.__tickSize;
+            
+            if (__scrollYArray[_page] <= 0)
+            {
+                __scrollYArray[@ _page] = 0;
+                __scrollPauseCounter = 0;
+                __scrollState = SCRIBBLE_AUTO_MOVE_TO_START;
+            }
+        }
+        else if (__scrollState == SCRIBBLE_AUTO_MOVE_TO_START)
+        {
+            __scrollPauseCounter += _system.__tickSize
+            
+            if (__scrollPauseCounter >= __scrollPause)
+            {
+                __scrollState = SCRIBBLE_AUTO_START;
+            }
+        }
+    }
+    
+    #endregion
+    
+    
+    
+    #region Clip
+    
+    static clip = function(_state = true)
+    {
+        if (__clip != _state)
+        {
+            __bboxDirty = true;
+            __clip = _state;
+        }
+        
+        return self;
+    }
+    
+    static get_clip = function()
+    {
+        return __clip;
     }
     
     static block_trim = function(_value)
@@ -967,6 +987,7 @@ function __ScribbleClassElementParent(_text) constructor
             __matrixInverse = __ScribbleMatrixInverse(matrix_multiply(_matrix, matrix_get(matrix_world)));
         }
         
+        // TODO - Optimise
         var _vector = matrix_transform_vertex(__matrixInverse, _pointerX, _pointerY, 0);
         var _x = _vector[0];
         var _y = _vector[1];
@@ -1100,77 +1121,76 @@ function __ScribbleClassElementParent(_text) constructor
     static __UpdateBboxMatrix = function()
     {
         __UpdateScaleToBoxScale();
+        if (not __bboxDirty) return;
         
-        if (__bboxDirty)
+        __bboxDirty = false;
+        var _bboxMatrix = __bboxMatrix;
+        
+        var _model  = __EnsureModel();
+        var _xScale = __scaleToBoxScale*_model.__fitScale*__postXScale;
+        var _yScale = __scaleToBoxScale*_model.__fitScale*__postYScale;
+        
+        //Left/top padding is baked into the model
+        var _bbox = _model.__GetBbox(SCRIBBLE_BOUNDING_BOX_USES_PAGE? __pageInteger : undefined, __paddingL, __paddingT, __paddingR, __paddingB, __clip);
+        
+        __bboxRawWidth  = 1 + _bbox.right - _bbox.left;
+        __bboxRawHeight = 1 + _bbox.bottom - _bbox.top;
+        
+        if ((_xScale == 1) && (_yScale == 1) && (__postAngle == 0))
         {
-            __bboxDirty = false;
-            var _bboxMatrix = __bboxMatrix;
+            _bboxMatrix[@  0] = 1;
+            _bboxMatrix[@  1] = 0;
+            _bboxMatrix[@  4] = 0;
+            _bboxMatrix[@  5] = 1;
+            _bboxMatrix[@ 12] = -__originX;
+            _bboxMatrix[@ 13] = -__originY;
             
-            var _model  = __EnsureModel();
-            var _xScale = __scaleToBoxScale*_model.__fitScale*__postXScale;
-            var _yScale = __scaleToBoxScale*_model.__fitScale*__postYScale;
+            //Avoid using matrices if we can
+            __bboxAABBLeft   = -__originX + _bbox.left;
+            __bboxAABBTop    = -__originY + _bbox.top;
+            __bboxAABBRight  = -__originX + _bbox.right;
+            __bboxAABBBottom = -__originY + _bbox.bottom;
             
-            //Left/top padding is baked into the model
-            var _bbox = _model.__GetBbox(SCRIBBLE_BOUNDING_BOX_USES_PAGE? __pageInteger : undefined, __paddingL, __paddingT, __paddingR, __paddingB);
-            
-            __bboxRawWidth  = 1 + _bbox.right - _bbox.left;
-            __bboxRawHeight = 1 + _bbox.bottom - _bbox.top;
-            
-            if ((_xScale == 1) && (_yScale == 1) && (__postAngle == 0))
-            {
-                _bboxMatrix[@  0] = 1;
-                _bboxMatrix[@  1] = 0;
-                _bboxMatrix[@  4] = 0;
-                _bboxMatrix[@  5] = 1;
-                _bboxMatrix[@ 12] = -__originX;
-                _bboxMatrix[@ 13] = -__originY;
-                
-                //Avoid using matrices if we can
-                __bboxAABBLeft   = -__originX + _bbox.left;
-                __bboxAABBTop    = -__originY + _bbox.top;
-                __bboxAABBRight  = -__originX + _bbox.right;
-                __bboxAABBBottom = -__originY + _bbox.bottom;
-                
-                __bboxOOBx0 = __bboxAABBLeft;   __bboxOOBy0 = __bboxAABBTop;
-                __bboxOOBx1 = __bboxAABBRight;  __bboxOOBy1 = __bboxAABBTop;
-                __bboxOOBx2 = __bboxAABBLeft;   __bboxOOBy2 = __bboxAABBBottom;
-                __bboxOOBx3 = __bboxAABBRight;  __bboxOOBy3 = __bboxAABBBottom;
-            }
-            else
-            {
-                var  _sin = dsin(-__postAngle);
-                var  _cos = dcos(-__postAngle);
-                var _xSin = _xScale*_sin;
-                var _xCos = _xScale*_cos;
-                var _ySin = _yScale*_sin;
-                var _yCos = _yScale*_cos;
-                
-                _bboxMatrix[@  0] =  _xCos;
-                _bboxMatrix[@  1] =  _xSin;
-                _bboxMatrix[@  4] = -_ySin;
-                _bboxMatrix[@  5] =  _yCos;
-                _bboxMatrix[@ 12] = -(__originX*_xCos - __originY*_ySin);
-                _bboxMatrix[@ 13] = -(__originX*_xSin + __originY*_yCos);
-                
-                var _l = _bbox.left;
-                var _t = _bbox.top;
-                var _r = _bbox.right;
-                var _b = _bbox.bottom;
-                
-                var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _t, 0); __bboxOOBx0 = _vertex[0]; __bboxOOBy0 = _vertex[1];
-                var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _t, 0); __bboxOOBx1 = _vertex[0]; __bboxOOBy1 = _vertex[1];
-                var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _b, 0); __bboxOOBx2 = _vertex[0]; __bboxOOBy2 = _vertex[1];
-                var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _b, 0); __bboxOOBx3 = _vertex[0]; __bboxOOBy3 = _vertex[1];
-                
-                __bboxAABBLeft   = min(__bboxOOBx0, __bboxOOBx1, __bboxOOBx2, __bboxOOBx3);
-                __bboxAABBTop    = min(__bboxOOBy0, __bboxOOBy1, __bboxOOBy2, __bboxOOBy3);
-                __bboxAABBRight  = max(__bboxOOBx0, __bboxOOBx1, __bboxOOBx2, __bboxOOBx3);
-                __bboxAABBBottom = max(__bboxOOBy0, __bboxOOBy1, __bboxOOBy2, __bboxOOBy3);
-            }
-            
-            __bboxAABBWidth  = 1 + __bboxAABBRight - __bboxAABBLeft;
-            __bboxAABBHeight = 1 + __bboxAABBBottom - __bboxAABBTop;
+            __bboxOOBx0 = __bboxAABBLeft;   __bboxOOBy0 = __bboxAABBTop;
+            __bboxOOBx1 = __bboxAABBRight;  __bboxOOBy1 = __bboxAABBTop;
+            __bboxOOBx2 = __bboxAABBLeft;   __bboxOOBy2 = __bboxAABBBottom;
+            __bboxOOBx3 = __bboxAABBRight;  __bboxOOBy3 = __bboxAABBBottom;
         }
+        else
+        {
+            var  _sin = dsin(-__postAngle);
+            var  _cos = dcos(-__postAngle);
+            var _xSin = _xScale*_sin;
+            var _xCos = _xScale*_cos;
+            var _ySin = _yScale*_sin;
+            var _yCos = _yScale*_cos;
+            
+            _bboxMatrix[@  0] =  _xCos;
+            _bboxMatrix[@  1] =  _xSin;
+            _bboxMatrix[@  4] = -_ySin;
+            _bboxMatrix[@  5] =  _yCos;
+            _bboxMatrix[@ 12] = -(__originX*_xCos - __originY*_ySin);
+            _bboxMatrix[@ 13] = -(__originX*_xSin + __originY*_yCos);
+            
+            var _l = _bbox.left;
+            var _t = _bbox.top;
+            var _r = _bbox.right;
+            var _b = _bbox.bottom;
+            
+            // TODO - Optimise
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _t, 0); __bboxOOBx0 = _vertex[0]; __bboxOOBy0 = _vertex[1];
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _t, 0); __bboxOOBx1 = _vertex[0]; __bboxOOBy1 = _vertex[1];
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _b, 0); __bboxOOBx2 = _vertex[0]; __bboxOOBy2 = _vertex[1];
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _b, 0); __bboxOOBx3 = _vertex[0]; __bboxOOBy3 = _vertex[1];
+            
+            __bboxAABBLeft   = min(__bboxOOBx0, __bboxOOBx1, __bboxOOBx2, __bboxOOBx3);
+            __bboxAABBTop    = min(__bboxOOBy0, __bboxOOBy1, __bboxOOBy2, __bboxOOBy3);
+            __bboxAABBRight  = max(__bboxOOBx0, __bboxOOBx1, __bboxOOBx2, __bboxOOBx3);
+            __bboxAABBBottom = max(__bboxOOBy0, __bboxOOBy1, __bboxOOBy2, __bboxOOBy3);
+        }
+        
+        __bboxAABBWidth  = 1 + __bboxAABBRight - __bboxAABBLeft;
+        __bboxAABBHeight = 1 + __bboxAABBBottom - __bboxAABBTop;
     }
     
     static get_left = function(_x = 0)
@@ -1234,79 +1254,6 @@ function __ScribbleClassElementParent(_text) constructor
         };
     }
     
-    /// @param x
-    /// @param y
-    /// @param [revealIndex]
-    static get_bbox_revealed = function(_x, _y, _revealIndex = undefined)
-    {
-        //Default to the entire bounding box
-        if ((_revealIndex == undefined) && (not is_instanceof(self, __ScribbleClassUniqueElement)))
-        {
-            return get_bbox(_x, _y);
-        }
-        
-        var _model = __EnsureModel();
-        
-        if (_typist != undefined)
-        {
-            var _bbox = _model.__GetBboxRevealed(__pageInteger, 0, _revealIndex ?? __typistHeadArray[0], __paddingL, __paddingT, __paddingR, __paddingB);
-        }
-        else if (__tw_reveal != undefined) //FIXME
-        {
-            var _bbox = _model.__GetBboxRevealed(__pageInteger, 0, __tw_reveal, __paddingL, __paddingT, __paddingR, __paddingB);
-        }
-        
-        __UpdateBboxMatrix();
-        var _xScale = __scaleToBoxScale*_model.__fitScale*__postXScale;
-        var _yScale = __scaleToBoxScale*_model.__fitScale*__postYScale;
-        
-        if ((_xScale == 1) && (_yScale == 1) && (__postAngle == 0))
-        {
-            //Avoid using matrices if we can
-            var _l = _x - __originX + _bbox.left;
-            var _t = _y - __originY + _bbox.top;
-            var _r = _x - __originX + _bbox.right;
-            var _b = _y - __originY + _bbox.bottom;
-                
-            var _x0 = _l;   var _y0 = _t;
-            var _x1 = _r;   var _y1 = _t;
-            var _x2 = _l;   var _y2 = _b;
-            var _x3 = _r;   var _y3 = _b;
-        }
-        else
-        {
-            var _l = _bbox.left;
-            var _t = _bbox.top;
-            var _r = _bbox.right;
-            var _b = _bbox.bottom;
-                
-            var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _t, 0); var _x0 = _x + _vertex[0]; var _y0 = _y + _vertex[1];
-            var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _t, 0); var _x1 = _x + _vertex[0]; var _y1 = _y + _vertex[1];
-            var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _b, 0); var _x2 = _x + _vertex[0]; var _y2 = _y + _vertex[1];
-            var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _b, 0); var _x3 = _x + _vertex[0]; var _y3 = _y + _vertex[1];
-                
-            var _l = min(_x0, _x1, _x2, _x3);
-            var _t = min(_y0, _y1, _y2, _y3);
-            var _r = max(_x0, _x1, _x2, _x3);
-            var _b = max(_y0, _y1, _y2, _y3);
-        }
-        
-        return {
-            left:   _l,
-            top:    _t,
-            right:  _r,
-            bottom: _b,
-            
-            width:  1 + _r - _l,
-            height: 1 + _b - _t,
-            
-            x0: _x0,  y0: _y0,
-            x1: _x1,  y1: _y1,
-            x2: _x2,  y2: _y2,
-            x3: _x3,  y3: _y3
-        };
-    }
-    
     #endregion
     
     
@@ -1348,6 +1295,36 @@ function __ScribbleClassElementParent(_text) constructor
     static on_last_page = function()
     {
         return (get_page() >= get_page_count()-1);
+    }
+    
+    #endregion
+    
+    
+    
+    #region Reveal
+    
+    static reveal_mode = function(_state)
+    {
+        if (__revealMode != _state)
+        {
+            __revealMode = _state;
+            __modelDirty = true;
+        }
+        
+        return self;
+    }
+    
+    static get_reveal_mode = function()
+    {
+        return __revealMode;
+    }
+    
+    static get_reveal_count = function()
+    {
+        //FIXME - This value appears to be wrong when using section reveal
+        var _pagesArray = __EnsureModel().__pagesArray;
+        if (array_length(_pagesArray) <= 0) return 0;
+        return array_last(_pagesArray).__revealEnd;
     }
     
     #endregion
@@ -1579,48 +1556,54 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    static get_events = function(_revealIndex, _pageIndex = __pageInteger)
+    static get_events = function(_revealIndex, _array = [])
     {
-        var _page = __EnsureModel().__pagesArray[_pageIndex];
-        var _eventStruct = _page.__eventsDict;
-        
-        var _eventsArray = _eventStruct[$ _revealIndex];
-        if (not is_array(_events))
+        //Copy events from the page
+        var _eventsArray = __EnsureModel().__eventsDict[$ _revealIndex];
+        if (is_array(_eventsArray))
         {
-            var _eventsArray = [];
+            array_copy(_array, array_length(_array), _eventsArray, 0, array_length(_eventsArray));
         }
         
-        if (__typistRevealMode == SCRIBBLE_REVEAL_PER_CHAR)
+        //Handle various typist features
+        var _delay = 0;
+        var _commandTag = undefined;
+        
+        if (__revealMode == SCRIBBLE_REVEAL_PER_CHAR)
         {
-            var _delay = 0;
-            
             if (__GetLinebreakAfterGlyph(_revealIndex))
             {
                 _delay = max(_delay, __typistOptions.__lineDelay ?? infinity);
+                _commandTag = __SCRIBBLE_EVENT_NEXT_LINE;
             }
             
             if (__GetBlockbreakAfterGlyph(_revealIndex))
             {
                 _delay = max(_delay, __typistOptions.__blockDelay ?? infinity);
+                _commandTag = __SCRIBBLE_EVENT_NEXT_BLOCK;
             }
             
             if (__GetPagebreakAfterGlyph(_revealIndex))
             {
                 _delay = max(_delay, __typistOptions.__pageDelay ?? infinity);
+                _commandTag = __SCRIBBLE_EVENT_NEXT_PAGE;
             }
         }
-        else if (__typistRevealMode == SCRIBBLE_REVEAL_PER_LINE)
+        else if (__revealMode == SCRIBBLE_REVEAL_PER_LINE)
         {
-            var _delay = __typistOptions.__lineDelay ?? infinity;
+            _delay = __typistOptions.__lineDelay ?? infinity;
+            _commandTag = __SCRIBBLE_EVENT_NEXT_LINE;
             
             if (__GetBlockbreakAfterLine(_revealIndex))
             {
                 _delay = max(_delay, __typistOptions.__blockDelay ?? infinity);
+                _commandTag = __SCRIBBLE_EVENT_NEXT_BLOCK;
             }
             
             if (__GetPagebreakAfterLine(_revealIndex))
             {
                 _delay = max(_delay, __typistOptions.__pageDelay ?? infinity);
+                _commandTag = __SCRIBBLE_EVENT_NEXT_PAGE;
             }
         }
         else
@@ -1630,17 +1613,25 @@ function __ScribbleClassElementParent(_text) constructor
         
         if (_delay > 0)
         {
+            //Add a pause or delay if required
             if (is_infinity(_delay))
             {
-                array_push(_eventsArray, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_PAUSE, undefined));
+                array_push(_array, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_PAUSE, undefined));
             }
             else
             {
-                array_push(_eventsArray, new __ScribbleClassEvent(__SCRIBBLE_COMMAND_TAG_DELAY, _delay));
+                array_push(_array, new __ScribbleClassEvent(__SCRIBBLE_EVENT_SYSTEM_DELAY, _delay));
             }
+            
         }
         
-        return _eventsArray;
+        if (_commandTag != undefined)
+        {
+            //Add an instruction for the typist to move to the next block or page
+            array_push(_array, new __ScribbleClassEvent(_commandTag, undefined));
+        }
+        
+        return _array;
     }
     
     /// @param templateFunction/Array
@@ -2241,8 +2232,7 @@ function __ScribbleClassElementParent(_text) constructor
         var _blockSize = get_block_size();
         var _line = _blockSize-1 + max(0, _index)*(_blockSize - __blockTrim);
         
-        var _model = __pagesArray[_page];
-        var _pageStruct = __EnsureModel().__pagesArray[clamp(_page, 0, _model.__GetPageCount())];
+        var _pageStruct = __EnsureModel().__GetPage(_page);
         _line = clamp(_line, 0, _pageStruct.__lineEnd);
         
         return _pageStruct.__lineDataArray[_line].glyphEnd;
@@ -2252,12 +2242,73 @@ function __ScribbleClassElementParent(_text) constructor
     {
         var _blockSize = get_block_size();
         var _line = _blockSize-1 + max(0, _index)*(_blockSize - __blockTrim);
+        return clamp(_line, 0, __EnsureModel().__GetPage(_page).__lineEnd);
+    }
+    
+    /// @param x
+    /// @param y
+    /// @param revealIndex
+    static __GetBboxRevealed = function(_x, _y, _revealIndex)
+    {
+        //Default to the entire bounding box
+        if (_revealIndex == undefined)
+        {
+            return get_bbox(_x, _y);
+        }
         
-        var _model = __pagesArray[_page];
-        var _pageStruct = __EnsureModel().__pagesArray[clamp(_page, 0, _model.__GetPageCount())];
-        _line = clamp(_line, 0, _pageStruct.__lineEnd);
+        var _model = __EnsureModel();
+        var _bbox = _model.__GetBboxRevealed(__GetRevealPage(_revealIndex), _revealIndex, __paddingL, __paddingT, __paddingR, __paddingB, __clip);
         
-        return _line;
+        __UpdateBboxMatrix();
+        var _xScale = __scaleToBoxScale*_model.__fitScale*__postXScale;
+        var _yScale = __scaleToBoxScale*_model.__fitScale*__postYScale;
+        
+        if ((_xScale == 1) && (_yScale == 1) && (__postAngle == 0))
+        {
+            //Avoid using matrices if we can
+            var _l = _x - __originX + _bbox.left;
+            var _t = _y - __originY + _bbox.top;
+            var _r = _x - __originX + _bbox.right;
+            var _b = _y - __originY + _bbox.bottom;
+                
+            var _x0 = _l;   var _y0 = _t;
+            var _x1 = _r;   var _y1 = _t;
+            var _x2 = _l;   var _y2 = _b;
+            var _x3 = _r;   var _y3 = _b;
+        }
+        else
+        {
+            var _l = _bbox.left;
+            var _t = _bbox.top;
+            var _r = _bbox.right;
+            var _b = _bbox.bottom;
+            
+            // TODO - Optimise
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _t, 0); var _x0 = _x + _vertex[0]; var _y0 = _y + _vertex[1];
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _t, 0); var _x1 = _x + _vertex[0]; var _y1 = _y + _vertex[1];
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _l, _b, 0); var _x2 = _x + _vertex[0]; var _y2 = _y + _vertex[1];
+            var _vertex = matrix_transform_vertex(__bboxMatrix, _r, _b, 0); var _x3 = _x + _vertex[0]; var _y3 = _y + _vertex[1];
+                
+            var _l = min(_x0, _x1, _x2, _x3);
+            var _t = min(_y0, _y1, _y2, _y3);
+            var _r = max(_x0, _x1, _x2, _x3);
+            var _b = max(_y0, _y1, _y2, _y3);
+        }
+        
+        return {
+            left:   _l,
+            top:    _t,
+            right:  _r,
+            bottom: _b,
+            
+            width:  1 + _r - _l,
+            height: 1 + _b - _t,
+            
+            x0: _x0,  y0: _y0,
+            x1: _x1,  y1: _y1,
+            x2: _x2,  y2: _y2,
+            x3: _x3,  y3: _y3
+        };
     }
     
     #endregion

@@ -3,6 +3,9 @@
 //then you will need to call `scribble_initialize()` before calling other Scribble Deluxe functions.
 #macro SCRIBBLE_INITIALIZE_ON_BOOT  true
 
+//Whether Scribble should stop animating and updating typists when the window is out of focus.
+#macro SCRIBBLE_LOCK_OUT_OF_FOCUS  true
+
 //Whether to use colourization for sprites. This includes [rainbow] and [cycle].
 #macro SCRIBBLE_COLORIZE_SPRITES  true
 

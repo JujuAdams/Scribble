@@ -31,9 +31,9 @@ function __ScribbleSystem(_calledFromInitialize = false)
         
         //Safety data structures. Theses exist at (hopefully) index 0 so that users can't accidentally
         //delete important parts of Scribble if they're sloppy with destroy functions.
-        __protection_buffer = buffer_create(1, buffer_fixed, 1);
-        __protection_map    = ds_map_create();
-        __protection_grid   = ds_grid_create(1, 1);
+        __protectionBuffer = buffer_create(1, buffer_fixed, 1);
+        __protectionMap    = ds_map_create();
+        __protectionGrid   = ds_grid_create(1, 1);
         
         if (SCRIBBLE_VERBOSE)
         {
@@ -70,12 +70,38 @@ function __ScribbleSystem(_calledFromInitialize = false)
         {
             time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, function()
             {
-                if (__userTickSize == undefined)
+                static _windowHasFocus = undefined;
+                
+                //If there's been a change in os_is_paused() state then force a refresh of shader uniforms
+                if (window_has_focus() != _windowHasFocus)
                 {
-                    __tickSize = clamp(delta_time / 16667, 1/5, 5);
+                    _windowHasFocus = window_has_focus();
+                    
+                    __ScribbleTrace($"Detected change in `window_has_focus()` to {_windowHasFocus}");
+                    
+                    with(__state)
+                    {
+                        __shaderAnimDesync          = true;
+                        __shaderAnimDesyncToDefault = true;
+                    }
                 }
                 
-                __frames++;
+                if ((not SCRIBBLE_LOCK_OUT_OF_FOCUS) || _windowHasFocus)
+                {
+                    __milliseconds += delta_time/1000;
+                    
+                    //Allow delta_time values for greater than 20 FPS. Anything longer than that is probably
+                    //a window drag or other loss of focus
+                    var _deltaTimeClamped = min(delta_time/1000, 1_000/20); //TODO - Expose as a config macro?
+                    __tickSize = __userTickSize ?? (_deltaTimeClamped / __SCRIBBLE_REFERENCE_FRAME_TIME); //TODO - Expose as a config macro?
+                    
+                    ++__frames;
+                    __ticks += __tickSize;
+                }
+                else
+                {
+                    __tickSize = 0;
+                }
                 
                 static _elementIndex = 0;
                 var _elementWeakArray = __elementWeakArray;
@@ -93,19 +119,6 @@ function __ScribbleSystem(_calledFromInitialize = false)
                     if (not weak_ref_alive(_elementWeakArray[_elementIndex]))
                     {
                         array_delete(_elementWeakArray, _elementIndex, 1);
-                    }
-                }
-                
-                //If there's been a change in os_is_paused() state then force a refresh of shader uniforms
-                static _osIsPaused = undefined;
-                if (os_is_paused() != _osIsPaused)
-                {
-                    _osIsPaused = os_is_paused();
-                    
-                    with(__state)
-                    {
-                        __shaderAnimDesync          = true;
-                        __shaderAnimDesyncToDefault = true;
                     }
                 }
             }, [], -1));
@@ -169,6 +182,8 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __animPropertiesArray = array_create(__SCRIBBLE_ANIM_SIZE, undefined);
         
         __frames = 0;
+        __ticks = 0;
+        __milliseconds = 0;
         __userTickSize = undefined;
         __tickSize = 1;
         
@@ -195,8 +210,8 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __generatorState = new __ScribbleClassGeneratorState();
         
         //Contains Unicode data, necessary for extended language support
-        __glyphData                = __ScribbleGlyphDataInitialize();
-        __krutidevLookupMap       = __ScribbleKrutidevLookupMapInitialize();
+        __glyphData              = __ScribbleGlyphDataInitialize();
+        __krutidevLookupMap      = __ScribbleKrutidevLookupMapInitialize();
         __krutidevMatraLookupMap = __ScribbleKrutidevMatraLookupMapInitialize();
         
         //External sound reference storage
@@ -206,11 +221,11 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __tagDict = {};
         
         //Pre-populated typist events
-        __ScribbleAddTag(__SCRIBBLE_COMMAND_TAG_PAUSE,   __SCRIBBLE_TAG_EVENT, undefined, true);
-        __ScribbleAddTag(__SCRIBBLE_COMMAND_TAG_DELAY,   __SCRIBBLE_TAG_EVENT, undefined, true);
-        __ScribbleAddTag(__SCRIBBLE_COMMAND_TAG_SYNC,    __SCRIBBLE_TAG_EVENT, undefined, true);
-        __ScribbleAddTag(__SCRIBBLE_COMMAND_TAG_SPEED,   __SCRIBBLE_TAG_EVENT, undefined, true);
-        __ScribbleAddTag(__SCRIBBLE_COMMAND_TAG_UNSPEED, __SCRIBBLE_TAG_EVENT, undefined, true);
+        __ScribbleAddTag(__SCRIBBLE_COMMAND_TAG_PAUSE,     __SCRIBBLE_TAG_EVENT, undefined, true);
+        __ScribbleAddTag(__SCRIBBLE_COMMAND_TAG_DELAY_TAG, __SCRIBBLE_TAG_EVENT, undefined, true);
+        __ScribbleAddTag(__SCRIBBLE_COMMAND_TAG_SYNC,      __SCRIBBLE_TAG_EVENT, undefined, true);
+        __ScribbleAddTag(__SCRIBBLE_COMMAND_TAG_SPEED,     __SCRIBBLE_TAG_EVENT, undefined, true);
+        __ScribbleAddTag(__SCRIBBLE_COMMAND_TAG_UNSPEED,   __SCRIBBLE_TAG_EVENT, undefined, true);
         
         __ScribbleAddTag("wave",   __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_WAVE,   true);
         __ScribbleAddTag("shake",  __SCRIBBLE_TAG_EFFECT, __SCRIBBLE_FLAG_SHAKE,  true);

@@ -1,5 +1,5 @@
 // Feather disable all
-function __ScribbleGen11_SetPaddingFlags()
+function __ScribbleGen11_PaddingAndClipping()
 {
     static _generatorState = __ScribbleSystem().__generatorState;
     with(_generatorState)
@@ -50,5 +50,31 @@ function __ScribbleGen11_SetPaddingFlags()
     {
         __padBboxL = false;
         __padBboxR = true;
+    }
+    
+    var _layoutMaxWidth  = __layoutMaxWidth;
+    var _layoutMaxHeight = __layoutMaxHeight;
+    
+    var _hFactor = (__startingHAlign == fa_center)? 0.5 : ((__startingHAlign == fa_right )? 1 : 0);
+    var _vFactor = (__startingVAlign == fa_middle)? 0.5 : ((__startingVAlign == fa_bottom)? 1 : 0);
+    
+    __clipLeft   = -_hFactor*_layoutMaxWidth;
+    __clipTop    = -_vFactor*_layoutMaxHeight;
+    __clipRight  = __clipLeft + _layoutMaxWidth;
+    __clipBottom = __clipTop  + _layoutMaxHeight;
+    
+    var _i = 0;
+    repeat(array_length(__pagesArray))
+    {
+        with(__pagesArray[_i])
+        {
+            __scrollMaxX = max(0, __width  - _layoutMaxWidth );
+            __scrollMaxY = max(0, __height - _layoutMaxHeight);
+            
+            __scrollOffsetX = -_hFactor*__scrollMaxX;
+            __scrollOffsetY = -_vFactor*__scrollMaxY;
+        }
+        
+        ++_i;
     }
 }
