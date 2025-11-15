@@ -172,7 +172,7 @@ void main()
                 gl_FragColor.a = max(gl_FragColor.a, outlineColor.a*smoothstep(0.5 - smoothness*spread, 0.5 + smoothness*spread, baseDist + outlineOffset));
             }
             
-            if ((u_vShadowColour.a > 0.0) && !all(equal(u_vShadowOffsetAndSoftness.xy, vec2(0.0))))
+            if (u_vShadowColour.a > 0.0)
             {
                 float shadowDist;
                 if (REACTIVE_SDF_RANGE)
