@@ -1,12 +1,12 @@
 {
   "$GMObject":"",
-  "%Name":"obj_test_sdf_outline_thickness",
+  "%Name":"obj_0600_sdf",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_test_sdf_outline_thickness",
+  "name":"obj_0600_sdf",
   "overriddenProperties":[],
   "parent":{
     "name":"SDF",
