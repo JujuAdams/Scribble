@@ -1098,122 +1098,145 @@ function __ScribbleGen2_Parser()
                             }
                             else
                             {
-                                var _spriteIndex = _externalSpriteMap[? _tagCommandName] ?? asset_get_index(_tagCommandName); 
-                                if (not sprite_exists(_spriteIndex))
-                                {
-                                    _spriteIndex = handle_parse(_tagCommandName);
-                                }
+                                var _handle = handle_parse(_tagCommandName);
                                 
-                                if (sprite_exists(_spriteIndex))
+                                //Attempt to match this handle to a font
+                                if (font_exists(_handle))
                                 {
-                                    #region Sprite
-                                    
-                                    if (sprite_exists(_spriteIndex) && ((not SCRIBBLE_USE_SPRITE_WHITELIST) || (_spriteWhitelistMap[? _spriteIndex] ?? false)))
+                                    var _handleFontName = font_get_name(_handle);
+                                    if (ds_map_exists(_fontDataMap, _handleFontName))
                                     {
-                                        var _sprite_scale = SCRIBBLE_GLOBAL_SPRITE_SCALE;
-                                        var _sprite_w = _sprite_scale*sprite_get_width( _spriteIndex);
-                                        var _sprite_h = _sprite_scale*sprite_get_height(_spriteIndex);
-                                
-                                        if (SCRIBBLE_SHRINK_INLINE_SPRITES)
+                                        _fontName = scribble_font_get_remap(_handleFontName);
+                                        __SCRIBBLE_PARSER_SET_FONT;
+                                    }
+                                    else
+                                    {
+                                        if (SCRIBBLE_RUNNING_FROM_IDE)
                                         {
-                                            var _scale = min(1, _fontLineHeight/_sprite_h);
-                                            _sprite_w *= _scale;
-                                            _sprite_h *= _scale;
-                                            _sprite_scale *= _scale;
-                                        }
-                                
-                                        var _imageIndex = 0;
-                                        var _imageSpeed = 0;
-                                        switch(_tagParameterCount)
-                                        {
-                                            case 1:
-                                                _imageIndex = 0;
-                                                _imageSpeed = SCRIBBLE_DEFAULT_SPRITE_SPEED;
-                                            break;
-                                                         
-                                            case 2:
-                                                _imageIndex = real(_tagParameters[1]);
-                                                _imageSpeed = 0;
-                                            break;
-                                                     
-                                            default:
-                                                _imageIndex = real(_tagParameters[1]);
-                                                _imageSpeed = real(_tagParameters[2]);
-                                            break;
-                                        }
-                                        
-                                        if (_imageIndex < 0)
-                                        {
-                                            var _spriteOnce = true;
-                                            _imageIndex = 0;
-                                            
-                                            if (_tagParameterCount == 2)
-                                            {
-                                                _imageSpeed = SCRIBBLE_DEFAULT_SPRITE_SPEED;
-                                            }
+                                            __ScribbleError($"Parsed \"{_tagCommandName}\" as `{_handleFontName}` but this font has not been added to Scribble");
                                         }
                                         else
                                         {
-                                            var _spriteOnce = false;
+                                            __ScribbleTrace($"Warning! Parsed \"{_tagCommandName}\" as `{_handleFontName}` but this font has not been added to Scribble");
                                         }
-                                        
-                                        //Apply IDE sprite speed
-                                        _imageSpeed *= __ScribbleGetImageSpeed(_spriteIndex);
-                                
-                                        //Only report the model as animated if we're actually able to animate this sprite
-                                        if ((_imageSpeed != 0) && (sprite_get_number(_spriteIndex) > 1)) __hasAnimation = true;
-                                
-                                        //Add this glyph to our grid
-                                        _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = __SCRIBBLE_GLYPH_REPL_SPRITE;
-                                        _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_SYMBOL;
-                                
-                                        _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_X            ] = _stateHAlignOffset;
-                                        _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_Y            ] = _stateVAlignOffset;
-                                        _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_WIDTH        ] = _sprite_w;
-                                        _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_HEIGHT       ] = _sprite_h;
-                                        _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _sprite_h;
-                                        _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = _sprite_w;
-                                        _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
-                                        _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = _sprite_scale;
-                                
-                                        _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
-                                
-                                        _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SPRITE_DATA] = {
-                                            __spriteIndex: _spriteIndex,
-                                            __imageIndex:  _imageIndex,
-                                            __imageSpeed:  _imageSpeed,
-                                            __spriteOnce:  _spriteOnce,
-                                        };
-                                        
-                                        if (_spritesDontScale && (_stateScale != 1))
-                                        {
-                                            ds_grid_multiply_region(_glyphGrid, _glyphCount, __SCRIBBLE_GEN_GLYPH_X, _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE, 1/_stateScale);
-                                        }
-                                        
-                                        _glyphWrite = 0x0000;
-                                        __SCRIBBLE_PARSER_NEXT_GLYPH
                                     }
-                            
-                                    #endregion
-                                }
-                                else if (asset_get_type(_tagCommandName) == asset_sound)
-                                {
-                                    array_push(_controlArray, new __ScribbleClassControlEvent(__SCRIBBLE_EVENT_AUDIO, _tagParameters));
-                                    ++_controlCount;
-                                }
-                                else if (ds_map_exists(_externalSoundMap, _tagCommandName))
-                                {
-                                    //External audio added via scribble_external_sound_add()
-                                    
-                                    array_push(_controlArray, new __ScribbleClassControlEvent(__SCRIBBLE_EVENT_AUDIO, [_externalSoundMap[? _tagCommandName]]));
-                                    ++_controlCount;
                                 }
                                 else
                                 {
-                                    var _commandString = string(_tagCommandName);
-                                    var _j = 1;
-                                    repeat(_tagParameterCount-1) _commandString += "," + string(_tagParameters[_j++]);
-                                    __ScribbleTrace("Warning! Unrecognised command tag [" + _commandString + "]" );
+                                    var _spriteIndex = _externalSpriteMap[? _tagCommandName] ?? asset_get_index(_tagCommandName); 
+                                    if (not sprite_exists(_spriteIndex)) _spriteIndex = _handle;
+                                    
+                                    if (sprite_exists(_spriteIndex))
+                                    {
+                                        #region Sprite
+                                    
+                                        if (sprite_exists(_spriteIndex) && ((not SCRIBBLE_USE_SPRITE_WHITELIST) || (_spriteWhitelistMap[? _spriteIndex] ?? false)))
+                                        {
+                                            var _sprite_scale = SCRIBBLE_GLOBAL_SPRITE_SCALE;
+                                            var _sprite_w = _sprite_scale*sprite_get_width( _spriteIndex);
+                                            var _sprite_h = _sprite_scale*sprite_get_height(_spriteIndex);
+                                
+                                            if (SCRIBBLE_SHRINK_INLINE_SPRITES)
+                                            {
+                                                var _scale = min(1, _fontLineHeight/_sprite_h);
+                                                _sprite_w *= _scale;
+                                                _sprite_h *= _scale;
+                                                _sprite_scale *= _scale;
+                                            }
+                                
+                                            var _imageIndex = 0;
+                                            var _imageSpeed = 0;
+                                            switch(_tagParameterCount)
+                                            {
+                                                case 1:
+                                                    _imageIndex = 0;
+                                                    _imageSpeed = SCRIBBLE_DEFAULT_SPRITE_SPEED;
+                                                break;
+                                                         
+                                                case 2:
+                                                    _imageIndex = real(_tagParameters[1]);
+                                                    _imageSpeed = 0;
+                                                break;
+                                                     
+                                                default:
+                                                    _imageIndex = real(_tagParameters[1]);
+                                                    _imageSpeed = real(_tagParameters[2]);
+                                                break;
+                                            }
+                                        
+                                            if (_imageIndex < 0)
+                                            {
+                                                var _spriteOnce = true;
+                                                _imageIndex = 0;
+                                            
+                                                if (_tagParameterCount == 2)
+                                                {
+                                                    _imageSpeed = SCRIBBLE_DEFAULT_SPRITE_SPEED;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                var _spriteOnce = false;
+                                            }
+                                        
+                                            //Apply IDE sprite speed
+                                            _imageSpeed *= __ScribbleGetImageSpeed(_spriteIndex);
+                                
+                                            //Only report the model as animated if we're actually able to animate this sprite
+                                            if ((_imageSpeed != 0) && (sprite_get_number(_spriteIndex) > 1)) __hasAnimation = true;
+                                
+                                            //Add this glyph to our grid
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = __SCRIBBLE_GLYPH_REPL_SPRITE;
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_SYMBOL;
+                                
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_X            ] = _stateHAlignOffset;
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_Y            ] = _stateVAlignOffset;
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_WIDTH        ] = _sprite_w;
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_HEIGHT       ] = _sprite_h;
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _sprite_h;
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = _sprite_w;
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = _sprite_scale;
+                                
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
+                                
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SPRITE_DATA] = {
+                                                __spriteIndex: _spriteIndex,
+                                                __imageIndex:  _imageIndex,
+                                                __imageSpeed:  _imageSpeed,
+                                                __spriteOnce:  _spriteOnce,
+                                            };
+                                        
+                                            if (_spritesDontScale && (_stateScale != 1))
+                                            {
+                                                ds_grid_multiply_region(_glyphGrid, _glyphCount, __SCRIBBLE_GEN_GLYPH_X, _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE, 1/_stateScale);
+                                            }
+                                        
+                                            _glyphWrite = 0x0000;
+                                            __SCRIBBLE_PARSER_NEXT_GLYPH
+                                        }
+                            
+                                        #endregion
+                                    }
+                                    else if (asset_get_type(_tagCommandName) == asset_sound)
+                                    {
+                                        array_push(_controlArray, new __ScribbleClassControlEvent(__SCRIBBLE_EVENT_AUDIO, _tagParameters));
+                                        ++_controlCount;
+                                    }
+                                    else if (ds_map_exists(_externalSoundMap, _tagCommandName))
+                                    {
+                                        //External audio added via scribble_external_sound_add()
+                                    
+                                        array_push(_controlArray, new __ScribbleClassControlEvent(__SCRIBBLE_EVENT_AUDIO, [_externalSoundMap[? _tagCommandName]]));
+                                        ++_controlCount;
+                                    }
+                                    else
+                                    {
+                                        var _commandString = string(_tagCommandName);
+                                        var _j = 1;
+                                        repeat(_tagParameterCount-1) _commandString += "," + string(_tagParameters[_j++]);
+                                        __ScribbleTrace("Warning! Unrecognised command tag [" + _commandString + "]" );
+                                    }
                                 }
                             }
                         break;
