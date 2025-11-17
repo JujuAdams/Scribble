@@ -1,15 +1,15 @@
 {
   "$GMObject":"",
-  "%Name":"obj_test_starting_format",
+  "%Name":"obj_test_font",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_test_starting_format",
+  "name":"obj_test_font",
   "overriddenProperties":[],
   "parent":{
-    "name":"Text Element Methods",
-    "path":"folders/Test Cases/Text Element Methods.yy",
+    "name":"Basic",
+    "path":"folders/Test Cases/Basic.yy",
   },
   "parentObjectId":null,
   "persistent":false,
