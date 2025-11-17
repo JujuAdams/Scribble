@@ -1,12 +1,13 @@
 {
   "$GMObject":"",
-  "%Name":"obj_test_autoscroll",
+  "%Name":"obj_0705_scroll_to_line",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_test_autoscroll",
+  "name":"obj_0705_scroll_to_line",
   "overriddenProperties":[],
   "parent":{
     "name":"0700 - Layout",
