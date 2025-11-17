@@ -1739,31 +1739,35 @@ function __ScribbleClassElementParent(_text) constructor
         //Unimplemented
     }
     
-    static debug_draw_bbox = function(_x, _y)
+    static debug_draw_bbox = function(_x, _y, _color = undefined, _alpha = undefined)
     {
-        //FIXME - Reimplement properly
-        
-        var _oldColour = draw_get_colour();
-        draw_set_colour(c_red);
-        
-        switch(__startingHAlign)
+        if (_color != undefined)
         {
-            case fa_left:                             break;
-            case fa_center: _x -= __layoutMaxWidth/2; break;
-            case fa_right:  _x -= __layoutMaxWidth;   break;
+            var _oldColor = draw_get_colour();
+            draw_set_colour(_color);
         }
         
-        switch(__startingVAlign)
+        if (_alpha != undefined)
         {
-            case fa_top:                               break;
-            case fa_middle: _y -= __layoutMaxHeight/2; break;
-            case fa_bottom: _y -= __layoutMaxHeight;   break;
+            var _oldAlpha = draw_get_alpha();
+            draw_set_alpha(_alpha);
         }
         
-        draw_rectangle(_x, _y, _x + __layoutMaxWidth, _y + __layoutMaxHeight, true);
-        draw_rectangle(_x+1, _y+1, _x-1 + __layoutMaxWidth, _y-1 + __layoutMaxHeight, true);
+        var _bbox = get_bbox(_x, _y);
+        draw_line(_bbox.x0, _bbox.y0, _bbox.x1, _bbox.y1);
+        draw_line(_bbox.x1, _bbox.y1, _bbox.x3, _bbox.y3);
+        draw_line(_bbox.x3, _bbox.y3, _bbox.x2, _bbox.y2);
+        draw_line(_bbox.x2, _bbox.y2, _bbox.x0, _bbox.y0);
         
-        draw_set_colour(_oldColour);
+        if (_color != undefined)
+        {
+            draw_set_colour(_oldColor);
+        }
+        
+        if (_alpha != undefined)
+        {
+            draw_set_alpha(_oldAlpha);
+        }
         
         return self;
     }
