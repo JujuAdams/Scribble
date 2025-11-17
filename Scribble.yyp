@@ -257,7 +257,6 @@
     {"id":{"name":"obj_test_sprite_autofit","path":"objects/obj_test_sprite_autofit/obj_test_sprite_autofit.yy",},},
     {"id":{"name":"obj_test_sprite_blend","path":"objects/obj_test_sprite_blend/obj_test_sprite_blend.yy",},},
     {"id":{"name":"obj_test_sprite_coloring","path":"objects/obj_test_sprite_coloring/obj_test_sprite_coloring.yy",},},
-    {"id":{"name":"obj_test_sprite_colourization","path":"objects/obj_test_sprite_colourization/obj_test_sprite_colourization.yy",},},
     {"id":{"name":"obj_test_sprite_long","path":"objects/obj_test_sprite_long/obj_test_sprite_long.yy",},},
     {"id":{"name":"obj_test_sprite_origins","path":"objects/obj_test_sprite_origins/obj_test_sprite_origins.yy",},},
     {"id":{"name":"obj_test_sprite_via_handle","path":"objects/obj_test_sprite_via_handle/obj_test_sprite_via_handle.yy",},},

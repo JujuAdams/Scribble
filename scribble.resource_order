@@ -203,7 +203,6 @@
     {"name":"obj_test_sprite_autofit","order":7,"path":"objects/obj_test_sprite_autofit/obj_test_sprite_autofit.yy",},
     {"name":"obj_test_sprite_blend","order":8,"path":"objects/obj_test_sprite_blend/obj_test_sprite_blend.yy",},
     {"name":"obj_test_sprite_coloring","order":1,"path":"objects/obj_test_sprite_coloring/obj_test_sprite_coloring.yy",},
-    {"name":"obj_test_sprite_colourization","order":9,"path":"objects/obj_test_sprite_colourization/obj_test_sprite_colourization.yy",},
     {"name":"obj_test_sprite_long","order":22,"path":"objects/obj_test_sprite_long/obj_test_sprite_long.yy",},
     {"name":"obj_test_sprite_origins","order":10,"path":"objects/obj_test_sprite_origins/obj_test_sprite_origins.yy",},
     {"name":"obj_test_sprite_via_handle","order":21,"path":"objects/obj_test_sprite_via_handle/obj_test_sprite_via_handle.yy",},

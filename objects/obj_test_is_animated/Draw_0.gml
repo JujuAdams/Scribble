@@ -21,9 +21,12 @@ _element.draw(_x, _y);
 draw_text(_x + _element.get_width() + 20, _y, ".is_animated() = " + string(_element.is_animated()));
 _y += _element.get_height() + 10;
 
-var _element = scribble("[cycle, 200, 140, 190, 150]This is some colour-cycling text (which is an animation)", 0);
+var _element = scribble("[cycle,test]This is some colour-cycling text (which is an animation)", 0);
 _element.draw(_x, _y);
 draw_text(_x + _element.get_width() + 20, _y, ".is_animated() = " + string(_element.is_animated()));
 _y += _element.get_height() + 10;
 
-scribble_anim_reset();
+var _element = scribble("[shake]This is some shaking text (which is an animation)", 0);
+_element.draw(_x, _y);
+draw_text(_x + _element.get_width() + 20, _y, ".is_animated() = " + string(_element.is_animated()));
+_y += _element.get_height() + 10;

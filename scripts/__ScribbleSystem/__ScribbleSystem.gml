@@ -189,10 +189,10 @@ function __ScribbleSystem(_calledFromInitialize = false)
         __state = {
             __defaultFont: "fntScribbleFallback",
             
-            __shaderAnimDesync:            false,
+            __shaderAnimDesync:          false,
             __shaderAnimDesyncToDefault: false,
-            __shaderAnimDefault:           false,
-            __shaderAnimDisabled:          false,
+            __shaderAnimDefault:         false,
+            __shaderAnimDisabled:        false,
             
             __sdfThicknessOffset: 0,
             
