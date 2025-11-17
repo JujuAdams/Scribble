@@ -1,7 +1,7 @@
 var _string = "דג סקרן שט בים מאוכזב ולפתע מצא חברה";
 var _string = "דג 0123! סקרן";
 
-var _element = scribble(_string).starting_format("fnt_hebrew", c_white).wrap(width);
+var _element = scribble(_string).font(fnt_hebrew).wrap(width);
 _element.draw(x, y, typist);
 
 var _bbox = _element.get_bbox(x, y);

@@ -22,6 +22,8 @@
 
 function scribble_font_set_remap(_originalFont, _remapFont)
 {
+    //FIXME - Allow this function to take references as an input
+    
     with(__ScribbleGetFontData(_originalFont))
     {
         if (__remap != _remapFont)

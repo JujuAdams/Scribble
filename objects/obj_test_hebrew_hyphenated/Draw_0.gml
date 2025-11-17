@@ -1,1 +1,1 @@
-scribble("[wave]בן-אדם").starting_format("fnt_hebrew", c_white).transform(3, 3, 0).draw(x, y);
+scribble("[wave]בן-אדם").font(fnt_hebrew).transform(3, 3, 0).draw(x, y);
