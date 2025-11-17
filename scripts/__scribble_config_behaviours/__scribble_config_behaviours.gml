@@ -179,3 +179,6 @@
 //ensured all assets that you are going to use with Scribble will not be stripped during compile.
 //For convenience, the "scribble" tag can be used to mark an asset as non-strippable.
 #macro SCRIBBLE_DETECT_MISSING_ASSETS  true
+
+#macro SCRIBBLE_FONT_ADD_AUTOBUILD     true
+#macro SCRIBBLE_FONT_ADD_TEXTURE_SIZE  512

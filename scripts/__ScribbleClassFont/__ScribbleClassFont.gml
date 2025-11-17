@@ -8,6 +8,8 @@
 /// @param underlineY
 /// @param strikeY
 
+global.gpuBlank = gpu_get_state();
+
 function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texelsValid, _underlineY, _strikeY) constructor
 {
     //The name of the font. This is the alias used to reference the font elsewhere
@@ -31,7 +33,7 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
     static _fontDataMap = __ScribbleSystem().__fontDataMap;
     _fontDataMap[? _name] = self;
     
-    __glyphDataGrid = ds_grid_create(_glyphCount, __SCRIBBLE_GLYPH_PROPR_COUNT);
+    __glyphDataGrid = ds_grid_create(_glyphCount, __SCRIBBLE_GLYPH_PROPR_SIZE);
     __glyphsMap     = ds_map_create();
     __kerningMap    = ds_map_create();
     __ligatureMap   = ds_map_create();
@@ -39,6 +41,7 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
     __isKrutidev = false;
     __bilinear    = (__renderType == __SCRIBBLE_RENDER_SDF)? true : undefined;
     
+    __dynamic      = false;
     __superfont    = false;
     __runtime      = false;
     __sourceSprite = undefined;
@@ -54,6 +57,26 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
     __styleBold       = undefined;
     __styleItalic     = undefined;
     __styleBoldItalic = undefined;
+    
+    //Variables used for the `font_add()` implementation
+    __dynFontAsset      = undefined;
+    __dynNextSlot       = 0;
+    __dynFreeSlotArray  = undefined;
+    __dynGlyphToSlotMap = undefined;
+    __dynSurface        = undefined;
+    __dynSurfaceWidth   = undefined;
+    __dynSurfaceHeight  = undefined;
+    __dynSlotCount      = 0;
+    __dynSlotWidth      = undefined;
+    __dynSlotHeight     = undefined;
+    __dynSlotCountX     = undefined;
+    __dynSlotCountY     = undefined;
+    __dynMaterial       = undefined;
+    __dynSurfaceDirty   = false;
+    __dynDirtyArray     = undefined;
+    __dynSlotDataGrid   = undefined;
+    __dynCleanUpIndex   = infinity;
+    __dynTimeSource     = undefined;
     
     
     
@@ -179,6 +202,63 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
         }
     }
     
+    static __EnsureGlyph = function(_glyph)
+    {
+        var _glyphDataGrid = __glyphDataGrid;
+        var _dynGlyphToSlotMap = __dynGlyphToSlotMap;
+        var _gridIndex = __glyphsMap[? _glyph];
+        
+        //Try to find a pre-existing slot that perhaps has fallen into disuse
+        var _existingSlot = _dynGlyphToSlotMap[? _glyph];
+        if (_existingSlot != undefined)
+        {
+            if (__dynSlotDataGrid[# _existingSlot, __SCRIBBLE_DYN_SLOT_DATA_GLYPH] == _glyph)
+            {
+                var _index = array_get_index(__dynFreeSlotArray, _existingSlot);
+                if (_index >= 0) array_delete(__dynFreeSlotArray, _index, 1);
+                
+                _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_DYN_SLOT] = _existingSlot;
+                return _existingSlot;
+            }
+        }
+        
+        var _freeSlot = array_pop(__dynFreeSlotArray);
+        if (_freeSlot == undefined)
+        {
+            _freeSlot = __dynNextSlot;
+            
+            if (_freeSlot >= __dynSlotCount)
+            {
+                __ScribbleTrace("Warning! Run out of space on font texture page");
+                _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_U0] = 0;
+                _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_V0] = 0;
+                _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_U1] = 0;
+                _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_V1] = 0;
+                return;
+            }
+            
+            ++__dynNextSlot;
+        }
+        
+        //Link glyph to slot and vice versa
+        _dynGlyphToSlotMap[? _glyph] = _freeSlot;
+        __dynSlotDataGrid[# _freeSlot, __SCRIBBLE_DYN_SLOT_DATA_GLYPH] = _glyph;
+        
+        var _left = 1 + (_freeSlot mod __dynSlotCountX)*__dynSlotWidth;
+        var _top  = 1 + (_freeSlot div __dynSlotCountY)*__dynSlotHeight;
+        
+        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_U0      ] = _left / __dynSurfaceWidth;
+        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_V0      ] = _top  / __dynSurfaceHeight;
+        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_U1      ] = (_left + _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_WIDTH ]) / __dynSurfaceWidth;
+        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_V1      ] = (_top  + _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_HEIGHT]) / __dynSurfaceHeight;
+        _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_DYN_SLOT] = _freeSlot;
+        
+        __dynSurfaceDirty = true;
+        array_push(__dynDirtyArray, _glyph, _gridIndex);
+        
+        return _freeSlot;
+    }
+    
     static __Destroy = function()
     {
         if (__SCRIBBLE_DEBUG) __ScribbleTrace("Destroying font \"", __name, "\"");
@@ -193,5 +273,134 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
             sprite_delete(__sourceSprite);
             __sourceSprite = undefined;
         }
+        
+        if (__dynTimeSource != undefined)
+        {
+            time_source_stop(__dynTimeSource);
+            time_source_destroy(__dynTimeSource);
+        }
+    }
+    
+    static __DebugFlushDynamicSurface = function()
+    {
+        ds_map_clear(__dynGlyphToSlotMap);
+        array_resize(__dynFreeSlotArray, 0);
+        __dynNextSlot = 0;
+        
+        ds_grid_set_region(__dynSlotDataGrid,   0, __SCRIBBLE_DYN_SLOT_DATA_USED_COUNT, __dynSlotCount-1, __SCRIBBLE_DYN_SLOT_DATA_USED_COUNT,   0);
+        ds_grid_set_region(__dynSlotDataGrid,   0, __SCRIBBLE_DYN_SLOT_DATA_GLYPH, __dynSlotCount-1, __SCRIBBLE_DYN_SLOT_DATA_GLYPH,   undefined);
+        
+        ds_grid_set_region(__glyphDataGrid,   0, __SCRIBBLE_GLYPH_PROPR_DYN_SLOT, ds_grid_width(__glyphDataGrid)-1, __SCRIBBLE_GLYPH_PROPR_DYN_SLOT,   undefined);
+    }
+    
+    static __EnsureDynamicSurface = function()
+    {
+        static _identityMatrix = matrix_build_identity();
+        
+        if (not surface_exists(__dynSurface))
+        {
+            __ScribbleTrace($"Lost dynamic surface for font \"{__name}\", regenerating");
+            
+            __dynSurfaceDirty = true;
+            __dynSurface = surface_create(__dynSurfaceWidth, __dynSurfaceHeight);
+            
+            var _wipeSurface = true;
+        }
+        else
+        {
+            var _wipeSurface = false;
+        }
+        
+        if (not __dynSurfaceDirty)
+        {
+            return false;
+        }
+        
+        __dynSurfaceDirty = false;
+        
+        var _glyphDataGrid = __glyphDataGrid;
+        var _dynDirtyArray = __dynDirtyArray;
+        
+        var _surfaceWidth  = __dynSurfaceWidth;
+        var _surfaceHeight = __dynSurfaceHeight;
+        
+        var _cellWidth  = __dynSlotWidth;
+        var _cellHeight = __dynSlotHeight;
+        
+        gpu_push_state();
+        gpu_set_state(global.gpuBlank);
+        
+        var _oldWorldMatrix = matrix_get(matrix_world);
+        matrix_set(matrix_world, _identityMatrix);
+        
+        //Set font draw state. This isn't usually used but does come up when handling `font_add()` fonts
+        var _oldFont   = draw_get_font();
+        var _oldHAlign = draw_get_halign();
+        var _oldVAlign = draw_get_valign();
+        
+        draw_set_font(__dynFontAsset);
+        draw_set_halign(fa_left);
+        draw_set_valign(fa_top);
+        
+        gpu_set_blendmode_ext(bm_one, bm_zero);
+        
+        if (_wipeSurface)
+        {
+            surface_set_target(__dynSurface);
+            draw_clear_alpha(c_white, 0);
+            surface_reset_target();
+            
+            var _dynDirtyArray = __dynDirtyArray;
+            var _glyphsMap     = __glyphsMap;
+            var _dynGlyphMap   = __dynGlyphToSlotMap;
+            
+            array_resize(_dynDirtyArray, 0);
+            
+            var _glyph = ds_map_find_first(_dynGlyphMap);
+            repeat(ds_map_size(_dynGlyphMap))
+            {
+                array_push(_dynDirtyArray, _glyph, _glyphsMap[? _glyph]);
+                _glyph = ds_map_find_next(_dynGlyphMap, _glyph);
+            }
+        }
+        
+        surface_set_target(__dynSurface);
+        shader_set(__shdScribblePassthrough);
+        
+        var _i = 0;
+        repeat(array_length(_dynDirtyArray) div 2)
+        {
+            var _glyph     = _dynDirtyArray[_i];
+            var _gridIndex = _dynDirtyArray[_i+1];
+            
+            var _left = round(_glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_U0] * _surfaceWidth);
+            var _top  = round(_glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_V0] * _surfaceHeight);
+            
+            draw_sprite_stretched_ext(__ScribblePixel, 0, _left-1, _top-1, _cellWidth, _cellHeight, c_white, 0);
+            draw_text(_left - _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_DYN_X],
+                      _top  - _glyphDataGrid[# _gridIndex, __SCRIBBLE_GLYPH_PROPR_DYN_Y],
+                      chr(_glyph));
+            
+            _i += 2;
+        }
+        
+        array_resize(_dynDirtyArray, 0);
+        
+        surface_reset_target();
+        shader_reset();
+        
+        draw_set_font(_oldFont);
+        draw_set_halign(_oldHAlign);
+        draw_set_valign(_oldVAlign);
+        
+        gpu_pop_state();
+        matrix_set(matrix_world, _oldWorldMatrix);
+        
+        return true;
+    }
+    
+    static __CreateUseGrid = function()
+    {
+        return ds_grid_create(__dynSlotCount, 1);
     }
 }

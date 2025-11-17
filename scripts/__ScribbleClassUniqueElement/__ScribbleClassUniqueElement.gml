@@ -77,6 +77,7 @@ function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_s
             _y = floor(_y);
         }
         
+        //Fetch an updated model before we set the shader and apply transforms
         var _model = __EnsureModel();
         
         //If enough time has elapsed since we drew this element then update our animation time and typist

@@ -88,6 +88,7 @@
 #macro __SCRIBBLE_GLYPH_REPL_SURFACE  -2
 #macro __SCRIBBLE_GLYPH_REPL_TEXTURE  -3
 
+#macro __SCRIBBLE_ON_DESKTOP           ((os_type == os_windows) || (os_type == os_macosx) || (os_type == os_linux))
 #macro __SCRIBBLE_ON_DIRECTX           ((os_type == os_windows) || (os_type == os_xboxone) || (os_type == os_xboxseriesxs) || (os_type == os_uwp) || (os_type == os_win8native) || (os_type == os_winphone) || (os_type == os_operagx))
 #macro __SCRIBBLE_ON_MOBILE            ((os_type == os_ios) || (os_type == os_android) || (os_type == os_tvos))
 #macro __SCRIBBLE_ON_WEB               (os_browser != browser_not_a_browser)
@@ -137,6 +138,8 @@
 #macro __SCRIBBLE_FLAG_SLANT        9
 #macro __SCRIBBLE_FLAG_GRADIENT    10
 
+
+
 #macro __SCRIBBLE_GLYPH_PROPR_CHARACTER      0
 #macro __SCRIBBLE_GLYPH_PROPR_UNICODE        1
 #macro __SCRIBBLE_GLYPH_PROPR_BIDI           2
@@ -154,8 +157,20 @@
 #macro __SCRIBBLE_GLYPH_PROPR_V0            14
 #macro __SCRIBBLE_GLYPH_PROPR_V1            15
 #macro __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID  16
+#macro __SCRIBBLE_GLYPH_PROPR_DYN_X         17
+#macro __SCRIBBLE_GLYPH_PROPR_DYN_Y         18
+#macro __SCRIBBLE_GLYPH_PROPR_DYN_SLOT      19
 
-#macro __SCRIBBLE_GLYPH_PROPR_COUNT  17
+#macro __SCRIBBLE_GLYPH_PROPR_SIZE  20
+
+
+
+#macro __SCRIBBLE_DYN_SLOT_DATA_USED_COUNT  0
+#macro __SCRIBBLE_DYN_SLOT_DATA_GLYPH       1
+
+#macro __SCRIBBLE_DYN_SLOT_DATA_SIZE  2
+
+
 
 #macro __SCRIBBLE_TAG_COLOR         0
 #macro __SCRIBBLE_TAG_EFFECT        1

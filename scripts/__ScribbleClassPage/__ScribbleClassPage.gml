@@ -210,35 +210,40 @@ function __ScribbleClassPage(_model) constructor
             if (_material.__renderType == __SCRIBBLE_RENDER_RASTER)
             {
                 shader_set_uniform_f(_u_fRenderType, __SCRIBBLE_RENDER_RASTER);
-                vertex_submit(_data.__vertexBuffer, pr_trianglelist, _material.__texture);
+                vertex_submit(_data.__vertexBuffer, pr_trianglelist, _material.__EnsureTexture());
             }
-            else if (_material.__renderType == __SCRIBBLE_RENDER_SDF)
+            else
             {
-                //Set shader uniforms unique to the SDF shader
-                shader_set_uniform_f(_u_fRenderType, __SCRIBBLE_RENDER_SDF);
-                shader_set_uniform_f(_u_vTexel, _material.__texelWidth, _material.__texelHeight);
-                shader_set_uniform_f(_u_fSDFRange, (_material.__sdfPxRange ?? 0));
-                shader_set_uniform_f(_u_fSDFThicknessOffset, _system.__state.__sdfThicknessOffset + (_material.__sdfThicknessOffset ?? 0));
+                var _texture = _material.__EnsureTexture();
                 
-                vertex_submit(_data.__vertexBuffer, pr_trianglelist, _material.__texture);
-                
-                if (_doubleDraw)
+                if (_material.__renderType == __SCRIBBLE_RENDER_SDF)
                 {
-                    shader_set_uniform_f(_u_fSecondDraw, 1);
-                    vertex_submit(_data.__vertexBuffer, pr_trianglelist, _material.__texture);
-                    shader_set_uniform_f(_u_fSecondDraw, 0);
+                    //Set shader uniforms unique to the SDF shader
+                    shader_set_uniform_f(_u_fRenderType, __SCRIBBLE_RENDER_SDF);
+                    shader_set_uniform_f(_u_vTexel, _material.__texelWidth, _material.__texelHeight);
+                    shader_set_uniform_f(_u_fSDFRange, (_material.__sdfPxRange ?? 0));
+                    shader_set_uniform_f(_u_fSDFThicknessOffset, _system.__state.__sdfThicknessOffset + (_material.__sdfThicknessOffset ?? 0));
+                    
+                    vertex_submit(_data.__vertexBuffer, pr_trianglelist, _texture);
+                    
+                    if (_doubleDraw)
+                    {
+                        shader_set_uniform_f(_u_fSecondDraw, 1);
+                        vertex_submit(_data.__vertexBuffer, pr_trianglelist, _texture);
+                        shader_set_uniform_f(_u_fSecondDraw, 0);
+                    }
                 }
-            }
-            else if (_material.__renderType == __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS)
-            {
-                shader_set_uniform_f(_u_fRenderType, __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS);
-                vertex_submit(_data.__vertexBuffer, pr_trianglelist, _material.__texture);
-                
-                if (_doubleDraw)
+                else if (_material.__renderType == __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS)
                 {
-                    shader_set_uniform_f(_u_fSecondDraw, 1);
-                    vertex_submit(_data.__vertexBuffer, pr_trianglelist, _material.__texture);
-                    shader_set_uniform_f(_u_fSecondDraw, 0);
+                    shader_set_uniform_f(_u_fRenderType, __SCRIBBLE_RENDER_RASTER_WITH_EFFECTS);
+                    vertex_submit(_data.__vertexBuffer, pr_trianglelist, _texture);
+                    
+                    if (_doubleDraw)
+                    {
+                        shader_set_uniform_f(_u_fSecondDraw, 1);
+                        vertex_submit(_data.__vertexBuffer, pr_trianglelist, _texture);
+                        shader_set_uniform_f(_u_fSecondDraw, 0);
+                    }
                 }
             }
             
@@ -351,7 +356,7 @@ function __ScribbleClassPage(_model) constructor
         
         var _data = {
             __vertexBuffer: _vbuff,
-            __material:      _material,
+            __material:     _material,
         };
         
         array_push(__vertexBufferArray, _data);

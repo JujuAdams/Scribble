@@ -5,10 +5,10 @@
                                     var _quadB = _vbuffPosGrid[# _glyphIndex, __SCRIBBLE_GEN_VBUFF_POS_QUAD_B];\
                                     \
                                     var _material = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_MATERIAL];\
-                                    var _quadU0  = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_U0];\
-                                    var _quadV0  = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_V0];\
-                                    var _quadU1  = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_U1];\
-                                    var _quadV1  = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_V1];\
+                                    var _quadU0   = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_U0];\
+                                    var _quadV0   = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_V0];\
+                                    var _quadU1   = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_U1];\
+                                    var _quadV1   = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_V1];\
                                     \
                                     var _halfW = 0.5*_glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_WIDTH ];\
                                     var _halfH = 0.5*_glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_HEIGHT];

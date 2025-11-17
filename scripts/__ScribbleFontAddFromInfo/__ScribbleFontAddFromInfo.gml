@@ -4,11 +4,11 @@
 /// @param textureGroup
 /// @param textureUVs
 /// @param fontInfo
-/// @param [lineHeight]
+/// @param lineHeight
 /// @param isKrutidev
 /// @param fromBundle
 
-function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo, _lineHeight = undefined, _isKrutidev, _fromBundle)
+function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo, _lineHeight, _isKrutidev, _fromBundle)
 {
     static _fontDataMap = __ScribbleSystem().__fontDataMap;
     
@@ -73,7 +73,7 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
         var _textureH  = (_textureUVs[3] - _textureUVs[1])/_textureTexelH; //texture_get_height(_textureIndex);
         var _textureL  = round(_textureUVs[0] / _textureTexelW);
         var _textureT  = round(_textureUVs[1] / _textureTexelH);
-            
+        
         if (SCRIBBLE_VERBOSE)
         {
             __ScribbleTrace("  \"" + _name +"\""
@@ -107,26 +107,22 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
         var _sdfOffset          = 0;
     }
     
-    var _ascender = _fontInfo.ascender;
+    var _fontData = new __ScribbleClassFont(_name, _size,
+                                            _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER,
+                                            _fromBundle, _texelsValid,
+                                            __ScribbleCalculateUnderlineY(_fontInfo.size, _fontInfo.ascender, _fontInfo.ascenderOffset),
+                                            __ScribbleCalculateStrikeY(_fontInfo.size, _fontInfo.ascender, _fontInfo.ascenderOffset),);
     
-    //Fix dodgy ascender values
-    if (_ascender <= 0)
-    {
-        _ascender = floor(_fontInfo.size * (4/3));
-    }
-    
-    var _underlineY = _ascender - _fontInfo.ascenderOffset;
-    var _strikeY    = ceil(0.666*_ascender) - _fontInfo.ascenderOffset;
-    
-    var _fontData = new __ScribbleClassFont(_name, _size, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _fromBundle, _texelsValid, _underlineY, _strikeY);
-    
-    var _fontGlyphsMap   = _fontData.__glyphsMap;
-    var _fontGlyphDataGrid = _fontData.__glyphDataGrid;
-    var _fontKerningMap  = _fontData.__kerningMap;
     if (_isKrutidev) _fontData.__isKrutidev = true;
+    
+    var _fontGlyphsMap     = _fontData.__glyphsMap;
+    var _fontGlyphDataGrid = _fontData.__glyphDataGrid;
+    var _fontKerningMap    = _fontData.__kerningMap;
     
     //Set some basic repeated values in bulk for a little speed boost
     var _material = __ScribbleGetMaterial(_name, _textureIndex, _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER, _sdfPxRange, _sdfThicknessOffset, _fontData.__bilinear);
+    
+    ds_grid_set_region(_fontGlyphDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT,  _size-1, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT,   _lineHeight);
     ds_grid_set_region(_fontGlyphDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE,   _size-1, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE,    1);
     ds_grid_set_region(_fontGlyphDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_MATERIAL,     _size-1, __SCRIBBLE_GLYPH_PROPR_MATERIAL,     _material);
     ds_grid_set_region(_fontGlyphDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, _size-1, __SCRIBBLE_GLYPH_PROPR_TEXELS_VALID, _texelsValid);
@@ -229,11 +225,12 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
         _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_Y_OFFSET    ] = _yoffset - _ascenderOffset;
         _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_WIDTH       ] = _w;
         _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_HEIGHT      ] = _h;
-        _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT ] = _lineHeight;
+
+        //_fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT ] = _lineHeight; //Set above in bulk
         _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_SEPARATION  ] = _glyphDict.shift;
         _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_LEFT_OFFSET ] = -_glyphDict.offset;
         //_fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_FONT_SCALE  ] = 1; //Set above in bulk
-                                                 
+        
         //_fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_MATERIAL    ] = _material; //Set above in bulk
         _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_U0          ] = _u0;
         _fontGlyphDataGrid[# _i, __SCRIBBLE_GLYPH_PROPR_U1          ] = _u1;
@@ -246,17 +243,11 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
         ++_i;
     }
     
-    var _spaceIndex = _fontGlyphsMap[? SCRIBBLE_UNICODE_SPACE];
-    if (_lineHeight == undefined)
-    {
-        _lineHeight = _fontGlyphDataGrid[# _spaceIndex, __SCRIBBLE_GLYPH_PROPR_HEIGHT];
-    }
-    
     _fontData.__height = _lineHeight;
     _fontData.__EnsureAdditionalCharacters();
     
     //Check to see if this texture has been resized during compile
-    var _GMScaling = _fontInfo.size / _fontGlyphDataGrid[# _spaceIndex, __SCRIBBLE_GLYPH_PROPR_HEIGHT];
+    var _GMScaling = _fontInfo.size / _fontGlyphDataGrid[# _fontGlyphsMap[? SCRIBBLE_UNICODE_SPACE], __SCRIBBLE_GLYPH_PROPR_HEIGHT];
     if (_GMScaling > 1)
     {
         __ScribbleTrace("Warning! Font \"", _name, "\" may have been scaled during compilation (font size = ", _fontInfo.size, ", space height = ", _fontGlyphDataGrid[# _fontGlyphsMap[? 32], __SCRIBBLE_GLYPH_PROPR_HEIGHT], ", scaling factor = ", _GMScaling, "). Check that the font is rendering correctly. If it is not, try setting `SCRIBBLE_ATTEMPT_FONT_SCALING_FIX` to `false`");

@@ -9,7 +9,7 @@
   "option_windows_copy_exe_to_dest":false,
   "option_windows_d3dswapeffectdiscard":false,
   "option_windows_description_info":"Scribble Deluxe",
-  "option_windows_disable_sandbox":false,
+  "option_windows_disable_sandbox":true,
   "option_windows_display_cursor":true,
   "option_windows_display_name":"Scribble Deluxe",
   "option_windows_enable_steam":false,

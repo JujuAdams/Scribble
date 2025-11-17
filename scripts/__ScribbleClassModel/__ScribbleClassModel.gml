@@ -98,6 +98,8 @@ function __ScribbleClassModel(_element) constructor
         
         __eventsDict = {};
         
+        __dynamicFontUseGridArray = [];
+        
         with(_generatorState)
         {
             __Reset();
@@ -235,6 +237,24 @@ function __ScribbleClassModel(_element) constructor
         __fitScale = 1.0;
         
         __pagesArray = []; //Stores each page of text
+        
+        var _dynamicFontUseGridArray = __dynamicFontUseGridArray;
+        var _i = 0;
+        repeat(array_length(_dynamicFontUseGridArray))
+        {
+            with(_dynamicFontUseGridArray[_i])
+            {
+                ds_grid_multiply_region(__grid, 0, 0, __count-1, 0, -1);
+                ds_grid_add_grid_region(__font.__dynSlotDataGrid, __grid,   0, 0, __count-1, 0,   0, __SCRIBBLE_DYN_SLOT_DATA_USED_COUNT);
+                ds_grid_destroy(__grid);
+                
+                __font.__dynCleanUpIndex = 0;
+            }
+            
+            ++_i;
+        }
+        
+        array_resize(_dynamicFontUseGridArray, 0);
     }
     
     /// @param page
