@@ -9,8 +9,8 @@
   "name":"obj_test_surface",
   "overriddenProperties":[],
   "parent":{
-    "name":"Basic",
-    "path":"folders/Test Cases/Basic.yy",
+    "name":"0000 - Basic",
+    "path":"folders/Test Cases/0000 - Basic.yy",
   },
   "parentObjectId":null,
   "persistent":false,

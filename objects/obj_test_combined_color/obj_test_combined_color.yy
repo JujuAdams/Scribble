@@ -10,8 +10,8 @@
   "name":"obj_test_combined_color",
   "overriddenProperties":[],
   "parent":{
-    "name":"Color",
-    "path":"folders/Test Cases/Color.yy",
+    "name":"0400 - Color",
+    "path":"folders/Test Cases/0400 - Color.yy",
   },
   "parentObjectId":null,
   "persistent":false,

@@ -8,8 +8,8 @@
   "name":"obj_test_sprite_animation_speed",
   "overriddenProperties":[],
   "parent":{
-    "name":"Configurations",
-    "path":"folders/Test Cases/Configurations.yy",
+    "name":"0300 - Configurations",
+    "path":"folders/Test Cases/0300 - Configurations.yy",
   },
   "parentObjectId":null,
   "persistent":false,

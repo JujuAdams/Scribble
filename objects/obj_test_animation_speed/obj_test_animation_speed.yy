@@ -11,8 +11,8 @@
   "name":"obj_test_animation_speed",
   "overriddenProperties":[],
   "parent":{
-    "name":"Animation",
-    "path":"folders/Test Cases/Animation.yy",
+    "name":"0100 - Animation",
+    "path":"folders/Test Cases/0100 - Animation.yy",
   },
   "parentObjectId":null,
   "persistent":false,

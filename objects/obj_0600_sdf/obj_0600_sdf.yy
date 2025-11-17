@@ -9,8 +9,8 @@
   "name":"obj_0600_sdf",
   "overriddenProperties":[],
   "parent":{
-    "name":"SDF",
-    "path":"folders/Test Cases/SDF.yy",
+    "name":"0600 - SDF",
+    "path":"folders/Test Cases/0600 - SDF.yy",
   },
   "parentObjectId":null,
   "persistent":false,

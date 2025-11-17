@@ -9,8 +9,8 @@
   "name":"obj_test_newline_left_trim",
   "overriddenProperties":[],
   "parent":{
-    "name":"Configurations",
-    "path":"folders/Test Cases/Configurations.yy",
+    "name":"0300 - Configurations",
+    "path":"folders/Test Cases/0300 - Configurations.yy",
   },
   "parentObjectId":null,
   "persistent":false,

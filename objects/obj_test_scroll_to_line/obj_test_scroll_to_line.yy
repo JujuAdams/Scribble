@@ -10,8 +10,8 @@
   "name":"obj_test_scroll_to_line",
   "overriddenProperties":[],
   "parent":{
-    "name":"Layout",
-    "path":"folders/Test Cases/Layout.yy",
+    "name":"0700 - Layout",
+    "path":"folders/Test Cases/0700 - Layout.yy",
   },
   "parentObjectId":null,
   "persistent":false,

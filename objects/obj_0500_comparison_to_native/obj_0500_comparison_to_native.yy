@@ -8,8 +8,8 @@
   "name":"obj_0500_comparison_to_native",
   "overriddenProperties":[],
   "parent":{
-    "name":"Fonts",
-    "path":"folders/Test Cases/Fonts.yy",
+    "name":"0500 - Fonts",
+    "path":"folders/Test Cases/0500 - Fonts.yy",
   },
   "parentObjectId":null,
   "persistent":false,
