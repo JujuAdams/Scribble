@@ -136,9 +136,6 @@
 //Enables verbose console output to aid with debugging
 #macro SCRIBBLE_VERBOSE  false
 
-//Controls how accurately text fits Beziér curves. Higher is more accurate but slower.
-#macro SCRIBBLE_BEZIER_ACCURACY  20
-
 //Whether to wrap the internal time value.
 #macro SCRIBBLE_SAFELY_WRAP_TIME  true
 

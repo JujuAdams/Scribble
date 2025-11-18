@@ -20,38 +20,6 @@
                                          _materialPrev = _material;\
                                          _vbuff = _pageData.__GetVertexBuffer(_material);\
                                      }\
-                                     if (_bezierDo)\
-                                     {\
-                                         var _quadCX = _quadL + _halfW;\
-                                         var _quadCY = _quadT + _halfH;\
-                                         if (_quadCY > _bezierPrevCY)\ //If we've snapped back to the LHS then reset our Bezier curve 
-                                         {\ //TODO - Maybe use a line number check instead? This could get slow
-                                             _bezierSearchIndex = 0;\
-                                             _bezierSearchD0 = 0;\
-                                             _bezierSearchD1 = _bezierLengths[1];\
-                                         }\
-                                         _bezierPrevCY = _quadCY;\
-                                         while (true)\ //Iterate forwards until we find a Bezier segment we can fit into
-                                         {\
-                                             if (_quadCX <= _bezierSearchD1)\ //If this glyph is on this line segment...
-                                             {\
-                                                 var _bezierParam = _bezierParamIncrement*((_quadCX - _bezierSearchD0)/ (_bezierSearchD1 - _bezierSearchD0) + _bezierSearchIndex);\ //...then parameterise this glyph
-                                                 break;\
-                                             }\
-                                             _bezierSearchIndex++;\
-                                             if (_bezierSearchIndex >= SCRIBBLE_BEZIER_ACCURACY-1)\
-                                             {\
-                                                 var _bezierParam = 1.0;\ //We've hit the end of the Bezier curve, force all the remaining glyphs to stack up at the end of the line
-                                                 break;\
-                                             }\
-                                             _bezierSearchD0 = _bezierSearchD1;\ //Advance to the next line segment
-                                             _bezierSearchD1 = _bezierLengths[_bezierSearchIndex+1];\
-                                         }\
-                                         _quadL = _bezierParam;\
-                                         _quadR = _bezierParam;\
-                                         _quadT = _quadCY;\
-                                         _quadB = _quadCY;\
-                                     }\
                                      \
                                      vertex_position_3d(_vbuff, _quadL, _quadT, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU0, _quadV0,  _halfW,  _halfH);\
                                      vertex_position_3d(_vbuff, _quadR, _quadB, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU1, _quadV1, -_halfW, -_halfH);\
@@ -97,22 +65,6 @@ function __ScribbleGen10_WriteVBuffs()
     ds_grid_add_grid_region(_vbuffPosGrid, _glyphGrid, 0, __SCRIBBLE_GEN_GLYPH_HEIGHT,  _glyphCount-1, __SCRIBBLE_GEN_GLYPH_HEIGHT,  0, __SCRIBBLE_GEN_VBUFF_POS_QUAD_B);
     
     
-    
-    if (is_array(_generatorState.__bezierLengthsArray))
-    {
-        //Prep for Bezier curve shenanigans if necessary
-        var _bezierDo             = true;
-        var _bezierLengths        = _generatorState.__bezierLengthsArray;
-        var _bezierSearchIndex    = 0;
-        var _bezierSearchD0       = 0;
-        var _bezierSearchD1       = _bezierLengths[1];
-        var _bezierPrevCY         = -infinity;
-        var _bezierParamIncrement = 1 / (SCRIBBLE_BEZIER_ACCURACY-1);
-    }
-    else
-    {
-        _bezierDo = false;
-    }
     
     var _glyphEffectFlags = 0;
     var _glyphSpriteData  = 0;

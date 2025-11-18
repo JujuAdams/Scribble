@@ -31,7 +31,6 @@ function __ScribbleClassModel(_element) constructor
     __wrapNoPages        = _element.__wrapNoPages;
     __layoutMaxScale     = _element.__layoutMaxScale;
     
-    __bezierArray = _element.__bezierArray;
     
     __bidiHint           = _element.__bidiHint;
     __ignoreCommandTags  = _element.__ignoreCommandTags;
@@ -106,7 +105,7 @@ function __ScribbleClassModel(_element) constructor
             __overallBidi = other.__bidiHint;
         };
         
-        __ScribbleGen1_ModelLimitsAndBezierCurves();
+        __ScribbleGen1_ModelLimitsAndPaths();
         __ScribbleGen2_Parser();
         __ScribbleGen2b_PostParse();
         __ScribbleGen3_Devanagari();

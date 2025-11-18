@@ -79,7 +79,6 @@ uniform vec2  u_vRegionActive;                 //2 //FIXME - This will break whe
 uniform vec4  u_vRegionColour;                 //4
 uniform float u_fTime;                         //1
 uniform float u_aDataFields[MAX_ANIM_FIELDS];  //16
-uniform vec2  u_aBezier[3];                    //6
 uniform vec2  u_vScroll;                       //2
 
 uniform int   u_iTypewriterMethod;         //1
@@ -221,18 +220,6 @@ float FadeIn(vec3 headVector, vec3 limitVector, float smoothness, float index, b
     return invert? (1.0 - result) : result;
 }
 
-vec2 bezier(float t, vec2 p1, vec2 p2, vec2 p3)
-{
-    float inv_t = 1.0 - t;
-    return 3.0*inv_t*inv_t*t*p1 + 3.0*inv_t*t*t*p2 + t*t*t*p3;
-}
-
-vec2 bezierDerivative(float t, vec2 p1, vec2 p2, vec2 p3)
-{
-    float inv_t = 1.0 - t;
-    return 3.0*inv_t*inv_t*p1 + 6.0*inv_t*t*(p2 - p1) + 3.0*t*t*(p3 - p2);
-}
-
 
 
 //--------------------------------------------------------------------------------------------------------
@@ -348,21 +335,21 @@ void main()
     //Unpack the glyph centre
     vec2 centre;
     
-    //If we have a valid Bezier curve, apply it
-    if ((u_aBezier[2].x != 0.0) || (u_aBezier[2].y != 0.0))
-    {
-        centre = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
-        
-        vec2 orientation = bezierDerivative(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
-        v_vModelPosition = rotate_by_vector(centre - in_Colour2.zw, centre, normalize(orientation));
-        
-        vec2 perpendicular = normalize(vec2(-u_aBezier[2].y, u_aBezier[2].x));
-        v_vModelPosition += in_Position.y*perpendicular;
-    }
-    else
-    {
-        centre = v_vModelPosition + in_Colour2.zw;
-    }
+    ////If we have a valid Bezier curve, apply it
+    //if ((u_aBezier[2].x != 0.0) || (u_aBezier[2].y != 0.0))
+    //{
+    //    centre = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
+    //    
+    //    vec2 orientation = bezierDerivative(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
+    //    v_vModelPosition = rotate_by_vector(centre - in_Colour2.zw, centre, normalize(orientation));
+    //    
+    //    vec2 perpendicular = normalize(vec2(-u_aBezier[2].y, u_aBezier[2].x));
+    //    v_vModelPosition += in_Position.y*perpendicular;
+    //}
+    //else
+    //{
+    //    centre = v_vModelPosition + in_Colour2.zw;
+    //}
     
     v_vModelPosition += u_vSkew*centre.yx;
     if (SLANT_FLAG > 0.5) v_vModelPosition.x += in_Colour2.w*SLANT_GRADIENT;

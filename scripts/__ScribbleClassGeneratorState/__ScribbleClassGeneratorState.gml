@@ -18,19 +18,18 @@ function __ScribbleClassGeneratorState() constructor
         array_resize(__controlArray, 0);
         
         //Model class
-        __glyphCount    = 0;
+        __glyphCount     = 0;
         __sectionCount   = 0; // [/section] tags. Optional feature
-        __wordCount     = 0;
-        __lineCount     = 0;
+        __wordCount      = 0;
+        __lineCount      = 0;
         __modelMaxWidth  = 0;
         __modelMaxHeight = 0;
-        __overallBidi   = undefined;
+        __overallBidi    = undefined;
         
         __usesHAlignLeft   = false;
         __usesHAlignCenter = false;
         __usesHAlignRight  = false;
         
-        __bezierLengthsArray = undefined;
         
         __modelMaxWidth  = 0;
         __modelMaxHeight = 0;

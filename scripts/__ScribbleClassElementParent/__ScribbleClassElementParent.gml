@@ -91,7 +91,7 @@ function __ScribbleClassElementParent(_text) constructor
     __scaleToBoxWidth    = 0;
     __scaleToBoxHeight   = 0;
     __scaleToBoxMaximize = false;
-    __scaleToBoxScale    = undefined;
+    __scaleToBoxScale    = undefined; 
     
     __lineHeight  = -1;
     __lineSpacing = "100%";
@@ -104,8 +104,6 @@ function __ScribbleClassElementParent(_text) constructor
     __ignoreCommandTags = false;
     __template = undefined;
     
-    __bezierArray = array_create(6, 0.0);
-    __bezierUsing = false;
     
     __animationTime  = 0;
     __animationSpeed = 1;
@@ -898,17 +896,7 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
-    /// @param [x1=0]
-    /// @param [y1=0]
-    /// @param [x2=0]
-    /// @param [y2=0]
-    /// @param [x3=0]
-    /// @param [y3=0]
-    /// @param [x4=0]
-    /// @param [y4=0]
-    static bezier = function(_x1, _y1, _x2, _y2, _x3, _y3, _x4, _y4)
     {
-        if (argument_count <= 0)
         {
             var _bezierArray = array_create(6, 0.0);
         }
@@ -918,33 +906,6 @@ function __ScribbleClassElementParent(_text) constructor
             ||  (not is_numeric(_x2)) || (not is_numeric(_y2))
             ||  (not is_numeric(_x3)) || (not is_numeric(_y3))
             ||  (not is_numeric(_x4)) || (not is_numeric(_y4)))
-            {
-                __ScribbleTrace("Warning! One or more Bezier parameters were not numeric (", _x1, ", ", _y1, ", ", _x2, ", ", _y2, ", ", _x3, ", ", _y3, ", ", _x4, ", ", _y4, ")");
-                
-                _x1 = 0;
-                _y1 = 0;
-                _x2 = 0;
-                _y2 = 0;
-                _x3 = 0;
-                _y3 = 0;
-                _x4 = 0;
-                _y4 = 0;
-            }
-        }
-        else
-        {
-            __ScribbleError("Wrong number of arguments (", argument_count, ") provided\nExpecting 0 or 8");
-        }
-        
-        var _bezierArray = [_x2 - _x1, _y2 - _y1,
-                             _x3 - _x1, _y3 - _y1,
-                             _x4 - _x1, _y4 - _y1];
-        
-        if (not array_equals(__bezierArray, _bezierArray))
-        {
-            __modelDirty  = true;
-            __bezierArray = _bezierArray;
-            __bezierUsing = true;
         }
         
         return self;
@@ -1835,7 +1796,6 @@ function __ScribbleClassElementParent(_text) constructor
         static _u_vRegionActive   = shader_get_uniform(__shdScribble, "u_vRegionActive"  );
         static _u_vRegionColour   = shader_get_uniform(__shdScribble, "u_vRegionColour"  );
         static _u_aDataFields     = shader_get_uniform(__shdScribble, "u_aDataFields"    );
-        static _u_aBezier         = shader_get_uniform(__shdScribble, "u_aBezier"        );
         
         static _u_vShadowOffsetAndSoftness = shader_get_uniform(__shdScribble, "u_vShadowOffsetAndSoftness");
         static _u_vShadowColour            = shader_get_uniform(__shdScribble, "u_vShadowColour"           );
@@ -1846,7 +1806,6 @@ function __ScribbleClassElementParent(_text) constructor
         static _animPropertiesArray = __ScribbleSystem().__animPropertiesArray;
         
         static _shaderUniformsDirty    = true;
-        static _shaderSetToUseBezier   = false;
         static _shaderUniformsDisabled = (function()
         {
             var _array = array_create(__SCRIBBLE_ANIM_SIZE, 0);
@@ -1917,21 +1876,6 @@ function __ScribbleClassElementParent(_text) constructor
                 __shaderAnimDefault = __shaderAnimDesyncToDefault;
                 shader_set_uniform_f_array(_u_aDataFields, __shaderAnimDisabled? _shaderUniformsDisabled : _animPropertiesArray);
             }
-        }
-        
-        if (__bezierUsing)
-        {
-            //If we're using a Bezier curve for this element, push that value into the shader
-            _shaderSetToUseBezier = true;
-            shader_set_uniform_f_array(_u_aBezier, __bezierArray);
-        }
-        else if (_shaderSetToUseBezier)
-        {
-            //If we're *not* using a Bezier curve but we have a previous Bezier curve cached, reset the curve in the shader
-            _shaderSetToUseBezier = false;
-            
-            static _null_array = array_create(6, 0);
-            shader_set_uniform_f_array(_u_aBezier, _null_array);
         }
         
         shader_set_uniform_f(_u_vShadowOffsetAndSoftness, __sdfShadowXOffset, __sdfShadowYOffset, __sdfShadowSoftness);
