@@ -1,7 +1,8 @@
 //   @jujuadams   v10.0.0   2025-08-24
 precision highp float;
 
-#define ANIMATION_INDEX       in_Position.z
+#define ANGLE                 in_Position.z
+#define ANIMATION_INDEX       in_Position.w
 #define REVEAL_INDEX          in_Normal.x
 #define PACKED_SPRITE_DATA    in_Normal.y
 #define PACKED_EFFECT_FLAGS   in_Normal.z
@@ -63,7 +64,7 @@ const float PI = 3.14159265359;
 // Attributes, Varyings, and Uniforms
 
 
-attribute vec3 in_Position; //{X, Y, Animation index}
+attribute vec4 in_Position; //{X, Y, Angle, Animation index}
 attribute vec3 in_Normal;   //{Reveal index, Sprite data, Bitpacked effect flags}
 attribute vec4 in_Colour;   //{Base colour, gradient colour, outline colour, alpha}
 attribute vec4 in_Colour2;  //UVs, {dX, dY}
@@ -336,7 +337,7 @@ void main()
     vec2 centre = v_vModelPosition + in_Colour2.zw;
     
     //Perform rotation
-    v_vModelPosition = rotate(centre - in_Colour2.zw, centre, 0.0);
+    v_vModelPosition = rotate(centre - in_Colour2.zw, centre, ANGLE);
     
     //Skew
     v_vModelPosition += u_vSkew*centre.yx;

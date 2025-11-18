@@ -342,11 +342,11 @@ function __ScribbleClassPage(_model) constructor
         if (_vertexFormat == undefined)
         {
             vertex_format_begin();
-            vertex_format_add_position_3d();                                  //12 bytes
-            vertex_format_add_normal();                                       //12 bytes
-            vertex_format_add_custom(vertex_type_float4, vertex_usage_color); //16 bytes
-            vertex_format_add_custom(vertex_type_float4, vertex_usage_color); //16 bytes
-            _vertexFormat = vertex_format_end();                              //56 bytes per vertex, 168 bytes per tri, 336 bytes per glyph
+            vertex_format_add_custom(vertex_type_float4, vertex_usage_position); //16 bytes
+            vertex_format_add_normal();                                          //12 bytes
+            vertex_format_add_custom(vertex_type_float4, vertex_usage_color);    //16 bytes
+            vertex_format_add_custom(vertex_type_float4, vertex_usage_color);    //16 bytes
+            _vertexFormat = vertex_format_end();                                 //56 bytes per vertex, 168 bytes per tri, 336 bytes per glyph
         }
         
         var _vbuff = vertex_create_buffer(); //TODO - Can we preallocate this? i.e. copy "for text" system we had in the old version

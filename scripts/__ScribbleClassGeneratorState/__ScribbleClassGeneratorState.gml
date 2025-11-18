@@ -30,6 +30,7 @@ function __ScribbleClassGeneratorState() constructor
         __usesHAlignCenter = false;
         __usesHAlignRight  = false;
         
+        __pathLength = 1;
         
         __modelMaxWidth  = 0;
         __modelMaxHeight = 0;

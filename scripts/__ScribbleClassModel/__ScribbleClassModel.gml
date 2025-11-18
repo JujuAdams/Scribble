@@ -31,6 +31,10 @@ function __ScribbleClassModel(_element) constructor
     __wrapNoPages        = _element.__wrapNoPages;
     __layoutMaxScale     = _element.__layoutMaxScale;
     
+    __path      = _element.__path;
+    __pathStart = _element.__pathStart;
+    __pathEnd   = _element.__pathEnd;
+    __pathScale = _element.__pathScale;
     
     __bidiHint           = _element.__bidiHint;
     __ignoreCommandTags  = _element.__ignoreCommandTags;

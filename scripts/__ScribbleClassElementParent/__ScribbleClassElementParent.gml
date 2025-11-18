@@ -104,6 +104,10 @@ function __ScribbleClassElementParent(_text) constructor
     __ignoreCommandTags = false;
     __template = undefined;
     
+    __path      = undefined;
+    __pathStart = 0;
+    __pathEnd   = 1;
+    __pathScale = 1;
     
     __animationTime  = 0;
     __animationSpeed = 1;
@@ -896,16 +900,23 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
+    // @param path
+    // @param [start=0]
+    // @param [end=1]
+    // @param [scale=1]
+    static path = function(_path, _start = 0, _end = 1, _scale = 1)
     {
+        if ((__path         != _path)
+        ||  (__pathStart    != _start)
+        ||  (__pathEnd      != _end)
+        ||  (__pathScale    != _scale))
         {
-            var _bezierArray = array_create(6, 0.0);
-        }
-        else if (argument_count == 8)
-        {
-            if ((not is_numeric(_x1)) || (not is_numeric(_y1))
-            ||  (not is_numeric(_x2)) || (not is_numeric(_y2))
-            ||  (not is_numeric(_x3)) || (not is_numeric(_y3))
-            ||  (not is_numeric(_x4)) || (not is_numeric(_y4)))
+            __modelDirty = true;
+            
+            __path      = _path;
+            __pathStart = _start;
+            __pathEnd   = _end;
+            __pathScale = _scale;
         }
         
         return self;

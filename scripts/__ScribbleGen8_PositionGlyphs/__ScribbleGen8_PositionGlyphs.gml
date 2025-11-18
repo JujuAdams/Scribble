@@ -39,13 +39,13 @@ function __ScribbleGen8_PositionGlyphs()
         
         if (SCRIBBLE_PIN_ALIGNMENT_USES_PAGE_SIZE)
         {
-            var _alignmentWidth     = _pageData.__width;
+            var _alignmentWidth    = _pageData.__width;
             var _pinAlignmentWidth = _pageData.__width;
         }
         else
         {
             // If we were given no maximum alignment width, align to the actual width of the model
-            var _alignmentWidth     = (_modelMaxWidth == infinity)? __width : _modelMaxWidth;
+            var _alignmentWidth    = (_modelMaxWidth == infinity)? __width : _modelMaxWidth;
             var _pinAlignmentWidth = (_modelMaxWidth == infinity)? __width : _modelMaxWidth;
         }
             

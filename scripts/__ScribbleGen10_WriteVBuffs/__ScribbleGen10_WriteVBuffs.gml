@@ -10,6 +10,7 @@
                                     var _quadU1   = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_U1];\
                                     var _quadV1   = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_QUAD_V1];\
                                     \
+                                    var _angle =     _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_ANGLE ];\
                                     var _halfW = 0.5*_glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_WIDTH ];\
                                     var _halfH = 0.5*_glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_HEIGHT];
 
@@ -21,12 +22,12 @@
                                          _vbuff = _pageData.__GetVertexBuffer(_material);\
                                      }\
                                      \
-                                     vertex_position_3d(_vbuff, _quadL, _quadT, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU0, _quadV0,  _halfW,  _halfH);\
-                                     vertex_position_3d(_vbuff, _quadR, _quadB, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU1, _quadV1, -_halfW, -_halfH);\
-                                     vertex_position_3d(_vbuff, _quadL, _quadB, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU0, _quadV1,  _halfW, -_halfH);\
-                                     vertex_position_3d(_vbuff, _quadR, _quadB, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU1, _quadV1, -_halfW, -_halfH);\
-                                     vertex_position_3d(_vbuff, _quadL, _quadT, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU0, _quadV0,  _halfW,  _halfH);\
-                                     vertex_position_3d(_vbuff, _quadR, _quadT, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU1, _quadV0, -_halfW,  _halfH);
+                                     vertex_float4(_vbuff, _quadL, _quadT, _angle, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU0, _quadV0,  _halfW,  _halfH);\
+                                     vertex_float4(_vbuff, _quadR, _quadB, _angle, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU1, _quadV1, -_halfW, -_halfH);\
+                                     vertex_float4(_vbuff, _quadL, _quadB, _angle, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU0, _quadV1,  _halfW, -_halfH);\
+                                     vertex_float4(_vbuff, _quadR, _quadB, _angle, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU1, _quadV1, -_halfW, -_halfH);\
+                                     vertex_float4(_vbuff, _quadL, _quadT, _angle, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU0, _quadV0,  _halfW,  _halfH);\
+                                     vertex_float4(_vbuff, _quadR, _quadT, _angle, _animationIndex); vertex_normal(_vbuff, _revealIndex, _glyphSpriteData, _glyphEffectFlags); vertex_float4(_vbuff, _writeColorBase, _writeColorGrad, _writeColorOutline, _writeAlpha); vertex_float4(_vbuff, _quadU1, _quadV0, -_halfW,  _halfH);
 
 
 

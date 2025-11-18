@@ -10,7 +10,18 @@ function __ScribbleGen1_ModelLimitsAndPaths()
     var _modelMaxHeight = __layoutMaxHeight - (__paddingT + __paddingB);
     if (_modelMaxHeight < 0) _modelMaxHeight = infinity;
     
-    //TODO - Calculate path length
+    if (__path != undefined)
+    {
+        if ((__pathStart == 0) && (__pathEnd == 1))
+        {
+            _generatorState.__pathLength = abs(__pathScale)*path_get_length(__path);
+        }
+        else
+        {
+            //TODO
+            _generatorState.__pathLength = abs(__pathScale)*path_get_length(__path);
+        }
+    }
     
     with(_generatorState)
     {

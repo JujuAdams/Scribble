@@ -48,11 +48,12 @@
 #macro __SCRIBBLE_GEN_GLYPH_QUAD_U1          12 // }
 #macro __SCRIBBLE_GEN_GLYPH_QUAD_V0          13 // }
 #macro __SCRIBBLE_GEN_GLYPH_QUAD_V1          14 // }
-#macro __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT    15 //
-#macro __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX  16 //
-#macro __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX     17 //
-#macro __SCRIBBLE_GEN_GLYPH_SPRITE_DATA      18 // Only used for sprites
-#macro __SCRIBBLE_GEN_GLYPH_SIZE             19 //
+#macro __SCRIBBLE_GEN_GLYPH_ANGLE            15 //
+#macro __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT    16 //
+#macro __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX  17 //
+#macro __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX     18 //
+#macro __SCRIBBLE_GEN_GLYPH_SPRITE_DATA      19 // Only used for sprites
+#macro __SCRIBBLE_GEN_GLYPH_SIZE             20 //
 
 #macro __SCRIBBLE_GEN_WORD_BIDI_RAW     0
 #macro __SCRIBBLE_GEN_WORD_BIDI         1

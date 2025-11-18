@@ -1831,6 +1831,9 @@ function __ScribbleGen2_Parser()
     _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount; //Make sure we collect controls at the end of a string
     _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX ] = _sectionCount;
     
+    //Ensure all glyphs are at 0 rotation
+    ds_grid_set_region(_glyphGrid,   0, __SCRIBBLE_GEN_GLYPH_ANGLE, _glyphCount, __SCRIBBLE_GEN_GLYPH_ANGLE,   0);
+    
     with(_generatorState)
     {
         __glyphCount   = _glyphCount+1;
