@@ -18,8 +18,30 @@ function __ScribbleGen1_ModelLimitsAndPaths()
         }
         else
         {
-            //TODO
-            _generatorState.__pathLength = abs(__pathScale)*path_get_length(__path);
+            //TODO - Consider caching this information
+            
+            var _path = __path;
+            var _length = 0;
+            
+            var _incr = (__pathEnd - __pathStart) / __SCRIBBLE_PATH_LENGTH_ACCURACY;
+            
+            var _t = __pathStart;
+            var _x2 = path_get_x(_path, _t);
+            var _y2 = path_get_y(_path, _t);
+            
+            repeat(__SCRIBBLE_PATH_LENGTH_ACCURACY)
+            {
+                var _x = _x2;
+                var _y = _y2;
+                
+                _t += _incr;
+                _x2 = path_get_x(_path, _t);
+                _y2 = path_get_y(_path, _t);
+                
+                _length += point_distance(_x, _y, _x2, _y2);
+            }
+            
+            _generatorState.__pathLength = abs(__pathScale)*_length;
         }
     }
     
