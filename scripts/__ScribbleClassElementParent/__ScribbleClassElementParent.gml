@@ -439,7 +439,7 @@ function __ScribbleClassElementParent(_text) constructor
         
         __panAuto = false;
         
-        __panXArray[@ _page] = _clamp? clamp(_x, 0, get_pan_max(_page)) : _x;
+        __scrollXArray[@ _page] = _clamp? clamp(_x, 0, get_pan_max(_page)) : _x;
         __panWasClamped = _clamp;
         
         return self;
