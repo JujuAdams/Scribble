@@ -109,7 +109,6 @@
     {"name":"obj_test_bbox_getters_with_offset","order":2,"path":"objects/obj_test_bbox_getters_with_offset/obj_test_bbox_getters_with_offset.yy",},
     {"name":"obj_test_bbox_getters","order":1,"path":"objects/obj_test_bbox_getters/obj_test_bbox_getters.yy",},
     {"name":"obj_test_bbox_revealed","order":1,"path":"objects/obj_test_bbox_revealed/obj_test_bbox_revealed.yy",},
-    {"name":"obj_test_bezier_arabic","order":3,"path":"objects/obj_test_bezier_arabic/obj_test_bezier_arabic.yy",},
     {"name":"obj_test_bilinear_filtering","order":9,"path":"objects/obj_test_bilinear_filtering/obj_test_bilinear_filtering.yy",},
     {"name":"obj_test_blend","order":3,"path":"objects/obj_test_blend/obj_test_blend.yy",},
     {"name":"obj_test_browser","order":21,"path":"objects/obj_test_browser/obj_test_browser.yy",},
