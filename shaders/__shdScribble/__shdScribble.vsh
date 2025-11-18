@@ -115,7 +115,7 @@ vec2 rotate_by_vector(vec2 position, vec2 centre, vec2 vector)
 //Rotate the character
 vec2 rotate(vec2 position, vec2 centre, float angle)
 {
-    return rotate_by_vector(position, centre, vec2(cos(0.00872664625*angle), -sin(0.00872664625*angle)));
+    return rotate_by_vector(position, centre, vec2(cos(0.0174532925*angle), -sin(0.0174532925*angle)));
 }
 
 //Scale the character
@@ -333,25 +333,15 @@ void main()
     
     
     //Unpack the glyph centre
-    vec2 centre;
+    vec2 centre = v_vModelPosition + in_Colour2.zw;
     
-    ////If we have a valid Bezier curve, apply it
-    //if ((u_aBezier[2].x != 0.0) || (u_aBezier[2].y != 0.0))
-    //{
-    //    centre = bezier(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
-    //    
-    //    vec2 orientation = bezierDerivative(in_Position.x, u_aBezier[0], u_aBezier[1], u_aBezier[2]);
-    //    v_vModelPosition = rotate_by_vector(centre - in_Colour2.zw, centre, normalize(orientation));
-    //    
-    //    vec2 perpendicular = normalize(vec2(-u_aBezier[2].y, u_aBezier[2].x));
-    //    v_vModelPosition += in_Position.y*perpendicular;
-    //}
-    //else
-    //{
-    //    centre = v_vModelPosition + in_Colour2.zw;
-    //}
+    //Perform rotation
+    v_vModelPosition = rotate(centre - in_Colour2.zw, centre, 0.0);
     
+    //Skew
     v_vModelPosition += u_vSkew*centre.yx;
+    
+    //Slant (fake italics)
     if (SLANT_FLAG > 0.5) v_vModelPosition.x += in_Colour2.w*SLANT_GRADIENT;
     
     
@@ -370,6 +360,7 @@ void main()
     
     if (ANIM_SPRITE_FLAG > 0.5) v_vColourIndexes.a *= filterAnimatedSprite(PACKED_SPRITE_DATA); //Use packed sprite data to filter out sprite frames that we don't want
     
+    // TODO - Bring this back
     ////Regions
     //if ((REVEAL_INDEX >= u_vRegionActive.x) && (REVEAL_INDEX <= u_vRegionActive.y)) v_vColour.rgb = mix(v_vColour.rgb, u_vRegionColour.rgb, u_vRegionColour.a);
     

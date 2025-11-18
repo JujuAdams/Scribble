@@ -75,7 +75,7 @@
 
 //Default maximum wobble angle. Larger values cause glyphs to oscillate further to the left and
 //right.
-#macro SCRIBBLE_DEFAULT_WOBBLE_ANGLE  40
+#macro SCRIBBLE_DEFAULT_WOBBLE_ANGLE  20
 
 //Default wobble frequency. Larger values cause glyphs to oscillate faster.
 #macro SCRIBBLE_DEFAULT_WOBBLE_FREQ  0.15
