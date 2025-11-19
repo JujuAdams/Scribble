@@ -88,8 +88,10 @@
                                         return false;\
                                     }\
                                     ;\
-                                    var _font_space_width = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.SEPARATION ];\
-                                    var _font_line_height = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.FONT_HEIGHT];\
+                                    var _font_space_width     = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.SEPARATION ];\
+                                    var _font_line_height     = _font_glyph_data_grid[# _space_data_index, SCRIBBLE_GLYPH.FONT_HEIGHT];\
+                                    var _font_ascender        = _font_data.__ascender;\
+                                    var _font_ascender_offset = _font_data.__ascender_offset;\
                                     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__TYPE] = __SCRIBBLE_GEN_CONTROL_TYPE.__FONT;\
                                     _control_grid[# _control_count, __SCRIBBLE_GEN_CONTROL.__DATA] = _font_name;\
                                     ++_control_count;
@@ -1130,10 +1132,26 @@ function __scribble_gen_2_parser()
                                     {
                                         var _sprite_w = sprite_get_width( _sprite_index);
                                         var _sprite_h = sprite_get_height(_sprite_index);
-                                
+                                        
+                                        if (SCRIBBLE_SPRITE_ALIGN_MODE == 0) //Align to centre of line height
+                                        {
+                                            var _sprite_y_offset = 0;
+                                            var _sprite_space_h  = _font_line_height;
+                                        }
+                                        else if (SCRIBBLE_SPRITE_ALIGN_MODE == 1) //Align to centre of ascender
+                                        {
+                                            var _sprite_y_offset = floor(_font_ascender_offset + _font_ascender/2 - _font_line_height/2);
+                                            var _sprite_space_h  = _font_ascender;
+                                        }
+                                        else if (SCRIBBLE_SPRITE_ALIGN_MODE == 2) //Align bottom to baseline
+                                        {
+                                            var _sprite_y_offset = floor(_font_ascender_offset + _font_ascender - _sprite_h/2 - _font_line_height/2);
+                                            var _sprite_space_h  = _font_ascender;
+                                        }
+                                        
                                         if (SCRIBBLE_AUTOFIT_INLINE_SPRITES)
                                         {
-                                            var _scale = min(1, (_font_line_height+2)/_sprite_h);
+                                            var _scale = min(1, _sprite_space_h / _sprite_h);
                                             _sprite_w *= _scale;
                                             _sprite_h *= _scale;
                                         }
@@ -1169,7 +1187,7 @@ function __scribble_gen_2_parser()
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__BIDI         ] = __SCRIBBLE_BIDI.SYMBOL;
                                 
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__X            ] = _state_halign_offset;
-                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = _state_valign_offset;
+                                        _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__Y            ] = _state_valign_offset + _sprite_y_offset;
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__WIDTH        ] = _sprite_w;
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__HEIGHT       ] = _sprite_h;
                                         _glyph_grid[# _glyph_count, __SCRIBBLE_GEN_GLYPH.__FONT_HEIGHT  ] = _sprite_h;

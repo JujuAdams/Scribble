@@ -254,7 +254,17 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
             _line_height = _font_glyph_data_grid[# _space_index, SCRIBBLE_GLYPH.HEIGHT];
         }
         
-        _font_data.__height = _line_height;
+        //Fix dodgy ascender values
+        var _ascender = _font_info.ascender;
+        if (_ascender <= 0)
+        {
+            _ascender = floor(_font_info.size * (4/3));
+            __scribble_trace("Warning! Font \"", _name, "\" has an invalid ascender. Estimated a value of ", _ascender);
+        }
+        
+        _font_data.__height          = _line_height;
+        _font_data.__ascender        = _ascender;
+        _font_data.__ascender_offset = _font_info.ascenderOffset;
         
         //Check to see if this texture has been resized during compile
         var _GM_scaling = _font_info.size / _font_glyph_data_grid[# _space_index, SCRIBBLE_GLYPH.HEIGHT];

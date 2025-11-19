@@ -45,6 +45,7 @@ function scribble_external_font_add(_sprite, _image, _json, _font_name = undefin
     var _font_info = {
         texture: _texture_index,
         glyphs: {},
+        ascender: _json.ascender,
         ascenderOffset: _json.ascenderOffset,
         sdfEnabled: _json.usesSDF,
         sdfSpread: _json.sdfSpread,

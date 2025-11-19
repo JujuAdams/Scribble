@@ -1,6 +1,6 @@
 var _string = @"[fa_center][fa_middle][fnt_riffic_sdf][rainbow][wave]Welcome to Scribble 9![/]
 
-Scribble is a multi-effects text engine designed to be fast, easy, and fun.
+Scribble is a multi-effects text engine that is fast, easy, and fun.
 
 It supports[scale,2][spr_sprite_font_outlined] in-line font changes (and spritefonts!) [/]as well as in-line sprites[nbsp][spr_large_coin]. Scribble can do a [wheel]bunch[/wheel] of [jitter]effects[/jitter] without slowing down your game.
 
