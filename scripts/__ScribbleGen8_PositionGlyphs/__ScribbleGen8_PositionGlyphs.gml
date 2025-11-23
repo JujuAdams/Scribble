@@ -22,6 +22,10 @@ function __ScribbleGen8_PositionGlyphs()
         var _modelMaxWidth = __modelMaxWidth;
     }
     
+    var _squashText = (__layoutType == SCRIBBLE_LAYOUT_SQUASH);
+    var _squashMin  = __layoutSquashMin;
+    var _squashMax  = __layoutSquashMax;
+    
     var _lineHeight = __lineHeight;
     
     ds_grid_clear(_tempGrid, 0); //FIXME - Works around a bug in ds_grid_add_grid_region() (runtime 2.3.7.474  2021-12-03)
@@ -49,7 +53,7 @@ function __ScribbleGen8_PositionGlyphs()
             var _pinAlignmentWidth = (_modelMaxWidth == infinity)? __width : _modelMaxWidth;
         }
             
-        _alignmentWidth     /= __fitScale;
+        _alignmentWidth    /= __fitScale;
         _pinAlignmentWidth /= __fitScale;
         
         var _pageMinX =  infinity;
@@ -70,18 +74,44 @@ function __ScribbleGen8_PositionGlyphs()
                 var _lineWidth          = width;
                 var _lineHAlign         = hAlign;
                 var _lineDisableJustify = disableJustify;
+                
+                var _lineGlyphStart = _wordGrid[# _lineWordStart, __SCRIBBLE_GEN_WORD_GLYPH_START];
+                var _lineGlyphEnd   = _wordGrid[# _lineWordEnd,   __SCRIBBLE_GEN_WORD_GLYPH_END  ];
+                var _lineGlyphCount = 1 + _lineGlyphEnd - _lineGlyphStart;
+                
+                ///////
+                // Squash text horizontally
+                ///////
+                
+                if (_squashText && (_lineGlyphCount > 1))
+                {
+                    var _extraSpace = _alignmentWidth - _lineWidth;
+                    
+                    var _separationIncr = clamp(_extraSpace / (_lineGlyphCount - 1), _squashMin, _squashMax);
+                    if (_separationIncr != 0)
+                    {
+                        ds_grid_add_region(_glyphGrid, _lineGlyphStart, __SCRIBBLE_GEN_GLYPH_SEPARATION, _lineGlyphEnd, __SCRIBBLE_GEN_GLYPH_SEPARATION, _separationIncr);
+                        
+                        var _separation = _separationIncr;
+                        var _glyph = _lineGlyphStart + 1;
+                        
+                        repeat(_lineGlyphCount - 1)
+                        {
+                            _glyphGrid[# _glyph, __SCRIBBLE_GEN_GLYPH_X] += _separation;
+                            
+                            _separation += _separationIncr;
+                            ++_glyph;
+                        }
+                        
+                        _lineWidth += _separation;
+                        width = _lineWidth;
+                    }
+                }
             }
-            
-            var _lineGlyphStart = _wordGrid[# _lineWordStart, __SCRIBBLE_GEN_WORD_GLYPH_START];
-            var _lineGlyphEnd   = _wordGrid[# _lineWordEnd,   __SCRIBBLE_GEN_WORD_GLYPH_END  ];
             
             ///////
             // Vertically centre glyphs on the line
             ///////
-            
-            var _lineGlyphCount = 1 + _lineGlyphEnd - _lineGlyphStart;
-            
-            
             
             // _glyphGrid[# _j, __SCRIBBLE_GEN_GLYPH_Y] = _lineY + (_lineHeight - _glyphGrid[# _j, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT]) div 2;
             ds_grid_set_grid_region(_tempGrid, _glyphGrid, _lineGlyphStart, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT, _lineGlyphEnd, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT, 0, 0);
@@ -139,7 +169,7 @@ function __ScribbleGen8_PositionGlyphs()
             if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && (_lineHAlign != fa_left) && (_lineHAlign != __SCRIBBLE_PIN_LEFT))
             {
                 if ((_lineWordEnd >= 1)
-                && (_wordGrid[# _lineWordEnd, __SCRIBBLE_GEN_WORD_BIDI_RAW] == __SCRIBBLE_BIDI_WHITESPACE)
+                && (_wordGrid[# _lineWordEnd,   __SCRIBBLE_GEN_WORD_BIDI_RAW] == __SCRIBBLE_BIDI_WHITESPACE)
                 && (_wordGrid[# _lineWordEnd-1, __SCRIBBLE_GEN_WORD_BIDI_RAW] != __SCRIBBLE_BIDI_WHITESPACE))
                 {
                     _lineAdjustedWidth -= _wordGrid[# _lineWordEnd, __SCRIBBLE_GEN_WORD_WIDTH];

@@ -24,7 +24,7 @@ function __ScribbleGen7_BuildPages()
     var _trimText = (__layoutType == SCRIBBLE_LAYOUT_TRIM);
     var _skippingLines = false;
     
-    var _simulated_model_height = (__layoutType == SCRIBBLE_LAYOUT_FIT)? infinity : (_modelMaxHeight / __fitScale);
+    var _simulatedModelHeight = (__layoutType == SCRIBBLE_LAYOUT_FIT)? infinity : (_modelMaxHeight / __fitScale);
     
     var _pageData = __AddPage(0);
     var _firstLine = true;
@@ -42,7 +42,7 @@ function __ScribbleGen7_BuildPages()
         }
         
         var _startsManualPage = _lineStruct.startsManualPage;
-        var _overflow = _paginate && (_lineY + _lineHeight > _simulated_model_height);
+        var _overflow = _paginate && (_lineY + _lineHeight > _simulatedModelHeight);
         
         if (_startsManualPage || (_overflow && (not _firstLine) && (not _skippingLines)))
         {

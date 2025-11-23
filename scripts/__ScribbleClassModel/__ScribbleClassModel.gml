@@ -28,7 +28,6 @@ function __ScribbleClassModel(_element) constructor
     __layoutMaxWidth     = _element.__layoutMaxWidth;
     __layoutMaxHeight    = _element.__layoutMaxHeight;
     __layoutForcePerChar = _element.__layoutForcePerChar;
-    __wrapNoPages        = _element.__wrapNoPages;
     __layoutMaxScale     = _element.__layoutMaxScale;
     
     __path      = _element.__path;

@@ -164,7 +164,7 @@ function __ScribbleGen6_BuildLines()
         _wordGrid[# _newWord, __SCRIBBLE_GEN_WORD_HEIGHT     ] = _ellpsisHeight;
     }
     
-    var _wrapText       = ((__layoutType != SCRIBBLE_LAYOUT_NONE) && (__layoutType != SCRIBBLE_LAYOUT_SCALE));
+    var _wrapText       = ((__layoutType != SCRIBBLE_LAYOUT_NONE) && (__layoutType != SCRIBBLE_LAYOUT_SCALE) && (__layoutType != SCRIBBLE_LAYOUT_SQUASH));
     var _trimText       = ((__layoutType == SCRIBBLE_LAYOUT_TRIM) || (__layoutType == SCRIBBLE_LAYOUT_TRIM_ELLIPSIS));
     var _fitToBox       = (__layoutType == SCRIBBLE_LAYOUT_FIT);
     var _fitScale       = 1;
@@ -176,7 +176,6 @@ function __ScribbleGen6_BuildLines()
         var _wordGrid       = __wordGrid;
         var _controlArray   = __controlArray;
         var _tempGrid       = __tempGrid;
-        var _glyphCount     = __glyphCount;
         var _wordCount      = __wordCount;
         var _sectionCount   = __sectionCount;
         var _modelMaxWidth  = (_wrapText? __modelMaxWidth  : infinity);

@@ -62,8 +62,9 @@ function __ScribbleClassElementParent(_text) constructor
     __layoutMaxWidth     = infinity;
     __layoutMaxHeight    = infinity;
     __layoutForcePerChar = false;
-    __wrapNoPages        = false;
     __layoutMaxScale     = 1;
+    __layoutSquashMin    = 0;
+    __layoutSquashMax    = infinity;
     
     __clip = false;
     
@@ -418,6 +419,19 @@ function __ScribbleClassElementParent(_text) constructor
             __layoutForcePerChar = _forcePerChar;
             __layoutMaxScale     = _maxScale;
             __modelDirty         = true;
+        }
+        
+        return self;
+    }
+    
+    static layout_squash = function(_min = -infinity, _max = infinity)
+    {
+        if ((__layoutType != SCRIBBLE_LAYOUT_SQUASH) || (_min != __layoutSquashMin) || (_max != __layoutSquashMax))
+        {
+            __layoutType      = SCRIBBLE_LAYOUT_SQUASH;
+            __layoutSquashMin = _min;
+            __layoutSquashMax = _max;
+            __modelDirty      = true;
         }
         
         return self;

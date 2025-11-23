@@ -77,6 +77,7 @@
 #macro SCRIBBLE_LAYOUT_SCALE          4 //Text is shrunk down using a straight-forward scaling operation
 #macro SCRIBBLE_LAYOUT_FIT            5 //Text is dynamically shrunk and reflowed down until it all fits into the max size
 #macro SCRIBBLE_LAYOUT_PAGINATE       6 //Text that overflows is placed onto a new page
+#macro SCRIBBLE_LAYOUT_SQUASH         7 //Separation between glyphs is adjusted
 
 #macro SCRIBBLE_UNICODE_TAB          0x0009
 #macro SCRIBBLE_UNICODE_NEWLINE      0x000A
