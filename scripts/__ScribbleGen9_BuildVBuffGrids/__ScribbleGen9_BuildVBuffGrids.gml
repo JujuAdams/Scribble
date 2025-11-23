@@ -21,31 +21,46 @@ function __ScribbleGen9_BuildVBuffGrids()
         var _pathScale = __pathScale;
         
         var _scaleNegative = (_pathScale < 0);
+        var _lineHeight = __lineHeight;
         
         var _i = 0;
         repeat(_glyphCount-1)
         {
-            var _pathT = clamp(_glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_X] / _pathLength, 0, 1);
-            _pathT = _pathStart + _pathDelta*_pathT;
-            if (_scaleNegative) _pathT = 1 - _pathT;
+            var _glyphLeft    = _glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_X];
+            var _glyphTop     = _glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_Y];
+            var _glyphWidth   = _glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_WIDTH];
+            var _glyphHeight  = _glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_HEIGHT];
+            var _glyphYOffset = _glyphTop + 0.5*_glyphHeight;
             
-            var _pathX = _pathScale*path_get_x(_path, _pathT);
-            var _pathY = _pathScale*path_get_y(_path, _pathT);
+            var _pathParam = clamp(_glyphLeft / _pathLength, 0, 1);
+            _pathParam = _pathStart + _pathDelta*_pathParam;
+            if (_scaleNegative) _pathParam = 1 - _pathParam;
             
-            if (_pathT < 1)
+            if (_pathParam < 1)
             {
-                var _pathX2 = _pathScale*path_get_x(_path, _pathT + 0.001);
-                var _pathY2 = _pathScale*path_get_y(_path, _pathT + 0.001);
+                var _pathX  = _pathScale*path_get_x(_path, _pathParam);
+                var _pathY  = _pathScale*path_get_y(_path, _pathParam);
+                var _pathX2 = _pathScale*path_get_x(_path, _pathParam + 0.001);
+                var _pathY2 = _pathScale*path_get_y(_path, _pathParam + 0.001);
             }
             else
             {
-                var _pathX2 = _pathScale*path_get_x(_path, _pathT - 0.001);
-                var _pathY2 = _pathScale*path_get_y(_path, _pathT - 0.001);
+                var _pathX  = _pathScale*path_get_x(_path, _pathParam - 0.001);
+                var _pathY  = _pathScale*path_get_y(_path, _pathParam - 0.001);
+                var _pathX2 = _pathScale*path_get_x(_path, _pathParam);
+                var _pathY2 = _pathScale*path_get_y(_path, _pathParam);
             }
             
-            _glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_X    ] = _pathX;
-            _glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_Y    ] = _pathY;
-            _glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_ANGLE] = _scaleNegative? point_direction(_pathX2, _pathY2, _pathX, _pathY) : point_direction(_pathX, _pathY, _pathX2, _pathY2);
+            var _angle = point_direction(_pathX, _pathY, _pathX2, _pathY2);
+            var _cos   = dcos(-_angle);
+            var _sin   = dsin(-_angle);
+            
+            var _newX = _pathX + 0.5*_glyphWidth*_cos - _glyphYOffset*_sin - 0.5*_glyphWidth;
+            var _newY = _pathY + 0.5*_glyphWidth*_sin + _glyphYOffset*_cos - 0.5*_glyphHeight;
+            
+            _glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_X    ] = _newX;
+            _glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_Y    ] = _newY;
+            _glyphGrid[# _i, __SCRIBBLE_GEN_GLYPH_ANGLE] = _angle;
             
             ++_i;
         }
