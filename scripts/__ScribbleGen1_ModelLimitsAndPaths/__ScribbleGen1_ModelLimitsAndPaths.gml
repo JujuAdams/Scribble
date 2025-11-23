@@ -43,6 +43,11 @@ function __ScribbleGen1_ModelLimitsAndPaths()
             
             _generatorState.__pathLength = abs(__pathScale)*_length;
         }
+        
+        if (is_infinity(_modelMaxWidth))
+        {
+            _modelMaxWidth = _generatorState.__pathLength;
+        }
     }
     
     with(_generatorState)
