@@ -133,6 +133,7 @@
     {"id":{"name":"obj_0704_autoscroll","path":"objects/obj_0704_autoscroll/obj_0704_autoscroll.yy",},},
     {"id":{"name":"obj_0705_scroll_to_line","path":"objects/obj_0705_scroll_to_line/obj_0705_scroll_to_line.yy",},},
     {"id":{"name":"obj_0706_scroll_with_typist","path":"objects/obj_0706_scroll_with_typist/obj_0706_scroll_with_typist.yy",},},
+    {"id":{"name":"obj_0800_debug_blocks","path":"objects/obj_0800_debug_blocks/obj_0800_debug_blocks.yy",},},
     {"id":{"name":"obj_example_basic","path":"objects/obj_example_basic/obj_example_basic.yy",},},
     {"id":{"name":"obj_example_big_textbox","path":"objects/obj_example_big_textbox/obj_example_big_textbox.yy",},},
     {"id":{"name":"obj_example_glyph_position","path":"objects/obj_example_glyph_position/obj_example_glyph_position.yy",},},
