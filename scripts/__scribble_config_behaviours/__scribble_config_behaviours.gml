@@ -54,10 +54,6 @@
 //Whether to adjust the horizontal distance between glyphs depending on special per-font rules.
 #macro SCRIBBLE_USE_KERNING  true
 
-//Bilinear filtering state to force for inline sprite (and surfaces too). Set to `undefined` to use
-//the global bilinear filtering state at the time the text element is drawn.
-#macro SCRIBBLE_SPRITE_BILINEAR_FILTERING  undefined
-
 //Whether to require explicit whitelisting of sprites (via `scribble_whitelist_sprite()`).
 #macro SCRIBBLE_USE_SPRITE_WHITELIST  false
 

@@ -19,8 +19,9 @@ function __ScribbleClassElementParent(_text) constructor
     
     
     //We define this for all text elements because it gets used in the model key builder
-    __revealMode = SCRIBBLE_DEFAULT_REVEAL_MODE;
+    __revealMode        = SCRIBBLE_DEFAULT_REVEAL_MODE;
     __graphicsDontScale = false;
+    __graphicsFiltering = SCRIBBLE_DEFAULT_GRAPHICS_FILTERING;
     
     __preprocessorArray      = undefined;
     __preprocessorArrayDirty = true;
@@ -896,6 +897,16 @@ function __ScribbleClassElementParent(_text) constructor
         }
         
         return self;
+    }
+    
+    /// @param state
+    static graphics_filtering = function(_state)
+    {
+        if (_state != __graphicsFiltering)
+        {
+            __modelDirty = true;
+            __graphicsFiltering = _state;
+        }
     }
     
     /// @param state

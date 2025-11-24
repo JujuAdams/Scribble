@@ -53,6 +53,7 @@ function __ScribbleGen10_WriteVBuffs()
     var _textGetter        = __allowTextGetter;
     var _glyph_data_getter = __allowGlyphDataGetter;
     var _eventsDict        = __eventsDict;
+    var _graphicsFiltering = __graphicsFiltering;
     
     
     
@@ -360,7 +361,7 @@ function __ScribbleGen10_WriteVBuffs()
                     var _j = _imageIndex;
                     repeat(_count)
                     {
-                        var _material = __ScribbleSpriteGetMaterial(_spriteIndex, _j);
+                        var _material = __ScribbleSpriteGetMaterial(_spriteIndex, _j, _graphicsFiltering);
                         
                         var _uvs = sprite_get_uvs(_spriteIndex, _j);
                         var _quadU0 = _uvs[0];

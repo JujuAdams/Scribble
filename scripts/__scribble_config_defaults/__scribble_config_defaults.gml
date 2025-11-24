@@ -18,6 +18,10 @@
 //tag etc.
 #macro SCRIBBLE_GLOBAL_SPRITE_SCALE  1
 
+//Default bilinear filtering state to force for inline graphics. Set to `undefined` to use the
+//global bilinear filtering state at the time the text element is drawn.
+#macro SCRIBBLE_DEFAULT_GRAPHICS_FILTERING  undefined
+
 //Default duration of the [delay] command, in milliseconds.
 #macro SCRIBBLE_DEFAULT_DELAY_DURATION  450
 

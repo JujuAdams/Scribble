@@ -223,11 +223,12 @@ function __ScribbleGen2_Parser()
     
     //Cache element properties locally
     var _graphicsDontScale = __graphicsDontScale;
-    var _elementText      = __text;
-    var _startingHAlign   = __startingHAlign;
-    var _startingVAlign   = __startingVAlign;
-    var _ignoreCommands   = __ignoreCommandTags;
-    var _preScale         = __preScale;
+    var _graphicsFiltering = __graphicsFiltering;
+    var _elementText       = __text;
+    var _startingHAlign    = __startingHAlign;
+    var _startingVAlign    = __startingVAlign;
+    var _ignoreCommands    = __ignoreCommandTags;
+    var _preScale          = __preScale;
     
     var _startingFont = __startingFont;
     if (_startingFont == undefined) __ScribbleError("The default font has not been set\nCheck that you've added fonts to Scribble (scribble_font_add() / scribble_font_add_from_sprite() etc.)");
@@ -859,7 +860,7 @@ function __ScribbleGen2_Parser()
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = 1;
                         
                             //TODO - Add a way to force a regeneration of every text element that contains a given surface
-                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_MATERIAL     ] = __ScribbleSurfaceGetMaterial(_surface);
+                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_MATERIAL     ] = __ScribbleSurfaceGetMaterial(_surface, _graphicsFiltering);
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_QUAD_U0      ] = 0;
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_QUAD_V0      ] = 0;
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_QUAD_U1      ] = 1;
@@ -969,7 +970,7 @@ function __ScribbleGen2_Parser()
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = 1;
                             
-                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_MATERIAL     ] = __ScribbleTextureGetMaterial(_texIndex);
+                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_MATERIAL     ] = __ScribbleTextureGetMaterial(_texIndex, _graphicsFiltering);
                             //_glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_QUAD_U0      ] = 0;
                             //_glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_QUAD_V0      ] = 0;
                             //_glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_QUAD_U1      ] = 1;
