@@ -1165,13 +1165,10 @@ function __ScribbleGen2_Parser()
                                             var _sprite_w = _sprite_scale*sprite_get_width( _spriteIndex);
                                             var _sprite_h = _sprite_scale*sprite_get_height(_spriteIndex);
                                 
-                                            if (SCRIBBLE_SHRINK_INLINE_SPRITES)
-                                            {
-                                                var _scale = min(1, _fontLineHeight/_sprite_h);
-                                                _sprite_w *= _scale;
-                                                _sprite_h *= _scale;
-                                                _sprite_scale *= _scale;
-                                            }
+                                            var _scale = clamp(_fontLineHeight / _sprite_h, SCRIBBLE_SPRITE_SCALE_MIN, SCRIBBLE_SPRITE_SCALE_MAX);
+                                            _sprite_w     *= _scale;
+                                            _sprite_h     *= _scale;
+                                            _sprite_scale *= _scale;
                                 
                                             var _imageIndex = 0;
                                             var _imageSpeed = 0;

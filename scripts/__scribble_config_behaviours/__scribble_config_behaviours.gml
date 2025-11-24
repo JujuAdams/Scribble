@@ -39,8 +39,16 @@
 //too). This will apply to all text elements and carries a performance penalty.
 #macro SCRIBBLE_FORCE_GLYPH_DATA_GETTER  false
 
-//Whether to automatically shrink sprites to fit the height of the currently set font.
-#macro SCRIBBLE_SHRINK_INLINE_SPRITES  false
+//Minimum and maximum scaling factor to apply to in-line sprites to get them to fit inside a line
+//of text. The default values (`1` and `1`) ensures that the scaling factor applied to a sprite is
+//always exactly `1` which means the size of an in-line sprite will never change.
+//
+//If you'd like sprites to shrink to fit inside a line of text, set `SCRIBBLE_SPRITE_SCALE_MIN` to
+//a value less than `1`. If you'd like sprites to grow to fit a line of text, set
+//`SCRIBBLE_SPRITE_SCALE_MAX` to a value greater than `1`. To set no limits whatsoever on sprite
+//scaling, please set these macros to `0` and `infinity` respectively.
+#macro SCRIBBLE_SPRITE_SCALE_MIN  1
+#macro SCRIBBLE_SPRITE_SCALE_MAX  1
 
 //Whether to automatically shrink surfaces to fit the height of the currently set font.
 #macro SCRIBBLE_SHRINK_INLINE_SURFACES  false
