@@ -79,7 +79,7 @@ uniform vec2  u_vSkew;                         //2
 uniform vec2  u_vRegionActive;                 //2 //FIXME - This will break when not revealing per char
 uniform vec4  u_vRegionColour;                 //4
 uniform float u_fTime;                         //1
-uniform float u_aDataFields[MAX_ANIM_FIELDS];  //16
+uniform float u_aDataFields[MAX_ANIM_FIELDS];  //18
 uniform vec2  u_vScroll;                       //2
 
 uniform int   u_iTypewriterMethod;         //1

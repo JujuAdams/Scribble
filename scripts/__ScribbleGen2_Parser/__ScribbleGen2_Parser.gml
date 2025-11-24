@@ -172,7 +172,7 @@ function __ScribbleGen2_Parser()
         _commandTagLookupAcceleratorMap[? "indent"            ] = 36;
         _commandTagLookupAcceleratorMap[? "/indent"           ] = 37;
         _commandTagLookupAcceleratorMap[? "offset"            ] = 38;
-        _commandTagLookupAcceleratorMap[? "offsetPop"         ] = 39;
+        _commandTagLookupAcceleratorMap[? "/offset"           ] = 39;
         _commandTagLookupAcceleratorMap[? "texture"           ] = 40;
         _commandTagLookupAcceleratorMap[? "rainbow"           ] = 41;
         _commandTagLookupAcceleratorMap[? "pin_top"           ] = 42;
@@ -529,7 +529,7 @@ function __ScribbleGen2_Parser()
                             array_push(_offsetDataArray, _glyphCount, _offsetDX, _offsetDY);
                         break;
                     
-                        // [offsetPop]
+                        // [/offset]
                         case 39:
                             if ((_glyphCount > 0) && (array_length(_offsetDataArray) >= 3))
                             {
