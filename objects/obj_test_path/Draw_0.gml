@@ -5,7 +5,7 @@ gpu_set_tex_filter(true);
 
 var _element = scribble("Here is some text laid out along a smooth path");
 _element.path(pth_test_curve, 0, 1);
-_element.align("pin_centre", fa_bottom);
+_element.align(fa_left, fa_bottom);
 _element.layout_squash();
 _element.draw(_x, _y);
 draw_path(pth_test_curve, _x, _y, false);
