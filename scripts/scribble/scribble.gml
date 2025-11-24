@@ -9,5 +9,5 @@
 function scribble(_string, _uniqueID = undefined)
 {
     static _elementCacheMap = __ScribbleSystem().__elementCacheMap;
-    return _elementCacheMap[? ((_uniqueID == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (string(_uniqueID) + ":")) + string(_string)] ?? new __ScribbleClassCachedElement(string(_string), _uniqueID);
+    return _elementCacheMap[? ((_uniqueID == undefined)? SCRIBBLE_DEFAULT_UNIQUE_ID : (string(_uniqueID) + ":")) + string(_string)] ?? new __ScribbleClassElementCached(string(_string), _uniqueID);
 }

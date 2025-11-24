@@ -2,7 +2,7 @@
 
 /// @param string
 
-function __ScribbleClassUniqueElement(_string) : __ScribbleClassElementParent(_string) constructor
+function __ScribbleClassElementUnique(_string) : __ScribbleClassElementParent(_string) constructor
 {
     __weakRef = weak_ref_create(self);
     with(__weakRef)

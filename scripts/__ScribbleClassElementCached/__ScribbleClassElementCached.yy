@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"__ScribbleClassCachedElement",
+  "%Name":"__ScribbleClassElementCached",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"__ScribbleClassCachedElement",
+  "name":"__ScribbleClassElementCached",
   "parent":{
     "name":"Text Elements",
     "path":"folders/Scribble/(System)/Don't call these functions!/Classes/Text Elements.yy",
