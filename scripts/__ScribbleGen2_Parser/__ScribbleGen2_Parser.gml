@@ -840,14 +840,11 @@ function __ScribbleGen2_Parser()
                         
                             var _surfaceW = surface_get_width(_surface);
                             var _surfaceH = surface_get_height(_surface);
-                        
-                            if (SCRIBBLE_SHRINK_INLINE_SURFACES)
-                            {
-                                var _scale = min(1, _fontLineHeight/_surfaceH);
-                                _surfaceW *= _scale;
-                                _surfaceH *= _scale;
-                            }
-                        
+                            
+                            var _scale = clamp(_fontLineHeight / _surfaceH, SCRIBBLE_GRAPHIC_SCALE_MIN, SCRIBBLE_GRAPHIC_SCALE_MIN);
+                            _surfaceW *= _scale;
+                            _surfaceH *= _scale;
+                            
                             //Add this glyph to our grid
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = __SCRIBBLE_GLYPH_REPL_SURFACE;
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_SYMBOL;
@@ -956,12 +953,9 @@ function __ScribbleGen2_Parser()
                             var _u1 = (_texX + _texW)*_textureTexelW;
                             var _v1 = (_texY + _texH)*_textureTexelH;
                             
-                            if (SCRIBBLE_SHRINK_INLINE_TEXTURES)
-                            {
-                                var _scale = min(1, _fontLineHeight/_texH);
-                                _texW *= _scale;
-                                _texH *= _scale;
-                            }
+                            var _scale = clamp(_fontLineHeight / _surfaceH, SCRIBBLE_GRAPHIC_SCALE_MIN, SCRIBBLE_GRAPHIC_SCALE_MIN);
+                            _surfaceW *= _scale;
+                            _surfaceH *= _scale;
                             
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_UNICODE      ] = __SCRIBBLE_GLYPH_REPL_TEXTURE;
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_SYMBOL;
@@ -1165,7 +1159,7 @@ function __ScribbleGen2_Parser()
                                             var _sprite_w = _sprite_scale*sprite_get_width( _spriteIndex);
                                             var _sprite_h = _sprite_scale*sprite_get_height(_spriteIndex);
                                 
-                                            var _scale = clamp(_fontLineHeight / _sprite_h, SCRIBBLE_SPRITE_SCALE_MIN, SCRIBBLE_SPRITE_SCALE_MAX);
+                                            var _scale = clamp(_fontLineHeight / _sprite_h, SCRIBBLE_GRAPHIC_SCALE_MIN, SCRIBBLE_GRAPHIC_SCALE_MAX);
                                             _sprite_w     *= _scale;
                                             _sprite_h     *= _scale;
                                             _sprite_scale *= _scale;

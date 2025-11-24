@@ -39,22 +39,17 @@
 //too). This will apply to all text elements and carries a performance penalty.
 #macro SCRIBBLE_FORCE_GLYPH_DATA_GETTER  false
 
-//Minimum and maximum scaling factor to apply to in-line sprites to get them to fit inside a line
-//of text. The default values (`1` and `1`) ensures that the scaling factor applied to a sprite is
-//always exactly `1` which means the size of an in-line sprite will never change.
+//Minimum and maximum scaling factor to apply to inline graphics to get them to fit inside a line
+//of text. Inline sprites, surfaces, and textures are all consider "graphics" for the purpose of
+//these two macros. The default values (`1` and `1`) ensures that the scaling factor applied to a
+//graphic is always exactly `1` which means the size of an inline graphic will never change.
 //
-//If you'd like sprites to shrink to fit inside a line of text, set `SCRIBBLE_SPRITE_SCALE_MIN` to
-//a value less than `1`. If you'd like sprites to grow to fit a line of text, set
-//`SCRIBBLE_SPRITE_SCALE_MAX` to a value greater than `1`. To set no limits whatsoever on sprite
-//scaling, please set these macros to `0` and `infinity` respectively.
-#macro SCRIBBLE_SPRITE_SCALE_MIN  1
-#macro SCRIBBLE_SPRITE_SCALE_MAX  1
-
-//Whether to automatically shrink surfaces to fit the height of the currently set font.
-#macro SCRIBBLE_SHRINK_INLINE_SURFACES  false
-
-//Whether to automatically shrink textures to fit the height of the currently set font.
-#macro SCRIBBLE_SHRINK_INLINE_TEXTURES  false
+//If you'd like graphics to shrink to fit inside a line of text, set `SCRIBBLE_GRAPHIC_SCALE_MIN` to
+//a value less than `1`. If you'd like graphics to grow to fit a line of text, set
+//`SCRIBBLE_GRAPHIC_SCALE_MAX` to a value greater than `1`. Allow graphics to scale completely
+//freely, please set these macros to `0` and `infinity` respectively.
+#macro SCRIBBLE_GRAPHIC_SCALE_MIN  1
+#macro SCRIBBLE_GRAPHIC_SCALE_MAX  1
 
 //Whether to adjust the horizontal distance between glyphs depending on special per-font rules.
 #macro SCRIBBLE_USE_KERNING  true
