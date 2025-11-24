@@ -77,14 +77,14 @@ function __ScribbleClassElementParent(_text) constructor
     __panSpeed        = SCRIBBLE_DEFAULT_PAN_SPEED;
     __panPause        = SCRIBBLE_DEFAULT_AUTOPAN_PAUSE_TIME;
     __panAuto         = false;
-    __panWasClamped   = true;
+    __panWasClamped   = true; //FIXME - Not in use
     __panPauseCounter = 0;
     
     __scrollState        = SCRIBBLE_AUTO_START;
     __scrollSpeed        = SCRIBBLE_DEFAULT_SCROLL_SPEED;
     __scrollPause        = SCRIBBLE_DEFAULT_AUTOSCROLL_PAUSE_TIME;
     __scrollAuto         = false;
-    __scrollWasClamped   = true;
+    __scrollWasClamped   = true; //FIXME - Not in use
     __scrollPauseCounter = 0;
     
     __blockTrim = 0;
@@ -1382,10 +1382,16 @@ function __ScribbleClassElementParent(_text) constructor
         return __EnsureModel().__GetLineCount(_page);
     }
     
-    /// @param [page]
+    /// @param [integer=true]
     static get_block_size = function(_integer = true)
     {
         return __EnsureModel().__GetLinesVisible(_integer);
+    }
+    
+    /// @param [page]
+    static get_block_count = function(_page = __pageInteger)
+    {
+        return ceil(__EnsureModel().__pagesArray[_page].__lineCount / get_block_size(true));
     }
     
     #endregion
