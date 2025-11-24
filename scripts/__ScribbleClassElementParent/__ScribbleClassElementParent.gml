@@ -1751,7 +1751,7 @@ function __ScribbleClassElementParent(_text) constructor
         //Unimplemented
     }
     
-    static debug_draw_bbox = function(_x, _y, _color = undefined, _alpha = undefined)
+    static debug_draw_bbox = function(_x, _y, _color = undefined, _alpha = undefined, _outline = true)
     {
         if (_color != undefined)
         {
@@ -1766,10 +1766,18 @@ function __ScribbleClassElementParent(_text) constructor
         }
         
         var _bbox = get_bbox(_x, _y);
-        draw_line(_bbox.x0, _bbox.y0, _bbox.x1, _bbox.y1);
-        draw_line(_bbox.x1, _bbox.y1, _bbox.x3, _bbox.y3);
-        draw_line(_bbox.x3, _bbox.y3, _bbox.x2, _bbox.y2);
-        draw_line(_bbox.x2, _bbox.y2, _bbox.x0, _bbox.y0);
+        if (_outline)
+        {
+            draw_line(_bbox.x0, _bbox.y0, _bbox.x1, _bbox.y1);
+            draw_line(_bbox.x1, _bbox.y1, _bbox.x3, _bbox.y3);
+            draw_line(_bbox.x3, _bbox.y3, _bbox.x2, _bbox.y2);
+            draw_line(_bbox.x2, _bbox.y2, _bbox.x0, _bbox.y0);
+        }
+        else
+        {
+            draw_triangle(_bbox.x0, _bbox.y0, _bbox.x1, _bbox.y1, _bbox.x2, _bbox.y2, false);
+            draw_triangle(_bbox.x1, _bbox.y1, _bbox.x2, _bbox.y2, _bbox.x3, _bbox.y3, false);
+        }
         
         if (_color != undefined)
         {
