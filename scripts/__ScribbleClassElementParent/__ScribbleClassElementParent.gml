@@ -973,6 +973,21 @@ function __ScribbleClassElementParent(_text) constructor
     
     #region Regions
     
+    static get_point_inside = function(_elementX, _elementY, _pointerX, _pointerY)
+    {
+        var _page = __EnsureModel().__pagesArray[__pageInteger];
+        var _matrix = __UpdateMatrix(_elementX, _elementY);
+        
+        if (__matrixInverse == undefined)
+        {
+            __matrixInverse = __ScribbleMatrixInverse(matrix_multiply(_matrix, matrix_get(matrix_world)));
+        }
+        
+        // TODO - Optimise
+        var _vector = matrix_transform_vertex(__matrixInverse, _pointerX, _pointerY, 0);
+        return point_in_rectangle(_vector[0], _vector[1], __bboxAABBLeft, __bboxAABBTop, __bboxAABBRight, __bboxAABBBottom)
+    }
+    
     static region_detect = function(_elementX, _elementY, _pointerX, _pointerY)
     {
         var _page        = __EnsureModel().__pagesArray[__pageInteger];
