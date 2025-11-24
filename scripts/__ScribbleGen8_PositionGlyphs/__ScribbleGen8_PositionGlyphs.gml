@@ -84,11 +84,11 @@ function __ScribbleGen8_PositionGlyphs()
                 // Squash text horizontally
                 ///////
                 
-                if (_squashText && (_lineGlyphCount > 1))
+                if (_squashText && (_lineGlyphCount > 2))
                 {
                     var _extraSpace = _alignmentWidth - _lineWidth;
                     
-                    var _separationIncr = clamp(_extraSpace / (_lineGlyphCount - 1), _squashMin, _squashMax);
+                    var _separationIncr = clamp(_extraSpace / (_lineGlyphCount - 2), _squashMin, _squashMax);
                     if (_separationIncr != 0)
                     {
                         ds_grid_add_region(_glyphGrid, _lineGlyphStart, __SCRIBBLE_GEN_GLYPH_SEPARATION, _lineGlyphEnd, __SCRIBBLE_GEN_GLYPH_SEPARATION, _separationIncr);
@@ -96,7 +96,7 @@ function __ScribbleGen8_PositionGlyphs()
                         var _separation = _separationIncr;
                         var _glyph = _lineGlyphStart + 1;
                         
-                        repeat(_lineGlyphCount - 1)
+                        repeat(_lineGlyphCount - 2)
                         {
                             _glyphGrid[# _glyph, __SCRIBBLE_GEN_GLYPH_X] += _separation;
                             
