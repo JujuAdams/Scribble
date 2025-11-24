@@ -25,6 +25,7 @@ function __ScribbleGen8_PositionGlyphs()
     var _squashText = (__layoutType == SCRIBBLE_LAYOUT_SQUASH);
     var _squashMin  = __layoutSquashMin;
     var _squashMax  = __layoutSquashMax;
+    var _usingPath  = (__path != undefined);
     
     var _lineHeight = __lineHeight;
     
@@ -158,13 +159,34 @@ function __ScribbleGen8_PositionGlyphs()
                 _lineStretchCount++;
             }
             
+            ///////
+            // Calculate the line x-offset
+            ///////
             
+            //Force pin alignment when using paths
+            if (_usingPath)
+            {
+                if (_lineHAlign == fa_left)
+                {
+                    _lineHAlign = __SCRIBBLE_PIN_LEFT;
+                }
+                else if (_lineHAlign == fa_center)
+                {
+                    _lineHAlign = __SCRIBBLE_PIN_CENTRE;
+                }
+                else if (_lineHAlign == fa_right)
+                {
+                    _lineHAlign = __SCRIBBLE_PIN_RIGHT;
+                }
+            }
             
-            // Text on the last line is never justified
-            if ((_lineHAlign == __SCRIBBLE_FA_JUSTIFY) && _lineDisableJustify) _lineHAlign = __SCRIBBLE_PIN_LEFT;
+            //Text on the last line is never justified
+            if ((_lineHAlign == __SCRIBBLE_FA_JUSTIFY) && _lineDisableJustify)
+            {
+                _lineHAlign = __SCRIBBLE_PIN_LEFT;
+            }
             
-            var _justificationExtraSpacing = 0;
-            
+            //Adjust the size of the last glyph on a line provided it is whitespace
             var _lineAdjustedWidth = _lineWidth;
             if (SCRIBBLE_FLEXIBLE_WHITESPACE_WIDTH && (_lineHAlign != fa_left) && (_lineHAlign != __SCRIBBLE_PIN_LEFT))
             {
@@ -182,6 +204,7 @@ function __ScribbleGen8_PositionGlyphs()
             }
             
             var _glyphX = (_overallBidi == __SCRIBBLE_BIDI_R2L)? -_lineX : _lineX;
+            var _justificationExtraSpacing = 0;
             
             switch(_lineHAlign)
             {
@@ -194,6 +217,8 @@ function __ScribbleGen8_PositionGlyphs()
                 case __SCRIBBLE_PIN_RIGHT:  _glyphX += _pinAlignmentWidth - _lineAdjustedWidth;                                              break;
                 
                 case __SCRIBBLE_FA_JUSTIFY:
+                    //TODO - Do we need this? We're already determining justification via `_lineDisableJustify`
+                    
                     // Don't apply justification on the last line on a page
                     if (_j != _pageEndLine)
                     {
@@ -212,8 +237,6 @@ function __ScribbleGen8_PositionGlyphs()
             var _pageMaxX  = max(_pageMaxX,  _glyphX + _lineAdjustedWidth);
             var _modelMinX = min(_modelMinX, _glyphX                     );
             var _modelMaxX = max(_modelMaxX, _glyphX + _lineAdjustedWidth);
-            
-            
             
             if (_overallBidi < __SCRIBBLE_BIDI_R2L)
             {
