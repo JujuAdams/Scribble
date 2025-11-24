@@ -114,8 +114,6 @@ function __ScribbleClassElementUnique(_string) : __ScribbleClassElementParent(_s
         shader_reset();
         
         matrix_set(matrix_world, _oldMatrix);
-        
-        if (SCRIBBLE_SHOW_WRAP_BOUNDARY) debug_draw_bbox(_x, _y);
     }
     
     flush = __weakRef.__Flush;

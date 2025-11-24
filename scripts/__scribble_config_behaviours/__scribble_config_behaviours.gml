@@ -163,10 +163,6 @@
 //Character used to delimit a command parameter inside a command tag. First 127 ASCII chars only.
 #macro SCRIBBLE_COMMAND_TAG_ARGUMENT  ord(",")
 
-//Controls the drawing of a rectangle that indicates the boundaries of the `.wrap()`,
-//`.fit_to_box()`, and `.scale_to_box()` methods.
-#macro SCRIBBLE_SHOW_WRAP_BOUNDARY  false
-
 //Whether to try to fix font scaling due to the font texture being too big for the texture page.
 #macro SCRIBBLE_ATTEMPT_FONT_SCALING_FIX  true
 

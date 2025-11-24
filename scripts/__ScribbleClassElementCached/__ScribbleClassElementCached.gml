@@ -179,8 +179,6 @@ function __ScribbleClassElementCached(_text, _uniqueID) : __ScribbleClassElement
         shader_reset();
         
         matrix_set(matrix_world, _oldMatrix);
-        
-        if (SCRIBBLE_SHOW_WRAP_BOUNDARY) debug_draw_bbox(_x, _y);
     }
     
     /// @param string
