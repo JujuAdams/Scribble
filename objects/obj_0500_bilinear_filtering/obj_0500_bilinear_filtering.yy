@@ -1,12 +1,12 @@
 {
   "$GMObject":"",
-  "%Name":"obj_test_bilinear_filtering",
+  "%Name":"obj_0500_bilinear_filtering",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_test_bilinear_filtering",
+  "name":"obj_0500_bilinear_filtering",
   "overriddenProperties":[],
   "parent":{
     "name":"0500 - Fonts",

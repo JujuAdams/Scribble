@@ -9,16 +9,23 @@ _element.scale(3);
 _element.draw(_x, _y);
 _y += _element.get_height() + 10;
 
-var _string = "[spr_coin] <- This sprite should be clear.";
-var _element = scribble(_string);
+var _element = scribble("[spr_coin] <- This sprite should be clear.");
 _element.scale(3);
 _element.draw(_x, _y);
 _y += _element.get_height() + 10;
 
 var _oldFilter = gpu_get_tex_filter();
 gpu_set_tex_filter(true);
-var _string = "[spr_coin] <- This sprite should be blurry.";
-var _element = scribble(_string);
+var _element = scribble("[spr_coin] <- This sprite should be blurry.");
+_element.scale(3);
+_element.draw(_x, _y);
+_y += _element.get_height() + 10;
+gpu_set_tex_filter(_oldFilter);
+
+var _oldFilter = gpu_get_tex_filter();
+gpu_set_tex_filter(true);
+var _element = scribble("[spr_coin] <- This sprite should be clear again.");
+_element.graphics_filtering(false);
 _element.scale(3);
 _element.draw(_x, _y);
 _y += _element.get_height() + 10;
