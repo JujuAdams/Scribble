@@ -355,6 +355,8 @@ function __ScribbleGen10_WriteVBuffs()
                         var _count = 1;
                     }
                     
+                    var _angle = _glyphGrid[# _glyphIndex, __SCRIBBLE_GEN_GLYPH_ANGLE];
+                    
                     var _j = _imageIndex;
                     repeat(_count)
                     {
@@ -440,6 +442,7 @@ function __ScribbleGen10_WriteVBuffs()
                         var _quadU1  = _scribbleDotUVs[2];
                         var _quadV1  = _scribbleDotUVs[3];
                         
+                        var _angle = 0;
                         var _halfW = 0.5*(1 + _quadR - _quadL);
                         var _halfH = 0.5*_strike;
                         
@@ -459,6 +462,7 @@ function __ScribbleGen10_WriteVBuffs()
                         var _quadU1  = _scribbleDotUVs[2];
                         var _quadV1  = _scribbleDotUVs[3];
                         
+                        var _angle = 0;
                         var _halfW = 0.5*(1 + _quadR - _quadL);
                         var _halfH = 0.5*_underline;
                         
