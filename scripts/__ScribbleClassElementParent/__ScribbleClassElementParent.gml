@@ -1798,6 +1798,79 @@ function __ScribbleClassElementParent(_text) constructor
         return self;
     }
     
+    static debug_draw_blocks = function(_x, _y)
+    {
+        static _oldMatrix = matrix_build_identity();
+        static _newMatrix = matrix_build_identity();
+        
+        if (SCRIBBLE_FLOOR_DRAW_COORDINATES)
+        {
+            _x = floor(_x);
+            _y = floor(_y);
+        }
+        
+        //Fetch an updated model before we set the shader and apply transforms
+        var _model = __EnsureModel();
+        
+        //If enough time has elapsed since we drew this element then update our animation time
+        var _systemFrames = _system.__frames;
+        if (__lastDrawn < _systemFrames)
+        {
+            __lastDrawn = _systemFrames;
+            
+            if (SCRIBBLE_SAFELY_WRAP_TIME)
+            {
+                //Cheeky wrapping to prevent GPUs with low accuracy flipping out
+                __animationTime = (__animationTime + __animationSpeed*_system.__tickSize) mod 16383;
+            }
+            else
+            {
+                __animationTime += __animationSpeed*_system.__tickSize;
+            }
+        }
+        
+        try
+        {
+            __weakRef.__AddToCache();
+        }
+        catch(_error)
+        {
+            
+        }
+        
+        matrix_get(matrix_world, _oldMatrix);
+        matrix_multiply(_oldMatrix, __UpdateMatrix(_x, _y), _newMatrix);
+        matrix_set(matrix_world, _newMatrix);
+        
+        shader_set(__shdScribble);
+        __SetStandardUniforms();
+        __SetRevealUniforms(undefined);
+        _model.__DebugDrawBlocks(__pageInteger, __scrollXArray, __scrollYArray, __clip, (__sdfOutlineThickness > 0) || (__sdfShadowAlpha > 0));
+        shader_reset();
+        
+        var _maxWidth  = min(__layoutMaxWidth,  999999);
+        var _maxHeight = min(__layoutMaxHeight, 999999);
+        
+        draw_rectangle(__scrollXArray[__pageInteger], __scrollYArray[__pageInteger],
+                       _maxWidth + __scrollXArray[__pageInteger], _maxHeight + __scrollYArray[__pageInteger],
+                       true);
+        
+        var _oldColor = draw_get_color();
+        draw_set_color(c_red);
+        
+        var _i = 1;
+        repeat(get_block_count()-1)
+        {
+            var _blockY = __GetBlockY(_i);
+            draw_line(0.25*_maxWidth, _blockY, 0.75*_maxWidth, _blockY);
+            ++_i;
+        }
+        
+        draw_set_color(_oldColor);
+        
+        matrix_set(matrix_world, _oldMatrix);
+    }
+    
     #endregion
     
     

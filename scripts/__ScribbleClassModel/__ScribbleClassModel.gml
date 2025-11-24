@@ -195,6 +195,18 @@ function __ScribbleClassModel(_element) constructor
         }
     }
     
+    static __DebugDrawBlocks = function(_page, _scrollXArray, _scrollYArray, _clip, _doubleDraw)
+    {
+        static _u_vClip   = shader_get_uniform(__shdScribble, "u_vClip");
+        static _u_vScroll = shader_get_uniform(__shdScribble, "u_vScroll");
+        
+        //Disable clipping and scrolling
+        shader_set_uniform_f(_u_vClip, -999999, -999999, 999999, 999999);
+        shader_set_uniform_f(_u_vScroll, 0, 0);
+        
+        __pagesArray[_page].__Submit(SCRIBBLE_ALWAYS_DOUBLE_DRAW || _doubleDraw || __hasArabic || __hasThai || __hasOutline);
+    }
+    
     static __Freeze = function()
     {
         if (not (__frozen ?? false))
