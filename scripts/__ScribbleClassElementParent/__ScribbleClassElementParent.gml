@@ -20,7 +20,7 @@ function __ScribbleClassElementParent(_text) constructor
     
     //We define this for all text elements because it gets used in the model key builder
     __revealMode = SCRIBBLE_DEFAULT_REVEAL_MODE;
-    __spritesDontScale = true;
+    __graphicsDontScale = false;
     
     __preprocessorArray      = undefined;
     __preprocessorArrayDirty = true;
@@ -829,16 +829,16 @@ function __ScribbleClassElementParent(_text) constructor
     
     /// @param scale
     /// @param [spritesDontScale=false]
-    static scale = function(_scale, _spritesDontScale = false)
+    static scale = function(_scale, _graphicsDontScale = false)
     {
         if ((__preScale != _scale)
-        ||  (__spritesDontScale != _spritesDontScale))
+        ||  (__graphicsDontScale != _graphicsDontScale))
         {
             __modelDirty = true;
             __bboxDirty  = true;
             
             __preScale = _scale;
-            __spritesDontScale = _spritesDontScale;
+            __graphicsDontScale = _graphicsDontScale;
         }
         
         return self;

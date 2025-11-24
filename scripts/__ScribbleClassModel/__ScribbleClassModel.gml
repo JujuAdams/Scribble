@@ -20,7 +20,7 @@ function __ScribbleClassModel(_element) constructor
     __startingHAlign    = _element.__startingHAlign;
     __startingVAlign    = _element.__startingVAlign;
     __preScale          = _element.__preScale;
-    __spritesDontScale  = _element.__spritesDontScale;
+    __graphicsDontScale = _element.__graphicsDontScale;
     __elementLineHeight = _element.__lineHeight;
     __lineSpacing       = _element.__lineSpacing;
     

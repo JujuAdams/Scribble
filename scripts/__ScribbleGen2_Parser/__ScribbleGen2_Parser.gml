@@ -222,7 +222,7 @@ function __ScribbleGen2_Parser()
     var _dynamicFontUseGridArray = __dynamicFontUseGridArray;
     
     //Cache element properties locally
-    var _spritesDontScale = __spritesDontScale;
+    var _graphicsDontScale = __graphicsDontScale;
     var _elementText      = __text;
     var _startingHAlign   = __startingHAlign;
     var _startingVAlign   = __startingVAlign;
@@ -867,7 +867,7 @@ function __ScribbleGen2_Parser()
                         
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                             
-                            if (_spritesDontScale && (_stateScale != 1))
+                            if (_graphicsDontScale && (_stateScale != 1))
                             {
                                 ds_grid_multiply_region(_glyphGrid, _glyphCount, __SCRIBBLE_GEN_GLYPH_X, _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE, 1/_stateScale);
                             }
@@ -981,7 +981,7 @@ function __ScribbleGen2_Parser()
                             
                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                             
-                            if (_spritesDontScale && (_stateScale != 1))
+                            if (_graphicsDontScale && (_stateScale != 1))
                             {
                                 ds_grid_multiply_region(_glyphGrid, _glyphCount, __SCRIBBLE_GEN_GLYPH_X, _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE, 1/_stateScale);
                             }
@@ -1227,7 +1227,7 @@ function __ScribbleGen2_Parser()
                                                 __spriteOnce:  _spriteOnce,
                                             };
                                         
-                                            if (_spritesDontScale && (_stateScale != 1))
+                                            if (_graphicsDontScale && (_stateScale != 1))
                                             {
                                                 ds_grid_multiply_region(_glyphGrid, _glyphCount, __SCRIBBLE_GEN_GLYPH_X, _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE, 1/_stateScale);
                                             }
