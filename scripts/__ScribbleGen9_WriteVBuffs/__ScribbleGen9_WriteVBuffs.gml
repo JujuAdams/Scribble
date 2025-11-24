@@ -31,7 +31,7 @@
 
 
 
-function __ScribbleGen10_WriteVBuffs()
+function __ScribbleGen9_WriteVBuffs()
 {
     static _stringBuffer   = __ScribbleSystem().__bufferA;
     static _generatorState = __ScribbleSystem().__generatorState;

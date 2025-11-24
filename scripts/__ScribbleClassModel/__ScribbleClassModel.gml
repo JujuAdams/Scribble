@@ -118,12 +118,12 @@ function __ScribbleClassModel(_element) constructor
         __ScribbleGen4_BuildWords();
         __ScribbleGen5_FinalizeBidi();
         __ScribbleGen6_BuildLines();
-        __ScribbleGen7_BuildPages();
-        __ScribbleGen8_PositionGlyphs();
-        __ScribbleGen9_BuildVBuffGrids();
-        __ScribbleGen10_WriteVBuffs();
-        __ScribbleGen11_PaddingAndClipping();
-        __ScribbleGen12_DynamicMacros();
+        __ScribbleGen6b_BuildPages();
+        __ScribbleGen7_PositionGlyphs();
+        __ScribbleGen8_BuildVBuffGrids();
+        __ScribbleGen9_WriteVBuffs();
+        __ScribbleGen10_PaddingAndClipping();
+        __ScribbleGen11_DynamicMacros();
         
         if (SCRIBBLE_VERBOSE)
         {

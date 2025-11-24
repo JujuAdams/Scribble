@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"__ScribbleGen12_DynamicMacros",
+  "%Name":"__ScribbleGen10_PaddingAndClipping",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"__ScribbleGen12_DynamicMacros",
+  "name":"__ScribbleGen10_PaddingAndClipping",
   "parent":{
     "name":"Generator",
     "path":"folders/Scribble/(System)/Don't call these functions!/Generator.yy",

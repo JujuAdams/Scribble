@@ -1,6 +1,6 @@
 // Feather disable all
 
-function __ScribbleGen9_BuildVBuffGrids()
+function __ScribbleGen8_BuildVBuffGrids()
 {
     static _generatorState = __ScribbleSystem().__generatorState;
     

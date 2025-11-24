@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"__ScribbleGen8_PositionGlyphs",
+  "%Name":"__ScribbleGen6b_BuildPages",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"__ScribbleGen8_PositionGlyphs",
+  "name":"__ScribbleGen6b_BuildPages",
   "parent":{
     "name":"Generator",
     "path":"folders/Scribble/(System)/Don't call these functions!/Generator.yy",

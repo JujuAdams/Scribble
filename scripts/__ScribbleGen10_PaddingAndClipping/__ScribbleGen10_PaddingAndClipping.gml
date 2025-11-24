@@ -1,5 +1,5 @@
 // Feather disable all
-function __ScribbleGen11_PaddingAndClipping()
+function __ScribbleGen10_PaddingAndClipping()
 {
     static _generatorState = __ScribbleSystem().__generatorState;
     with(_generatorState)

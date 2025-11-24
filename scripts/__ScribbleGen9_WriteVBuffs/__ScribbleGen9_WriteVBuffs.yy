@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"__ScribbleGen10_WriteVBuffs",
+  "%Name":"__ScribbleGen9_WriteVBuffs",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"__ScribbleGen10_WriteVBuffs",
+  "name":"__ScribbleGen9_WriteVBuffs",
   "parent":{
     "name":"Generator",
     "path":"folders/Scribble/(System)/Don't call these functions!/Generator.yy",

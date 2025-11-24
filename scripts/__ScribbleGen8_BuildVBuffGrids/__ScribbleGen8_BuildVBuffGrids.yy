@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"__ScribbleGen9_BuildVBuffGrids",
+  "%Name":"__ScribbleGen8_BuildVBuffGrids",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"__ScribbleGen9_BuildVBuffGrids",
+  "name":"__ScribbleGen8_BuildVBuffGrids",
   "parent":{
     "name":"Generator",
     "path":"folders/Scribble/(System)/Don't call these functions!/Generator.yy",

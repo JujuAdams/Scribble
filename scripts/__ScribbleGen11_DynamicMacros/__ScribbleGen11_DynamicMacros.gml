@@ -1,6 +1,6 @@
 // Feather disable all
 
-function __ScribbleGen12_DynamicMacros()
+function __ScribbleGen11_DynamicMacros()
 {
     if (array_length(__dynamicMacroArray) <= 0)
     {

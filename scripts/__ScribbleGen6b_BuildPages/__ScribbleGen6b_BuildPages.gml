@@ -1,6 +1,6 @@
 // Feather disable all
 
-function __ScribbleGen7_BuildPages()
+function __ScribbleGen6b_BuildPages()
 {
     static _generatorState = __ScribbleSystem().__generatorState;
     

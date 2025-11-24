@@ -1,6 +1,6 @@
 // Feather disable all
 
-function __ScribbleGen8_PositionGlyphs()
+function __ScribbleGen7_PositionGlyphs()
 {
     static _generatorState = __ScribbleSystem().__generatorState;
     static _stretchArray = array_create_ext(1000, function()
