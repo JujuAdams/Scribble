@@ -191,10 +191,10 @@ function __ScribbleGen6_BuildLines()
     
     var _line_reveal = (__revealMode == SCRIBBLE_REVEAL_PER_LINE) && (_sectionCount <= 0);
     
-    var _failedFit = false;
-    var _forcedBreak = true; //Start with a forced break because it's the first line!
+    var _failedFit     = false;
+    var _forcedBreak   = true; //Start with a forced break because it's the first line!
     var _lastIteration = false;
-    var _breakOnTrim = false;
+    var _breakOnTrim   = false;
     
     var _fitIterations = 0;
     var _lowerLimit = undefined;

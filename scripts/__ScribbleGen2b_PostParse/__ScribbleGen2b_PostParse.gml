@@ -51,8 +51,6 @@ function __ScribbleGen2b_PostParse()
             __glyphGrid[# __glyphCount, __SCRIBBLE_GEN_GLYPH_BIDI] = _overallBidi;
         }
         
-        
-        
         ///////
         // Determine line height
         ///////

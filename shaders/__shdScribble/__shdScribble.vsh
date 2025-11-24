@@ -93,6 +93,8 @@ uniform float u_fTypewriterAlphaDuration;  //1
 uniform vec3  u_vTypewriterOffsetRange;    //3 - x-offset, start reveal index, end reveal index
 
 float flagArray[MAX_EFFECTS];
+mat2  glyphMatrix = mat2(1.0, 0.0,
+                         0.0, 1.0);
 
 //--------------------------------------------------------------------------------------------------------
 // Functions
@@ -133,7 +135,7 @@ vec2 scale(vec2 position, vec2 centre, vec2 scale)
 //Oscillate the character
 vec2 wave(vec2 position, float index)
 {
-    return vec2(position.x, position.y + WAVE_FLAG*WAVE_AMPLITUDE*sin(WAVE_FREQUENCY*index + WAVE_SPEED*u_fTime));
+    return position + glyphMatrix*vec2(0.0, 1.0)*WAVE_FLAG*WAVE_AMPLITUDE*sin(WAVE_FREQUENCY*index + WAVE_SPEED*u_fTime);
 }
 
 //Wheel the character around
@@ -312,6 +314,11 @@ float easeBounce(float time)
 
 void main()
 {
+    //Convert the glyph angle into an up vector for animation
+    glyphMatrix = mat2(cos(0.0174532925*ANGLE), -sin(0.0174532925*ANGLE),
+                       sin(0.0174532925*ANGLE),  cos(0.0174532925*ANGLE));
+    
+    //Unpack flags
     float flagValue = PACKED_EFFECT_FLAGS;
     float edge;
     edge = step(512.0, flagValue); flagArray[9] = edge; flagValue -= 512.0*edge;
@@ -325,13 +332,11 @@ void main()
     edge = step(  2.0, flagValue); flagArray[1] = edge; flagValue -=   2.0*edge;
     edge = step(  1.0, flagValue); flagArray[0] = edge; flagValue -=   1.0*edge;
     
-    
-    
-    //Use the input vertex position from the vertex attributes. We ignore the z-component because it's used for other data
+    //Use the input vertex position from the vertex attributes
     v_vModelPosition = in_Position.xy - u_vScroll;
+    
+    //Adjust the vertex position based on typewriter reveal correction
     v_vModelPosition.x += step(u_vTypewriterOffsetRange.y, REVEAL_INDEX)*step(REVEAL_INDEX, u_vTypewriterOffsetRange.z)*u_vTypewriterOffsetRange.x;
-    
-    
     
     //Unpack the glyph centre
     vec2 centre = v_vModelPosition + in_Colour2.zw;
@@ -395,9 +400,9 @@ void main()
         else if (easeMethod == EASE_ELASTIC    ) { time = 1.0 - easeElastic(1.0 - time); }
         else if (easeMethod == EASE_BOUNCE     ) { time = 1.0 - easeBounce( 1.0 - time); }
         
-        v_vModelPosition = scale(v_vModelPosition, centre, mix(u_vTypewriterStartScale, vec2(1.0), time));
-        v_vModelPosition = rotate(v_vModelPosition, centre, mix(-u_fTypewriterStartRotation, 0.0, time));
-        v_vModelPosition += mix(u_vTypewriterStartPos, vec2(0.0), time);
+        v_vModelPosition  = scale(v_vModelPosition, centre, mix(u_vTypewriterStartScale, vec2(1.0), time));
+        v_vModelPosition  = rotate(v_vModelPosition, centre, mix(-u_fTypewriterStartRotation, 0.0, time));
+        v_vModelPosition += glyphMatrix*mix(u_vTypewriterStartPos, vec2(0.0), time);
     }
     
     

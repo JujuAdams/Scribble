@@ -62,11 +62,11 @@ function __ScribbleGen4_BuildWords()
     
     var _gridRegionWriteMax = _charReveal? __SCRIBBLE_GEN_GLYPH_REVEAL_INDEX : __SCRIBBLE_GEN_GLYPH_ANIMATION_INDEX;
     
-    var _wordCount        = 0;
-    var _wordWidth        = 0;
+    var _wordCount       = 0;
+    var _wordWidth       = 0;
     var _wordGlyphStart  = 0;
     var _wordGlyphEnd    = undefined;
-    var _wordBidi         = _overallBidi;
+    var _wordBidi        = _overallBidi;
     
     var _glyphPrevWhitespace = (_wordBidi == __SCRIBBLE_BIDI_WHITESPACE)
     
