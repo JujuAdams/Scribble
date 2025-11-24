@@ -1,11 +1,11 @@
 {
   "$GMObject":"",
-  "%Name":"obj_test_sprite_autofit",
+  "%Name":"obj_0300_sprite_autofit",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"obj_test_sprite_autofit",
+  "name":"obj_0300_sprite_autofit",
   "overriddenProperties":[],
   "parent":{
     "name":"0300 - Configurations",
