@@ -179,6 +179,60 @@ This function sets up a fixed offset for a font when used with a particular alig
 
 &nbsp;
 
+## `scribble_font_set_ascender(font, value)`
+
+**Returns:** N/A (`undefined`)
+
+|Name   |Datatype|Purpose                                |
+|-------|--------|---------------------------------------|
+|`font` |string  |Name of the font to target, as a string|
+|`value`|number  |Ascender value to set                  |
+
+Sets a font's ascender, that is, the distance from the top of the tallest glyph to the baseline for the font.
+
+!> This function will **not** adjust the line height or glyphs positions. Please use `scribble_glyph_set()` to do that.
+
+&nbsp;
+
+## `scribble_font_get_ascender(originalFont)`
+
+**Returns:** Number
+
+|Name   |Datatype|Purpose                                |
+|-------|--------|---------------------------------------|
+|`font` |string  |Name of the font to target, as a string|
+
+Returns a font's ascender, that is, the distance from the top of the tallest glyph to the baseline for the font.
+
+&nbsp;
+
+## `scribble_font_set_ascender_offset(font, value)`
+
+**Returns:** N/A (`undefined`)
+
+|Name   |Datatype|Purpose                                |
+|-------|--------|---------------------------------------|
+|`font` |string  |Name of the font to target, as a string|
+|`value`|number  |Ascender offset value to set           |
+
+Sets a font's ascender offset, that is, the distance from the top of a line to the top of the tallest glyph.
+
+!> This function will **not** adjust the line height or glyphs positions. Please use `scribble_glyph_set()` to do that.
+
+&nbsp;
+
+## `scribble_font_get_ascender_offset(originalFont)`
+
+**Returns:** Number
+
+|Name   |Datatype|Purpose                                |
+|-------|--------|---------------------------------------|
+|`font` |string  |Name of the font to target, as a string|
+
+Returns a font's ascender offset, that is, the distance from the top of a line to the top of the tallest glyph.
+
+&nbsp;
+
 ## `scribble_glyph_set(fontName, character, property, value, [relative])`
 
 **Returns:** N/A (`undefined`)
