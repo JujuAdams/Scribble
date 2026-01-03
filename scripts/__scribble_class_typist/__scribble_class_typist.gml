@@ -806,27 +806,32 @@ function __scribble_class_typist(_per_line) constructor
                         var _found_size = array_length(_found_events);
                         
                         //Add a per-character delay if required
-                        if (_glyph_data_getter
-                        &&  !__ignore_delay
-                        &&  __character_delay
-                        &&  (__last_character >= 1) //Don't check character delay until we're on the first character (index=1)
-                        &&  ((__last_character < (SCRIBBLE_DELAY_LAST_CHARACTER? _page_character_count : (_page_character_count-1))) || (_found_size > 0)))
+                        if ((not __ignore_delay) && __character_delay)
                         {
-                            var _glyph_ord = _page_data.__glyph_grid[# __last_character-1, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE];
-                            
-                            var _delay = __character_delay_dict[$ _glyph_ord];
-                            _delay = (_delay == undefined)? 0 : _delay;
-                            
-                            if (__last_character > 1)
+                            if (not _glyph_data_getter)
                             {
-                                _glyph_ord = (_glyph_ord << 32) | _page_data.__glyph_grid[# __last_character-2, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE];
-                                var _double_char_delay = __character_delay_dict[$ _glyph_ord];
-                                _double_char_delay = (_double_char_delay == undefined)? 0 : _double_char_delay;
-                                
-                                _delay = max(_delay, _double_char_delay);
+                                __scribble_error("Per-character delay requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
                             }
                             
-                            if (_delay > 0) array_push(__event_stack, new __scribble_class_event("delay", [_delay]));
+                            if ((__last_character >= 1) //Don't check character delay until we're on the first character (index=1)
+                            &&  ((__last_character < (SCRIBBLE_DELAY_LAST_CHARACTER? _page_character_count : (_page_character_count-1))) || (_found_size > 0)))
+                            {
+                                var _glyph_ord = _page_data.__glyph_grid[# __last_character-1, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE];
+                            
+                                var _delay = __character_delay_dict[$ _glyph_ord];
+                                _delay = (_delay == undefined)? 0 : _delay;
+                            
+                                if (__last_character > 1)
+                                {
+                                    _glyph_ord = (_glyph_ord << 32) | _page_data.__glyph_grid[# __last_character-2, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE];
+                                    var _double_char_delay = __character_delay_dict[$ _glyph_ord];
+                                    _double_char_delay = (_double_char_delay == undefined)? 0 : _double_char_delay;
+                                
+                                    _delay = max(_delay, _double_char_delay);
+                                }
+                            
+                                if (_delay > 0) array_push(__event_stack, new __scribble_class_event("delay", [_delay]));
+                            }
                         }
                         
                         //Move to the next character
