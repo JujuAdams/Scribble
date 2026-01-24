@@ -51,6 +51,20 @@
 #macro SCRIBBLE_GRAPHIC_SCALE_MIN  1
 #macro SCRIBBLE_GRAPHIC_SCALE_MAX  1
 
+// Controls how in-line sprites are positioned on a line of text. The position is based on the
+// font's ascender and ascender offset as well as the sprite's overall height. The sprite height
+// used to calculate positioning includes empty space around the image.
+// 
+// N.B. GameMaker seems to not export valid ascender information for some fonts. I have not been
+//      able to find a pattern. If Scribble detects an invalid/nonsensical ascender then a
+//      warning message will be shown in the debug log and Scribble will estimate an appropriate
+//      ascender.
+// 
+// 0 = Legacy. Align centre of sprites to the centre of the line height
+// 1 = Recommended. Align centre of sprites to the centre of the ascender
+// 2 = Align bottom of sprites to the baseline
+#macro SCRIBBLE_SPRITE_ALIGN_MODE  1
+
 //Whether to adjust the horizontal distance between glyphs depending on special per-font rules.
 #macro SCRIBBLE_USE_KERNING  true
 

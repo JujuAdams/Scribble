@@ -102,8 +102,10 @@
                                         return false;\
                                     }\
                                     \
-                                    var _fontSpaceWidth = _fontGlyphDataGrid[# _spaceDataIndex, __SCRIBBLE_GLYPH_PROPR_SEPARATION];\
-                                    var _fontLineHeight = _fontData.__height;\
+                                    var _fontSpaceWidth     = _fontGlyphDataGrid[# _spaceDataIndex, __SCRIBBLE_GLYPH_PROPR_SEPARATION];\
+                                    var _fontLineHeight     = _fontData.__height;\
+                                    var _fontAscender       = _fontData.__ascender;\
+                                    var _fontAscenderOffset = _fontData.__ascenderOffset;\
                                     \
                                     array_push(_controlArray, new __ScribbleClassControlFont(_fontName));\
                                     ++_controlCount;
@@ -1156,14 +1158,30 @@ function __ScribbleGen2_Parser()
                                     
                                         if (sprite_exists(_spriteIndex) && ((not SCRIBBLE_USE_SPRITE_WHITELIST) || (_spriteWhitelistMap[? _spriteIndex] ?? false)))
                                         {
-                                            var _sprite_scale = SCRIBBLE_GLOBAL_SPRITE_SCALE;
-                                            var _sprite_w = _sprite_scale*sprite_get_width( _spriteIndex);
-                                            var _sprite_h = _sprite_scale*sprite_get_height(_spriteIndex);
-                                
-                                            var _scale = clamp(_fontLineHeight / _sprite_h, SCRIBBLE_GRAPHIC_SCALE_MIN, SCRIBBLE_GRAPHIC_SCALE_MAX);
-                                            _sprite_w     *= _scale;
-                                            _sprite_h     *= _scale;
-                                            _sprite_scale *= _scale;
+                                            var _spriteScale = SCRIBBLE_GLOBAL_SPRITE_SCALE;
+                                            var _spriteW = _spriteScale*sprite_get_width( _spriteIndex);
+                                            var _spriteH = _spriteScale*sprite_get_height(_spriteIndex);
+                                            
+                                            if (SCRIBBLE_SPRITE_ALIGN_MODE == 0) //Align to centre of line height
+                                            {
+                                                var _spriteYOffset = 0;
+                                                var _spriteSpaceH  = _fontLineHeight;
+                                            }
+                                            else if (SCRIBBLE_SPRITE_ALIGN_MODE == 1) //Align to centre of ascender
+                                            {
+                                                var _spriteYOffset = floor(_fontAscenderOffset + _fontAscender/2 - _fontLineHeight/2);
+                                                var _spriteSpaceH  = _fontAscender;
+                                            }
+                                            else if (SCRIBBLE_SPRITE_ALIGN_MODE == 2) //Align bottom to baseline
+                                            {
+                                                var _spriteYOffset = floor(_fontAscenderOffset + _fontAscender - _spriteH/2 - _fontLineHeight/2);
+                                                var _spriteSpaceH  = _fontAscender;
+                                            }
+                                            
+                                            var _scale = clamp(_spriteSpaceH / _spriteH, SCRIBBLE_GRAPHIC_SCALE_MIN, SCRIBBLE_GRAPHIC_SCALE_MAX);
+                                            _spriteW     *= _scale;
+                                            _spriteH     *= _scale;
+                                            _spriteScale *= _scale;
                                 
                                             var _imageIndex = 0;
                                             var _imageSpeed = 0;
@@ -1211,13 +1229,13 @@ function __ScribbleGen2_Parser()
                                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_BIDI         ] = __SCRIBBLE_BIDI_SYMBOL;
                                 
                                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_X            ] = _stateHAlignOffset;
-                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_Y            ] = _stateVAlignOffset;
-                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_WIDTH        ] = _sprite_w;
-                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_HEIGHT       ] = _sprite_h;
-                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _sprite_h;
-                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = _sprite_w;
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_Y            ] = _stateVAlignOffset + _spriteYOffset;
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_WIDTH        ] = _spriteW;
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_HEIGHT       ] = _spriteH;
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_FONT_HEIGHT  ] = _spriteH;
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SEPARATION   ] = _spriteW;
                                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_LEFT_OFFSET  ] = 0;
-                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = _sprite_scale;
+                                            _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_SCALE        ] = _spriteScale;
                                 
                                             _glyphGrid[# _glyphCount, __SCRIBBLE_GEN_GLYPH_CONTROL_COUNT] = _controlCount;
                                 
