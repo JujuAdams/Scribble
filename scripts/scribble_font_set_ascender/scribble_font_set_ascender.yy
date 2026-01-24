@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"scribble_font_set_ascender",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"scribble_font_set_ascender",
+  "parent":{
+    "name":"Fonts",
+    "path":"folders/Scribble/Fonts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
