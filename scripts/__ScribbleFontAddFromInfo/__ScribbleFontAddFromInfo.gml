@@ -34,20 +34,28 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
     var _infoGlyphsDict = _fontInfo.glyphs;
     var _ascenderOffset = _fontInfo.ascenderOffset;
     
-    var _infoGlyphNames = variable_struct_get_names(_infoGlyphsDict);
-    var _size = array_length(_infoGlyphNames);
+    var _infoGlyphsArray = [];
     
-    var _infoGlyphsArray = array_create(array_length(_infoGlyphNames));
+    var _infoGlyphNames = variable_struct_get_names(_infoGlyphsDict);
     var _i = 0;
-    repeat(_size)
+    repeat(array_length(_infoGlyphNames))
     {
-        var _glyph  = _infoGlyphNames[_i];
+        var _glyph = _infoGlyphNames[_i];
         var _struct = _infoGlyphsDict[$ _glyph];
-        _infoGlyphsArray[@ _i] = _struct;
+        
+        if (is_struct(_struct))
+        {
+            array_push(_infoGlyphsArray, _struct);
+        }
+        else
+        {
+            __ScribbleTrace($"Warning! Failed to access glyph data for char \"{_glyph}\" in font \"{_name}\"");
+        }
+        
         ++_i;
     }
     
-    if (SCRIBBLE_VERBOSE) __ScribbleTrace("Processing font \"" + _name + "\"");
+    var _size = array_length(_infoGlyphsArray);
     
     var _texelsValid = true;
     
