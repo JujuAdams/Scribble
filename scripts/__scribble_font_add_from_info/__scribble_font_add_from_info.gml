@@ -29,6 +29,8 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
     
     try
     {
+        if (SCRIBBLE_VERBOSE) __scribble_trace("Processing font \"" + _name + "\"");
+        
         var _global_glyph_bidi_map = __scribble_system().__glyph_data.__bidi_map;
         
         //Get font info from the runtime
@@ -36,20 +38,28 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
         var _info_glyphs_dict = _font_info.glyphs;
         var _ascender_offset = SCRIBBLE_USE_ASCENDER_OFFSET? _font_info.ascenderOffset : 0;
         
-        var _info_glyph_names = variable_struct_get_names(_info_glyphs_dict);
-        var _size = array_length(_info_glyph_names);
+        var _info_glyphs_array = [];
         
-        var _info_glyphs_array = array_create(array_length(_info_glyph_names));
+        var _info_glyph_names = variable_struct_get_names(_info_glyphs_dict);
         var _i = 0;
-        repeat(_size)
+        repeat(array_length(_info_glyph_names))
         {
             var _glyph = _info_glyph_names[_i];
             var _struct = _info_glyphs_dict[$ _glyph];
-            _info_glyphs_array[@ _i] = _struct;
+            
+            if (is_struct(_struct))
+            {
+                array_push(_info_glyphs_array, _struct);
+            }
+            else
+            {
+                __scribble_trace($"Warning! Failed to access glyph data for char \"{_glyph}\" in font \"{_name}\"");
+            }
+            
             ++_i;
         }
         
-        if (SCRIBBLE_VERBOSE) __scribble_trace("Processing font \"" + _name + "\"");
+        var _size = array_length(_info_glyphs_array);
         
         var _texels_valid = true;
         
@@ -259,7 +269,7 @@ function __scribble_font_add_from_info(_name, _texture_group, _texture_uvs, _fon
         if (_ascender <= 0)
         {
             _ascender = floor(_font_info.size * (4/3));
-            __scribble_trace("Warning! Font \"", _name, "\" has an invalid ascender. Estimated a value of ", _ascender);
+            __scribble_trace("Warning! Font \"", _name, "\" has an invalid ascender (value is less than or equal to 0). Estimated a value of ", _ascender);
         }
         
         _font_data.__height          = _line_height;
