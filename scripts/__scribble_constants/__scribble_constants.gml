@@ -11,8 +11,8 @@
 //                                                                        //
 ////////////////////////////////////////////////////////////////////////////
 
-#macro SCRIBBLE_VERSION  "9.6.6.1"
-#macro SCRIBBLE_DATE     "2025-09-23"
+#macro SCRIBBLE_VERSION  "9.7.2"
+#macro SCRIBBLE_DATE     "2026-01-24"
 
 #macro SCRIBBLE_RUNNING_FROM_IDE  (GM_build_type == "run")
 
