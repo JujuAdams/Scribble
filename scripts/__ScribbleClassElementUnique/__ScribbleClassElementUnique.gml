@@ -989,6 +989,11 @@ function __ScribbleClassElementUnique(_string) : __ScribbleClassElementParent(_s
                                 //Only add a per-character delay if we have glyph data to work with
                                 if (_useGlyphData && __typistCharDelay) //Don't check character delay until we're on the first visible character (index=1)
                                 {
+                                    if (not _glyphDataGetter)
+                                    {
+                                        __ScribbleError("Per-character delay requires either:\n- Call `.allow_glyph_data_getter()` on the element\n- Set `SCRIBBLE_FORCE_GLYPH_DATA_GETTER` to `true`");
+                                    }
+                                    
                                     //Always delay the last character if we find events to execute at the end of the page
                                     if ((__typistRevealIndex < __typistHeadLimitArray[0]-1) || (array_length(__typistEventStack) > 0))
                                     {
