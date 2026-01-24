@@ -160,11 +160,17 @@ function scribble_font_add(_scribbleName, _path, _inputSize, _sdf = false, _inpu
     // Create the font struct itself
     ///////
     
+    //Fix dodgy ascender values
+    if (_ascender <= 0)
+    {
+        _ascender = floor(_inputSize * (4/3));
+        __ScribbleTrace("Warning! Font \"", _scribbleName, "\" has an invalid ascender (value was less than or equal to 0). Estimated a value of ", _ascender);
+    }
+    
     var _fontData = new __ScribbleClassFont(_scribbleName, _foundGlyphCount,
                                             __SCRIBBLE_RENDER_RASTER,
                                             false, true,
-                                            __ScribbleCalculateUnderlineY(_inputSize, _ascender, _ascenderOffset),
-                                            __ScribbleCalculateStrikeY(_inputSize, _ascender, _ascenderOffset));
+                                            _ascender, _ascenderOffset);
     
     if (_isKrutidev) _fontData.__isKrutidev = true;
     

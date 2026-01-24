@@ -5,12 +5,12 @@
 /// @param renderType
 /// @param fromBundle
 /// @param texelsValid
-/// @param underlineY
-/// @param strikeY
+/// @param ascender
+/// @param ascenderOffset
 
 global.gpuBlank = gpu_get_state();
 
-function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texelsValid, _underlineY, _strikeY) constructor
+function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texelsValid, _ascender, _ascenderOffset) constructor
 {
     //The name of the font. This is the alias used to reference the font elsewhere
     __name = _name;
@@ -26,9 +26,12 @@ function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texe
     //Whether the source texture is ready - loaded into RAM and fetched into VRAM
     __texelsValid = _texelsValid;
     
+    __ascender       = _ascender;
+    __ascenderOffset = _ascenderOffset;
+    
     //Position of the underline/strike-through relative to the top of the line
-    __underlineY = _underlineY; //*Not* the raw value. This value is changed by scribble_font_scale()
-    __strikeY    = _strikeY;    //*Not* the raw value. This value is changed by scribble_font_scale()
+    __underlineY = _ascender - _ascenderOffset;             //*Not* the raw value. This value is changed by scribble_font_scale()
+    __strikeY    = ceil(0.666*_ascender) - _ascenderOffset; //*Not* the raw value. This value is changed by scribble_font_scale()
     
     static _fontDataMap = __ScribbleSystem().__fontDataMap;
     _fontDataMap[? _name] = self;

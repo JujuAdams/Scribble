@@ -81,7 +81,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.14.0.207",
+    "IDEVersion":"2024.14.1.210",
   },
   "name":"Scribble",
   "resources":[
@@ -332,8 +332,6 @@
     {"id":{"name":"__ScribbleBufferPeekUnicode","path":"scripts/__ScribbleBufferPeekUnicode/__ScribbleBufferPeekUnicode.yy",},},
     {"id":{"name":"__ScribbleBufferReadUnicode","path":"scripts/__ScribbleBufferReadUnicode/__ScribbleBufferReadUnicode.yy",},},
     {"id":{"name":"__ScribbleBufferWriteUnicode","path":"scripts/__ScribbleBufferWriteUnicode/__ScribbleBufferWriteUnicode.yy",},},
-    {"id":{"name":"__ScribbleCalculateStrikeY","path":"scripts/__ScribbleCalculateStrikeY/__ScribbleCalculateStrikeY.yy",},},
-    {"id":{"name":"__ScribbleCalculateUnderlineY","path":"scripts/__ScribbleCalculateUnderlineY/__ScribbleCalculateUnderlineY.yy",},},
     {"id":{"name":"__ScribbleClassControlAlpha","path":"scripts/__ScribbleClassControlAlpha/__ScribbleClassControlAlpha.yy",},},
     {"id":{"name":"__ScribbleClassControlColor","path":"scripts/__ScribbleClassControlColor/__ScribbleClassControlColor.yy",},},
     {"id":{"name":"__ScribbleClassControlCycle","path":"scripts/__ScribbleClassControlCycle/__ScribbleClassControlCycle.yy",},},

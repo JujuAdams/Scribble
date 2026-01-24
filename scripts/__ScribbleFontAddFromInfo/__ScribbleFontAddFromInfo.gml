@@ -32,7 +32,16 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
     //Get font info from the runtime
     var _textureIndex   = _fontInfo.texture;
     var _infoGlyphsDict = _fontInfo.glyphs;
+    var _ascender       = _fontInfo.ascender;
     var _ascenderOffset = _fontInfo.ascenderOffset;
+    
+    //Fix dodgy ascender values
+    var _ascender = _fontInfo.ascender;
+    if (_ascender <= 0)
+    {
+        _ascender = floor(_fontInfo.size * (4/3));
+        __ScribbleTrace("Warning! Font \"", _name, "\" has an invalid ascender (value was less than or equal to 0). Estimated a value of ", _ascender);
+    }
     
     var _infoGlyphsArray = [];
     
@@ -118,8 +127,7 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
     var _fontData = new __ScribbleClassFont(_name, _size,
                                             _sdf? __SCRIBBLE_RENDER_SDF : __SCRIBBLE_RENDER_RASTER,
                                             _fromBundle, _texelsValid,
-                                            __ScribbleCalculateUnderlineY(_fontInfo.size, _fontInfo.ascender, _fontInfo.ascenderOffset),
-                                            __ScribbleCalculateStrikeY(_fontInfo.size, _fontInfo.ascender, _fontInfo.ascenderOffset),);
+                                            _ascender, _ascenderOffset);
     
     if (_isKrutidev) _fontData.__isKrutidev = true;
     

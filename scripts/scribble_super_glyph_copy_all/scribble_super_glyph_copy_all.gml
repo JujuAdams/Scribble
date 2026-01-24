@@ -22,9 +22,11 @@ function scribble_super_glyph_copy_all(_target, _source, _overwrite)
     }
     
     //Choose maximal values
-    _targetFontData.__height     = max(_targetFontData.__height,     _sourceFontData.__height);
-    _targetFontData.__underlineY = max(_targetFontData.__underlineY, _sourceFontData.__underlineY);
-    _targetFontData.__strikeY    = max(_targetFontData.__strikeY,    _sourceFontData.__strikeY);
+    _targetFontData.__height         = max(_targetFontData.__height,         _sourceFontData.__height        );
+    _targetFontData.__ascender       = max(_targetFontData.__ascender,       _sourceFontData.__ascender      );
+    _targetFontData.__ascenderOffset = max(_targetFontData.__ascenderOffset, _sourceFontData.__ascenderOffset);
+    _targetFontData.__underlineY     = max(_targetFontData.__underlineY,     _sourceFontData.__underlineY    );
+    _targetFontData.__strikeY        = max(_targetFontData.__strikeY,        _sourceFontData.__strikeY       );
     
     ds_grid_set_region(_targetGlyphsDataGrid, 0, __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, ds_grid_width(_targetGlyphsDataGrid), __SCRIBBLE_GLYPH_PROPR_FONT_HEIGHT, _targetFontData.__height);
 }

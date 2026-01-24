@@ -76,12 +76,17 @@ function scribble_font_bake_shader(_sourceFontName, _newFontName, _shader, _outl
     var _glyphCount = ds_grid_width(_srcGlyphGrid);
     
     //Create a new font
-    var _newFontData = new __ScribbleClassFont(_newFontName, _glyphCount, undefined, false, true,
-                                               _srcFontData.__underlineY + _padT + _padB,
-                                               _srcFontData.__strikeY    + _padT + _padB);
-    _newFontData.__bilinear = _smooth;
-    _newFontData.__runtime  = true;
-    _newFontData.__height   = _srcFontData.__height + _padT + _padB;
+    var _newFontData = new __ScribbleClassFont(_newFontName, _glyphCount,
+                                               undefined,
+                                               false, true,
+                                               _srcFontData.__ascender,
+                                               _srcFontData.__ascenderOffset + _padT);
+    
+    _newFontData.__underlineY = _srcFontData.__underlineY + _padT;
+    _newFontData.__strikeY    = _srcFontData.__strikeY    + _padT;
+    _newFontData.__bilinear   = _smooth;
+    _newFontData.__runtime    = true;
+    _newFontData.__height     = _srcFontData.__height + _padT + _padB;
     
     var _newGlyphsGrid = _newFontData.__glyphDataGrid;
     
