@@ -129,7 +129,10 @@ function __ScribbleFontAddFromInfo(_name, _textureGroup, _textureUVs, _fontInfo,
                                             _fromBundle, _texelsValid,
                                             _ascender, _ascenderOffset);
     
-    if (_isKrutidev) _fontData.__isKrutidev = true;
+    if (_isKrutidev)
+    {
+        _fontData.__isKrutidev = true;
+    }
     
     var _fontGlyphsMap     = _fontData.__glyphsMap;
     var _fontGlyphDataGrid = _fontData.__glyphDataGrid;

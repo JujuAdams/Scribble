@@ -8,7 +8,7 @@
 /// @param ascender
 /// @param ascenderOffset
 
-global.gpuBlank = gpu_get_state();
+global.gpuBlank = gpu_get_state(); //TODO - Refactor
 
 function __ScribbleClassFont(_name, _glyphCount, _renderType, _fromBundle, _texelsValid, _ascender, _ascenderOffset) constructor
 {
