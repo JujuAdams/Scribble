@@ -860,6 +860,9 @@ function __scribble_class_typist(_per_line) constructor
                 {
                     if (__last_character <= _page_character_count)
                     {
+                        //Solve floating point weirdness
+                        _head_pos = round(_head_pos);
+                        
                         //Only play sound once per frame if we're going reaaaally fast
                         __play_sound(_head_pos, _glyph_data_getter? (_page_data.__glyph_grid[# _head_pos-1, __SCRIBBLE_GLYPH_LAYOUT.__UNICODE]) : 0);
                     }
