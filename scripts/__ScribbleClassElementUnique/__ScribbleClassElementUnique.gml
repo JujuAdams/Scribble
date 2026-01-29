@@ -1030,7 +1030,7 @@ function __ScribbleClassElementUnique(_string) : __ScribbleClassElementParent(_s
                     if (_moved)
                     {
                         //Only play sound once per frame if we're going reaaaally fast
-                        var _glyphIndex = _useGlyphData? (_pageData.__glyphGrid[# __typistHeadArray[0]-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE]) : 0;
+                        var _glyphIndex = _useGlyphData? (_pageData.__glyphGrid[# round(__typistHeadArray[0])-1, __SCRIBBLE_GLYPH_LAYOUT_UNICODE]) : 0;
                         __TypistPlaySound(__typistRevealIndex, _glyphIndex);
                     }
                 }
