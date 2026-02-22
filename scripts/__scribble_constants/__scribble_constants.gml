@@ -11,8 +11,8 @@
 //                                                                        //
 ////////////////////////////////////////////////////////////////////////////
 
-#macro SCRIBBLE_VERSION  "9.7.3.1"
-#macro SCRIBBLE_DATE     "2026-01-29"
+#macro SCRIBBLE_VERSION  "9.7.3.2"
+#macro SCRIBBLE_DATE     "2026-02-22"
 
 #macro SCRIBBLE_NO_PREPROCESS  __scribble_no_preprocessing
 
