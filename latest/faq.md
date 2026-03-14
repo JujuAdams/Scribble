@@ -106,6 +106,12 @@ All line breaks in Scribble - either forced line breaks using `\n` or natural li
 
 If you'd only like to adjust the line spacing for a single text element, use the [`.line_height()`](scribble-methods?id=line_heightmin-max-regenerator) method instead.
 
+&nbsp;
+
+**Has AI been used to make this library?**
+
+This library was made with human hands. No generative AI models have been used to make this library.
+
 &nbsp; 
 
 ## Can I send you donations? Are you going to start a Patreon?
