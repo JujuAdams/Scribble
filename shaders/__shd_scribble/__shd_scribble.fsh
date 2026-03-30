@@ -43,13 +43,13 @@ void main()
         if (u_fSecondDraw < 0.5)
         {
             float outAlpha = gl_FragColor.a + sample.g*(1.0 - gl_FragColor.a);
-            gl_FragColor.rgb = (gl_FragColor.rgb*gl_FragColor.a + u_vOutlineColour*sample.g*(1.0 - gl_FragColor.a)) / outAlpha;
+            gl_FragColor.rgb = clamp((gl_FragColor.rgb*gl_FragColor.a + u_vOutlineColour*sample.g*(1.0 - gl_FragColor.a)) / outAlpha, 0.0, 1.0);
             gl_FragColor.a = outAlpha;
             
             if (u_vShadowColour.a > 0.0)
             {
-                float outAlpha = gl_FragColor.a + u_vShadowColour.a*sample.b*(1.0 - gl_FragColor.a);
-                gl_FragColor.rgb = (gl_FragColor.rgb*gl_FragColor.a + u_vShadowColour.rgb*u_vShadowColour.a*sample.b*(1.0 - gl_FragColor.a)) / outAlpha;
+                outAlpha = gl_FragColor.a + u_vShadowColour.a*sample.b*(1.0 - gl_FragColor.a);
+                gl_FragColor.rgb = clamp(gl_FragColor.rgb*gl_FragColor.a + u_vShadowColour.rgb*u_vShadowColour.a*sample.b*(1.0 - gl_FragColor.a), 0.0, 1.0);
                 gl_FragColor.a = outAlpha;
             }
         }
@@ -82,7 +82,7 @@ void main()
                 float alphaShadow = u_vShadowColour.a*smoothstep(0.5 - spread*u_vShadowOffsetAndSoftness.z, 0.5 + spread*u_vShadowOffsetAndSoftness.z, SDFValue(v_vTexcoord - u_vShadowOffsetAndSoftness.xy*fwidth(v_vTexcoord)) + outlineOffset);
                 
                 float outAlpha = gl_FragColor.a + alphaShadow*(1.0 - gl_FragColor.a);
-                gl_FragColor.rgb = (gl_FragColor.rgb*gl_FragColor.a + u_vShadowColour.rgb*alphaShadow*(1.0 - gl_FragColor.a)) / outAlpha;
+                gl_FragColor.rgb = clamp((gl_FragColor.rgb*gl_FragColor.a + u_vShadowColour.rgb*alphaShadow*(1.0 - gl_FragColor.a)) / outAlpha, 0.0, 1.0);
                 gl_FragColor.a = outAlpha;
             }
         }
