@@ -115,14 +115,14 @@ function __scribble_class_element(_string, _unique_id) constructor
     __padding_r = 0;
     __padding_b = 0;
     
-    __sdf_shadow_colour   = c_black;
-    __sdf_shadow_alpha    = 0.0;
-    __sdf_shadow_xoffset  = 0;
-    __sdf_shadow_yoffset  = 0;
-    __sdf_shadow_softness = 0;
+    __sdf_shadow_colour   = SCRIBBLE_DEFAULT_SHADOW_COLOR;
+    __sdf_shadow_alpha    = SCRIBBLE_DEFAULT_SHADOW_ALPHA;
+    __sdf_shadow_xoffset  = SCRIBBLE_DEFAULT_SHADOW_X_OFFSET;
+    __sdf_shadow_yoffset  = SCRIBBLE_DEFAULT_SHADOW_Y_OFFSEST;
+    __sdf_shadow_softness = SCRIBBLE_DEFAULT_SHADOW_SOFTNESS;
     
-    __sdf_outline_colour    = c_black;
-    __sdf_outline_thickness = 0.0;
+    __sdf_outline_colour    = SCRIBBLE_DEFAULT_OUTLINE_COLOR;
+    __sdf_outline_thickness = SCRIBBLE_DEFAULT_OUTLINE_THICKNESS;
     
     __bidi_hint = undefined;
     
@@ -1311,9 +1311,9 @@ function __scribble_class_element(_string, _unique_id) constructor
     static sdf_shadow = function(_colour, _alpha, _x_offset, _y_offset, _softness = 0.25)
     {
         __sdf_shadow_colour   = _colour;
-        __sdf_shadow_alpha    = _alpha;
-        __sdf_shadow_xoffset  = _x_offset;
-        __sdf_shadow_yoffset  = _y_offset;
+        __sdf_shadow_alpha    = clamp(_alpha, 0, 1);
+        __sdf_shadow_xoffset  = (_alpha <= 0)? 0 : _x_offset;
+        __sdf_shadow_yoffset  = (_alpha <= 0)? 0 : _y_offset;
         __sdf_shadow_softness = max(0, _softness);
         
         return self;

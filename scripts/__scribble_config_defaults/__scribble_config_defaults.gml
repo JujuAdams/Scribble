@@ -39,6 +39,27 @@
 
 
 
+//Default shadow properties. Shadow colour and shadow alpha apply to both baked shadows as well as
+//SDF shadows (i.e. `.shadow()` and `.sdf_shadow()`).
+#macro SCRIBBLE_DEFAULT_SHADOW_COLOR  #000000
+#macro SCRIBBLE_DEFAULT_SHADOW_ALPHA  0
+
+//Further default shadow properties. Shadow offset and softness only apply to SDF shadows.
+#macro SCRIBBLE_DEFAULT_SHADOW_X_OFFSET   0
+#macro SCRIBBLE_DEFAULT_SHADOW_Y_OFFSEST  0
+#macro SCRIBBLE_DEFAULT_SHADOW_SOFTNESS   0.25
+
+
+
+//Default outline colour. This applies to both baked outlines as well as SDF outlines (i.e.
+//`.outline()` and `.sdf_outline()`).
+#macro SCRIBBLE_DEFAULT_OUTLINE_COLOR  #000000
+
+//Default SDF outline thickness. This only applies to SDF outlines.
+#macro SCRIBBLE_DEFAULT_OUTLINE_THICKNESS  0
+
+
+
 //Default wave amplitude, in pixels.
 #macro SCRIBBLE_DEFAULT_WAVE_SIZE  4
 
