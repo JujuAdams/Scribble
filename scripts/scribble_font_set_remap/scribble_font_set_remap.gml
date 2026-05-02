@@ -11,8 +11,7 @@
 /// **not** cause Font A to remap to Font C.
 /// 
 /// N.B. Remapping a font will cause every text element to regenerate because font references might
-///      be invalid after remapping. This function will call `scribble_flush_everything()` to
-///      achieve this.
+///      be invalid after remapping.
 /// 
 /// N.B. Different fonts rarely perfectly line up. You will usually want to tweak font positioning
 ///      by using `scribble_glyph_set()`, specifically targeting x/y offsets and font height.
@@ -27,7 +26,7 @@ function scribble_font_set_remap(_original_font, _remap_font)
         if (__remap != _remap_font)
         {
             __remap = _remap_font;
-            scribble_flush_everything();
+            __scribble_flush_nodels();
         }
     }
 }

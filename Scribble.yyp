@@ -309,6 +309,7 @@
     {"id":{"name":"__scribble_config_colours","path":"scripts/__scribble_config_colours/__scribble_config_colours.yy",},},
     {"id":{"name":"__scribble_config_defaults","path":"scripts/__scribble_config_defaults/__scribble_config_defaults.yy",},},
     {"id":{"name":"__scribble_constants","path":"scripts/__scribble_constants/__scribble_constants.yy",},},
+    {"id":{"name":"__scribble_flush_nodels","path":"scripts/__scribble_flush_nodels/__scribble_flush_nodels.yy",},},
     {"id":{"name":"__scribble_font_add_all_from_bundle","path":"scripts/__scribble_font_add_all_from_bundle/__scribble_font_add_all_from_bundle.yy",},},
     {"id":{"name":"__scribble_font_add_from_bundle","path":"scripts/__scribble_font_add_from_bundle/__scribble_font_add_from_bundle.yy",},},
     {"id":{"name":"__scribble_font_add_from_info","path":"scripts/__scribble_font_add_from_info/__scribble_font_add_from_info.yy",},},
