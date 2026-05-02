@@ -1,0 +1,1 @@
+stashed = scribble("Here's a [fnt_monospace]stashed[/font] text element.").starting_format("fnt_style", c_white);
