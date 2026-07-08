@@ -117,3 +117,9 @@ This library was made with human hands. No generative AI models have been used t
 ## Can I send you donations? Are you going to start a Patreon?
 
 Thank you for wanting to show your appreciation - it really does mean a lot to me personally - but I'm fortunate enough to have a stable income from gamedev. I'm not looking to join Patreon as a creator at this moment in time. If you'd like to support my work then drop me a credit in your game and/or gimme a shout-out on the social media platform of your choice.
+
+&nbsp; 
+
+## How do I credit you in my game?
+
+You may credit me as "Juju Adams" or "JUJU ADAMS", whichever is most appropriate for your game, in any Latin font. My MobyGames is [here](https://www.mobygames.com/person/918360/). You may **not** use my social media avatar (from Discord or other social media) for any purpose and you should only use my name for a credit.
