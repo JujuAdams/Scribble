@@ -122,4 +122,4 @@ Thank you for wanting to show your appreciation - it really does mean a lot to m
 
 ## How do I credit you in my game?
 
-You may credit me as "Juju Adams" or "JUJU ADAMS", whichever is most appropriate for your game, in any Latin font. My MobyGames is [here](https://www.mobygames.com/person/918360/). You may **not** use my social media avatar (from Discord or other social media) for any purpose and you should only use my name for a credit.
+You may credit me as "Juju Adams" or "JUJU ADAMS", whichever is most appropriate for your game, in any Latin font. My MobyGames account is [here](https://www.mobygames.com/person/918360/). You may **not** use my social media avatar (from Discord or other social media) for any purpose and you should only use my name for a credit.
