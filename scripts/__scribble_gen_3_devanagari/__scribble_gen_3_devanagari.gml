@@ -128,7 +128,10 @@ function __scribble_gen_3_devanagari()
         var _char = _glyph_grid[# _i, __SCRIBBLE_GEN_GLYPH.__UNICODE];
         if (_char == ord("ि"))
         {
-            var _j = _i - 1;
+            var _old_pos = _i;
+            var _new_pos = _i-1;
+            
+            var _j = _new_pos - 1;
             while(_j >= 0)
             {
                 var _prev_char = _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.__UNICODE];
@@ -136,12 +139,13 @@ function __scribble_gen_3_devanagari()
                 {
                     //If we find a virama behind us keep tracking backwards
                     //We go two indexes backwards because virama (should) always follows another character
+                    _new_pos = _j-1;
                     _j -= 2;
                 }
                 else if (_prev_char == 0x093C) 
                 {
-                    //Move behind a nukta too
-                    _j -= 1;
+                    //Skip over nukta
+                    --_j;
                 }
                 else
                 {
@@ -150,14 +154,14 @@ function __scribble_gen_3_devanagari()
             }
             
             //Copy everything from the start of the subtring (where ि  will go) to the end (which is where ि  currently is)
-            ds_grid_set_grid_region(_temp_grid, _glyph_grid, _j, 0, _i-1, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);
+            ds_grid_set_grid_region(_temp_grid, _glyph_grid, _new_pos, 0, _old_pos-1, __SCRIBBLE_GEN_GLYPH.__SIZE, 0, 0);
             
             //Then copy that back into the glyph grid, but one character forwards
-            ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _i-1 - _j, __SCRIBBLE_GEN_GLYPH.__SIZE, _j+1, 0);
+            ds_grid_set_grid_region(_glyph_grid, _temp_grid, 0, 0, _old_pos-1 - _new_pos, __SCRIBBLE_GEN_GLYPH.__SIZE, _new_pos+1, 0);
             
             //Insert ि  (encoded in Krutidev as f) into its new position
-            _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = __SCRIBBLE_DEVANAGARI_OFFSET + ord("f");
-            _glyph_grid[# _j, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _glyph_grid[# _j+1, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT];
+            _glyph_grid[# _new_pos, __SCRIBBLE_GEN_GLYPH.__UNICODE      ] = __SCRIBBLE_DEVANAGARI_OFFSET + ord("f");
+            _glyph_grid[# _new_pos, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT] = _glyph_grid[# _new_pos+1, __SCRIBBLE_GEN_GLYPH.__CONTROL_COUNT];
         }
         
         ++_i;
