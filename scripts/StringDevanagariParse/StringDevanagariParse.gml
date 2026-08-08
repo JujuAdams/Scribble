@@ -153,20 +153,24 @@ function StringDevanagariParse(_inString)
         var _char = _charArray[_i];
         if (_char == ord("ि"))
         {
-            var _fPosition = _i;
+            var _oldPosition = _i;
+            array_delete(_charArray, _i, 1);
             
-            var _j = _i - 1;
+            var _newPosition = _i-1;
+            var _j = _newPosition-1;
             while(_j >= 0)
             {
                 if (_charArray[_j] == 0x094D)
                 {
                     //If we find a virama behind us keep tracking backwards
                     //We go two indexes backwards because virama (should) always follows another character
+                    _newPosition = _j-1;
                     _j -= 2;
                 }
-                else if (_charArray[_j] == 0x093C) //Nukta
+                else if (_charArray[_j] == 0x093C)
                 {
-                    _j -= 1;
+                    //Skip over nukta
+                    --_j;
                 }
                 else
                 {
@@ -174,10 +178,9 @@ function StringDevanagariParse(_inString)
                 }
             }
             
-            array_delete(_charArray, _fPosition, 1);
-            array_insert(_charArray, _j, ord("f"));
+            array_insert(_charArray, _newPosition, ord("f"));
             
-            _i = _fPosition;
+            _i = _oldPosition;
         }
         
         ++_i;
