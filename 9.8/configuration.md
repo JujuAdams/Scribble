@@ -134,6 +134,11 @@ This script holds a number of macros that customise the default text animation p
 |`SCRIBBLE_DEFAULT_BLINK_ON_DURATION` |`150`        |Default duration that blinking text should stay on for, in milliseconds                                                                                                                                     |
 |`SCRIBBLE_DEFAULT_BLINK_OFF_DURATION`|`150`        |Default duration that blinking text should turn off for, in milliseconds                                                                                                                                    |
 |`SCRIBBLE_DEFAULT_BLINK_TIME_OFFSET` |`0`          |Default blink time offset, in milliseconds                                                                                                                                                                  |
+|`SCRIBBLE_DEFAULT_SHADOW_COLOR`      |`#000000`    |Default shadow colour for both baked shadows as well as SDF shadows (i.e. `.shadow()` and `.sdf_shadow()`)                                                                                                  |
+|`SCRIBBLE_DEFAULT_SHADOW_ALPHA`      |`0`          |Default hadow alpha for both baked shadows as well as SDF shadows (i.e. `.shadow()` and `.sdf_shadow()`)                                                                                                    |
+|`SCRIBBLE_DEFAULT_SHADOW_X_OFFSET`   |`0`          |Default shadow x-offset. This only applies to SDF shadows                                                                                                                                                   |
+|`SCRIBBLE_DEFAULT_SHADOW_Y_OFFSET`   |`0`          |Default shadow y-offset. This only applies to SDF shadows                                                                                                                                                   |
+|`SCRIBBLE_DEFAULT_SHADOW_SOFTNESS`   |`0.25`       |Default shadow softness. This only applies to SDF shadows                                                                                                                                                   |
 
 &nbsp;
 
