@@ -118,7 +118,7 @@ function __scribble_class_element(_string, _unique_id) constructor
     __sdf_shadow_colour   = SCRIBBLE_DEFAULT_SHADOW_COLOR;
     __sdf_shadow_alpha    = SCRIBBLE_DEFAULT_SHADOW_ALPHA;
     __sdf_shadow_xoffset  = SCRIBBLE_DEFAULT_SHADOW_X_OFFSET;
-    __sdf_shadow_yoffset  = SCRIBBLE_DEFAULT_SHADOW_Y_OFFSEST;
+    __sdf_shadow_yoffset  = SCRIBBLE_DEFAULT_SHADOW_Y_OFFSET;
     __sdf_shadow_softness = SCRIBBLE_DEFAULT_SHADOW_SOFTNESS;
     
     __sdf_outline_colour    = SCRIBBLE_DEFAULT_OUTLINE_COLOR;
