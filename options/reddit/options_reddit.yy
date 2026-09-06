@@ -1,0 +1,15 @@
+{
+  "$GMRedditOptions":"v2",
+  "%Name":"Reddit",
+  "name":"Reddit",
+  "option_reddit_devvit_project_id":"Scribble",
+  "option_reddit_devvit_project_path":"",
+  "option_reddit_display_cursor":true,
+  "option_reddit_game_name":"Scribble",
+  "option_reddit_interpolate_pixels":true,
+  "option_reddit_scale":0,
+  "option_reddit_texture_page":"2048x2048",
+  "option_reddit_transparent_background":false,
+  "resourceType":"GMRedditOptions",
+  "resourceVersion":"2.0",
+}
