@@ -1741,7 +1741,11 @@ function __ScribbleClassElementParent(_text) constructor
     
     static z = function(_z)
     {
-        __z = _z;
+        if (__z != _z)
+        {
+            __z = _z;
+            __matrixDirty = true;
+        }
         
         return self;
     }
