@@ -1133,27 +1133,25 @@ function __scribble_gen_2_parser()
                                         var _sprite_w = sprite_get_width( _sprite_index);
                                         var _sprite_h = sprite_get_height(_sprite_index);
                                         
+                                        if (SCRIBBLE_AUTOFIT_INLINE_SPRITES)
+                                        {
+                                            var _sprite_space_h = (SCRIBBLE_SPRITE_ALIGN_MODE == 0)? _font_line_height : _font_ascender;
+                                            var _scale = min(1, _sprite_space_h / _sprite_h);
+                                            _sprite_w *= _scale;
+                                            _sprite_h *= _scale;
+                                        }
+                                        
                                         if (SCRIBBLE_SPRITE_ALIGN_MODE == 0) //Align to centre of line height
                                         {
                                             var _sprite_y_offset = 0;
-                                            var _sprite_space_h  = _font_line_height;
                                         }
                                         else if (SCRIBBLE_SPRITE_ALIGN_MODE == 1) //Align to centre of ascender
                                         {
                                             var _sprite_y_offset = floor(_font_ascender_offset + _font_ascender/2 - _font_line_height/2);
-                                            var _sprite_space_h  = _font_ascender;
                                         }
                                         else if (SCRIBBLE_SPRITE_ALIGN_MODE == 2) //Align bottom to baseline
                                         {
                                             var _sprite_y_offset = floor(_font_ascender_offset + _font_ascender - _sprite_h/2 - _font_line_height/2);
-                                            var _sprite_space_h  = _font_ascender;
-                                        }
-                                        
-                                        if (SCRIBBLE_AUTOFIT_INLINE_SPRITES)
-                                        {
-                                            var _scale = min(1, _sprite_space_h / _sprite_h);
-                                            _sprite_w *= _scale;
-                                            _sprite_h *= _scale;
                                         }
                                 
                                         var _image_index = 0;
