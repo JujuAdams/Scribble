@@ -1559,7 +1559,11 @@ function __scribble_class_element(_string, _unique_id) constructor
     
     static z = function(_z)
     {
-        __z = _z;
+        if (__z != _z)
+        {
+            __z = _z;
+            __matrix_dirty = true;
+        }
         
         return self;
     }
