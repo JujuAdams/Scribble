@@ -878,7 +878,7 @@ function __scribble_gen_2_parser()
                         
                             if (SCRIBBLE_AUTOFIT_INLINE_SURFACES)
                             {
-                                var _scale = min(1, (_font_line_height+2)/_surface_h);
+                                var _scale = min(1, _font_line_height/_surface_h);
                                 _surface_w *= _scale;
                                 _surface_h *= _scale;
                             }
@@ -996,7 +996,7 @@ function __scribble_gen_2_parser()
                             
                             if (SCRIBBLE_AUTOFIT_INLINE_TEXTURES)
                             {
-                                var _scale = min(1, (_font_line_height+2)/_tex_h);
+                                var _scale = min(1, _font_line_height/_tex_h);
                                 _tex_w *= _scale;
                                 _tex_h *= _scale;
                             }
